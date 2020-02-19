@@ -1,0 +1,5 @@
+/data/*
+settings.json
+*.csv
+/data1/*
+.DS_store
