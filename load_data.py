@@ -9,41 +9,62 @@ from dateutil.parser import parse
 import xlrd
 
 
-def parse_date(date):
+def strip_bfi(filename):
+    """ There's no consistency with dates at all files, so best use the filename,
+    strip filenames it below, then regex replace month names, and even then replace some manually.
+    Horrible and dirty.
+    """
+    for form in (
+        "weekend" "uk-film-council-box-office-report-",
+        "bfi-weekend-box-office-report-",
+        "bfi-uk-box-office-",
+        "uk-film-council-box-office-report-",
+        "weekend-box-office-report",
+    ):
+        return filename.strip(form)
+
+
+def parse_date(filename):
+    new = strip_bfi(filename)
+
     try:
-        date = date.value.split("-")[1].strip()
-        date = date.strip("UK box office")
-        date = date.split(" ")[0:3]
-        date = " ".join(date)
-        date = parse(date).strftime("%d/%m/%Y")
+        date = parse(new).strftime("%d/%m/%Y")
         return date
     except ValueError:
         pass
-    raise ValueError("date formatting is broken")
+    raise ValueError("date formatting is broken on " + filename)
 
 
 def xlrd_format(filename):
-    xl_workbook = xlrd.open_workbook(filename)
+
+    path = "./data/"+ filename
+
+    xl_workbook = xlrd.open_workbook(path)
     sheet_names = xl_workbook.sheet_names()
 
     xl_sheet = xl_workbook.sheet_by_name(sheet_names[0])
 
     rows = xl_sheet.get_rows()
     first_row = xl_sheet.row(0)
-    date = first_row[1]
-    date = parse_date(text)
+    date = filename.strip(".xls")
 
     for row in rows:
         if row[0].value != "":
             film = []
             film.append(date)
-            for cell in row:
-                film.append(cell.value)
+
+            film.append(row[0].value) # Rank
+            film.append(str(row[1].value).upper()) # Title
+            film.append(str(row[2].value).upper()) # Country
+            film.append(row[3].value) # Weekend Gross
+            film.append(str(row[4].value).upper()) # Distributor
+            film.append(row[6].value) # Weeks on release
+            film.append(row[7].value) # Number of cinemas
+            film.append(row[9].value) # Total box office
+
             if "Rank" in film:
                 continue
             else:
-                del film[6]
-                del film[8]
                 with open("output.csv", "a") as csv_output:
                     writer = csv.writer(csv_output)
                     writer.writerow(film)
@@ -52,6 +73,5 @@ def xlrd_format(filename):
 for filename in os.listdir("./data/"):
     if filename.endswith("xls"):
         print(filename)
-        path = "./data/" + filename
-        xlrd_format(path)
+        xlrd_format(filename)
 print("Done")
