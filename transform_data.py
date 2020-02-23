@@ -1,5 +1,8 @@
-# Iterate over data to find the difference between weeks of films.
-# It's so inefficient, but that's the data structure
+""" Iterate over data to find the difference between weeks of films.
+It's so inefficient, but that's the data structure
+You could also move this to the load_data function, for more speed
+But really you'd only ever run any of this once anyway.
+"""
 
 import csv
 import argparse

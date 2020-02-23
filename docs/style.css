@@ -4,7 +4,7 @@ body {
   	margin: 0;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-  	color: #423737;
+  	color: #434343;
 }
 ::selection {
 	background: #C01E5C;
@@ -18,10 +18,29 @@ body {
 	font-weight: 600;
 }
 
+.header a {
+	color: #434343; 
+	text-decoration: none;;
+}
+
 .main {
 	margin-left: auto;
 	margin-right: auto;
 	width: 97%;
+}
+
+.page {
+	max-width: 600px;
+	margin-top: 50px;
+	font-size: 1.25em;
+	line-height: 1.58;
+	letter-spacing: -.003em;
+}
+
+.page a {
+	color: #C01E5C;
+	text-decoration: none;
+	border-bottom: 1px solid #C01E5C;
 }
 
 .footer {
