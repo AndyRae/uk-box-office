@@ -1,4 +1,5 @@
 # Function for loading the archive of data post-2007 - but not for new data.
+# Outputs a csv list of the combined excel. 
 
 import csv
 import os
@@ -12,7 +13,7 @@ import xlrd
 def strip_bfi(filename):
     """ There's no consistency with dates at all files, so best use the filename,
     strip filenames it below, then regex replace month names, and even then replace some manually.
-    Horrible and dirty.
+    Horrible and dirty. Note - the original website actually has the dates... use that next time.
     """
     for form in (
         "weekend" "uk-film-council-box-office-report-",
