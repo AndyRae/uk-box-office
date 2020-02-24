@@ -45,6 +45,7 @@ body {
 
 .d-frame {
 	position: fixed;
+	max-width: 97%;
 }
 
 .footer {
