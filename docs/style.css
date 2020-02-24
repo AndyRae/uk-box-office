@@ -43,6 +43,10 @@ body {
 	border-bottom: 1px solid #C01E5C;
 }
 
+.d-frame {
+	position: fixed;
+}
+
 .footer {
 	height: 30px;
 	padding-top: 10px;
