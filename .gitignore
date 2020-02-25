@@ -1,5 +1,6 @@
 /data/*
-settings.json
+*.json
 *.csv
+*.xls
 /data1/*
 .DS_store
