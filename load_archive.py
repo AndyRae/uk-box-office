@@ -1,17 +1,14 @@
 """ Function for loading the archive of data post-2007 - but not for new data.
-Gets all excel files in ./data/ - Outputs a csv list of the combined excel. 
-No parameters to pass.
+Gets all xls files in ./data/ - Outputs a csv list of the combined excel. 
+No parameters to pass, assuming have previously renamed all xls files as dates.
 """
 
 import csv
 import os
-from datetime import datetime
-from dateutil.parser import parse
-
-from transform_data import process_film
-
-# XLRD is best for these old xls files
 import xlrd
+from datetime import datetime
+
+from helper import process_film
 
 
 def load_archive_box_office(filename):
@@ -23,11 +20,11 @@ def load_archive_box_office(filename):
 
     rows = xl_sheet.get_rows()
     first_row = xl_sheet.row(0)
-    date = filename.strip(".xls")
+    date = filename.strip(".xls").strip("./data/")
+    date = datetime.strptime(date, "%d-%m-%Y").strftime("%d/%m/%Y")
 
     for row in rows:
         film = process_film(row, date)
-        print(film)
 
         if film:
             if "Rank" in film:
@@ -41,7 +38,7 @@ def load_archive_box_office(filename):
 for filename in os.listdir("./data/"):
     if filename.endswith("xls"):
         print(filename)
-        path = "./data/"+ filename
+        path = "./data/" + filename
         load_archive_box_office(path)
 
 print("Done")

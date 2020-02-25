@@ -1,7 +1,5 @@
 """ Iterate over data to find the difference between weeks of films.
 It's so inefficient, but that's the data structure
-You could also move this to the load_data function, for more speed
-But really you'd only ever run any of this once anyway.
 """
 
 import csv
@@ -11,7 +9,7 @@ from datetime import datetime, timedelta
 
 def spellcheck_distributor(distributor):
     # Uses a list of the common distributor mistakes and returns the actual ones
-    with open ("distributor.csv", "r") as distributor_list:
+    with open("distributor.csv", "r") as distributor_list:
         reader = csv.reader(distributor_list, delimiter=",")
 
         for line in reader:
@@ -62,7 +60,7 @@ def search_box_office(date, film, week, total_box):
         film_list = []
         for line in search:
             this_date = datetime.strptime(line[0], "%d/%m/%Y")
-            this_week = int(line[6])
+            this_week = int(line[6].strip())
             film_box = int(float(line[8]))
             if total_box > film_box:
                 if this_date > previous_year and this_date < date:
@@ -74,30 +72,22 @@ def search_box_office(date, film, week, total_box):
             return total_box - film_list[-1][1]
 
 
-def get_week_box_office(file):
-    with open(file, "r") as file:
-        reader = csv.reader(file, delimiter=",")
-
-        for row in reader:
-            date = datetime.strptime(row[0], "%d/%m/%Y")
-            film = row[2]
-            print(film)
-            total_box = int(float(row[8]))
-            week = int(float(row[6]))
-            if week > 1:
-                week_gross = search_box_office(date, film, week, total_box)
-                if week_gross:
-                    row.append(week_gross)
-                else:
-                    # If the previous week isn't there (new entrant to top 15)
-                    row.append(total_box)
-            else:
-                # Week 1 gross is the total box
-                week_gross = total_box
-                row.append(week_gross)
-            with open("transformed.csv", "a") as file:
-                writer = csv.writer(file, delimiter=",")
-                writer.writerow(row)
+def get_week_box_office(row):
+    date = datetime.strptime(row[0], "%d/%m/%Y")
+    film = row[2]
+    print(film)
+    total_box = int(float(row[8]))
+    week = int(float(row[6]))
+    if week > 1:
+        week_gross = search_box_office(date, film, week, total_box)
+        if week_gross:
+            return week_gross
+        else:
+            # If the previous week isn't there (new entrant to top 15)
+            return total_box
+    else:
+        # Week 1 gross is the total box
+        return total_box
 
 
 def process_film(row, date):
@@ -109,21 +99,13 @@ def process_film(row, date):
         distributor = str(row[4].value).upper()
         distributor = spellcheck_distributor(distributor)
 
-        film.append(row[0].value) # Rank
-        film.append(str(row[1].value).upper()) # Title
-        film.append(str(row[2].value).upper()) # Country
-        film.append(row[3].value) # Weekend Gross
-        film.append(distributor) # Distributor
-        film.append(row[6].value) # Weeks on release
-        film.append(row[7].value) # Number of cinemas
-        film.append(row[9].value) # Total box office
+        film.append(row[0].value)  # Rank
+        film.append(str(row[1].value).upper())  # Title
+        film.append(str(row[2].value).upper())  # Country
+        film.append(row[3].value)  # Weekend Gross
+        film.append(distributor)  # Distributor
+        film.append(row[6].value)  # Weeks on release
+        film.append(row[7].value)  # Number of cinemas
+        film.append(row[9].value)  # Total box office
 
         return film
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Transform box office data")
-    parser.add_argument("file", type=str, help="CSV file to use.")
-    args = parser.parse_args()
-    get_week_box_office(args.file)
-    print("Done")

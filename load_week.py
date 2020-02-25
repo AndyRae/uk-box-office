@@ -3,9 +3,16 @@
 import csv
 import argparse
 import xlrd
+import os
 from datetime import datetime
 
-from transform_data import get_last_sunday, process_film, get_week_box_office
+from helper import (
+    get_last_sunday,
+    process_film,
+    get_week_box_office,
+    get_week_box_office,
+)
+
 
 def load_weekly_box_office(filename):
 
@@ -24,6 +31,8 @@ def load_weekly_box_office(filename):
             if "Rank" in film:
                 continue
             else:
+                week_gross = get_week_box_office(film)
+                film.append(week_gross)
                 with open("week.csv", "a") as csv_output:
                     writer = csv.writer(csv_output)
                     writer.writerow(film)
@@ -33,7 +42,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Transform weekly box office data")
     parser.add_argument("file", type=str, help="This weeks excel file to use")
     args = parser.parse_args()
+
     load_weekly_box_office(args.file)
-    get_week_box_office("week.csv")
 
     print("Done")
