@@ -4,13 +4,15 @@
 
 [Reasons why](https://rae.li/uk-box-office-data)
 
-Data pipeline in `/scripts/`
+Data pipeline:
 
-`transform_data.py` for functions.
+`helper.py` for functions.
 
-`load_archive.py` for historical data.
+`extract_archive.py` for historical data.
 
-`load_week.py` as a weekly load for new data.
+`transform_archive.py` for adding weekly data to the archive.
+
+`extract_week.py` as a weekly load for new data.
 
 Github site in `/docs/`
 Essentially an iframe for Google Data Studio, but you can't open source that bit.
