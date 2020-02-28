@@ -9,6 +9,7 @@ verify_ssl = true
 xlrd = "*"
 black = "*"
 python-dateutil = "*"
+pandas = "*"
 
 [requires]
 python_version = "3.7"

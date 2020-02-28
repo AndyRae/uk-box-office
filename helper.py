@@ -2,13 +2,16 @@
 It's so inefficient, but that's the data structure
 """
 
-import csv
 import argparse
+import math
+import xlrd
+import pandas as pd
 from datetime import datetime, timedelta
 
 
 def spellcheck_distributor(distributor):
     # Uses a list of the common distributor mistakes and returns the actual ones
+    # use pandas for this
     with open("distributor.csv", "r") as distributor_list:
         reader = csv.reader(distributor_list, delimiter=",")
 
@@ -50,62 +53,38 @@ def parse_date(filename):
     raise ValueError("date formatting is broken on " + filename)
 
 
-def search_box_office(date, film, week, total_box):
-    """ Checks against the whole csv for the previous week, then returns the difference in box office
-    Memoizes all instances of the film, then picks the highest week to find the difference.
-    Only looks for the last year - to avoid rereleases, reboots, and duplicate titles."""
-    with open("archive.csv", "r") as file_search:
-        search = csv.reader(file_search, delimiter=",")
-        previous_year = date - timedelta(days=365)
-        film_list = []
-        for line in search:
-            this_date = datetime.strptime(line[0], "%d/%m/%Y")
-            this_week = int(line[6].strip())
-            film_box = int(float(line[8]))
-            if total_box > film_box:
-                if this_date > previous_year and this_date < date:
-                    if film == line[2] and week > this_week:
-                        film_instance = [this_week, film_box, film]
-                        film_list.append(film_instance)
-        if film_list:
-            film_list.sort()
-            return total_box - film_list[-1][1]
-
-
 def get_week_box_office(row):
-    date = datetime.strptime(row[0], "%d/%m/%Y")
-    film = row[2]
-    print(film)
-    total_box = int(float(row[8]))
-    week = int(float(row[6]))
-    if week > 1:
-        week_gross = search_box_office(date, film, week, total_box)
-        if week_gross:
-            return week_gross
-        else:
-            # If the previous week isn't there (new entrant to top 15)
-            return total_box
+    title = row["title"]
+    print(title)
+
+    if row["weeks_on_release"] == 1:
+        return row["total_gross"]
     else:
-        # Week 1 gross is the total box
-        return total_box
+        archive = pd.read_csv("archive.csv")
+        archive.columns = [
+            "date",
+            "rank",
+            "title",
+            "country",
+            "weekend_gross",
+            "distributor",
+            "weeks_on_release",
+            "number_of_cinemas",
+            "total_gross"
+        ]
+        date = datetime.now()
+        previous_year = date - timedelta(days=365)
+        archive["date"] = pd.to_datetime(archive["date"], dayfirst=True)
 
+        films_filter = (
+            (archive["title"] == title)
+            & (archive["date"] > previous_year)
+            & (archive["date"] < date)
+        )
+        films_list = archive[films_filter]
 
-def process_film(row, date):
-    # Returns a list element of the film
-    if row[0].value != "":
-        film = []
-        film.append(date)
-
-        distributor = str(row[4].value).upper()
-        distributor = spellcheck_distributor(distributor)
-
-        film.append(row[0].value)  # Rank
-        film.append(str(row[1].value).upper())  # Title
-        film.append(str(row[2].value).upper())  # Country
-        film.append(row[3].value)  # Weekend Gross
-        film.append(distributor)  # Distributor
-        film.append(row[6].value)  # Weeks on release
-        film.append(row[7].value)  # Number of cinemas
-        film.append(row[9].value)  # Total box office
-
-        return film
+        week_gross = float(row["total_gross"]) - float(films_list["total_gross"].max())
+        if type(week_gross) == float and math.isnan(week_gross):
+            return row["total_gross"]
+        else:
+            return week_gross
