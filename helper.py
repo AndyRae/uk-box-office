@@ -3,6 +3,7 @@ It's so inefficient, but that's the data structure
 """
 
 import argparse
+import csv
 import math
 import xlrd
 import pandas as pd
@@ -50,7 +51,6 @@ def parse_date(filename):
         return date
     except ValueError:
         pass
-    raise ValueError("date formatting is broken on " + filename)
 
 
 def get_week_box_office(row):
@@ -70,10 +70,11 @@ def get_week_box_office(row):
             "distributor",
             "weeks_on_release",
             "number_of_cinemas",
-            "total_gross"
+            "total_gross",
         ]
-        date = datetime.now()
+        date = pd.to_datetime(row["date"], dayfirst=True)
         previous_year = date - timedelta(days=365)
+
         archive["date"] = pd.to_datetime(archive["date"], dayfirst=True)
 
         films_filter = (
@@ -81,9 +82,12 @@ def get_week_box_office(row):
             & (archive["date"] > previous_year)
             & (archive["date"] < date)
         )
+
         films_list = archive[films_filter]
 
+        # yuch lets define types in the extraction not here
         week_gross = float(row["total_gross"]) - float(films_list["total_gross"].max())
+
         if type(week_gross) == float and math.isnan(week_gross):
             return row["total_gross"]
         else:
