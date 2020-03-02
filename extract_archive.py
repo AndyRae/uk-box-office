@@ -11,7 +11,7 @@ from datetime import datetime
 from helper import spellcheck_distributor
 
 
-def load_archive_box_office_(filename):
+def load_archive_box_office(filename):
     df = pd.read_excel(filename)
 
     date = filename.strip(".xls").strip("./data/")
@@ -40,11 +40,28 @@ def load_archive_box_office_(filename):
         "total_gross",
     ]
 
+    df = df.dropna(subset=["distributor"])
+    df = df.dropna(how="all", axis=1, thresh=2)
+
     df.insert(0, "date", date)
     df["title"] = df["title"].str.upper()
+    df["country"] = df["country"].str.upper()
     df["distributor"] = df["distributor"].str.upper()
 
     df["distributor"] = df["distributor"].map(spellcheck_distributor)
+
+    df = df.astype(
+        {
+            "rank": float,
+            "title": str,
+            "country": str,
+            "weekend_gross": float,
+            "distributor": str,
+            "weeks_on_release": float,
+            "number_of_cinemas": float,
+            "total_gross": float,
+        }
+    )
 
     df.to_csv("archive.csv", mode="a", index=False, header=False)
 

@@ -91,4 +91,4 @@ def get_week_box_office(row):
         if type(week_gross) == float and math.isnan(week_gross):
             return row["total_gross"]
         else:
-            return week_gross
+            return float(week_gross)

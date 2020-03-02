@@ -10,6 +10,7 @@ xlrd = "*"
 black = "*"
 python-dateutil = "*"
 pandas = "*"
+google-cloud-bigquery = "*"
 
 [requires]
 python_version = "3.7"
