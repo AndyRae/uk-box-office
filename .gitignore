@@ -4,3 +4,4 @@
 *.xls
 /data1/*
 .DS_store
+settings.py

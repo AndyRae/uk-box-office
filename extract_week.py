@@ -9,7 +9,6 @@ from helper import get_last_sunday, spellcheck_distributor, get_week_box_office
 
 
 def load_weekly_box_office(filename):
-    # check data types of series for export, make sure bigquery likes them too
     df = pd.read_excel(filename)
     date = get_last_sunday()
 
@@ -31,13 +30,30 @@ def load_weekly_box_office(filename):
         "total_gross",
     ]
 
+    df = df.dropna(subset=["distributor"])
+    df = df.dropna(how="all", axis=1, thresh=2)
+
     df.insert(0, "date", date)
     df["title"] = df["title"].str.upper()
+    df["country"] = df["country"].str.upper()
     df["distributor"] = df["distributor"].str.upper()
 
     df["distributor"] = df["distributor"].map(spellcheck_distributor)
 
     df["week_gross"] = df.apply(lambda row: get_week_box_office(row), axis=1)
+
+    df = df.astype(
+        {
+            "rank": float,
+            "title": str,
+            "country": str,
+            "weekend_gross": float,
+            "distributor": str,
+            "weeks_on_release": float,
+            "number_of_cinemas": float,
+            "total_gross": float,
+        }
+    )
 
     df.to_csv("week1.csv", index=False)
 
