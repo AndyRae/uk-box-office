@@ -11,6 +11,7 @@ black = "*"
 python-dateutil = "*"
 pandas = "*"
 google-cloud-bigquery = "*"
+beautifulsoup4 = "*"
 
 [requires]
 python_version = "3.7"

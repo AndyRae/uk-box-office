@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 from helper import get_last_sunday, spellcheck_distributor, get_week_box_office
 
 
-def load_weekly_box_office(filename):
+def extract_weekly_box_office(filename):
     df = pd.read_excel(filename)
     date = get_last_sunday()
 
@@ -55,7 +55,7 @@ def load_weekly_box_office(filename):
         }
     )
 
-    df.to_csv("week1.csv", index=False)
+    df.to_csv("week.csv", index=False)
 
 
 if __name__ == "__main__":
@@ -63,6 +63,6 @@ if __name__ == "__main__":
     parser.add_argument("file", type=str, help="This weeks excel file to use")
     args = parser.parse_args()
 
-    load_weekly_box_office(args.file)
+    extract_weekly_box_office(args.file)
 
     print("Done")

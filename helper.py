@@ -7,12 +7,29 @@ import csv
 import math
 import xlrd
 import pandas as pd
+import requests
+import urllib
+from google.cloud import bigquery
 from datetime import datetime, timedelta
+from bs4 import BeautifulSoup
+
+
+def get_excel_file(source_url):
+    soup = BeautifulSoup(requests.get(source_url, timeout=3).content, "html.parser")
+
+    for row in soup.find_all("div", {"class": "bfi-download-cell"}):
+        excel_element = row.find("a")
+        if excel_element:
+            excel_link = excel_element.get('href')
+            excel_title = excel_link.split('/')[-1]
+            print(excel_title)
+            urllib.request.urlretrieve (excel_link, excel_title)
+            return excel_title
+            break
 
 
 def spellcheck_distributor(distributor):
     # Uses a list of the common distributor mistakes and returns the actual ones
-    # use pandas for this
     with open("distributor.csv", "r") as distributor_list:
         reader = csv.reader(distributor_list, delimiter=",")
 
@@ -92,3 +109,40 @@ def get_week_box_office(row):
             return row["total_gross"]
         else:
             return float(week_gross)
+
+
+def load_to_bigquery(filename, dataset_id, table_id):
+    from google.cloud import bigquery
+
+    client = bigquery.Client()
+
+    dataset_ref = client.dataset(dataset_id)
+    table_ref = dataset_ref.table(table_id)
+    job_config = bigquery.LoadJobConfig()
+    job_config.source_format = bigquery.SourceFormat.CSV
+    job_config.skip_leading_rows = 1
+    job_config.autodetect = True
+
+    with open(filename, "rb") as source_file:
+        job = client.load_table_from_file(source_file, table_ref, job_config=job_config)
+
+    job.result()  # Waits for table load to complete.
+
+    print("Loaded {} rows into {}:{}.".format(job.output_rows, dataset_id, table_id))
+
+
+def load_to_sheet(sheets, values, destination_id, destination_range):
+    # change to gspread
+    body = {"values": values}
+
+    result = (
+        sheets.spreadsheets()
+        .values()
+        .append(
+            spreadsheetId=destination_id,
+            range=destination_range,
+            valueInputOption="USER_ENTERED",
+            body=body,
+        )
+        .execute()
+    )
