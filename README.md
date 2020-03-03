@@ -2,17 +2,19 @@
 
 [Link to dashboard](https://boxoffice.rae.li)
 
-[Reasons why](https://rae.li/uk-box-office-data)
+[Reasons why](https://rae.li/uk-box-office-dashboard)
 
 Data pipeline:
 
 `helper.py` for functions.
 
-`extract_archive.py` for historical data.
+`extract_archive.py` for extracting historical data.
 
-`transform_archive.py` for adding weekly data to the archive.
+`extract_week.py` for extracting weekly, for new data.
 
-`extract_week.py` as a weekly load for new data.
+`transform_archive.py` for transforming the archive.
+
+`load_week.py` for loading to the database.
 
 Github site in `/docs/`
-Essentially an iframe for Google Data Studio, but you can't open source that bit.
+_Essentially an iframe for Google Data Studio, but you can't open source that bit._
