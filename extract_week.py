@@ -34,7 +34,7 @@ def extract_weekly_box_office(filename):
     df = df.dropna(how="all", axis=1, thresh=2)
 
     df.insert(0, "date", date)
-    df["title"] = df["title"].str.upper()
+    df["title"] = df["title"].astype(str).str.upper()
     df["country"] = df["country"].str.upper()
     df["distributor"] = df["distributor"].str.upper()
 

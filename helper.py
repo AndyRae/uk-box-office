@@ -88,9 +88,10 @@ def get_week_box_office(row):
             "weeks_on_release",
             "number_of_cinemas",
             "total_gross",
+            "week_gross"
         ]
         date = pd.to_datetime(row["date"], dayfirst=True)
-        previous_year = date - timedelta(days=365)
+        previous_year = date - timedelta(days=1095)
 
         archive["date"] = pd.to_datetime(archive["date"], dayfirst=True)
 
