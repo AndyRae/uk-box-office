@@ -19,10 +19,6 @@ from settings import (
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
 
-SCOPES = [
-    "https://www.googleapis.com/auth/spreadsheets"
-]
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Loads weekly data into database")

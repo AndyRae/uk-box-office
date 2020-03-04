@@ -42,7 +42,7 @@ def spellcheck_distributor(distributor):
 def get_last_sunday():
     today = datetime.now()
     sunday = today - timedelta(days=today.isoweekday())
-    return sunday.strftime("%d/%m/%Y")
+    return sunday.strftime("%d/%m/%Y") # change to yyyymmdd
 
 
 def strip_bfi(filename):
@@ -76,7 +76,7 @@ def get_week_box_office(row):
 
     if row["weeks_on_release"] == 1:
         return row["total_gross"]
-    else:
+    else: # amend this to use google sheet
         archive = pd.read_csv("archive.csv")
         archive.columns = [
             "date",
@@ -133,7 +133,10 @@ def load_to_bigquery(filename, dataset_id, table_id):
 
 
 def load_to_sheet(sheets, values, destination_id, destination_range):
-    # change to gspread
+
+    SCOPES = [
+        "https://www.googleapis.com/auth/spreadsheets"
+    ]
     body = {"values": values}
 
     result = (
