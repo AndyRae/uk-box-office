@@ -12,9 +12,22 @@ import urllib
 from google.cloud import bigquery
 from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
+from googleapiclient.discovery import build
+
+from settings import sheet_id
+
+
+def read_values(origin_id):
+    # Sheets API
+    sheets = build("sheets", "v4")
+    origin_range = "Sheet1!A1:J"
+    sheet = sheets.spreadsheets()
+    result = sheet.values().get(spreadsheetId=origin_id, range=origin_range).execute()
+    return result.get("values", [])
 
 
 def get_excel_file(source_url):
+    # Fetches first excel file on the source page
     soup = BeautifulSoup(requests.get(source_url, timeout=3).content, "html.parser")
 
     for row in soup.find_all("div", {"class": "bfi-download-cell"}):
@@ -40,12 +53,14 @@ def spellcheck_distributor(distributor):
 
 
 def get_last_sunday():
+    # Returns the previous sunday date for week extract 
     today = datetime.now()
     sunday = today - timedelta(days=today.isoweekday())
     return sunday.strftime("%d/%m/%Y") # change to yyyymmdd
 
 
 def strip_bfi(filename):
+    # Parsing filenames for dates
     """ There's no consistency with dates at all files, so best use the filename,
     strip filenames it below, then regex replace month names, and even then replace some manually.
     Horrible and dirty. Note - the original website actually has the dates... use that next time.
@@ -61,6 +76,7 @@ def strip_bfi(filename):
 
 
 def parse_date(filename):
+    # Parsing filenames for dates
     new = strip_bfi(filename)
 
     try:
@@ -76,8 +92,11 @@ def get_week_box_office(row):
 
     if row["weeks_on_release"] == 1:
         return row["total_gross"]
-    else: # amend this to use google sheet
-        archive = pd.read_csv("archive.csv")
+    else:
+        df = read_values(sheet_id)
+        archive = pd.DataFrame.from_records(df)
+        archive = archive.iloc[1:]
+        # archive = pd.read_csv("archive.csv") csv as a backup.
         archive.columns = [
             "date",
             "rank",
@@ -92,7 +111,6 @@ def get_week_box_office(row):
         ]
         date = pd.to_datetime(row["date"], dayfirst=True)
         previous_year = date - timedelta(days=1095)
-
         archive["date"] = pd.to_datetime(archive["date"], dayfirst=True)
 
         films_filter = (
@@ -102,6 +120,8 @@ def get_week_box_office(row):
         )
 
         films_list = archive[films_filter]
+
+        films_list["total_gross"] = films_list["total_gross"].astype(float)
 
         # yuch lets define types in the extraction not here
         week_gross = float(row["total_gross"]) - float(films_list["total_gross"].max())
@@ -132,12 +152,18 @@ def load_to_bigquery(filename, dataset_id, table_id):
     print("Loaded {} rows into {}:{}.".format(job.output_rows, dataset_id, table_id))
 
 
-def load_to_sheet(sheets, values, destination_id, destination_range):
+def load_to_sheet(sheets, values, destination_id):
+    # Loads data to Google Sheet
+    df = pd.read_csv(values)
+    body = df.to_json()
+    destination_range = "sheet1"
 
-    SCOPES = [
-        "https://www.googleapis.com/auth/spreadsheets"
-    ]
-    body = {"values": values}
+    body = {"values": [
+        [
+            "MID",
+            "YR2",
+        ]
+    ]}
 
     result = (
         sheets.spreadsheets()
