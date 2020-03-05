@@ -12,6 +12,7 @@ python-dateutil = "*"
 pandas = "*"
 google-cloud-bigquery = "*"
 beautifulsoup4 = "*"
+google-api-python-client = "*"
 
 [requires]
 python_version = "3.7"

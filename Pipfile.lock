@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "b2a2d227df9d9dd869adac1b542518911279cab425fd0020b08ab444b329c290"
+            "sha256": "fe1de1e25613445410383a14aced5d89c3a3fa272d6a174fc70ad83e6324cdf0"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -82,12 +82,27 @@
             ],
             "version": "==1.16.0"
         },
+        "google-api-python-client": {
+            "hashes": [
+                "sha256:3121d55d106ef1a2756e8074239512055bd99eb44da417b3dd680f9a1385adec",
+                "sha256:a8a88174f66d92aed7ebbd73744c2c319b4b1ce828e565f9ec721352d2e2fb8c"
+            ],
+            "index": "pypi",
+            "version": "==1.7.11"
+        },
         "google-auth": {
             "hashes": [
                 "sha256:1ee22e22f35d6e00f068d7b3999b2ce24ecb5d0dcbd485aa6896d2b83c8907d6",
                 "sha256:28a848d47c55075a0f29d7e26b7a213515c137ab8f0670e546e46d1277060e47"
             ],
             "version": "==1.11.2"
+        },
+        "google-auth-httplib2": {
+            "hashes": [
+                "sha256:098fade613c25b4527b2c08fa42d11f3c2037dda8995d86de0745228e965d445",
+                "sha256:f1c437842155680cf9918df9bc51c1182fda41feef88c34004bd1978c8157e08"
+            ],
+            "version": "==0.0.3"
         },
         "google-cloud-bigquery": {
             "hashes": [
@@ -116,6 +131,13 @@
                 "sha256:013c91704279119150e44ef770086fdbba158c1f978a6402167d47d5409e226e"
             ],
             "version": "==1.51.0"
+        },
+        "httplib2": {
+            "hashes": [
+                "sha256:79751cc040229ec896aa01dced54de0cd0bf042f928e84d5761294422dde4454",
+                "sha256:de96d0a49f46d0ee7e0aae80141d37b8fcd6a68fb05d02e0b82c128592dd8261"
+            ],
+            "version": "==0.17.0"
         },
         "idna": {
             "hashes": [
@@ -315,6 +337,13 @@
                 "sha256:fe460b922ec15dd205595c9b5b99e2f056fd98ae8f9f56b888e7a17dc2b757e7"
             ],
             "version": "==1.4.1"
+        },
+        "uritemplate": {
+            "hashes": [
+                "sha256:07620c3f3f8eed1f12600845892b0e036a2420acf513c53f7de0abd911a5894f",
+                "sha256:5af8ad10cec94f215e3f48112de2022e1d5a37ed427fbd88652fa908f2ab7cae"
+            ],
+            "version": "==3.0.1"
         },
         "urllib3": {
             "hashes": [
