@@ -1,25 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="mobile-web-app-capable" content="yes">
+	<link rel="manifest" href="./manifest.json">
+	<meta name="theme-color" content="#000"/>
   
 	<link rel="apple-touch-icon" type="image/png" href="./apple-icon.png">
 	<link rel="apple-touch-icon-180x180" sizes="180x180" type="image/png" href="./apple-icon-180x180.png">
 	<link rel="icon" type="image/png" sizes="192x192" href="./icon-hires.png">
 	
 	<title>UK Box Office Data</title>
-	<meta name="description" content="UK Box Office cinema data dashboard 2020, statistics, reports, and analysis, with over 8000 films and £17bn of sales" />
+	<meta name="description" content="UK Box Office cinema data dashboard 2020, statistics, reports, and analysis, with current top 10, and over 8000 films and £17bn of sales" />
 
 	<meta property="og:title" content="UK Box Office Data" />
-	<meta property="og:description" content="UK Box Office cinema data dashboard 2020, statistics, reports, and analysis, with over 8000 films and £17bn of sales" />
+	<meta property="og:description" content="UK Box Office cinema data dashboard 2020, statistics, reports, and analysis, with current top 10, and over 8000 films and £17bn of sales" />
 	<meta property="og:image" content="https://boxoffice.rae.li/1.png" />
 
 	<meta name="twitter:card" content="summary">
 	<meta name="twitter:creator" content="@AndyRae_">
 	<meta name="twitter:image" content="https://boxoffice.rae.li/1.png">
-	<meta name="twitter:description" content="UK Box Office cinema data dashboard 2020, statistics, reports, and analysis, with over 8000 films and £17bn of sales" />
+	<meta name="twitter:description" content="UK Box Office cinema data dashboard 2020, statistics, reports, and analysis, with current top 10, and over 8000 films and £17bn of sales" />
   
 	<link rel="stylesheet" href="./style.css">
 
@@ -31,16 +35,32 @@
 
 	gtag('config', 'UA-43038940-4');
 	</script>
+
+	<script>
+	function toggle_visibility() {
+		document.getElementsByClassName("mobileWarning")[0].style.display = "none";
+	}
+	</script>
   
 </head>
 
 <body>
+    <div class="mobileWarning">
+		<img width="100" src="./icon-hires.png"> 
+		<p>UK Box Office dashboard is designed for Desktop view.</p> 
+		<p>Please switch to your Desktop to use it.</p> 
+		<p><a href="./about.html">What is this?</a> </p>
+		<p><a href="mailto:hello@rae.li" target="_blank">
+		Any questions? Contact us.</a></p>
+		<p><a href="#" onclick="toggle_visibility()">Hide</a></p>
+	</div>
+
 	<div class="header">
 		<h1>UK Box Office Data</h1>
 	</div>
 
 	<div class="main">
-	<iframe width="100%" height="920" class="d-frame" src="https://datastudio.google.com/embed/reporting/5c2d9e3f-a94f-4643-9b91-65a182f86438/page/Ee3FB" frameborder="0" style="border:0" allowfullscreen></iframe>
+	<iframe width="100%" height="920" class="d-frame" title="UK Box Office Dashboard - Google Data Studio" src="https://datastudio.google.com/embed/reporting/5c2d9e3f-a94f-4643-9b91-65a182f86438/page/Ee3FB" frameborder="0" style="border:0" allowfullscreen></iframe>
 	</div>
 
 	<div class="footer">
@@ -51,3 +71,4 @@
 		<div class="footer-link"><a href="./darkmode.html">Dark Mode</a> 🌒</div>
 	</div>
 </body>
+</html>

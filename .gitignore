@@ -1,7 +1,7 @@
 /data/*
-*.json
+credentials.json
 *.csv
 *.xls
-/data1/*
 .DS_store
 settings.py
+.vscode
