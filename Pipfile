@@ -13,6 +13,8 @@ pandas = "*"
 google-cloud-bigquery = "*"
 beautifulsoup4 = "*"
 google-api-python-client = "*"
+gspread = "*"
+oauth2client = "*"
 
 [requires]
 python_version = "3.7"

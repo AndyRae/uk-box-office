@@ -19,9 +19,6 @@ from settings import (
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
 
-SCOPES = [
-    "https://www.googleapis.com/auth/spreadsheets"
-]
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Loads weekly data into database")
@@ -37,10 +34,7 @@ if __name__ == "__main__":
         print("Fetched + extracted")
 
     elif args.type.lower() == "test":
-        # Load to Google Sheets
-        sheets = build("sheets", "v4")
-
-        load_to_sheet(sheets, args.file, sheet_id)
+        load_to_sheet(args.file)
         print("Loaded to Sheets")
 
     elif args.type.lower() == "stage":

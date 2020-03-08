@@ -70,3 +70,32 @@ body {
 	padding: 0 10px 0 10px;
 
 }
+
+
+.mobileWarning {
+	opacity: 0.9;
+    text-align: center;
+	color: white;
+	font-size: 0.8em;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #C01E5C ;
+    z-index: 99999;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    flex-direction: column;
+    display: none;
+}
+
+.mobileWarning a {
+	color: white;
+	text-decoration: none;
+	border-bottom: 2px solid #fff;
+}
+
+@media only screen and (max-width: 760px) {
+	.mobileWarning {display: flex}
+
+  }
