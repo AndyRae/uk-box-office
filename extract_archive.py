@@ -15,7 +15,7 @@ def load_archive_box_office(filename):
     df = pd.read_excel(filename)
 
     date = filename.strip(".xls").strip("./data/")
-    date = datetime.strptime(date, "%d-%m-%Y").strftime("%d/%m/%Y") #change yyyymmdd
+    date = datetime.strptime(date, "%d-%m-%Y").strftime("%Y%m%d")
 
     header = df.iloc[0]
     df = df.iloc[1:]

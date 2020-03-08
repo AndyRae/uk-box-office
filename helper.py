@@ -1,14 +1,12 @@
-""" Iterate over data to find the difference between weeks of films.
-It's so inefficient, but that's the data structure
-"""
-
 import argparse
 import csv
 import math
 import xlrd
 import pandas as pd
+import gspread
 import requests
 import urllib
+from oauth2client.service_account import ServiceAccountCredentials
 from google.cloud import bigquery
 from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
@@ -33,10 +31,10 @@ def get_excel_file(source_url):
     for row in soup.find_all("div", {"class": "bfi-download-cell"}):
         excel_element = row.find("a")
         if excel_element:
-            excel_link = excel_element.get('href')
-            excel_title = excel_link.split('/')[-1]
+            excel_link = excel_element.get("href")
+            excel_title = excel_link.split("/")[-1]
             print(excel_title)
-            urllib.request.urlretrieve (excel_link, excel_title)
+            urllib.request.urlretrieve(excel_link, excel_title)
             return excel_title
             break
 
@@ -53,10 +51,10 @@ def spellcheck_distributor(distributor):
 
 
 def get_last_sunday():
-    # Returns the previous sunday date for week extract 
+    # Returns the previous sunday date for week extract
     today = datetime.now()
     sunday = today - timedelta(days=today.isoweekday())
-    return sunday.strftime("%d/%m/%Y") # change to yyyymmdd
+    return sunday.strftime("%Y%m%d")
 
 
 def strip_bfi(filename):
@@ -87,16 +85,19 @@ def parse_date(filename):
 
 
 def get_week_box_office(row):
+    """ Iterate over dataset to find the difference between weeks of films.
+    It's so inefficient, but that's the data structure
+    """
     title = row["title"]
     print(title)
 
     if row["weeks_on_release"] == 1:
         return row["total_gross"]
     else:
-        df = read_values(sheet_id)
-        archive = pd.DataFrame.from_records(df)
+        # df = read_values(sheet_id)
+        # archive = pd.DataFrame.from_records(df)
+        archive = pd.read_csv("archive.csv")  # csv as a backup.
         archive = archive.iloc[1:]
-        # archive = pd.read_csv("archive.csv") csv as a backup.
         archive.columns = [
             "date",
             "rank",
@@ -107,11 +108,11 @@ def get_week_box_office(row):
             "weeks_on_release",
             "number_of_cinemas",
             "total_gross",
-            "week_gross"
+            # "week_gross" # comment this is loading archive
         ]
-        date = pd.to_datetime(row["date"], dayfirst=True)
+        date = pd.to_datetime(row["date"], yearfirst=True)
         previous_year = date - timedelta(days=1095)
-        archive["date"] = pd.to_datetime(archive["date"], dayfirst=True)
+        archive["date"] = pd.to_datetime(archive["date"], yearfirst=True)
 
         films_filter = (
             (archive["title"] == title)
@@ -152,27 +153,17 @@ def load_to_bigquery(filename, dataset_id, table_id):
     print("Loaded {} rows into {}:{}.".format(job.output_rows, dataset_id, table_id))
 
 
-def load_to_sheet(sheets, values, destination_id):
-    # Loads data to Google Sheet
-    df = pd.read_csv(values)
-    body = df.to_json()
-    destination_range = "sheet1"
-
-    body = {"values": [
-        [
-            "MID",
-            "YR2",
-        ]
-    ]}
-
-    result = (
-        sheets.spreadsheets()
-        .values()
-        .append(
-            spreadsheetId=destination_id,
-            range=destination_range,
-            valueInputOption="USER_ENTERED",
-            body=body,
-        )
-        .execute()
+def load_to_sheet(file):
+    scope = ["https://spreadsheets.google.com/feeds"]
+    credentials = ServiceAccountCredentials.from_json_keyfile_name(
+        "credentials.json", scope
     )
+    gc = gspread.authorize(credentials)
+    worksheet = gc.open_by_key(sheet_id).worksheet("Sheet1")
+
+    with open(file, "r") as csv_input:
+        reader = csv.reader(csv_input)
+        next(reader)
+
+        for row in reader:
+            worksheet.append_row(row, value_input_option="USER_ENTERED")
