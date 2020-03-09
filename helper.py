@@ -96,8 +96,8 @@ def get_week_box_office(row):
     else:
         # df = read_values(sheet_id)
         # archive = pd.DataFrame.from_records(df)
+        # archive = archive.iloc[1:]
         archive = pd.read_csv("archive.csv")  # csv as a backup.
-        archive = archive.iloc[1:]
         archive.columns = [
             "date",
             "rank",
@@ -110,9 +110,9 @@ def get_week_box_office(row):
             "total_gross",
             "week_gross" # comment this if loading archive
         ]
-        date = pd.to_datetime(row["date"], yearfirst=True)
+        date = pd.to_datetime(row["date"], format="%Y%m%d", yearfirst=True)
         previous_year = date - timedelta(days=1095)
-        archive["date"] = pd.to_datetime(archive["date"], yearfirst=True)
+        archive["date"] = pd.to_datetime(archive["date"], format="%Y%m%d", yearfirst=True)
 
         films_filter = (
             (archive["title"] == title)
@@ -121,7 +121,6 @@ def get_week_box_office(row):
         )
 
         films_list = archive[films_filter]
-
         films_list["total_gross"] = films_list["total_gross"].astype(float)
 
         # yuch lets define types in the extraction not here
@@ -159,7 +158,7 @@ def load_to_sheet(file):
         "credentials.json", scope
     )
     gc = gspread.authorize(credentials)
-    worksheet = gc.open_by_key(sheet_id).worksheet("Sheet1")
+    worksheet = gc.open_by_key(sheet_id).worksheet("Sheet2")
 
     with open(file, "r") as csv_input:
         reader = csv.reader(csv_input)
