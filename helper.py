@@ -41,13 +41,29 @@ def get_excel_file(source_url):
 
 def spellcheck_distributor(distributor):
     # Uses a list of the common distributor mistakes and returns the actual ones
-    with open("distributor.csv", "r") as distributor_list:
+    with open("distributor_check.csv", "r") as distributor_list:
         reader = csv.reader(distributor_list, delimiter=",")
 
         for line in reader:
             if line[0] == distributor:
                 distributor = line[1]
         return distributor
+
+
+def spellcheck_film(film_title):
+    film_title = film_title.strip()
+    # if film ends with ', the', trim and add to prefix
+    if film_title.endswith(", THE"):
+        film_title = "THE " + film_title.rstrip(", THE")
+
+    # checks against the list of mistakes...
+    with open("film_check.csv", "r") as film_list:
+        reader = csv.reader(film_list, delimiter=",")
+
+        for line in reader:
+            if line[0] == film_title:
+                film_title = line[1]
+        return film_title
 
 
 def get_last_sunday():
@@ -108,11 +124,13 @@ def get_week_box_office(row):
             "weeks_on_release",
             "number_of_cinemas",
             "total_gross",
-            "week_gross" # comment this if loading archive
+            "week_gross",  # comment this if loading archive
         ]
         date = pd.to_datetime(row["date"], format="%Y%m%d", yearfirst=True)
         previous_year = date - timedelta(days=1095)
-        archive["date"] = pd.to_datetime(archive["date"], format="%Y%m%d", yearfirst=True)
+        archive["date"] = pd.to_datetime(
+            archive["date"], format="%Y%m%d", yearfirst=True
+        )
 
         films_filter = (
             (archive["title"] == title)
@@ -127,7 +145,7 @@ def get_week_box_office(row):
         week_gross = float(row["total_gross"]) - float(films_list["total_gross"].max())
 
         if type(week_gross) == float and math.isnan(week_gross):
-            return row["total_gross"]
+            return row["weekend_gross"]
         else:
             return float(week_gross)
 
