@@ -8,7 +8,7 @@ import xlrd
 import pandas as pd
 from datetime import datetime
 
-from helper import spellcheck_distributor
+from helper import spellcheck_distributor, spellcheck_film
 
 
 def load_archive_box_office(filename):
@@ -48,6 +48,7 @@ def load_archive_box_office(filename):
     df["country"] = df["country"].astype(str).str.upper()
     df["distributor"] = df["distributor"].astype(str).str.upper()
 
+    df["title"] = df["title"].map(spellcheck_film)
     df["distributor"] = df["distributor"].map(spellcheck_distributor)
 
     df = df.astype(

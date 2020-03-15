@@ -5,7 +5,7 @@ import xlrd
 import pandas as pd
 from datetime import datetime, timedelta
 
-from helper import get_last_sunday, spellcheck_distributor, get_week_box_office
+from helper import get_last_sunday, spellcheck_distributor, get_week_box_office, spellcheck_film
 
 
 def extract_weekly_box_office(filename):
@@ -38,6 +38,7 @@ def extract_weekly_box_office(filename):
     df["country"] = df["country"].str.upper()
     df["distributor"] = df["distributor"].str.upper()
 
+    df["title"] = df["title"].map(spellcheck_film)
     df["distributor"] = df["distributor"].map(spellcheck_distributor)
 
     df["week_gross"] = df.apply(lambda row: get_week_box_office(row), axis=1)
