@@ -14,7 +14,7 @@ from helper import spellcheck_distributor, spellcheck_film
 def load_archive_box_office(filename):
     df = pd.read_excel(filename)
 
-    date = filename.strip(".xls").strip("./data/")
+    date = filename.strip(".xls").strip("./archive-data/")
     date = datetime.strptime(date, "%d-%m-%Y").strftime("%Y%m%d")
 
     header = df.iloc[0]
@@ -64,13 +64,13 @@ def load_archive_box_office(filename):
         }
     )
 
-    df.to_csv("archive.csv", mode="a", index=False, header=False)
+    df.to_csv("./data/archive.csv", mode="a", index=False, header=False)
 
 
-for filename in os.listdir("./data/"):
+for filename in os.listdir("./archive-data/"):
     if filename.endswith("xls"):
         print(filename)
-        path = "./data/" + filename
+        path = "./archive-data/" + filename
         load_archive_box_office(path)
 
 print("Done")

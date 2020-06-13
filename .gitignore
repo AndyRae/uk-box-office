@@ -5,3 +5,5 @@ credentials.json
 .DS_store
 settings.py
 .vscode
+/__pycache__/
+/.pytest_cache/

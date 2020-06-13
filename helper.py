@@ -73,6 +73,7 @@ def get_last_sunday():
     return sunday.strftime("%Y%m%d")
 
 
+#TODO: Get rid of this.
 def strip_bfi(filename):
     # Parsing filenames for dates
     """ There's no consistency with dates at all files, so best use the filename,
@@ -113,7 +114,7 @@ def get_week_box_office(row):
         # df = read_values(sheet_id)
         # archive = pd.DataFrame.from_records(df)
         # archive = archive.iloc[1:]
-        archive = pd.read_csv("archive.csv")  # csv as a backup.
+        archive = pd.read_csv("/data/archive.csv")  # csv as a backup.
         archive.columns = [
             "date",
             "rank",
