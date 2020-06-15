@@ -15,6 +15,9 @@ beautifulsoup4 = "*"
 google-api-python-client = "*"
 gspread = "*"
 oauth2client = "*"
+pytest = "*"
+setuptools = "*"
+coverage = "*"
 
 [requires]
 python_version = "3.7"
