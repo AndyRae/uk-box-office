@@ -15,17 +15,8 @@ from googleapiclient.discovery import build
 from settings import sheet_id
 
 
-def read_values(origin_id):
-    # Sheets API
-    sheets = build("sheets", "v4")
-    origin_range = "Sheet1!A1:J"
-    sheet = sheets.spreadsheets()
-    result = sheet.values().get(spreadsheetId=origin_id, range=origin_range).execute()
-    return result.get("values", [])
-
-
 def get_excel_file(source_url):
-    # Fetches first excel file on the source page
+    # Fetches first (latest) excel file on the source page
     soup = BeautifulSoup(requests.get(source_url, timeout=3).content, "html.parser")
 
     for row in soup.find_all("div", {"class": "bfi-download-cell"}):
@@ -41,7 +32,7 @@ def get_excel_file(source_url):
 
 def spellcheck_distributor(distributor):
     # Uses a list of the common distributor mistakes and returns the actual ones
-    with open("distributor_check.csv", "r") as distributor_list:
+    with open("./data/distributor_check.csv", "r") as distributor_list:
         reader = csv.reader(distributor_list, delimiter=",")
 
         for line in reader:
@@ -57,7 +48,7 @@ def spellcheck_film(film_title):
         film_title = "THE " + film_title.rstrip(", THE")
 
     # checks against the list of mistakes...
-    with open("film_check.csv", "r") as film_list:
+    with open("./data/film_check.csv", "r") as film_list:
         reader = csv.reader(film_list, delimiter=",")
 
         for line in reader:
@@ -73,34 +64,6 @@ def get_last_sunday():
     return sunday.strftime("%Y%m%d")
 
 
-#TODO: Get rid of this.
-def strip_bfi(filename):
-    # Parsing filenames for dates
-    """ There's no consistency with dates at all files, so best use the filename,
-    strip filenames it below, then regex replace month names, and even then replace some manually.
-    Horrible and dirty. Note - the original website actually has the dates... use that next time.
-    """
-    for form in (
-        "weekend" "uk-film-council-box-office-report-",
-        "bfi-weekend-box-office-report-",
-        "bfi-uk-box-office-",
-        "uk-film-council-box-office-report-",
-        "weekend-box-office-report",
-    ):
-        return filename.strip(form)
-
-
-def parse_date(filename):
-    # Parsing filenames for dates
-    new = strip_bfi(filename)
-
-    try:
-        date = parse(new).strftime("%d/%m/%Y")
-        return date
-    except ValueError:
-        pass
-
-
 def get_week_box_office(row):
     """ Iterate over dataset to find the difference between weeks of films.
     It's so inefficient, but that's the data structure
@@ -111,22 +74,8 @@ def get_week_box_office(row):
     if row["weeks_on_release"] == 1:
         return row["total_gross"]
     else:
-        # df = read_values(sheet_id)
-        # archive = pd.DataFrame.from_records(df)
-        # archive = archive.iloc[1:]
-        archive = pd.read_csv("/data/archive.csv")  # csv as a backup.
-        archive.columns = [
-            "date",
-            "rank",
-            "title",
-            "country",
-            "weekend_gross",
-            "distributor",
-            "weeks_on_release",
-            "number_of_cinemas",
-            "total_gross",
-            "week_gross",  # comment this if loading archive
-        ]
+        archive = pd.read_csv("./data/archive.csv") 
+
         date = pd.to_datetime(row["date"], format="%Y%m%d", yearfirst=True)
         previous_year = date - timedelta(days=1095)
         archive["date"] = pd.to_datetime(
@@ -142,8 +91,9 @@ def get_week_box_office(row):
         films_list = archive[films_filter]
         films_list["total_gross"] = films_list["total_gross"].astype(float)
 
-        # yuch lets define types in the extraction not here
+        # TODO: yuch lets define types in the extraction not here
         week_gross = float(row["total_gross"]) - float(films_list["total_gross"].max())
+        print(week_gross)
 
         if type(week_gross) == float and math.isnan(week_gross):
             return row["weekend_gross"]

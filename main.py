@@ -4,9 +4,8 @@ import os
 import argparse
 from googleapiclient.discovery import build
 
-from helper import get_excel_file, load_to_bigquery, load_to_sheet
-
-from extract_week import extract_weekly_box_office
+import extract
+import helper
 
 from settings import (
     source_url,
@@ -23,31 +22,43 @@ os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Loads weekly data into database")
     parser.add_argument(
-        "type", type=str, help="Which process - either fetch / test / stage / prod."
+        "type",
+        type=str,
+        help="Which process - either build-archive / transform-archive / fetch / test / stage / prod.",
     )
     parser.add_argument("file", type=str, help="CSV file to use.")
     args = parser.parse_args()
 
     if args.type.lower() == "fetch":
-        excel_file = get_excel_file(source_url)
-        extract_weekly_box_office(excel_file)
+        excel_file = helper.get_excel_file(source_url)
+        extract.extract_box_office(excel_file, "week")
         print("Fetched + extracted")
 
     elif args.type.lower() == "test":
-        load_to_sheet(args.file)
+        helper.load_to_sheet(args.file)
         print("Loaded to Sheets")
 
     elif args.type.lower() == "stage":
         dataset_id = staging_dataset_id
         table_id = staging_table_id
-        load_to_bigquery(args.file, dataset_id, table_id)
+        helper.load_to_bigquery(args.file, dataset_id, table_id)
         print("Loaded to BigQuery staging")
 
     elif args.type.lower() == "prod":
         dataset_id = prod_dataset_id
         table_id = prod_table_id
-        load_to_bigquery(args.file, dataset_id, table_id)
+        helper.load_to_bigquery(args.file, dataset_id, table_id)
         print("Loaded to BigQuery production")
 
+    elif args.type.lower() == "build-archive":
+        extract.build_archive()
+        print("Archive created")
+
+    elif args.type.lower() == "transform-archive":
+        extract.transform_archive(args.file)
+        print("Archive transformed")
+
     else:
-        print("Pick which process - fetch / test / stage / prod")
+        print(
+            "Pick which process - build-archive / transform-archive / fetch / test / stage / prod"
+        )

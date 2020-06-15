@@ -37,17 +37,11 @@ def test_get_last_sunday():
 
 
 @pytest.mark.parametrize(
-    "test_input,expected",
-    [
-        (
-            1,
-            43707991.0,
-        ),
-        (1, 43707991.0),
-    ],
+    "test_input,expected", [(1, 43707991.0,), (10, 271538.0),],
 )
 def test_get_week_box_office(test_input, expected):
     d = {
+        "date": 20200607,
         "rank": 1.0,
         "title": "1917",
         "country": "UK/USA",
@@ -55,7 +49,7 @@ def test_get_week_box_office(test_input, expected):
         "distributor": "EONE FILMS",
         "weeks_on_release": test_input,
         "number_of_cinemas": 293.0,
-        "total_gross": expected,
+        "total_gross": 43707991.0,
     }
-    df = pd.DataFrame(data=d, index=[0])
+    df = pd.Series(data=d)
     assert helper.get_week_box_office(df) == expected
