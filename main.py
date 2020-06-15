@@ -4,7 +4,6 @@ import os
 import argparse
 from googleapiclient.discovery import build
 
-import extract
 import helper
 
 from settings import (
@@ -31,7 +30,7 @@ if __name__ == "__main__":
 
     if args.type.lower() == "fetch":
         excel_file = helper.get_excel_file(source_url)
-        extract.extract_box_office(excel_file, "week")
+        helper.extract_box_office(excel_file, "week")
         print("Fetched + extracted")
 
     elif args.type.lower() == "test":
@@ -51,11 +50,11 @@ if __name__ == "__main__":
         print("Loaded to BigQuery production")
 
     elif args.type.lower() == "build-archive":
-        extract.build_archive()
+        helper.build_archive()
         print("Archive created")
 
     elif args.type.lower() == "transform-archive":
-        extract.transform_archive(args.file)
+        helper.transform_archive(args.file)
         print("Archive transformed")
 
     else:

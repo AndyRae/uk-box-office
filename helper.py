@@ -1,5 +1,6 @@
 import argparse
 import csv
+import os
 import math
 import xlrd
 import pandas as pd
@@ -74,7 +75,7 @@ def get_week_box_office(row):
     if row["weeks_on_release"] == 1:
         return row["total_gross"]
     else:
-        archive = pd.read_csv("./data/archive.csv") 
+        archive = pd.read_csv("./data/archive.csv")
 
         date = pd.to_datetime(row["date"], format="%Y%m%d", yearfirst=True)
         previous_year = date - timedelta(days=1095)
@@ -99,6 +100,119 @@ def get_week_box_office(row):
             return row["weekend_gross"]
         else:
             return float(week_gross)
+
+
+def extract_box_office(filename, arg):
+    """ Does the weekly load
+    
+
+    """
+    df = pd.read_excel(filename)
+
+    header = df.iloc[0]
+    df = df.iloc[1:]
+    df.columns = header
+
+    df = df.dropna(subset=["Rank"])
+    df = df.dropna(how="all", axis=1, thresh=5)
+
+    if arg == "week":
+        date = get_last_sunday()
+        df = df.drop(columns=["% change on last week", "Site average"])
+    elif arg == "archive":
+        date = filename.strip(".xls").strip("./archive-data/")
+        date = datetime.strptime(date, "%d-%m-%Y").strftime("%Y%m%d")
+        df = df.drop(df.columns[[5, 8]], axis=1)
+        df = df.iloc[:, 0:8]
+
+    df.columns = [
+        "rank",
+        "title",
+        "country",
+        "weekend_gross",
+        "distributor",
+        "weeks_on_release",
+        "number_of_cinemas",
+        "total_gross",
+    ]
+
+    df = df.dropna(subset=["distributor"])
+    df = df.dropna(how="all", axis=1, thresh=2)
+
+    df.insert(0, "date", date)
+    df["title"] = df["title"].astype(str).str.upper()
+    df["country"] = df["country"].astype(str).str.upper()
+    df["distributor"] = df["distributor"].astype(str).str.upper()
+
+    df["title"] = df["title"].map(spellcheck_film)
+    df["distributor"] = df["distributor"].map(spellcheck_distributor)
+
+    if arg == "week":
+        df["week_gross"] = df.apply(lambda row: get_week_box_office(row), axis=1)
+
+    df = df.astype(
+        {
+            "rank": float,
+            "title": str,
+            "country": str,
+            "weekend_gross": float,
+            "distributor": str,
+            "weeks_on_release": float,
+            "number_of_cinemas": float,
+            "total_gross": float,
+        }
+    )
+
+    if arg == "week":
+        df.to_csv("./data/week.csv", index=False)
+    elif arg == "archive":
+        df.to_csv("./data/archive.csv", mode="a", index=False, header=False)
+
+
+def build_archive():
+    df = pd.DataFrame(
+        columns=[
+            "date",
+            "rank",
+            "title",
+            "country",
+            "weekend_gross",
+            "distributor",
+            "weeks_on_release",
+            "number_of_cinemas",
+            "total_gross",
+        ]
+    )
+
+    df.to_csv("./data/archive.csv", mode="a", index=False, header=True)
+
+    for filename in os.listdir("./archive-data/"):
+        if filename.endswith("xls"):
+            print(filename)
+            path = "./archive-data/" + filename
+            extract_box_office(path, "archive")
+
+    print("Done")
+
+
+def transform_archive(filename):
+    df = pd.read_csv(filename)
+
+    df.columns = [
+        "date",
+        "rank",
+        "title",
+        "country",
+        "weekend_gross",
+        "distributor",
+        "weeks_on_release",
+        "number_of_cinemas",
+        "total_gross",
+    ]
+
+    df["week_gross"] = df.apply(lambda row: get_week_box_office(row), axis=1)
+
+    df.to_csv("./data/transformed_archive.csv", index=False)
 
 
 def load_to_bigquery(filename, dataset_id, table_id):
@@ -135,3 +249,4 @@ def load_to_sheet(file):
 
         for row in reader:
             worksheet.append_row(row, value_input_option="USER_ENTERED")
+
