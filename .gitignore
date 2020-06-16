@@ -4,7 +4,6 @@ credentials.json
 *.csv
 *.xls
 .DS_store
-settings.py
 .vscode
 *__pycache__/
 *.pytest_cache/

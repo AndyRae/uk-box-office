@@ -2,13 +2,13 @@ import pytest
 from datetime import datetime, timedelta
 import pandas as pd
 
+import settings
+
 import helper
 
 
 def test_get_excel_file():
-    assert helper.get_excel_file(
-        "https://www.bfi.org.uk/education-research/film-industry-statistics-research/weekend-box-office-figures"
-    ).endswith(".xls")
+    assert helper.get_excel_file(settings.source_url).endswith(".xls")
 
 
 def test_spellcheck_distributor():
