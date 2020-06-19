@@ -43,6 +43,7 @@ def spellcheck_distributor(distributor):
 
 
 def spellcheck_film(film_title):
+    # Uses a list of the common film mistakes and returns the actual ones
     film_title = film_title.strip()
     # if film ends with ', the', trim and add to prefix
     if film_title.endswith(", THE"):
@@ -67,7 +68,7 @@ def get_last_sunday():
 
 def get_week_box_office(row):
     """ Iterate over dataset to find the difference between weeks of films.
-    It's so inefficient, but that's the data structure
+    Returns the actual weekly box office.
     """
     title = row["title"]
     print(title)
@@ -90,7 +91,6 @@ def get_week_box_office(row):
         )
 
         films_list = archive[films_filter]
-        films_list["total_gross"] = films_list["total_gross"].astype(float)
 
         # TODO: yuch lets define types in the extraction not here
         week_gross = float(row["total_gross"]) - float(films_list["total_gross"].max())
@@ -103,9 +103,7 @@ def get_week_box_office(row):
 
 
 def extract_box_office(filename, arg):
-    """ Does the weekly load
-    
-
+    """ Main extract/load function, transforming xls to csv.
     """
     df = pd.read_excel(filename)
 
@@ -116,6 +114,7 @@ def extract_box_office(filename, arg):
     df = df.dropna(subset=["Rank"])
     df = df.dropna(how="all", axis=1, thresh=5)
 
+    # Weekly load only needs the most recent date, archive needs all
     if arg == "week":
         date = get_last_sunday()
         df = df.drop(columns=["% change on last week", "Site average"])
