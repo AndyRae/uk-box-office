@@ -1,10 +1,10 @@
 /data/
 /archive-data/
 credentials.json
+settings.py
 *.csv
 *.xls
 .DS_store
-settings.py
 .vscode
 *__pycache__/
 *.pytest_cache/
