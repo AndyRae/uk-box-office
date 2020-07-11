@@ -1,6 +1,7 @@
 /data/
 /archive-data/
 credentials.json
+settings.py
 *.csv
 *.xls
 .DS_store

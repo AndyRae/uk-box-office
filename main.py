@@ -23,9 +23,9 @@ if __name__ == "__main__":
     parser.add_argument(
         "type",
         type=str,
-        help="Which process - either build-archive / transform-archive / fetch / test / stage / prod.",
+        help="Which process - either build-archive / transform-archive / fetch / test / stage / prod",
     )
-    parser.add_argument("file", type=str, help="CSV file to use.")
+    parser.add_argument("file", type=str, help="CSV file to use")
     args = parser.parse_args()
 
     if args.type.lower() == "fetch":

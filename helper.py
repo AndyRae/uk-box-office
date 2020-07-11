@@ -33,13 +33,13 @@ def get_excel_file(source_url):
 
 def spellcheck_distributor(distributor):
     # Uses a list of the common distributor mistakes and returns the actual ones
-    with open("./data/distributor_check.csv", "r") as distributor_list:
-        reader = csv.reader(distributor_list, delimiter=",")
+    dist_list = pd.read_csv("./data/distributor_check.csv", header=None)
+    dist_list.columns = ["key", "correction"]
 
-        for line in reader:
-            if line[0] == distributor:
-                distributor = line[1]
-        return distributor
+    if distributor in dist_list["key"].values:
+        dist_list = dist_list[dist_list["key"].str.match(distributor)]
+        distributor = dist_list["correction"].iloc[0].strip()
+    return distributor
 
 
 def spellcheck_film(film_title):
@@ -49,14 +49,14 @@ def spellcheck_film(film_title):
     if film_title.endswith(", THE"):
         film_title = "THE " + film_title.rstrip(", THE")
 
-    # checks against the list of mistakes...
-    with open("./data/film_check.csv", "r") as film_list:
-        reader = csv.reader(film_list, delimiter=",")
+    # checks against the list of mistakes
+    film_list = pd.read_csv("./data/film_check.csv", header=None)
+    film_list.columns = ["key", "correction"]
 
-        for line in reader:
-            if line[0] == film_title:
-                film_title = line[1]
-        return film_title
+    if film_title in film_list["key"].values:
+        film_list = film_list[film_list["key"].str.contains(film_title, regex=False)]
+        film_title = film_list["correction"].iloc[0].strip()
+    return film_title
 
 
 def get_last_sunday():
@@ -117,7 +117,7 @@ def extract_box_office(filename, arg):
     # Weekly load only needs the most recent date, archive needs all
     if arg == "week":
         date = get_last_sunday()
-        df = df.drop(columns=["% change on last week", "Site average"])
+        df = df.drop(columns=["% change on last week", "Site average"], errors="ignore")
     elif arg == "archive":
         date = filename.strip(".xls").strip("./archive-data/")
         date = datetime.strptime(date, "%d-%m-%Y").strftime("%Y%m%d")
@@ -248,4 +248,3 @@ def load_to_sheet(file):
 
         for row in reader:
             worksheet.append_row(row, value_input_option="USER_ENTERED")
-

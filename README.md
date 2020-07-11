@@ -10,6 +10,7 @@ Data pipeline:
 
 `main.py` for starting tasks.
 
+Tasks:
 `build-archive / transform-archive / fetch / test / stage / prod`
 
 Github pages site in `/docs/`
