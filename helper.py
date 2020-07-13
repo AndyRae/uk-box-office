@@ -2,7 +2,6 @@ import argparse
 import csv
 import os
 import math
-import xlrd
 import pandas as pd
 import gspread
 import requests
@@ -16,7 +15,7 @@ from googleapiclient.discovery import build
 from settings import sheet_id
 
 
-def get_excel_file(source_url):
+def get_excel_file(source_url: str) -> str:
     # Fetches first (latest) excel file on the source page
     soup = BeautifulSoup(requests.get(source_url, timeout=3).content, "html.parser")
 
@@ -31,7 +30,7 @@ def get_excel_file(source_url):
             break
 
 
-def spellcheck_distributor(distributor):
+def spellcheck_distributor(distributor: pd.Series) -> str:
     # Uses a list of the common distributor mistakes and returns the actual ones
     dist_list = pd.read_csv("./data/distributor_check.csv", header=None)
     dist_list.columns = ["key", "correction"]
@@ -42,7 +41,7 @@ def spellcheck_distributor(distributor):
     return distributor
 
 
-def spellcheck_film(film_title):
+def spellcheck_film(film_title: pd.Series) -> str:
     # Uses a list of the common film mistakes and returns the actual ones
     film_title = film_title.strip()
     # if film ends with ', the', trim and add to prefix
@@ -59,14 +58,14 @@ def spellcheck_film(film_title):
     return film_title
 
 
-def get_last_sunday():
+def get_last_sunday() -> str:
     # Returns the previous sunday date for week extract
     today = datetime.now()
     sunday = today - timedelta(days=today.isoweekday())
     return sunday.strftime("%Y%m%d")
 
 
-def get_week_box_office(row):
+def get_week_box_office(row: pd.Series) -> float:
     """ Iterate over dataset to find the difference between weeks of films.
     Returns the actual weekly box office.
     """
@@ -102,7 +101,7 @@ def get_week_box_office(row):
             return float(week_gross)
 
 
-def extract_box_office(filename, arg):
+def extract_box_office(filename: str, arg: str):
     """ Main extract/load function, transforming xls to csv.
     """
     df = pd.read_excel(filename)
@@ -168,7 +167,7 @@ def extract_box_office(filename, arg):
         df.to_csv("./data/archive.csv", mode="a", index=False, header=False)
 
 
-def build_archive():
+def build_archive() -> None:
     df = pd.DataFrame(
         columns=[
             "date",
@@ -194,7 +193,7 @@ def build_archive():
     print("Done")
 
 
-def transform_archive(filename):
+def transform_archive(filename: str) -> None:
     df = pd.read_csv(filename)
 
     df.columns = [
@@ -214,7 +213,7 @@ def transform_archive(filename):
     df.to_csv("./data/transformed_archive.csv", index=False)
 
 
-def load_to_bigquery(filename, dataset_id, table_id):
+def load_to_bigquery(filename: str, dataset_id: str, table_id: str) -> None:
     from google.cloud import bigquery
 
     client = bigquery.Client()
@@ -234,7 +233,7 @@ def load_to_bigquery(filename, dataset_id, table_id):
     print("Loaded {} rows into {}:{}.".format(job.output_rows, dataset_id, table_id))
 
 
-def load_to_sheet(file):
+def load_to_sheet(file: str) -> None:
     scope = ["https://spreadsheets.google.com/feeds"]
     credentials = ServiceAccountCredentials.from_json_keyfile_name(
         "credentials.json", scope
