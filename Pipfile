@@ -18,6 +18,7 @@ oauth2client = "*"
 pytest = "*"
 setuptools = "*"
 coverage = "*"
+mypy = "*"
 
 [requires]
 python_version = "3.7"
