@@ -68,6 +68,9 @@ def get_last_sunday() -> str:
 def get_week_box_office(row: pd.Series) -> float:
     """ Iterate over dataset to find the difference between weeks of films.
     Returns the actual weekly box office.
+    This is really the central algo - and needs improvement.
+    days_limit is a tradeoff - increasing captures more accurate data for some films.
+    but for others it does create inaccurate data, as the source is unreliable.
     """
     title = row["title"]
     print(title)
@@ -75,10 +78,15 @@ def get_week_box_office(row: pd.Series) -> float:
     if row["weeks_on_release"] == 1:
         return row["total_gross"]
     else:
+        """ TODO: Move opening archive to the wrapper function, then pass in.
+        Removes constant opening this """
         archive = pd.read_csv("./data/archive.csv")
+        
+        # How far to look back in the archive.
+        days_limit = 90
 
         date = pd.to_datetime(row["date"], format="%Y%m%d", yearfirst=True)
-        previous_year = date - timedelta(days=1095)
+        previous_year = date - timedelta(days=days_limit)
         archive["date"] = pd.to_datetime(
             archive["date"], format="%Y%m%d", yearfirst=True
         )
@@ -91,14 +99,15 @@ def get_week_box_office(row: pd.Series) -> float:
 
         films_list = archive[films_filter]
 
-        # TODO: yuch lets define types in the extraction not here
-        week_gross = float(row["total_gross"]) - float(films_list["total_gross"].max())
+        week_gross = row["total_gross"] - films_list["total_gross"].max()
         print(week_gross)
 
         if type(week_gross) == float and math.isnan(week_gross):
             return row["weekend_gross"]
+        elif week_gross < 0:
+            return row["weekend_gross"]
         else:
-            return float(week_gross)
+            return week_gross
 
 
 def extract_box_office(filename: str, arg: str):

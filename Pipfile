@@ -19,6 +19,7 @@ pytest = "*"
 setuptools = "*"
 coverage = "*"
 mypy = "*"
+pipfile = "*"
 
 [requires]
 python_version = "3.7"
