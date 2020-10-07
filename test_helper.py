@@ -1,10 +1,9 @@
 import pytest
-from unittest.mock import patch, Mock, mock_open
+from unittest.mock import patch, Mock
 import unittest
 from datetime import datetime, timedelta
 import pandas as pd
 
-import settings
 import helper
 
 
@@ -71,6 +70,7 @@ def test_get_last_sunday():
     assert helper.get_last_sunday() == sunday.strftime("%Y%m%d")
 
 
+# TODO: Add further test parametrize objects - this needs to be more extensive
 @patch("helper.pd.read_csv")
 @pytest.mark.parametrize(
     "test_input,expected", [(1, 43707991.0,), (10, 271538.0),],

@@ -23,7 +23,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "type",
         type=str,
-        help="Which process - either build-archive / transform-archive / fetch / test / stage / prod",
+        help="Which process - either build-archive / transform-archive / fetch / extract / test / stage / prod",
     )
     parser.add_argument("file", type=str, default=None, help="CSV file to use")
     args = parser.parse_args()
@@ -36,6 +36,10 @@ if __name__ == "__main__":
     elif args.type.lower() == "test":
         helper.load_to_sheet(args.file)
         print("Loaded to Sheets")
+
+    elif args.type.lower() == "extract":
+        helper.extract_box_office(args.file, "week")
+        print("Extracted to /data/week.csv")
 
     elif args.type.lower() == "stage":
         dataset_id = staging_dataset_id
