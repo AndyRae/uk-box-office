@@ -8,4 +8,5 @@ settings.py
 .vscode
 *__pycache__/
 *.pytest_cache/
-.coverage
+*.coverage
+*.prof
