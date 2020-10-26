@@ -1,5 +1,4 @@
-/data/
-/archive-data/
+/*data/
 credentials.json
 settings.py
 *.csv
@@ -10,3 +9,5 @@ settings.py
 *.pytest_cache/
 *.coverage
 *.prof
+*.json
+/.mypy_cache

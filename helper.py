@@ -1,11 +1,13 @@
-import argparse
 import csv
-import os
-import math
-import pandas as pd
 import gspread
+import json
+import math
+import os
+import pandas as pd
 import requests
 import urllib
+
+from collections import OrderedDict
 from oauth2client.service_account import ServiceAccountCredentials
 from google.cloud import bigquery
 from datetime import datetime, timedelta
@@ -96,7 +98,7 @@ def get_week_box_office(row: pd.Series, archive: pd.DataFrame) -> float:
             return week_gross
 
 
-def extract_box_office(filename: str, arg: str):
+def extract_box_office(filename: str, arg: str, archive_path) -> pd.DataFrame:
     """Main extract/load function, transforming xls to csv."""
     df = pd.read_excel(filename)
 
@@ -112,7 +114,7 @@ def extract_box_office(filename: str, arg: str):
         date = get_last_sunday()
         df = df.drop(columns=["% change on last week", "Site average"], errors="ignore")
     elif arg == "archive":
-        date = filename.strip(".xls").strip("./archive-data/")
+        date = filename.strip(".xls").strip(archive_path)
         date = datetime.strptime(date, "%d-%m-%Y").strftime("%Y%m%d")
         df = df.drop(df.columns[[5, 8]], axis=1)
         df = df.iloc[:, 0:8]
@@ -145,7 +147,7 @@ def extract_box_office(filename: str, arg: str):
             archive["date"], format="%Y%m%d", yearfirst=True
         )
 
-        # TODO: Seems like a potential place for async
+        # TODO: Seems like a potential place for async / dask
         df["week_gross"] = df.apply(get_week_box_office, axis=1, archive=archive)
 
     df = df.astype(
@@ -161,10 +163,7 @@ def extract_box_office(filename: str, arg: str):
         }
     )
 
-    if arg == "week":
-        df.to_csv("./data/week.csv", index=False)
-    elif arg == "archive":
-        df.to_csv("./data/archive.csv", mode="a", index=False, header=False)
+    return df
 
 
 def build_archive() -> None:
@@ -182,15 +181,18 @@ def build_archive() -> None:
         ]
     )
 
-    df.to_csv("./data/archive.csv", mode="a", index=False, header=True)
+    df.to_csv("./data/built-archive.csv", mode="a", index=False, header=True)
 
-    for filename in os.listdir("./archive-data/"):
+    archive_path = "./archive-data/"
+
+    for filename in os.listdir(archive_path):
         if filename.endswith("xls"):
             print(filename)
-            path = "./archive-data/" + filename
-            extract_box_office(path, "archive")
+            path = archive_path + filename
+            films = extract_box_office(path, "archive", archive_path)
+            df = df.append(films)
 
-    print("Done")
+    df.to_csv("./data/built-archive.csv", mode="a", index=False, header=False)
 
 
 def transform_archive(filename: str) -> None:
@@ -213,7 +215,7 @@ def transform_archive(filename: str) -> None:
 
     df["week_gross"] = df.apply(get_week_box_office, axis=1, archive=archive)
 
-    df.to_csv("./data/transformed_archive.csv", index=False)
+    return df
 
 
 def load_to_bigquery(filename: str, dataset_id: str, table_id: str) -> None:
