@@ -38,7 +38,9 @@ if __name__ == "__main__":
         print("Loaded to Sheets")
 
     elif args.type.lower() == "extract":
-        helper.extract_box_office(args.file, "week")
+        archive_path = "./data/archive.csv"
+        df = helper.extract_box_office(args.file, "week", archive_path)
+        df.to_csv("./data/week.csv", index=False)
         print("Extracted to /data/week.csv")
 
     elif args.type.lower() == "stage":
@@ -58,7 +60,8 @@ if __name__ == "__main__":
         print("Archive created")
 
     elif args.type.lower() == "transform-archive":
-        helper.transform_archive(args.file)
+        df = helper.transform_archive(args.file)
+        df.to_csv("./data/transformed_archive.csv", index=False)
         print("Archive transformed")
 
     else:

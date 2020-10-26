@@ -1,11 +1,13 @@
-import argparse
 import csv
-import os
-import math
-import pandas as pd
 import gspread
+import json
+import math
+import os
+import pandas as pd
 import requests
 import urllib
+
+from collections import OrderedDict
 from oauth2client.service_account import ServiceAccountCredentials
 from google.cloud import bigquery
 from datetime import datetime, timedelta
@@ -65,42 +67,28 @@ def get_last_sunday() -> str:
     return sunday.strftime("%Y%m%d")
 
 
-def get_week_box_office(row: pd.Series) -> float:
-    """ Iterate over dataset to find the difference between weeks of films.
-    Returns the actual weekly box office.
-    This is really the central algo - and needs improvement.
-    days_limit is a tradeoff - increasing captures more accurate data for some films.
-    but for others it does create inaccurate data, as the source is unreliable.
-    """
+def get_week_box_office(row: pd.Series, archive: pd.DataFrame) -> float:
     title = row["title"]
     print(title)
 
     if row["weeks_on_release"] == 1:
         return row["total_gross"]
     else:
-        """ TODO: Move opening archive to the wrapper function, then pass in.
-        Removes constant opening this """
-        archive = pd.read_csv("./data/archive.csv")
-        
-        # How far to look back in the archive.
-        days_limit = 90
-
+        # days_to_look_back is a tradeoff - increasing captures more accurate data for some films.
+        # but for others it does create inaccurate data, as the source is unreliable.
+        days_to_look_back = 90
         date = pd.to_datetime(row["date"], format="%Y%m%d", yearfirst=True)
-        previous_year = date - timedelta(days=days_limit)
-        archive["date"] = pd.to_datetime(
-            archive["date"], format="%Y%m%d", yearfirst=True
-        )
+        previous_period = date - timedelta(days=days_to_look_back)
 
         films_filter = (
             (archive["title"] == title)
-            & (archive["date"] > previous_year)
+            & (archive["date"] > previous_period)
             & (archive["date"] < date)
         )
 
         films_list = archive[films_filter]
 
         week_gross = row["total_gross"] - films_list["total_gross"].max()
-        print(week_gross)
 
         if type(week_gross) == float and math.isnan(week_gross):
             return row["weekend_gross"]
@@ -110,9 +98,8 @@ def get_week_box_office(row: pd.Series) -> float:
             return week_gross
 
 
-def extract_box_office(filename: str, arg: str):
-    """ Main extract/load function, transforming xls to csv.
-    """
+def extract_box_office(filename: str, arg: str, archive_path) -> pd.DataFrame:
+    """Main extract/load function, transforming xls to csv."""
     df = pd.read_excel(filename)
 
     header = df.iloc[0]
@@ -127,7 +114,7 @@ def extract_box_office(filename: str, arg: str):
         date = get_last_sunday()
         df = df.drop(columns=["% change on last week", "Site average"], errors="ignore")
     elif arg == "archive":
-        date = filename.strip(".xls").strip("./archive-data/")
+        date = filename.strip(".xls").strip(archive_path)
         date = datetime.strptime(date, "%d-%m-%Y").strftime("%Y%m%d")
         df = df.drop(df.columns[[5, 8]], axis=1)
         df = df.iloc[:, 0:8]
@@ -155,7 +142,13 @@ def extract_box_office(filename: str, arg: str):
     df["distributor"] = df["distributor"].map(spellcheck_distributor)
 
     if arg == "week":
-        df["week_gross"] = df.apply(lambda row: get_week_box_office(row), axis=1)
+        archive = pd.read_csv("./data/archive.csv")
+        archive["date"] = pd.to_datetime(
+            archive["date"], format="%Y%m%d", yearfirst=True
+        )
+
+        # TODO: Seems like a potential place for async / dask
+        df["week_gross"] = df.apply(get_week_box_office, axis=1, archive=archive)
 
     df = df.astype(
         {
@@ -170,10 +163,7 @@ def extract_box_office(filename: str, arg: str):
         }
     )
 
-    if arg == "week":
-        df.to_csv("./data/week.csv", index=False)
-    elif arg == "archive":
-        df.to_csv("./data/archive.csv", mode="a", index=False, header=False)
+    return df
 
 
 def build_archive() -> None:
@@ -191,15 +181,18 @@ def build_archive() -> None:
         ]
     )
 
-    df.to_csv("./data/archive.csv", mode="a", index=False, header=True)
+    df.to_csv("./data/built-archive.csv", mode="a", index=False, header=True)
 
-    for filename in os.listdir("./archive-data/"):
+    archive_path = "./archive-data/"
+
+    for filename in os.listdir(archive_path):
         if filename.endswith("xls"):
             print(filename)
-            path = "./archive-data/" + filename
-            extract_box_office(path, "archive")
+            path = archive_path + filename
+            films = extract_box_office(path, "archive", archive_path)
+            df = df.append(films)
 
-    print("Done")
+    df.to_csv("./data/built-archive.csv", mode="a", index=False, header=False)
 
 
 def transform_archive(filename: str) -> None:
@@ -217,9 +210,12 @@ def transform_archive(filename: str) -> None:
         "total_gross",
     ]
 
-    df["week_gross"] = df.apply(lambda row: get_week_box_office(row), axis=1)
+    archive = pd.read_csv("./data/archive.csv")
+    archive["date"] = pd.to_datetime(archive["date"], format="%Y%m%d", yearfirst=True)
 
-    df.to_csv("./data/transformed_archive.csv", index=False)
+    df["week_gross"] = df.apply(get_week_box_office, axis=1, archive=archive)
+
+    return df
 
 
 def load_to_bigquery(filename: str, dataset_id: str, table_id: str) -> None:

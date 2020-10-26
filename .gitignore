@@ -1,5 +1,4 @@
-/data/
-/archive-data/
+/*data/
 credentials.json
 settings.py
 *.csv
@@ -8,4 +7,7 @@ settings.py
 .vscode
 *__pycache__/
 *.pytest_cache/
-.coverage
+*.coverage
+*.prof
+*.json
+/.mypy_cache
