@@ -20,3 +20,4 @@ settings.py
 .DS_store
 .vscode
 *.json
+.env
