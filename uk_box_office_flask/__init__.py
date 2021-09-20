@@ -37,6 +37,7 @@ def create_app(test_config=None):
 
     with app.app_context():
         from . import models
+        from . import etl
 
         db.create_all()
 
@@ -47,15 +48,18 @@ def create_app(test_config=None):
         db.session.add(distributor)
         db.session.commit()
 
+        etl.load_archive()
+
         film1 = models.Film(title="1917", country=country, distributor=distributor)
 
         db.session.add(film1)
         db.session.commit()
 
         # ret = models.Country.query.all()
+        ret = models.Week.query.all()
         # print(ret[0].films)
 
-        ret = models.Film.query.all()
+        # ret = models.Film.query.all()
         # print(ret[0].country.name)
 
         @app.route("/")
