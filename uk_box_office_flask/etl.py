@@ -1,12 +1,9 @@
-import csv
-import json
 import math
 import os
 import pandas as pd
 import requests
 import urllib
 
-from collections import OrderedDict
 from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
 
@@ -43,7 +40,9 @@ def get_distributor(distributor: str) -> models.Distributor:
     return new
 
 
-def get_film(film: str, distributor: models.Distributor, country: models.Country) -> models.Film:
+def get_film(
+    film: str, distributor: models.Distributor, country: models.Country
+) -> models.Film:
     """
     Checks the database if the film exists - returns the class
     If not - creates it, adds it to the database and returns it
@@ -57,12 +56,11 @@ def get_film(film: str, distributor: models.Distributor, country: models.Country
     return new
 
 
-def load_archive():
+def load_dataframe(archive: pd.DataFrame) -> None:
     """
-    Loads the .csv archive into the database
+    Loads a films dataframe into the database
     """
-    path = "./data/week.csv"
-    archive = pd.read_csv(path)
+
     archive["date"] = pd.to_datetime(archive["date"], format="%Y%m%d", yearfirst=True)
 
     list_of_films = [row.to_dict() for index, row in archive.iterrows()]
@@ -71,11 +69,13 @@ def load_archive():
         i["country"] = get_country(i["country"])
         i["distributor"] = get_distributor(i["distributor"])
 
-        i["title"] = models.Film(title=i["title"], distributor=i["distributor"], country=i["country"])
+        i["title"] = models.Film(
+            title=i["title"], distributor=i["distributor"], country=i["country"]
+        )
         i.pop("country")
-        i.pop("distributor") # euch
+        i.pop("distributor")  # TODO: do this differently - euch
 
-        for key in i:
+        for key in i:  # TODO: probably can change data to not need this.
             try:
                 i[key] = int(i[key])
             except TypeError:
@@ -84,8 +84,6 @@ def load_archive():
         week = models.Week(**i)
         db.session.add(week)
         db.session.commit()
-
-    print(list_of_films[1])
 
 
 def get_excel_file(source_url: str) -> str:
@@ -182,10 +180,9 @@ def get_week_box_office(row: pd.Series, archive: pd.DataFrame) -> float:
         return week_gross
 
 
-def extract_box_office(filename: str, arg: str, archive_path) -> pd.DataFrame:
+def extract_box_office(filename: str) -> pd.DataFrame:
     """
     Main extract/load function, transforming raw box office .xls to dataframe.
-    Parameter arg: is either week or archive depending on process.
     """
     df = pd.read_excel(filename)
 
@@ -196,15 +193,8 @@ def extract_box_office(filename: str, arg: str, archive_path) -> pd.DataFrame:
     df = df.dropna(subset=["Rank"])
     df = df.dropna(how="all", axis=1, thresh=5)
 
-    # Weekly load only needs the most recent date, archive needs all
-    if arg == "week":
-        date = get_last_sunday()
-        df = df.drop(columns=["% change on last week", "Site average"], errors="ignore")
-    elif arg == "archive":
-        date = filename.strip(".xls").strip(archive_path)
-        date = datetime.strptime(date, "%d-%m-%Y").strftime("%Y%m%d")
-        df = df.drop(df.columns[[5, 8]], axis=1)
-        df = df.iloc[:, 0:8]
+    date = get_last_sunday() # TODO: This should really be from the filename nowadays
+    df = df.drop(columns=["% change on last week", "Site average"], errors="ignore")
 
     df.columns = [
         "rank",
@@ -228,25 +218,19 @@ def extract_box_office(filename: str, arg: str, archive_path) -> pd.DataFrame:
     df["title"] = df["title"].map(spellcheck_film)
     df["distributor"] = df["distributor"].map(spellcheck_distributor)
 
-    if arg == "week":
-        archive = pd.read_csv("./data/archive.csv")
-        archive["date"] = pd.to_datetime(
-            archive["date"], format="%Y%m%d", yearfirst=True
-        )
-
-        # TODO: Seems like a potential place for async / dask
-        df["week_gross"] = df.apply(get_week_box_office, axis=1, archive=archive)
+    df["week_gross"] = df.apply(get_week_box_office, axis=1)
 
     df = df.astype(
         {
-            "rank": float,
+            "rank": int,
             "title": str,
             "country": str,
-            "weekend_gross": float,
+            "weekend_gross": int,
             "distributor": str,
-            "weeks_on_release": float,
-            "number_of_cinemas": float,
-            "total_gross": float,
+            "weeks_on_release": int,
+            "number_of_cinemas": int,
+            "total_gross": int,
+            "week_Gross": int
         }
     )
 

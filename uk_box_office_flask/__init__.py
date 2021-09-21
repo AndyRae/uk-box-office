@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 from flask import Flask, json
 from flask_sqlalchemy import SQLAlchemy
 
+import pandas as pd
+
 db = SQLAlchemy()
 
 
@@ -48,7 +50,17 @@ def create_app(test_config=None):
         db.session.add(distributor)
         db.session.commit()
 
-        etl.load_archive()
+        # load archive
+        # path = "./data/archive.csv"
+        # archive = pd.read_csv(path)
+        # etl.load_dataframe(archive)
+
+        # load excel weekly
+        load_dotenv()
+        source_url = os.environ.get("source_url")
+        path = etl.get_excel_file(source_url) 
+        df = etl.extract_box_office(path + '.xls', "week")
+        etl.load_dataframe(df)
 
         film1 = models.Film(title="1917", country=country, distributor=distributor)
 
