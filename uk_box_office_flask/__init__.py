@@ -39,8 +39,7 @@ def create_app(test_config=None):
     db.init_app(app)
 
     with app.app_context():
-        from . import models
-        from . import etl
+        from . import models, etl, api
 
         db.create_all()
 
@@ -121,6 +120,8 @@ def create_app(test_config=None):
 
         # ret = models.Film.query.all()
         # print(ret[0].country.name)
+
+        app.register_blueprint(api.bp)
 
         @app.route("/")
         def hello():
