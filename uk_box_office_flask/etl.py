@@ -1,6 +1,7 @@
 import math
 import os
 import pandas as pd
+from pandas.tseries.offsets import Week
 import requests
 import urllib
 
@@ -142,42 +143,47 @@ def get_last_sunday() -> str:
     return sunday.strftime("%Y%m%d")
 
 
-def get_week_box_office(row: pd.Series, archive: pd.DataFrame) -> float:
+def get_week_box_office(row: pd.Series) -> int:
     """
     Calculates the actual box office for the week
     Checks if its the first week of the film - if so, returns total box office
     If not - it subtracts the current total, from last weeks total
-    Parameters: The row of the dataframe, and archive to search
-    Returns a float (?) of the week box office
+    Parameters: The row of the dataframe
+    Returns the week box office
     Used in an apply method with pandas.
     """
     title = row["title"]
-    print(title)
 
+    # If it's week 1
     if row["weeks_on_release"] == 1:
         return row["total_gross"]
     # days_to_look_back is a tradeoff - increasing captures more accurate data for some films.
     # but for others it does create inaccurate data, as the source is unreliable.
     days_to_look_back = 90
-    date = pd.to_datetime(row["date"], format="%Y%m%d", yearfirst=True)
-    previous_period = date - timedelta(days=days_to_look_back)
+    filter_date = pd.to_datetime(row["date"], format="%Y%m%d", yearfirst=True)
+    previous_period = filter_date - timedelta(days=days_to_look_back)
 
-    films_filter = (
-        (archive["title"] == title)
-        & (archive["date"] > previous_period)
-        & (archive["date"] < date)
+    most_recent_film_match = (
+        models.Week.query.filter(
+            models.Film.title == title,
+            models.Week.date >= previous_period,
+            models.Week.date <= filter_date,
+        )
+        .order_by(models.Week.total_gross.desc())
+        .first()
     )
 
-    films_list = archive[films_filter]
-
-    week_gross = row["total_gross"] - films_list["total_gross"].max()
-
-    if type(week_gross) == float and math.isnan(week_gross):
+    # If there's no matches
+    if most_recent_film_match is None:
         return row["weekend_gross"]
-    elif week_gross < 0:
+
+    week_gross = row["total_gross"] - most_recent_film_match.total_gross
+
+    # There are errors in the data week numbers
+    if week_gross < 0:
         return row["weekend_gross"]
-    else:
-        return week_gross
+
+    return week_gross
 
 
 def extract_box_office(filename: str) -> pd.DataFrame:
@@ -193,7 +199,7 @@ def extract_box_office(filename: str) -> pd.DataFrame:
     df = df.dropna(subset=["Rank"])
     df = df.dropna(how="all", axis=1, thresh=5)
 
-    date = get_last_sunday() # TODO: This should really be from the filename nowadays
+    date = get_last_sunday()  # TODO: This should really be from the filename nowadays
     df = df.drop(columns=["% change on last week", "Site average"], errors="ignore")
 
     df.columns = [
@@ -230,7 +236,7 @@ def extract_box_office(filename: str) -> pd.DataFrame:
             "weeks_on_release": int,
             "number_of_cinemas": int,
             "total_gross": int,
-            "week_Gross": int
+            "week_gross": int,
         }
     )
 
@@ -295,20 +301,3 @@ def transform_archive(filename: str) -> None:
     df["week_gross"] = df.apply(get_week_box_office, axis=1, archive=archive)
 
     return df
-
-
-def fetch():
-    archive_path = "./data/archive.csv"
-    load_dotenv()
-    source_url = os.environ.get("source_url")
-    excel_file = get_excel_file(source_url)
-    df = extract_box_office(excel_file + ".xls", "week", archive_path)
-    df.to_csv("./data/week.csv", index=False)
-    print("Fetched + extracted")
-
-
-def extract():
-    archive_path = "./data/archive.csv"
-    df = extract_box_office(args.file, "week", archive_path)
-    df.to_csv("./data/week.csv", index=False)
-    print("Extracted to /data/week.csv")

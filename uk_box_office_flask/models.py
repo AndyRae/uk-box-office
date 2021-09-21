@@ -38,7 +38,7 @@ class Film(db.Model):
     __tablename__ = "film"
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(80), nullable=False)
-    weeks = db.relationship("Week", backref="title", lazy=True)
+    weeks = db.relationship("Week", backref="title", lazy="dynamic")
     country_id = db.Column(db.Integer, db.ForeignKey("country.id"), nullable=False)
     distributor_id = db.Column(
         db.Integer, db.ForeignKey("distributor.id"), nullable=False
@@ -63,7 +63,10 @@ class Week(db.Model):
     total_gross = db.Column(db.Integer, nullable=False)
 
     def __repr__(self) -> str:
-        return f"{self.date}, {self.title}"
+        return f"{self.total_gross}"
+
+    def __eq__(self, o: object) -> bool:
+        return self.total_gross > o
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}

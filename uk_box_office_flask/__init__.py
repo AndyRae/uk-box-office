@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 
 from dotenv import load_dotenv
@@ -50,6 +51,58 @@ def create_app(test_config=None):
         db.session.add(distributor)
         db.session.commit()
 
+        film1 = models.Film(
+            title="CANDYMAN",
+            country=country,
+            distributor=distributor,
+        )
+
+        db.session.add(film1)
+        db.session.commit()
+
+        test_date = datetime.strptime("29 Aug 2021", "%d %b %Y")
+        test_date2 = datetime.strptime("05 Sep 2021", "%d %b %Y")
+        test_date4 = datetime.strptime("29 Sep 2020", "%d %b %Y")
+
+        test_week = {
+            "date": test_date,
+            "title": film1,
+            "number_of_cinemas": 653,
+            "rank": 1,
+            "total_gross": 1112674,
+            "week_gross": 5759504,
+            "weekend_gross": 5759504,
+            "weeks_on_release": 1,
+        }
+        test_week2 = {
+            "date": test_date2,
+            "title": film1,
+            "number_of_cinemas": 653,
+            "rank": 1,
+            "total_gross": 2912029,
+            "week_gross": 5759504,
+            "weekend_gross": 5759504,
+            "weeks_on_release": 2,
+        }
+        test_week4 = {
+            "date": test_date4,
+            "title": film1,
+            "number_of_cinemas": 653,
+            "rank": 1,
+            "total_gross": 2912030,
+            "week_gross": 5759504,
+            "weekend_gross": 5759504,
+            "weeks_on_release": 4,
+        }
+        week1 = models.Week(**test_week)
+        week2 = models.Week(**test_week2)
+        week4 = models.Week(**test_week4)
+
+        db.session.add(week1)
+        db.session.add(week2)
+        db.session.add(week4)
+        db.session.commit()
+
         # load archive
         # path = "./data/archive.csv"
         # archive = pd.read_csv(path)
@@ -58,14 +111,9 @@ def create_app(test_config=None):
         # load excel weekly
         load_dotenv()
         source_url = os.environ.get("source_url")
-        path = etl.get_excel_file(source_url) 
-        df = etl.extract_box_office(path + '.xls', "week")
+        path = etl.get_excel_file(source_url)
+        df = etl.extract_box_office(path + ".xls")
         etl.load_dataframe(df)
-
-        film1 = models.Film(title="1917", country=country, distributor=distributor)
-
-        db.session.add(film1)
-        db.session.commit()
 
         # ret = models.Country.query.all()
         ret = models.Week.query.all()
