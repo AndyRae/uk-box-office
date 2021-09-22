@@ -44,7 +44,7 @@ def create_app(test_config=None):
         db.create_all()
 
         country = models.Country(name="UK")
-        distributor = models.Distributor(name="Sony")
+        distributor = models.Distributor(name="SONY")
 
         db.session.add(country)
         db.session.add(distributor)
@@ -66,6 +66,8 @@ def create_app(test_config=None):
         test_week = {
             "date": test_date,
             "title": film1,
+            "distributor": distributor,
+            "country": country,
             "number_of_cinemas": 653,
             "rank": 1,
             "total_gross": 1112674,
@@ -76,6 +78,8 @@ def create_app(test_config=None):
         test_week2 = {
             "date": test_date2,
             "title": film1,
+            "distributor": distributor,
+            "country": country,
             "number_of_cinemas": 653,
             "rank": 1,
             "total_gross": 2912029,
@@ -86,6 +90,8 @@ def create_app(test_config=None):
         test_week4 = {
             "date": test_date4,
             "title": film1,
+            "distributor": distributor,
+            "country": country,
             "number_of_cinemas": 653,
             "rank": 1,
             "total_gross": 2912030,
@@ -108,11 +114,11 @@ def create_app(test_config=None):
         # etl.load_dataframe(archive)
 
         # load excel weekly
-        load_dotenv()
-        source_url = os.environ.get("source_url")
-        path = etl.get_excel_file(source_url)
-        df = etl.extract_box_office(path + ".xls")
-        etl.load_dataframe(df)
+        # load_dotenv()
+        # source_url = os.environ.get("source_url")
+        # path = etl.get_excel_file(source_url)
+        # df = etl.extract_box_office(path + ".xls")
+        # etl.load_dataframe(df)
 
         # ret = models.Country.query.all()
         ret = models.Week.query.all()

@@ -73,8 +73,6 @@ def load_dataframe(archive: pd.DataFrame) -> None:
         i["title"] = models.Film(
             title=i["title"], distributor=i["distributor"], country=i["country"]
         )
-        i.pop("country")
-        i.pop("distributor")  # TODO: do this differently - euch
 
         for key in i:  # TODO: probably can change data to not need this.
             try:
