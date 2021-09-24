@@ -53,6 +53,9 @@ class Film(db.Model):
     def __repr__(self) -> str:
         return self.title
 
+    def __eq__(self, o: object) -> bool:
+        return self.title == o
+
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
@@ -79,19 +82,18 @@ class Week(db.Model):
         return self.total_gross > o
 
     def as_dict(self):
-        # d = self.date
         d = {
             "id": self.id,
             "film_id": self.film_id,
             "country_id": self.country_id,
             "distributor_id": self.distributor_id,
-            "date": datetime.strftime(self.date,"%Y-%m-%d"),
+            "date": datetime.strftime(self.date, "%Y-%m-%d"),
             "rank": self.rank,
             "weeks_on_release": self.weeks_on_release,
             "number_of_cinemas": self.number_of_cinemas,
             "weekend_gross": self.weekend_gross,
             "week_gross": self.week_gross,
-            "total_gross": self.total_gross 
+            "total_gross": self.total_gross,
         }
         return d
-        # return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+

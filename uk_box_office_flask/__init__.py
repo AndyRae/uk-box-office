@@ -41,72 +41,16 @@ def create_app(test_config=None):
     with app.app_context():
         from . import models, etl, api
 
+        # create the database tables
         db.create_all()
 
-        country = models.Country(name="UK")
-        distributor = models.Distributor(name="SONY")
+        # loads some test data
+        # api.test_data()
 
-        db.session.add(country)
-        db.session.add(distributor)
-        db.session.commit()
-
-        film1 = models.Film(
-            title="CANDYMAN",
-            country=country,
-            distributor=distributor,
-        )
-
-        db.session.add(film1)
-        db.session.commit()
-
-        test_date = datetime.strptime("29 Aug 2021", "%d %b %Y")
-        test_date2 = datetime.strptime("05 Sep 2021", "%d %b %Y")
-        test_date4 = datetime.strptime("29 Sep 2020", "%d %b %Y")
-
-        test_week = {
-            "date": test_date,
-            "title": film1,
-            "distributor": distributor,
-            "country": country,
-            "number_of_cinemas": 653,
-            "rank": 1,
-            "total_gross": 1112674,
-            "week_gross": 5759504,
-            "weekend_gross": 5759504,
-            "weeks_on_release": 1,
-        }
-        test_week2 = {
-            "date": test_date2,
-            "title": film1,
-            "distributor": distributor,
-            "country": country,
-            "number_of_cinemas": 653,
-            "rank": 1,
-            "total_gross": 2912029,
-            "week_gross": 5759504,
-            "weekend_gross": 5759504,
-            "weeks_on_release": 2,
-        }
-        test_week4 = {
-            "date": test_date4,
-            "title": film1,
-            "distributor": distributor,
-            "country": country,
-            "number_of_cinemas": 653,
-            "rank": 1,
-            "total_gross": 2912030,
-            "week_gross": 5759504,
-            "weekend_gross": 5759504,
-            "weeks_on_release": 4,
-        }
-        week1 = models.Week(**test_week)
-        week2 = models.Week(**test_week2)
-        week4 = models.Week(**test_week4)
-
-        db.session.add(week1)
-        db.session.add(week2)
-        db.session.add(week4)
-        db.session.commit()
+        # load a big chunk of test data
+        path = "./data/test.csv"
+        test_data = pd.read_csv(path)
+        etl.load_dataframe(test_data)
 
         # load archive
         # path = "./data/archive.csv"
@@ -120,17 +64,6 @@ def create_app(test_config=None):
         # df = etl.extract_box_office(path + ".xls")
         # etl.load_dataframe(df)
 
-        # ret = models.Country.query.all()
-        ret = models.Week.query.all()
-        # print(ret[0].films)
-
-        # ret = models.Film.query.all()
-        # print(ret[0].country.name)
-
         app.register_blueprint(api.bp)
-
-        @app.route("/")
-        def hello():
-            return json.dumps([ix.as_dict() for ix in ret])
 
         return app
