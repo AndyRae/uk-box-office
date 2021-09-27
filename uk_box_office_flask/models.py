@@ -1,6 +1,3 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-
 from datetime import datetime
 
 from uk_box_office_flask import db
@@ -11,6 +8,7 @@ class Country(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
     films = db.relationship("Film", backref="country", lazy=True)
+    weeks = db.relationship("Week", backref="country", lazy="dynamic")
 
     def __repr__(self) -> str:
         return self.name
@@ -23,9 +21,11 @@ class Country(db.Model):
 
 
 class Distributor(db.Model):
+    __tablename__ = "distributor"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
     films = db.relationship("Film", backref="distributor", lazy=True)
+    weeks = db.relationship("Week", backref="distributor", lazy="dynamic")
 
     def __repr__(self) -> str:
         return self.name
@@ -33,27 +33,46 @@ class Distributor(db.Model):
     def __eq__(self, o: object) -> bool:
         return self.name == o
 
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
 
 class Film(db.Model):
     __tablename__ = "film"
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(80), nullable=False)
     weeks = db.relationship("Week", backref="title", lazy="dynamic")
-    country_id = db.Column(db.Integer, db.ForeignKey("country.id"), nullable=False)
+    country_id = db.Column(db.Integer, db.ForeignKey("country.name"), nullable=False)
     distributor_id = db.Column(
-        db.Integer, db.ForeignKey("distributor.id"), nullable=False
+        db.Integer, db.ForeignKey("distributor.name"), nullable=False
     )
 
     def __repr__(self) -> str:
         return self.title
 
+    def __eq__(self, o: object) -> bool:
+        return self.title == o
+
     def as_dict(self):
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        return {
+            "id": self.id,
+            "title": self.title,
+            "weeks": self.serialize_weeks(),
+            "country": self.country_id,
+            "distributor": self.distributor_id,
+        }
+
+    def serialize_weeks(self):
+        return [item.as_dict() for item in self.weeks]
 
 
 class Week(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     film_id = db.Column(db.Integer, db.ForeignKey("film.title"), nullable=False)
+    country_id = db.Column(db.Integer, db.ForeignKey("country.name"), nullable=False)
+    distributor_id = db.Column(
+        db.Integer, db.ForeignKey("distributor.name"), nullable=False
+    )
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     rank = db.Column(db.Integer, nullable=False)
     weeks_on_release = db.Column(db.Integer, nullable=False)
@@ -69,4 +88,16 @@ class Week(db.Model):
         return self.total_gross > o
 
     def as_dict(self):
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        return {
+            "id": self.id,
+            "film_id": self.film_id,
+            "country_id": self.country_id,
+            "distributor_id": self.distributor_id,
+            "date": datetime.strftime(self.date, "%Y-%m-%d"),
+            "rank": self.rank,
+            "weeks_on_release": self.weeks_on_release,
+            "number_of_cinemas": self.number_of_cinemas,
+            "weekend_gross": self.weekend_gross,
+            "week_gross": self.week_gross,
+            "total_gross": self.total_gross,
+        }

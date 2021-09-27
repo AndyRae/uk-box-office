@@ -48,9 +48,11 @@ def get_film(
     Checks the database if the film exists - returns the class
     If not - creates it, adds it to the database and returns it
     """
+
     filtered_films = models.Film.query.filter_by(title=film).first()
     if film == filtered_films:
         return filtered_films
+
     new = models.Film(title=film, distributor=distributor, country=country)
     db.session.add(new)
     db.session.commit()
@@ -69,12 +71,7 @@ def load_dataframe(archive: pd.DataFrame) -> None:
     for i in list_of_films:
         i["country"] = get_country(i["country"])
         i["distributor"] = get_distributor(i["distributor"])
-
-        i["title"] = models.Film(
-            title=i["title"], distributor=i["distributor"], country=i["country"]
-        )
-        i.pop("country")
-        i.pop("distributor")  # TODO: do this differently - euch
+        i["title"] = get_film(i["title"], i["distributor"], i["country"])
 
         for key in i:  # TODO: probably can change data to not need this.
             try:
