@@ -1,7 +1,7 @@
 from datetime import datetime
 from operator import and_
-import re
 from typing import Dict, List
+from warnings import filters
 from flask import (
     Blueprint,
     flash,
@@ -17,7 +17,7 @@ from flask import (
 
 from werkzeug.exceptions import abort
 
-from uk_box_office_flask import db, models
+from uk_box_office_flask import db, models, schema
 
 bp = Blueprint("api", __name__)
 
@@ -83,20 +83,23 @@ def films():
     )
 
 @bp.route("/api/film")
-def film(): # need to query weeks + join on film
-    # query = db.session.query(models.Film).join(models.Week, models.Week.film_id==models.Film.title)
+def film():
     if "title" in request.args:
-        query = db.session.query(models.Film)
-        # query = db.session.query(models.Film).join(models.Week, models.Week.film_id==models.Film.title)
         title = str(request.args["title"])
+        
+        query = db.session.query(models.Film)
         query = query.filter(models.Film.title == title)
         data = query.first()
+        
         if data is None:
             abort(404)
-
-        for i in data.weeks:
-            print(i)
-        return data.as_dict()
+        # return data.as_dict()
+        
+        print(data)
+        film_schema = schema.FilmSchema()
+        d = film_schema.dump(data)
+        print(d)
+        return d
     abort(404)
 
 

@@ -1,6 +1,3 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-
 from datetime import datetime
 
 from uk_box_office_flask import db

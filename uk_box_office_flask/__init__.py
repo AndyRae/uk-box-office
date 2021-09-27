@@ -44,6 +44,12 @@ def create_app(test_config=None):
         # create the database tables
         db.create_all()
 
+        db.session.commit()
+
+        from .schema import ma
+
+        ma.init_app(app)
+
         # loads some test data
         # api.test_data()
 
