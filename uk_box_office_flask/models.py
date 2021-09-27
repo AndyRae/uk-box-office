@@ -54,7 +54,16 @@ class Film(db.Model):
         return self.title == o
 
     def as_dict(self):
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        return {
+            "id": self.id,
+            "title": self.title,
+            "weeks": self.serialize_weeks(),
+            "country": self.country_id,
+            "distributor": self.distributor_id,
+        }
+
+    def serialize_weeks(self):
+        return [item.as_dict() for item in self.weeks]
 
 
 class Week(db.Model):
@@ -79,7 +88,7 @@ class Week(db.Model):
         return self.total_gross > o
 
     def as_dict(self):
-        d = {
+        return {
             "id": self.id,
             "film_id": self.film_id,
             "country_id": self.country_id,
@@ -92,5 +101,3 @@ class Week(db.Model):
             "week_gross": self.week_gross,
             "total_gross": self.total_gross,
         }
-        return d
-

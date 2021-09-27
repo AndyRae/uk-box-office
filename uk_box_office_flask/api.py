@@ -17,7 +17,7 @@ from flask import (
 
 from werkzeug.exceptions import abort
 
-from uk_box_office_flask import db, models, schema
+from uk_box_office_flask import db, models
 
 bp = Blueprint("api", __name__)
 
@@ -82,24 +82,19 @@ def films():
         )
     )
 
+
 @bp.route("/api/film")
 def film():
     if "title" in request.args:
         title = str(request.args["title"])
-        
+
         query = db.session.query(models.Film)
         query = query.filter(models.Film.title == title)
         data = query.first()
-        
+
         if data is None:
             abort(404)
-        # return data.as_dict()
-        
-        print(data)
-        film_schema = schema.FilmSchema()
-        d = film_schema.dump(data)
-        print(d)
-        return d
+        return data.as_dict()
     abort(404)
 
 

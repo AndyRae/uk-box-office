@@ -46,10 +46,6 @@ def create_app(test_config=None):
 
         db.session.commit()
 
-        from .schema import ma
-
-        ma.init_app(app)
-
         # loads some test data
         # api.test_data()
 
