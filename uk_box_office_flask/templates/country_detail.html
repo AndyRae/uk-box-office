@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block header %}
+	<h1>{{ data.title }}</h1>
+{% endblock %}
+
+{% block content %}
+	<div class="container grid-lg">
+		<div class="columns">
+			<div class="column col-xs-6">
+				
+
+				{% for i in data.weeks %}
+
+					{{ i['week_gross']}}
+
+				{% endfor %}
+			</div>
+			<div class="column col-xs-6">col-xs-6</div>
+		</div>
+	</div>
+{% endblock %}

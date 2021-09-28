@@ -39,7 +39,7 @@ def create_app(test_config=None):
     db.init_app(app)
 
     with app.app_context():
-        from . import models, etl, api
+        from . import models, etl, api, views
 
         # create the database tables
         db.create_all()
@@ -67,5 +67,6 @@ def create_app(test_config=None):
         # etl.load_dataframe(df)
 
         app.register_blueprint(api.bp)
+        app.register_blueprint(views.bp)
 
         return app
