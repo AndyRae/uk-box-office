@@ -1,6 +1,14 @@
 {% extends 'base.html' %}
 
 {% block header %}
+<ul class="breadcrumb">
+	<li class="breadcrumb-item">
+	<a href="/">Home</a>
+	</li>
+	<li class="breadcrumb-item">
+	<a href="{{ url_for('index.distributors') }}">Distributors</a>
+	</li>
+</ul>
 
 <h1>Distributors</h1>
 	
@@ -13,7 +21,7 @@
 				<ol>
 				{% for i in data %}
 
-					<li><a class="action" href="{{ url_for('index.distributor', id=i['id']) }}">{{ i["name"] }}</a></li>
+					<li><a class="action" href="{{ url_for('index.distributor', id=i['id']) }}">{{ i["name"]|title }}</a></li>
 
 				{% endfor %}
 				</ol>
