@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ data.title|title }}{% endblock %}
+
+{% block header %}
+	<ul class="breadcrumb">
+		<li class="breadcrumb-item">
+		<a href="/">Home</a>
+		</li>
+		<li class="breadcrumb-item">
+		<a href="{{ url_for('index.films') }}">Films</a>
+		</li>
+		<li class="breadcrumb-item">
+		<a href="">{{ data.title|title }}</a>
+		</li>
+	</ul>
+	<h1>{{ data.title|title }}</h1>
+{% endblock %}
+
+{% block content %}
+
+
+	<div class="container grid-lg">
+		<div class="p-centered pt-2">
+
+			<h4 class=" p-centered text-centered">Chart</h4>
+			<div class="loading loading-lg pb-2 pt-2"></div>
+			<div class="divider pb-2 pt-2"></div>
+	
+		</div>
+
+		<div class="columns">
+			<div class="column col-xs-6">
+
+				<h5>Country: {{ data.country|title }}</h5>
+				<h5>Distributor: <a class="action" href="{{ url_for('index.distributor', id=data['distributor']['id']) }}">{{ data.distributor|title }}</a></h5>
+				
+				<table class="table table-striped table-hover pt-2">
+					<thead>
+						<tr>
+						  <th>Weeks</th>
+						  <th>Date</th>
+						  <th>Rank</th>
+						  <th>Number of cinemas</th>
+						  <th>Week Gross</th>
+						  <th>Weekend Gross</th>
+						  <th>Cumulative Gross</th>
+						</tr>
+					  </thead>
+					  <tbody>
+						{% for i in data.weeks %}
+							<tr class="">
+								<td>{{ i['weeks_on_release']}}</td>
+								<td>{{ i['date']  }}</td>
+								
+								<td>{{ i['rank']}}</td>
+								<td>{{ i['number_of_cinemas']}}</td>
+								<td>{{ "£ {:,}".format(i['week_gross']) }}</td>
+								<td>{{ "£ {:,}".format(i['weekend_gross']) }}</td> 
+								<td>{{ "£ {:,}".format(i['total_gross']) }}</td> 
+							</tr>
+						{% endfor %}
+					  </tbody>
+				</table>
+
+			</div>
+		</div>
+	</div>
+{% endblock %}
