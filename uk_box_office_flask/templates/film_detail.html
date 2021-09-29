@@ -33,7 +33,7 @@
 			<div class="column col-xs-6">
 
 				<h5>Country: {{ data.country|title }}</h5>
-				<h5>Distributor: <a class="action" href="{{ url_for('index.distributor', id=data['distributor']['id']) }}">{{ data.distributor|title }}</a></h5>
+				<h5>Distributor: <a class="action" href="{{ url_for('index.distributor', slug=data['distributor']['slug']) }}">{{ data.distributor|title }}</a></h5>
 				
 				<table class="table table-striped table-hover pt-2">
 					<thead>
@@ -50,11 +50,11 @@
 					  <tbody>
 						{% for i in data.weeks %}
 							<tr class="">
-								<td>{{ i['weeks_on_release']}}</td>
-								<td>{{ i['date']  }}</td>
+								<td>{{ i['weeks_on_release'] }}</td>
+								<td>{{ i['date']|date_convert }}</td>
 								
 								<td>{{ i['rank']}}</td>
-								<td>{{ i['number_of_cinemas']}}</td>
+								<td>{{ i['number_of_cinemas'] }}</td>
 								<td>{{ "£ {:,}".format(i['week_gross']) }}</td>
 								<td>{{ "£ {:,}".format(i['weekend_gross']) }}</td> 
 								<td>{{ "£ {:,}".format(i['total_gross']) }}</td> 

@@ -4,7 +4,7 @@ from uk_box_office_flask import db, models
 
 from werkzeug.exceptions import abort
 
-bp = Blueprint("index", __name__)
+bp = Blueprint("index", __name__, template_folder='templates')
 
 
 @bp.route("/")
@@ -39,10 +39,10 @@ def countries():
     return render_template("countries.html", data=data)
 
 
-@bp.route("/films/<int:id>/")
-def film(id):
+@bp.route("/films/<slug>/")
+def film(slug):
     query = db.session.query(models.Film)
-    query = query.filter(models.Film.id == id)
+    query = query.filter(models.Film.slug == slug)
     data = query.first()
 
     if data is None:
@@ -50,10 +50,10 @@ def film(id):
     return render_template("film_detail.html", data=data)
 
 
-@bp.route("/distributors/<int:id>/")
-def distributor(id):
+@bp.route("/distributors/<slug>/")
+def distributor(slug):
     query = db.session.query(models.Distributor)
-    query = query.filter(models.Distributor.id == id)
+    query = query.filter(models.Distributor.slug == slug)
     data = query.first()
 
     if data is None:
@@ -61,12 +61,16 @@ def distributor(id):
     return render_template("distributor_detail.html", data=data)
 
 
-@bp.route("/countries/<int:id>/")
-def country(id):
+@bp.route("/countries/<slug>/")
+def country(slug):
     query = db.session.query(models.Country)
-    query = query.filter(models.Country.id == id)
+    query = query.filter(models.Country.slug == slug)
     data = query.first()
 
     if data is None:
         abort(404)
     return render_template("country_detail.html", data=data)
+
+@bp.app_template_filter()
+def date_convert(datetime):
+    return datetime.strftime("%d / %m / %Y")

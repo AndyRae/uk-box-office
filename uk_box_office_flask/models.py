@@ -2,6 +2,7 @@ from datetime import datetime
 
 from uk_box_office_flask import db
 
+from slugify import slugify
 
 class Country(db.Model):
     __tablename__ = "country"
@@ -9,6 +10,12 @@ class Country(db.Model):
     name = db.Column(db.String(80), unique=True, nullable=False)
     films = db.relationship("Film", backref="country", lazy=True)
     weeks = db.relationship("Week", backref="country", lazy="dynamic")
+    slug = db.Column(db.String(160), nullable=False, unique=True)
+
+    def __init__(self, *args, **kwargs):
+        if 'slug' not in kwargs:
+            kwargs['slug'] = slugify(kwargs.get('name', ''))
+        super().__init__(*args, **kwargs)
 
     def __repr__(self) -> str:
         return self.name
@@ -26,6 +33,12 @@ class Distributor(db.Model):
     name = db.Column(db.String(80), unique=True, nullable=False)
     films = db.relationship("Film", backref="distributor", lazy=True)
     weeks = db.relationship("Week", backref="distributor", lazy="dynamic")
+    slug = db.Column(db.String(160), nullable=False, unique=True)
+
+    def __init__(self, *args, **kwargs):
+        if 'slug' not in kwargs:
+            kwargs['slug'] = slugify(kwargs.get('name', ''))
+        super().__init__(*args, **kwargs)
 
     def __repr__(self) -> str:
         return self.name
@@ -40,12 +53,18 @@ class Distributor(db.Model):
 class Film(db.Model):
     __tablename__ = "film"
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(80), nullable=False)
+    title = db.Column(db.String(160), nullable=False)
     weeks = db.relationship("Week", backref="title", lazy="dynamic")
     country_id = db.Column(db.Integer, db.ForeignKey("country.name"), nullable=False)
     distributor_id = db.Column(
         db.Integer, db.ForeignKey("distributor.name"), nullable=False
     )
+    slug = db.Column(db.String(160), nullable=False, unique=True)
+
+    def __init__(self, *args, **kwargs):
+        if 'slug' not in kwargs:
+            kwargs['slug'] = slugify(kwargs.get('title', ''))
+        super().__init__(*args, **kwargs)
 
     def __repr__(self) -> str:
         return self.title

@@ -21,7 +21,7 @@
 				<ol>
 				{% for i in data %}
 
-					<li><a class="action" href="{{ url_for('index.distributor', id=i['id']) }}">{{ i["name"]|title }}</a></li>
+					<li><a class="action" href="{{ url_for('index.distributor', slug=i['slug']) }}">{{ i["name"]|title }}</a></li>
 
 				{% endfor %}
 				</ol>
