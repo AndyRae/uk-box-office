@@ -4,6 +4,9 @@ from uk_box_office_flask import db
 
 from slugify import slugify
 
+import pandas as pd
+
+
 class Country(db.Model):
     __tablename__ = "country"
     id = db.Column(db.Integer, primary_key=True)
@@ -13,8 +16,8 @@ class Country(db.Model):
     slug = db.Column(db.String(160), nullable=False, unique=True)
 
     def __init__(self, *args, **kwargs):
-        if 'slug' not in kwargs:
-            kwargs['slug'] = slugify(kwargs.get('name', ''))
+        if "slug" not in kwargs:
+            kwargs["slug"] = slugify(kwargs.get("name", ""))
         super().__init__(*args, **kwargs)
 
     def __repr__(self) -> str:
@@ -36,8 +39,8 @@ class Distributor(db.Model):
     slug = db.Column(db.String(160), nullable=False, unique=True)
 
     def __init__(self, *args, **kwargs):
-        if 'slug' not in kwargs:
-            kwargs['slug'] = slugify(kwargs.get('name', ''))
+        if "slug" not in kwargs:
+            kwargs["slug"] = slugify(kwargs.get("name", ""))
         super().__init__(*args, **kwargs)
 
     def __repr__(self) -> str:
@@ -62,8 +65,8 @@ class Film(db.Model):
     slug = db.Column(db.String(160), nullable=False, unique=True)
 
     def __init__(self, *args, **kwargs):
-        if 'slug' not in kwargs:
-            kwargs['slug'] = slugify(kwargs.get('title', ''))
+        if "slug" not in kwargs:
+            kwargs["slug"] = slugify(kwargs.get("title", ""))
         super().__init__(*args, **kwargs)
 
     def __repr__(self) -> str:
@@ -101,7 +104,7 @@ class Week(db.Model):
     total_gross = db.Column(db.Integer, nullable=False)
 
     def __repr__(self) -> str:
-        return f"{self.total_gross}"
+        return f"{self.week_gross}"
 
     def __eq__(self, o: object) -> bool:
         return self.total_gross > o
@@ -120,3 +123,6 @@ class Week(db.Model):
             "week_gross": self.week_gross,
             "total_gross": self.total_gross,
         }
+
+    def as_df(self):
+        return [self.date, self.week_gross]

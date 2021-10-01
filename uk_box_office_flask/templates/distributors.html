@@ -25,6 +25,13 @@
 
 				{% endfor %}
 				</ol>
+				
+				{% if prev_url %}
+				<a href="{{ prev_url }}">Newer</a>
+				{% endif %}
+				{% if next_url %}
+				<a href="{{ next_url }}">Older</a>
+				{% endif %}
 			</div>
 			<div class="column col-xs-2"></div>
 		</div>
