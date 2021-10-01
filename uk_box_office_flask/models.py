@@ -126,3 +126,6 @@ class Week(db.Model):
 
     def as_df(self):
         return [self.date, self.week_gross]
+    
+    def as_df2(self):
+        return [self.film_id, self.week_gross]

@@ -1,3 +1,5 @@
+import datetime
+from operator import mod
 from flask import Blueprint, render_template, request, url_for
 
 from uk_box_office_flask import db, models
@@ -89,7 +91,7 @@ def distributor(slug):
 
 
 @bp.route("/countries/<slug>/")
-def country(slug):
+def country(slug: str):
     query = db.session.query(models.Country)
     query = query.filter(models.Country.slug == slug)
     data = query.first()
@@ -97,6 +99,33 @@ def country(slug):
     if data is None:
         abort(404)
     return render_template("country_detail.html", data=data)
+
+@bp.route("/year/<int:year>")
+def year(year: int):
+    query = db.session.query(models.Week)
+    start_date = datetime.date(int(year), 1, 1)
+    end_date = datetime.date(int(year), 12, 31)
+
+    query = query.filter(models.Week.date >= start_date)
+    query = query.filter(models.Week.date <= end_date)
+
+    data1 = models.Film.query.join(models.Film.weeks)
+    data1 = data1.filter(models.Week.date >= start_date)
+    data1 = data1.filter(models.Week.date <= end_date)
+    data1 = data1.order_by(models.Week.total_gross.asc())
+    data1 = data1.all()
+    print(data1)
+
+    data = query.all()
+
+    if data is None:
+        abort(404)
+    # don't like the pandas solution - doesn't allow for slugs..    
+    df = pd.DataFrame([i.as_df2() for i in data], columns=["title", "week_gross"])
+    df = df.groupby(["title"]).sum().sort_values(by=["week_gross"], ascending=False).head(20)
+
+    return render_template("year_detail.html", data=data1, w=df.reset_index().to_dict(orient="records"))
+
 
 
 @bp.app_template_filter()

@@ -1,0 +1,41 @@
+body {
+  	margin: 0;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+::selection {
+	background: #FF8321;
+	color: white;
+}
+
+.footer {
+	min-height: 300px;
+	padding-top: 10px;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	background-color: #000;
+	color: #FFF;
+	font-size: 0.7em;
+	text-align: left;
+}
+
+.footer a {
+	color: #FFF;
+}
+
+.footer-link {
+	display: inline;
+	padding: 0 10px 0 10px;
+
+}
+
+/* @media (prefers-color-scheme:dark) {
+	body {
+		background: #21212C;
+		color: #fff;
+	}
+	a {
+		color: #fff;
+	}
+} */

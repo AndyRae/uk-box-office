@@ -5,26 +5,27 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="mobile-web-app-capable" content="yes">
-	<link rel="manifest" href="./manifest.json">
+	<link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
 	<meta name="theme-color" content="#000"/>
-  
-	<link rel="apple-touch-icon" type="image/png" href="./apple-icon.png">
-	<link rel="apple-touch-icon-180x180" sizes="180x180" type="image/png" href="./apple-icon-180x180.png">
-	<link rel="icon" type="image/png" sizes="192x192" href="./icon-hires.png">
+
+	<link rel="apple-touch-icon" type="image/png" href="{{ url_for('static', filename='apple-icon.png') }}">
+	<link rel="apple-touch-icon-180x180" sizes="180x180" type="image/png" href="{{ url_for('static', filename='apple-icon-180x180.png') }}">
+	<link rel="icon" type="image/png" sizes="192x192" href="{{ url_for('static', filename='icon-hires.png') }}">
 	
 	<title>{% block title %}{% endblock %} - UK Box Office</title>
 	<meta name="description" content="UK Box Office cinema data dashboard, statistics and analysis, with current top 10 films." />
 
 	<meta property="og:title" content="UK Box Office Data" />
 	<meta property="og:description" content="UK Box Office cinema data dashboard, statistics, and analysis, with current top 10 films." />
-	<meta property="og:image" content="/" />
+	<meta property="og:image" content="{{ url_for('static', filename='1.png') }}" />
 
 	<meta name="twitter:card" content="summary">
 	<meta name="twitter:creator" content="@AndyRae_">
-	<meta name="twitter:image" content="/">
+	<meta name="twitter:image" content="{{ url_for('static', filename='1.png') }}">
 	<meta name="twitter:description" content="UK Box Office cinema data dashboard 2020, statistics, reports, and analysis, with current top 10 films." />
   
 	<link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
 	{% block schema %}{% endblock %}
 	
@@ -62,7 +63,7 @@
 
 <div class="divider pt-2 pb-2"></div>
 
-<footer class="p-2 bg-dark text-secondary text-small" style="display: flex; min-height: 300px; flex-direction: row; width: 100%; justify-content: space-evenly; align-items: left;">
+<footer class="p-2 footer">
 	<div class="container grid-lg pt-2">
 		<ul class="">
 			<li class="">
