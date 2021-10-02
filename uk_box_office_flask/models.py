@@ -4,7 +4,7 @@ from uk_box_office_flask import db
 
 from slugify import slugify
 
-import pandas as pd
+import functools
 
 
 class Country(db.Model):
@@ -126,6 +126,6 @@ class Week(db.Model):
 
     def as_df(self):
         return [self.date, self.week_gross]
-    
+
     def as_df2(self):
-        return [self.film_id, self.week_gross]
+        return [self.film_id, self.title.slug, self.week_gross]

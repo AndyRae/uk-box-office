@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ time }} {% endblock %}
+
+{% block schema %}
+	{
+		"@context":"https://schema.org/",
+		"@type":"Dataset",
+		"name":"{{ time }} Box Office Data",
+		"description":"Weekly UK Cinema Box Office data for {{ time }}.",
+		"url":"/",
+		"isBasedOn":"https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures",
+		"keywords":[
+		"BOX OFFICE DATA > CINEMA > {{ data.time }}",
+		],
+		"isAccessibleForFree" : true,
+		"creator":{
+		"@type":"Organization",
+		"url": "https://boxofficedata.co.uk",
+		"name":"Box Office Data UK",
+		"contactPoint":{
+			"@type":"ContactPoint",
+			"contactType": "customer service",
+			"email":"hello@boxofficedata.co.uk"
+		}
+		},
+		"funder":{
+		"@type": "Organization",
+		"sameAs": "https://ror.org/04qg9vz18",
+		"name": "British Film Institute"
+		},
+		"includedInDataCatalog":{
+		"@type":"DataCatalog",
+		"name":"Box Office Data UK"
+		},
+		"distribution":[
+		{
+			"@type":"DataDownload",
+			"encodingFormat":"CSV",
+			"contentUrl":"https://boxofficedata.co.uk"
+		},
+		],
+		"temporalCoverage":"{{ time }}",
+	}
+{% endblock %}
+
+{% block header %}
+	<ul class="breadcrumb">
+		<li class="breadcrumb-item">
+		<a href="/">Home</a>
+		</li>
+		<li class="breadcrumb-item">
+		<a href="">{{ time }}</a>
+		</li>
+	</ul>
+	<h1 class="pt-2 pb-2">{{ time }}</h1>
+{% endblock %}
+
+{% block content %}	
+
+	<div class="container grid-lg">
+		<div class="p-centered pt-2">
+		</div>
+
+		<div class="columns">
+			<div class="column col-xs-6">
+
+				<table class="table table-striped table-hover pt-2 pb-2">
+					<thead>
+						<tr>
+						  <th>Rank</th>
+						  <th>Film</th>
+						  <th>Total Gross</th>
+						</tr>
+					  </thead>
+					  <tbody>
+						{% for i in data %}
+							<tr class="">
+								<td>{{ loop.index }}</td>
+								<td><a class="action" href="{{ url_for('index.film', slug=i['slug']) }}">{{ i['title']|title }}</a></td>
+								<td>£ {{ i['week_gross'] }}</td>
+							</tr>
+						{% endfor %}
+					  </tbody>
+				</table>
+
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

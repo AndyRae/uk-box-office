@@ -3,8 +3,6 @@
 {% block title %}{{ data.title|title }}{% endblock %}
 
 {% block schema %}
-
-<script type="application/ld+json">
 	{
 		"@context":"https://schema.org/",
 		"@type":"Dataset",
@@ -44,9 +42,6 @@
 		],
 		"temporalCoverage":"{{ data.weeks[-1].date|date_convert}}/{{ data.weeks[0].date|date_convert }}",
 	}
-</script>
-
-
 {% endblock %}
 
 {% block header %}
