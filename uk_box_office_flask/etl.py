@@ -16,6 +16,7 @@ def get_country(country: str) -> models.Country:
     Checks the database if the country exists - returns the class
     If not - creates it, adds it to the database and returns it
     """
+    country = country.strip()
     filtered_countries = models.Country.query.filter_by(name=country).first()
 
     if country == filtered_countries:
@@ -31,6 +32,7 @@ def get_distributor(distributor: str) -> models.Distributor:
     Checks the database if the distributor exists - returns the class
     If not - creates it, adds it to the database and returns it
     """
+    distributor = distributor.strip()
     filtered_distributors = models.Distributor.query.filter_by(name=distributor).first()
 
     if distributor == filtered_distributors:
@@ -48,11 +50,11 @@ def get_film(
     Checks the database if the film exists - returns the class
     If not - creates it, adds it to the database and returns it
     """
-
+    film = film.strip()
     filtered_films = models.Film.query.filter_by(title=film).first()
+
     if film == filtered_films:
         return filtered_films
-
     new = models.Film(title=film, distributor=distributor, country=country)
     db.session.add(new)
     db.session.commit()
@@ -63,7 +65,6 @@ def load_dataframe(archive: pd.DataFrame) -> None:
     """
     Loads a films dataframe into the database
     """
-
     archive["date"] = pd.to_datetime(archive["date"], format="%Y%m%d", yearfirst=True)
 
     list_of_films = [row.to_dict() for index, row in archive.iterrows()]

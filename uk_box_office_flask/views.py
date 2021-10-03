@@ -1,5 +1,6 @@
+import calendar
 import datetime
-from operator import mod
+
 from flask import Blueprint, render_template, request, url_for, make_response, jsonify
 
 from uk_box_office_flask import db, models
@@ -121,7 +122,7 @@ def data_grouped_by_film(data):
         df.groupby(["title", "slug"])
         .sum()
         .sort_values(by=["week_gross"], ascending=False)
-    )
+    ).head(20)
     return df.reset_index().to_dict(orient="records")
 
 
@@ -157,9 +158,11 @@ def year(year: int):
 
 @bp.route("/time/<int:year>/<int:month>/")
 def month(year: str, month: str):
+    last_day = calendar.monthrange(year, month)[1]
+
     query = db.session.query(models.Week)
     start_date = datetime.date(int(year), int(month), 1)
-    end_date = datetime.date(int(year), int(month), 31)
+    end_date = datetime.date(int(year), int(month), last_day)
 
     query = query.filter(models.Week.date >= start_date)
     query = query.filter(models.Week.date <= end_date)
