@@ -11,7 +11,7 @@
 		"url":"/",
 		"isBasedOn":"https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures",
 		"keywords":[
-		"BOX OFFICE DATA > CINEMA > {{ data.time }}",
+		"BOX OFFICE DATA > CINEMA > {{ time }}",
 		],
 		"isAccessibleForFree" : true,
 		"creator":{
@@ -50,16 +50,27 @@
 		<a href="/">Home</a>
 		</li>
 		<li class="breadcrumb-item">
+		<a href="{{ url_for('index.time') }}">Dates</a>
+		</li>
+		<li class="breadcrumb-item">
 		<a href="">{{ time }}</a>
 		</li>
 	</ul>
-	<h1 class="pt-2 pb-2">{{ time }}</h1>
+	<h1 class="pt-2 pb-2">UK Box Office {{ time }}</h1>
 {% endblock %}
 
 {% block content %}	
 
 	<div class="container grid-lg">
-		<div class="p-centered pt-2">
+		<div class="p-centered pt-2 pb-2">
+
+			<canvas id="myChart" class="pt-2 pb-2" width="100%" height="50px"></canvas>
+			
+			<div class="divider pb-2 pt-2"></div>
+
+			{% for j in months %}
+				<a class="action chip pt-2 pb-2" href="{{ url_for('index.month', year=year, month=j) }}">{{ j|date_convert_to_month }}</a>
+			{% endfor %}	
 		</div>
 
 		<div class="columns">
@@ -87,5 +98,56 @@
 			</div>
 		</div>
 	</div>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js" integrity="sha512-Wt1bJGtlnMtGP0dqNFH1xlkLBNpEodaiQ8ZN5JLA5wpc1sUlk/O5uuOMNgvzddzkpvZ9GLyYNa8w2s7rqiTk5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+	<script>
+		function graph(time_dates, week_gross) {
+			var ctx = document.getElementById('myChart');
+			var myChart = new Chart(ctx, {
+				type: 'line',
+				data: {
+					labels: time_dates,
+					datasets: [{
+						label: 'Box Office',
+						data: week_gross,
+						backgroundColor: [
+							'rgba(0, 0, 0, 1)',
+						],
+						borderColor: [
+							'rgba(0, 0, 0, 1)',
+						],
+						pointStyle: 'circle',
+						tension: 0.3,
+						yAxisID: 'y'
+					}]
+				},
+				options: {
+					scales: {
+						y: {
+							beginAtZero: true,
+							ticks: {
+								callback: function(value, index, values) {
+									return '£ ' + value;
+								}
+							}
+						},
+					}
+				}
+			});
+		}
+		
+		var time_dates = []
+		var week_gross = []
+		'{% for i in w %}'
+	
+			time_dates.push('{{ i["date"]|date_convert }}')
+			week_gross.push('{{ i["week_gross"] }}')
+	
+		'{% endfor %}'
+	
+		graph(time_dates, week_gross)
+	
+	</script>
 
 {% endblock %}
