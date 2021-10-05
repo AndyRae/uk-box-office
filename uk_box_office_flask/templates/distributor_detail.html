@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% block title%}{{data.name|title}}{% endblock%}
+
 {% block header %}
 	<ul class="breadcrumb">
 		<li class="breadcrumb-item">
@@ -32,7 +34,7 @@
 						</tr>
 					  </thead>
 					  <tbody>
-						{% for i in data.films %}
+						{% for i in data.films|reverse %}
 							<tr class="">
 								<td><a class="action" href="{{ url_for('index.film', slug=i['slug']) }}">{{ i['title']|title }}</a></td>
 								<td>{{ i['country']|title }}</td>

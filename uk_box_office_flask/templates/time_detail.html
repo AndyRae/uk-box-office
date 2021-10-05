@@ -89,7 +89,7 @@
 							<tr class="">
 								<td>{{ loop.index }}</td>
 								<td><a class="action" href="{{ url_for('index.film', slug=i['slug']) }}">{{ i['title']|title }}</a></td>
-								<td>£ {{ i['week_gross'] }}</td>
+								<td>{{ "£ {:,}".format(i['week_gross']) }}</td>
 							</tr>
 						{% endfor %}
 					  </tbody>

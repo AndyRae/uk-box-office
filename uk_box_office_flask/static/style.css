@@ -39,12 +39,18 @@ body {
 	margin-top: 2rem !important;
 	margin-bottom: 2rem !important;
 }
-/* @media (prefers-color-scheme:dark) {
+@media (prefers-color-scheme:dark) {
 	body {
 		background: #21212C;
 		color: #fff;
 	}
 	a {
-		color: #fff;
+		color: #fff !important;
 	}
-} */
+	.table.table-striped tbody tr:nth-of-type(odd) {
+		background: #000;
+	}
+	.table.table-hover tbody tr:hover {
+		background: #000;
+	}
+}
