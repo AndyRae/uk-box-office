@@ -4,15 +4,18 @@ import os
 from dotenv import load_dotenv
 from flask import Flask, json
 from flask_sqlalchemy import SQLAlchemy
+from flask_debugtoolbar import DebugToolbarExtension
 
 import pandas as pd
 
 db = SQLAlchemy()
+toolbar = DebugToolbarExtension()
 
 
 def create_app(test_config=None):
     # create the app
     app = Flask(__name__, instance_relative_config=True)
+    app.debug = True
     load_dotenv()
     SECRET = os.environ.get("secret")
     app.config.from_mapping(
@@ -38,8 +41,11 @@ def create_app(test_config=None):
     # Database
     db.init_app(app)
 
+    # Debug toolbar
+    toolbar.init_app(app)
+
     with app.app_context():
-        from . import models, etl, api, views
+        from . import etl, api, views
 
         # create the database tables
         db.create_all()

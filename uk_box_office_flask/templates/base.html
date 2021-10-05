@@ -1,26 +1,56 @@
 <!doctype html>
 <head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="mobile-web-app-capable" content="yes">
+	<link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+	<meta name="theme-color" content="#000"/>
+
+	<link rel="apple-touch-icon" type="image/png" href="{{ url_for('static', filename='apple-icon.png') }}">
+	<link rel="apple-touch-icon-180x180" sizes="180x180" type="image/png" href="{{ url_for('static', filename='apple-icon-180x180.png') }}">
+	<link rel="icon" type="image/png" sizes="192x192" href="{{ url_for('static', filename='icon-hires.png') }}">
+	
 	<title>{% block title %}{% endblock %} - UK Box Office</title>
+	<meta name="description" content="UK Box Office cinema data dashboard, statistics and analysis, with current top 10 films." />
+
+	<meta property="og:title" content="UK Box Office Data" />
+	<meta property="og:description" content="UK Box Office cinema data dashboard, statistics, and analysis, with current top 10 films." />
+	<meta property="og:image" content="{{ url_for('static', filename='1.png') }}" />
+
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:creator" content="@AndyRae_">
+	<meta name="twitter:image" content="{{ url_for('static', filename='1.png') }}">
+	<meta name="twitter:description" content="UK Box Office cinema data dashboard 2020, statistics, reports, and analysis, with current top 10 films." />
+  
 	<link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+	
+	<script type="application/ld+json">
+	{% block schema %}{% endblock %}
+	</script>
+	
 </head>
+
 <div class="container grid-lg pt-2">
-<header class="navbar p-2">
-	<section class="navbar-section">
-		<a href="/" class="navbar-brand mr-2">UK Box Office</a>
-		<a href="{{ url_for('index.films') }}" class="btn btn-link">Films</a>
-		<a href="{{ url_for('index.distributors') }}" class="btn btn-link">Distributors</a>
-		<a href="{{ url_for('index.countries') }}" class="btn btn-link">Countries</a>
-	</section>
-	<section class="navbar-section">
-		<div class="input-group input-inline">
-			<input class="form-input" type="text" placeholder="search">
-			<button class="btn btn-primary input-group-btn">Search</button>
-		</div>
-	</section>
-</header>
+	<header class="navbar pt-2 pb-2">
+		<section class="navbar-section">
+			<a href="/" class="navbar-brand mr-2">UK Box Office Data</a>
+			<a href="{{ url_for('index.films') }}" class="btn btn-link">Films</a>
+			<a href="{{ url_for('index.time') }}" class="btn btn-link">Time</a>
+			<a href="{{ url_for('index.distributors') }}" class="btn btn-link">Distributors</a>
+		</section>
+		<section class="navbar-section">
+			<div class="input-group input-inline">
+				<input class="form-input" type="text" placeholder="search">
+				<button class="btn btn-primary input-group-btn">Search</button>
+			</div>
+		</section>
+	</header>
 </div>
 
-<div class="content pt-2" style="min-height: 850px;">
+<div class="content pt-2 pb-2" style="min-height: 850px;">
   <header>
 	<div class="container grid-lg pt-2">
 		<div class="columns">
@@ -30,34 +60,29 @@
 		</div>
 	</div>
   </header>
+
   {% block content %}{% endblock %}
 </div>
-<div class="divider"></div>
 
+<div class="divider pt-2 pb-2"></div>
 
-<footer class="p-2 bg-dark text-secondary text-small" style="display: flex; min-height: 300px; flex-direction: row; width: 100%; justify-content: space-evenly; align-items: left;">
+<footer class="p-2 footer">
+	
 	<div class="container grid-lg pt-2">
-		<ul class="nav">
-			<li class="nav-item">
-				<strong>
-					<a href="{{ url_for('api.api') }}" class="text-secondary">UK Box Office</a>
-				</strong>
-			</li>
-			<li class="nav-item">
-				<strong>
-					<a href="{{ url_for('api.api') }}" class="text-secondary">About</a>
-				</strong>
-			</li>
-			<li class="nav-item">
-				<strong>
-					<a href="{{ url_for('api.api') }}" class="text-secondary">Contact</a>
-				</strong>
-			</li>
-			<li class="nav-item">
-				<strong>
-				<a href="{{ url_for('api.api') }}" class="text-secondary">API</a>
-				</strong>
-			</li>
-		</ul>
+
+		<hr class="seperator mt-5 mb-5">
+		<strong>
+			<a href="{{ url_for('index.index') }}" class="text-secondary mr-2">UK Box Office</a>
+		</strong>
+		<a href="{{ url_for('api.api') }}" class="text-secondary ml-2 mr-2">About</a>
+		<a href="{{ url_for('api.api') }}" class="text-secondary ml-2 mr-2">Contact</a>
+		<a href="{{ url_for('api.api') }}" class="text-secondary ml-2 mr-2">Privacy</a>
+		<a href="{{ url_for('api.api') }}" class="text-secondary ml-2 mr-2">API</a>
+		<a href="{{ url_for('index.films') }}" class="text-secondary ml-2 mr-2">Films</a>
+		<a href="{{ url_for('index.time') }}" class="text-secondary ml-2 mr-2">Time</a>
+		<a href="{{ url_for('index.distributors') }}" class="text-secondary ml-2 mr-2">Distributors</a>
+		<a href="{{ url_for('index.countries') }}" class="text-secondary ml-2 mr-2">Countries</a>
+		<a href="{{ url_for('index.countries') }}" class="text-secondary ml-2 mr-2">Random</a>
+
 	</div>
 </footer>
