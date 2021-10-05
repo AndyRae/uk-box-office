@@ -67,28 +67,22 @@
 <div class="divider pt-2 pb-2"></div>
 
 <footer class="p-2 footer">
+	
 	<div class="container grid-lg pt-2">
-		<ul class="">
-			<li class="">
-				<strong>
-					<a href="{{ url_for('index.index') }}" class="text-secondary">UK Box Office</a>
-				</strong>
-			</li>
-			<li class="">
-				<strong>
-					<a href="{{ url_for('api.api') }}" class="text-secondary">About</a>
-				</strong>
-			</li>
-			<li class="">
-				<strong>
-					<a href="{{ url_for('api.api') }}" class="text-secondary">Contact</a>
-				</strong>
-			</li>
-			<li class="">
-				<strong>
-				<a href="{{ url_for('api.api') }}" class="text-secondary">API</a>
-				</strong>
-			</li>
-		</ul>
+
+		<hr class="seperator mt-5 mb-5">
+		<strong>
+			<a href="{{ url_for('index.index') }}" class="text-secondary mr-2">UK Box Office</a>
+		</strong>
+		<a href="{{ url_for('api.api') }}" class="text-secondary ml-2 mr-2">About</a>
+		<a href="{{ url_for('api.api') }}" class="text-secondary ml-2 mr-2">Contact</a>
+		<a href="{{ url_for('api.api') }}" class="text-secondary ml-2 mr-2">Privacy</a>
+		<a href="{{ url_for('api.api') }}" class="text-secondary ml-2 mr-2">API</a>
+		<a href="{{ url_for('index.films') }}" class="text-secondary ml-2 mr-2">Films</a>
+		<a href="{{ url_for('index.time') }}" class="text-secondary ml-2 mr-2">Time</a>
+		<a href="{{ url_for('index.distributors') }}" class="text-secondary ml-2 mr-2">Distributors</a>
+		<a href="{{ url_for('index.countries') }}" class="text-secondary ml-2 mr-2">Countries</a>
+		<a href="{{ url_for('index.countries') }}" class="text-secondary ml-2 mr-2">Random</a>
+
 	</div>
 </footer>

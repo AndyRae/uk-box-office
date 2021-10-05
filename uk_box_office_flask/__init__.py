@@ -45,7 +45,7 @@ def create_app(test_config=None):
     toolbar.init_app(app)
 
     with app.app_context():
-        from . import models, etl, api, views
+        from . import etl, api, views
 
         # create the database tables
         db.create_all()

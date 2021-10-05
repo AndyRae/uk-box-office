@@ -61,11 +61,14 @@
 
 {% block content %}	
 
-	<div class="container grid-lg">
-		<div class="p-centered pt-2">
+	<div class="container grid-lg pt-2 pb-2">
+		<div class="columns">
+			<div class="column col-xs-3"><p class="pt-2 pb-2">Country: {{ data.country|title }}</p></div>
+			<div class="column col-xs-3"><p class="pt-2 pb-2">Distributor: <a class="action" href="{{ url_for('index.distributor', slug=data['distributor']['slug']) }}">{{ data.distributor|title }}</a></p></div>
+			<div class="column col-xs-3"><button class="btn float-right">Export (.csv)</button></div>
+		</div>
 
-			<h5 class="pt-2 pb-2">Country: {{ data.country|title }}</h5>
-			<h5 class="pt-2 pb-2">Distributor: <a class="action" href="{{ url_for('index.distributor', slug=data['distributor']['slug']) }}">{{ data.distributor|title }}</a></h5>			
+		<div class="p-centered pt-2 pb-2">
 
 			<canvas id="myChart" class="pt-2 pb-2" width="100%" height="50px"></canvas>
 
