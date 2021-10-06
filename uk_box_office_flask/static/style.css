@@ -8,6 +8,20 @@ body {
 	color: white;
 }
 
+.box-table {
+	display: block;
+	height: 700px;
+	overflow-y: scroll;
+}
+
+.box-table {
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+}
+.box-table::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}
+
 .footer {
 	min-height: 250px;
 	padding-top: 10px;
