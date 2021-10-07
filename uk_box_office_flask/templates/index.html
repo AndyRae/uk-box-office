@@ -19,7 +19,7 @@ Home
 		</div>
 		<div class="columns text-center col-gapless">
 			<div class="column col-xs-3 filler grid-section">
-				Total Box Office: £ 250.1m
+				Total Box Office: £ ${ boxOffice }
 				
 			</div>
 			<div class="column col-xs-3 filler grid-section">
@@ -42,7 +42,7 @@ Home
 			<div class="column col-xs-6">
 				<line-chart class="pt-2 pl-2 pr-2" v-if="loaded" :chartdata="chartdata" :options="options"></line-chart>
 				<div class="divider"></div>
-				<line-chart class="pt-2 pl-2 pr-2" v-if="loaded" :chartdata="chartdata" :options="options"></line-chart>
+				<!-- <line-chart class="pt-2 pl-2 pr-2" v-if="loaded" :chartdata="chartdata" :options="options"></line-chart> -->
 			</div>
 			<div class="divider-vert"></div>
 			<div class="column col-xs-6">
@@ -60,9 +60,9 @@ Home
 							<tr class="" v-for="(item, index) in sortedfilms.slice(0, 50)">
 								<td class="text-small">${ index + 1 }</td>
 								<td class="text-small">${ item.film_id | TitleCase }</td>
-								<td class="text-small">Dist</td>
+								<td class="text-small">${ item.distributor_id | TitleCase }</td>
 								<td class="text-small">${ item.weeks_on_release }</td>
-								<td class="text-small" style="min-width:100px">£ ${ item.week_gross | Currency }</td>
+								<td class="text-small" style="min-width:100px">£ ${ item.week_gross  }</td>
 							</tr>
 					  </tbody>
 				</table>
