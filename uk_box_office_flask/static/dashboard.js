@@ -1,16 +1,8 @@
-// var e = new Date();
-// var s = new Date();
-// s.setDate(s.getDate() - 30 );
-
-// const start = datepicker('#start', { dateSelected: new Date(s)}, { id: 1 })
-// const end = datepicker('#end', { dateSelected: new Date(e)}, { id: 1 })
-
-// start.calendarContainer.style.setProperty('font-size', '0.8rem')
-// end.calendarContainer.style.setProperty('font-size', '0.8rem')
-
-// console.log(s)
-
 Vue.filter("TitleCase", value => {
+	if (Number.isInteger(value)) {
+		return value
+	}
+
 	return value.toLowerCase().replace(/(?:^|\s|-)\S/g, x => x.toUpperCase());
 });
 
@@ -55,10 +47,18 @@ var vm = new Vue({
 			responsive: true,
 			maintainAspectRatio: false,
 			scales: {
-				y: {
+				yAxes: [{
 					beginAtZero: true,
-				},
-			}
+					ticks: {
+						callback: function(value, index, values) {
+							return '£ ' + value;
+						}
+					},
+				}],
+			},
+			legend: {
+				display: false,
+			},
 		}
 	}),
 	computed: {
@@ -83,7 +83,7 @@ var vm = new Vue({
 		let start_date = start.dateSelected.toISOString().split('T', 1)[0]
 		let end_date = end.dateSelected.toISOString().split('T', 1)[0]
 
-		const baseUrl = '/api?start_date='+start_date+'&end_date='+end_date+"&start=";
+		const baseUrl = '/api?start_date='+start_date+'&end_date='+end_date+"&limit=100&start=";
 		let page = 1;
 		let results = [];
 		let lastResult = [];
@@ -100,7 +100,7 @@ var vm = new Vue({
 				results.push({ date, film_id, week_gross, weeks_on_release });
 			});
 			// increment the page with 20 on each loop
-			page += 20;
+			page += 100;
 			} catch (err) {
 			console.error(`Oeps, something is wrong ${err}`);
 			break
@@ -122,9 +122,13 @@ var vm = new Vue({
 			{
 				label: "Box Office",
 				data: values,
-				borderColor: ['#FF473E'],
+				borderColor: ['#FFCDD2'],
+				backgroundColor: [
+					'#FFCDD2',
+				],
 				pointStyle: 'circle',
 				tension: 0.3,
+				fill: false,
 			}
 		]
 		this.chartdata.labels = dates

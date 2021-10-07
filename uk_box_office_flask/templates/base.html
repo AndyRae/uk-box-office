@@ -33,38 +33,33 @@
 	
 </head>
 
-<div class="container grid-lg pt-2">
-	<header class="navbar pt-2 pb-2">
-		<section class="navbar-section">
-			<a href="/" class="navbar-brand mr-2">UK Box Office Data</a>
-			<a href="{{ url_for('index.films') }}" class="btn btn-link">Films</a>
-			<a href="{{ url_for('index.time') }}" class="btn btn-link">Time</a>
-			<a href="{{ url_for('index.distributors') }}" class="btn btn-link">Distributors</a>
-		</section>
-		<section class="navbar-section">
-			<div class="input-group input-inline">
-				<input class="form-input input-sm" type="text" placeholder="search">
-				<button class="btn btn-primary input-group-btn btn-sm">Search</button>
-			</div>
-		</section>
-	</header>
-</div>
+<header class="navbar">
+	<section class="navbar-section">
+		<a href="/" class="navbar-brand mr-2 text-dark">UK Box Office Data</a>
+		<a href="{{ url_for('index.films') }}" class="btn btn-link text-dark">Films</a>
+		<a href="{{ url_for('index.time') }}" class="btn btn-link text-dark">Time</a>
+		<a href="{{ url_for('index.distributors') }}" class="btn btn-link text-dark">Distributors</a>
+	</section>
+	<section class="navbar-section">
+		<div class="input-group input-inline">
+			<input class="form-input input-sm search-bar" type="text" placeholder="search">
+			<button class="btn btn-primary input-group-btn btn-sm bg-dark">Search</button>
+		</div>
+	</section>
+</header>
 
-<div class="content pt-2 pb-2" style="min-height: 850px;">
+<div class="content" style="min-height: 850px;">
   <header>
-	<div class="container grid-lg pt-2">
+	<div class="container grid-lg">
 		<div class="columns">
 			<div class="column col-xs-6">
 				{% block header %}{% endblock %}
-				<div class="divider"></div>
 		</div>
 	</div>
   </header>
 
   {% block content %}{% endblock %}
 </div>
-
-<div class="divider pt-2 pb-2"></div>
 
 <footer class="p-2 footer">
 	
