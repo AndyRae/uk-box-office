@@ -144,7 +144,6 @@ var vm = new Vue({
 		},
 		filter_date: function(click) {
 			console.log("Welp!")
-			// console.log(start.getRange())
 		}
 	}
 })
