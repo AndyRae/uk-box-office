@@ -53,6 +53,7 @@ var vm = new Vue({
 	delimiters: ['${','}'],
 	data: () => ({
 		loaded: false,
+		boxOffice: 0,
 		filmdata: [],
 		chartdata: {
 			labels: [],
@@ -82,10 +83,6 @@ var vm = new Vue({
 			return this.filmdata.sort(function(a, b) {
 				return b.week_gross - a.week_gross;
 			})
-		},
-		boxOffice: function () {
-			return this.chartdata.datasets.values
-
 		}
 	},
 	async mounted () {
@@ -134,7 +131,7 @@ var vm = new Vue({
 			values.push(results_by_date[i].week_gross)
 		}
 		// sum up for the total
-		boxOffice = values.reduce((a, b) => a + b, 0)
+		this.boxOffice = values.reduce((a, b) => a + b, 0)
 
 		x = [
 			{
