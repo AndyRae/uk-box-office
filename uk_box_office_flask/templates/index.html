@@ -19,7 +19,7 @@ Home
 		</div>
 		<div class="columns text-center col-gapless">
 			<div class="column col-xs-3 filler grid-section">
-				Total Box Office: £ ${ boxOffice }
+				Total Box Office: £ ${ boxOffice | Currency }
 				
 			</div>
 			<div class="column col-xs-3 filler grid-section">
@@ -62,7 +62,7 @@ Home
 								<td class="text-small">${ item.film_id | TitleCase }</td>
 								<td class="text-small">${ item.distributor_id | TitleCase }</td>
 								<td class="text-small">${ item.weeks_on_release }</td>
-								<td class="text-small" style="min-width:100px">£ ${ item.week_gross  }</td>
+								<td class="text-small" style="min-width:100px">£ ${ item.week_gross | Currency }</td>
 							</tr>
 					  </tbody>
 				</table>

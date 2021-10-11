@@ -56,7 +56,7 @@ def create_app(test_config=None):
         # api.test_data()
 
         # load a big chunk of test data
-        path = "./data/test3.csv"
+        path = "./data/test.csv"
         test_data = pd.read_csv(path)
         etl.load_dataframe(test_data)
 

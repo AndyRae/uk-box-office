@@ -6,10 +6,10 @@ Vue.filter("TitleCase", value => {
 });
 
 
-// Vue.filter("Currency", value => {
-// 	value= "" + value
-// 	return value.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-// });
+Vue.filter("Currency", value => {
+	value= "" + value
+	return value.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+});
 
 
 // This structure is so the charts updates when chartdata changes
@@ -146,10 +146,18 @@ var vm = new Vue({
 		// 		(m, {film_id, week_gross}) => m.set(film_id, (m.get(film_id) || 0) + week_gross), new Map
 		// 		), ([film_id, week_gross]) => ({film_id, week_gross}));
 		// },
+		// group_by_film: function(results) {
+		// 	return Array.from(results.reverse().reduce(
+		// 		(m, {film_id, distributor_id, week_gross}) => m.set(film_id, distributor_id, (m.get(film_id) || 0) + week_gross), new Map
+		// 		), ([film_id, distributor_id, week_gross]) => ({film_id, distributor_id, week_gross}));
+		// },
 		group_by_film: function(results) {
-			return Array.from(results.reverse().reduce(
-				(m, {film_id, distributor_id, week_gross}) => m.set(film_id, distributor_id, (m.get(film_id) || 0) + week_gross), new Map
-				), ([film_id, distributor_id, week_gross]) => ({film_id, distributor_id, week_gross}));
+			results.forEach(function(v){ delete v.date });
+			return Array.from(results.reduce((acc, {week_gross, ...r}) => {
+				const key = JSON.stringify(r);
+				const current = acc.get(key) || {...r, week_gross: 0};  
+				return acc.set(key, {...current, week_gross: current.week_gross + week_gross});
+			  }, new Map).values());
 		},
 		update_chart: function(results) {
 			const results_by_date = this.group_by_date(results)

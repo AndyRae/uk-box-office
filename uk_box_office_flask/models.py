@@ -91,6 +91,7 @@ class Film(db.Model):
 class Week(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     film_id = db.Column(db.Integer, db.ForeignKey("film.title"), nullable=False)
+    film_slug = db.Column(db.String(160), nullable=False)
     country_id = db.Column(db.Integer, db.ForeignKey("country.name"), nullable=False)
     distributor_id = db.Column(
         db.Integer, db.ForeignKey("distributor.name"), nullable=False
@@ -103,6 +104,11 @@ class Week(db.Model):
     week_gross = db.Column(db.Integer, nullable=False)
     total_gross = db.Column(db.Integer, nullable=False)
 
+    def __init__(self, *args, **kwargs):
+        if "slug" not in kwargs:
+            kwargs["film_slug"] = slugify(kwargs.get("film", ""))
+        super().__init__(*args, **kwargs)
+
     def __repr__(self) -> str:
         return f"{self.week_gross}"
 
@@ -113,6 +119,7 @@ class Week(db.Model):
         return {
             "id": self.id,
             "film_id": self.film_id,
+            "slug": self.film_slug,
             "country_id": self.country_id,
             "distributor_id": self.distributor_id,
             "date": datetime.strftime(self.date, "%Y-%m-%d"),
