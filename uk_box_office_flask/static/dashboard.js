@@ -47,6 +47,65 @@ Vue.component('line-chart', {
 	}
 })
 
+// This structure is so the charts updates when chartdata changes
+Vue.component('bar-chart', {
+	extends: VueChartJs.Bar,
+	props: {
+		chartdata: {
+			labels: [],
+			datasets: [],
+			default: null
+		},
+		options: {
+			type: Object,
+			default: null
+		}
+	},
+	data: {
+		options1: {
+			responsive: true,
+			maintainAspectRatio: false,
+			scales: {
+				yAxes: [{
+					stacked: true,
+					beginAtZero: true,
+					ticks: {
+						callback: function(value, index, values) {
+							return '£ ' + value;
+						}
+					},
+				}],
+				xAxes: [{
+					stacked: true,
+				}],
+			},
+			legend: {
+				display: false,
+			},
+		}
+
+	},
+	computed: {
+		data: function() {
+		  return this.chartdata;
+		}
+	},
+	methods: {
+		renderLineChart: function() {
+			this.renderChart(this.data, this.options1)
+		}
+	},
+	mounted () {
+		this.renderLineChart()
+	},
+	watch: {
+		data: function() {
+			this.$data._chart.destroy();
+			this.renderLineChart();
+		}
+	}
+})
+
 
 var vm = new Vue({
 	el: '#dash',
