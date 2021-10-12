@@ -57,7 +57,8 @@ class Film(db.Model):
     __tablename__ = "film"
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(160), nullable=False)
-    weeks = db.relationship("Week", backref="title", lazy="dynamic")
+    # weeks = db.relationship("Week", backref="title", lazy="dynamic")
+    weeks = db.relationship("Week", back_populates="film")
     country_id = db.Column(db.Integer, db.ForeignKey("country.name"), nullable=False)
     distributor_id = db.Column(
         db.Integer, db.ForeignKey("distributor.name"), nullable=False
@@ -89,9 +90,11 @@ class Film(db.Model):
 
 
 class Week(db.Model):
+    __tablename__ = "week"
     id = db.Column(db.Integer, primary_key=True)
-    film_id = db.Column(db.Integer, db.ForeignKey("film.title"), nullable=False)
-    film_slug = db.Column(db.String(160), nullable=False)
+    # film_id = db.Column(db.Integer, db.ForeignKey("film.title"), nullable=False)
+    film_id = db.Column(db.Integer, db.ForeignKey("film.id"), nullable=False)
+    film = db.relationship("Film", back_populates="weeks", innerjoin=True, lazy="joined")
     country_id = db.Column(db.Integer, db.ForeignKey("country.name"), nullable=False)
     distributor_id = db.Column(
         db.Integer, db.ForeignKey("distributor.name"), nullable=False
@@ -104,11 +107,6 @@ class Week(db.Model):
     week_gross = db.Column(db.Integer, nullable=False)
     total_gross = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, *args, **kwargs):
-        if "slug" not in kwargs:
-            kwargs["film_slug"] = slugify(kwargs.get("film", ""))
-        super().__init__(*args, **kwargs)
-
     def __repr__(self) -> str:
         return f"{self.week_gross}"
 
@@ -118,8 +116,8 @@ class Week(db.Model):
     def as_dict(self):
         return {
             "id": self.id,
-            "film_id": self.film_id,
-            "slug": self.film_slug,
+            "film": self.film.title,
+            "film_slug": self.film.slug,
             "country_id": self.country_id,
             "distributor_id": self.distributor_id,
             "date": datetime.strftime(self.date, "%Y-%m-%d"),
@@ -135,4 +133,4 @@ class Week(db.Model):
         return [self.date, self.week_gross]
 
     def as_df2(self):
-        return [self.film_id, self.title.slug, self.week_gross]
+        return [self.film.title, self.film.slug, self.week_gross]

@@ -111,8 +111,8 @@ var vm = new Vue({
 				lastResult = data;
 				data.results.forEach(week => {
 					// destructure the object and add to array
-					const { date, film_id, distributor_id, week_gross } = week;
-					results.push({ date, film_id, distributor_id, week_gross });
+					const { date, film, film_slug, distributor_id, week_gross } = week;
+					results.push({ date, film, film_slug, distributor_id, week_gross });
 				});
 				// increment the page with 20 on each loop
 				page += 100;
@@ -141,16 +141,6 @@ var vm = new Vue({
 				(m, {date, week_gross}) => m.set(date, (m.get(date) || 0) + week_gross), new Map
 				), ([date, week_gross]) => ({date, week_gross}));
 		},
-		// group_by_film: function(results) {
-		// 	return Array.from(results.reverse().reduce(
-		// 		(m, {film_id, week_gross}) => m.set(film_id, (m.get(film_id) || 0) + week_gross), new Map
-		// 		), ([film_id, week_gross]) => ({film_id, week_gross}));
-		// },
-		// group_by_film: function(results) {
-		// 	return Array.from(results.reverse().reduce(
-		// 		(m, {film_id, distributor_id, week_gross}) => m.set(film_id, distributor_id, (m.get(film_id) || 0) + week_gross), new Map
-		// 		), ([film_id, distributor_id, week_gross]) => ({film_id, distributor_id, week_gross}));
-		// },
 		group_by_film: function(results) {
 			results.forEach(function(v){ delete v.date });
 			return Array.from(results.reduce((acc, {week_gross, ...r}) => {
