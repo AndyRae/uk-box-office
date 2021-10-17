@@ -70,7 +70,8 @@
 
 			{% for j in months %}
 				<a class="action chip pt-2 pb-2" href="{{ url_for('index.month', year=year, month=j) }}">{{ j|date_convert_to_month }}</a>
-			{% endfor %}	
+			{% endfor %}
+			<button class="btn float-right">Export (.csv)</button>	
 		</div>
 
 		<div class="columns">
@@ -112,10 +113,10 @@
 						label: 'Box Office',
 						data: week_gross,
 						backgroundColor: [
-							'rgba(0, 0, 0, 1)',
+							'#FFCDD2',
 						],
 						borderColor: [
-							'rgba(0, 0, 0, 1)',
+							'#FFCDD2',
 						],
 						pointStyle: 'circle',
 						tension: 0.3,

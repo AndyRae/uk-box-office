@@ -72,13 +72,14 @@ def load_dataframe(archive: pd.DataFrame) -> None:
     for i in list_of_films:
         i["country"] = get_country(i["country"])
         i["distributor"] = get_distributor(i["distributor"])
-        i["title"] = get_film(i["title"], i["distributor"], i["country"])
+        # i["title"] = get_film(i["title"], i["distributor"], i["country"])
+        i["film"] = get_film(i["film"], i["distributor"], i["country"])
 
-        for key in i:  # TODO: probably can change data to not need this.
-            try:
-                i[key] = int(i[key])
-            except TypeError:
-                pass
+        # for key in i:  # TODO: probably can change data to not need this.
+        #     try:
+        #         i[key] = int(i[key])
+        #     except TypeError:
+        #         pass
 
         week = models.Week(**i)
         db.session.add(week)

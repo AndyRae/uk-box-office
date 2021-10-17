@@ -177,7 +177,7 @@ def test_data():
 
     test_week = {
         "date": test_date,
-        "title": film1,
+        "film": film1,
         "distributor": distributor,
         "country": country,
         "number_of_cinemas": 653,
@@ -189,7 +189,7 @@ def test_data():
     }
     test_week2 = {
         "date": test_date2,
-        "title": film1,
+        "film": film1,
         "distributor": distributor,
         "country": country,
         "number_of_cinemas": 653,
@@ -201,7 +201,7 @@ def test_data():
     }
     test_week4 = {
         "date": test_date4,
-        "title": film1,
+        "film": film1,
         "distributor": distributor,
         "country": country,
         "number_of_cinemas": 653,

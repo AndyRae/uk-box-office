@@ -1,25 +1,18 @@
-// var e = new Date();
-// var s = new Date();
-// s.setDate(s.getDate() - 30 );
-
-// const start = datepicker('#start', { dateSelected: new Date(s)}, { id: 1 })
-// const end = datepicker('#end', { dateSelected: new Date(e)}, { id: 1 })
-
-// start.calendarContainer.style.setProperty('font-size', '0.8rem')
-// end.calendarContainer.style.setProperty('font-size', '0.8rem')
-
-// console.log(s)
-
 Vue.filter("TitleCase", value => {
+	if (Number.isInteger(value)) {
+		return value
+	}
 	return value.toLowerCase().replace(/(?:^|\s|-)\S/g, x => x.toUpperCase());
 });
 
 
 Vue.filter("Currency", value => {
-	return value.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");;
+	value= "" + value
+	return value.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 });
 
 
+// This structure is so the charts updates when chartdata changes
 Vue.component('line-chart', {
 	extends: VueChartJs.Line,
 	props: {
@@ -32,9 +25,60 @@ Vue.component('line-chart', {
 			type: Object,
 			default: null
 		}
-		},
+	},
+	computed: {
+		data: function() {
+		  return this.chartdata;
+		}
+	},
+	methods: {
+		renderLineChart: function() {
+			this.renderChart(this.data, this.options)
+		}
+	},
 	mounted () {
-		this.renderChart(this.chartdata, this.options)
+		this.renderLineChart()
+	},
+	watch: {
+		data: function() {
+			this.$data._chart.destroy();
+			this.renderLineChart();
+		}
+	}
+})
+
+// This structure is so the charts updates when chartdata changes
+Vue.component('area-chart', {
+	extends: VueChartJs.Line,
+	props: {
+		chartdataarea: {
+			datasets: [],
+			default: null
+		},
+		optionsarea: {
+			type: Object,
+			default: null
+		}
+	},
+	computed: {
+		data: function() {
+			return this.chartdataarea;
+		}
+	},
+	methods: {
+		renderAreaChart: function() {
+			console.log(this.data)
+			this.renderChart(this.data, this.optionsarea)
+		}
+	},
+	mounted () {
+		this.renderAreaChart()
+	},
+	watch: {
+		data: function() {
+			this.$data._chart.destroy();
+			this.renderAreaChart();
+		}
 	}
 })
 
@@ -44,10 +88,14 @@ var vm = new Vue({
 	delimiters: ['${','}'],
 	data: () => ({
 		loaded: false,
-		start,
-		filmdata: [],
+		boxOffice: 0,
+		filmTableData: [],
 		chartdata: {
 			labels: [],
+			datasets: [],
+			default: null
+		},
+		chartdataarea: {
 			datasets: [],
 			default: null
 		},
@@ -55,95 +103,219 @@ var vm = new Vue({
 			responsive: true,
 			maintainAspectRatio: false,
 			scales: {
-				y: {
+				yAxes: [{
 					beginAtZero: true,
-				},
-			}
+					ticks: {
+						callback: function(value, index, values) {
+							return '£ ' + value;
+						}
+					},
+				}],
+			},
+			legend: {
+				display: false,
+			},
+		},
+		optionsarea: {
+			responsive: true,
+			maintainAspectRatio: false,
+			scales: {
+				xAxes: [{
+				  type: 'time',
+				  offset: true,
+				  distribution: 'series',
+				  time: {
+					unit: 'week'
+				  },
+				  // stacked: true,
+				}],
+				yAxes: [{
+				  // stacked: true,
+				  ticks: {
+					beginAtZero: true,
+				  },
+				}]
+			},
+			legend: {
+				display: false,
+			},
 		}
 	}),
+
 	computed: {
 		sortedfilms: function () {
-			return this.filmdata.sort(function(a, b) {
+			return this.filmTableData.sort(function(a, b) {
 				return b.week_gross - a.week_gross;
 			})
 		}
+
 	},
+
 	async mounted () {
-		console.log("Running...")
-		var e = new Date();
-		var s = new Date();
-		s.setDate(s.getDate() - 400 );
+		this.generate_date_pickers()
 
-		const start = datepicker('#start', { dateSelected: new Date(s)}, { id: 1 })
-		const end = datepicker('#end', { dateSelected: new Date(e)}, { id: 1 })
+		// get dates
+		let start_date = this.date_picker_start.dateSelected.toISOString().split('T', 1)[0]
+		let end_date = this.date_picker_end.dateSelected.toISOString().split('T', 1)[0]
 
-		start.calendarContainer.style.setProperty('font-size', '0.8rem')
-		end.calendarContainer.style.setProperty('font-size', '0.8rem')
-
-		let start_date = start.dateSelected.toISOString().split('T', 1)[0]
-		let end_date = end.dateSelected.toISOString().split('T', 1)[0]
-
-		const baseUrl = '/api?start_date='+start_date+'&end_date='+end_date+"&start=";
-		let page = 1;
-		let results = [];
-		let lastResult = [];
-		do {
-			// try catch to catch any errors in the async api call
-			try {
-			// use node-fetch to make api call
-			const resp = await fetch(`${baseUrl}${page}`);
-			const data = await resp.json();
-			lastResult = data;
-			data.results.forEach(week => {
-				// destructure the object and add to array
-				const { date, film_id, week_gross, weeks_on_release } = week;
-				results.push({ date, film_id, week_gross, weeks_on_release });
-			});
-			// increment the page with 20 on each loop
-			page += 20;
-			} catch (err) {
-			console.error(`Oeps, something is wrong ${err}`);
-			break
-			}
-			// keep running until there's no next page
-		} while (lastResult.next !== "");
-
-		// Map reduce the results to dates / values
-		const results_by_date = this.group_by_date(results)
-		this.filmdata = this.group_by_film(results)
-		
-		dates = []
-		values = []
-		for (i in results_by_date) {
-			dates.push(results_by_date[i].date)
-			values.push(results_by_date[i].week_gross)
-		}
-		x = [
-			{
-				label: "Box Office",
-				data: values,
-				borderColor: ['#FF473E'],
-				pointStyle: 'circle',
-				tension: 0.3,
-			}
-		]
-		this.chartdata.labels = dates
-		this.chartdata.datasets = x
-		this.loaded = true
+		this.query_api(start_date, end_date)
 	},
+
 	methods: {
+
+		async query_api(start_date, end_date) {
+			const baseUrl = '/api?start_date='+start_date+'&end_date='+end_date+"&limit=100&start=";
+			let page = 1;
+			let results = [];
+			let lastResult = [];
+			do {
+				// try catch to catch any errors in the async api call
+				try {
+				// use node-fetch to make api call
+				const resp = await fetch(`${baseUrl}${page}`);
+				const data = await resp.json();
+				lastResult = data;
+				data.results.forEach(week => {
+					// destructure the object and add to array
+					const { date, film, film_slug, distributor_id, week_gross } = week;
+					results.push({ date, film, film_slug, distributor_id, week_gross });
+				});
+				// increment the page with 20 on each loop
+				page += 100;
+				} catch (err) {
+				console.error(`Oeps, something is wrong ${err}`);
+				break
+				}
+				// keep running until there's no next page
+			} while (lastResult.next !== "");
+
+			this.update_chart(results)
+		},
+
+		generate_date_pickers: function() {
+			var e = new Date();
+			var s = new Date();
+			s.setDate(s.getDate() - 400 );
+	
+			this.date_picker_start = datepicker('#start', { dateSelected: new Date(s)}, { id: 1 })
+			this.date_picker_end = datepicker('#end', { dateSelected: new Date(e)}, { id: 1 })
+			
+			this.date_picker_start.calendarContainer.style.setProperty('font-size', '0.8rem')
+			this.date_picker_end.calendarContainer.style.setProperty('font-size', '0.8rem')
+		},
+
 		group_by_date: function(results) {
-			return Array.from(results.reverse().reduce(
+			groupedDate = Array.from(results)
+			return Array.from(groupedDate.reverse().reduce(
 				(m, {date, week_gross}) => m.set(date, (m.get(date) || 0) + week_gross), new Map
 				), ([date, week_gross]) => ({date, week_gross}));
 		},
+
 		group_by_film: function(results) {
-			return Array.from(results.reverse().reduce(
-				(m, {film_id, week_gross, weeks_on_release}) => m.set(film_id, (m.get(film_id) || 0) + week_gross), new Map
-				), ([film_id, week_gross, weeks_on_release]) => ({film_id, week_gross, weeks_on_release}));
+			groupedFilm = Array.from(results)
+			groupedFilm.forEach(function(v){ delete v.date });
+			return Array.from(groupedFilm.reduce((acc, {week_gross, ...r}) => {
+				const key = JSON.stringify(r);
+				const current = acc.get(key) || {...r, week_gross: 0};  
+				return acc.set(key, {...current, week_gross: current.week_gross + week_gross});
+			  }, new Map).values());
 		},
-		filter_date: function(click) {
-			console.log("Welp!")
+
+		group_for_area: function(results) {
+			// flatten into a list of the films.
+			// then re-loop over the results, adding weeks in, making the objects into data sets.
+
+			let colors = ['#FFA18880', '#00627780', '#FF473E80', '#009F4180', '#FF832180']
+
+			groupedArea = Array.from(results)
+			let result = Array.from(groupedArea.reduce(
+				(m, {film}) => m.set(film, (m.get(film) || 0)), new Map
+				), ([film]) => ({film}));
+
+			datasets = []
+			for (i in result) {
+				x = {
+						label: result[i].film,
+						// data: [],
+						borderColor: colors[Math.floor(Math.random()*colors.length)],
+						backgroundColor: colors[Math.floor(Math.random()*colors.length)],
+						fill: true,
+				}
+				
+				weeks = []
+				for (j in results) {
+					if(results[j].film == result[i].film) {
+						weeks.push({x: results[j].date, y: results[j].week_gross })
+					} 
+				}
+				x.data = weeks
+				datasets.push(x)
+			}
+			return datasets
+		},
+
+		update_chart: function(results) {
+			// Where to do the data logic for each graph
+
+			// Area Graph
+			let areaData = this.group_for_area(results)
+
+			this.$set(this.chartdataarea = {
+				datasets: areaData
+			})
+			console.log(this.chartdataarea)
+
+			// i = [
+			// 	{
+			// 		label: "Film name",
+			// 		data: [{x: "20/01/2020", y: 100}, {x: "27/01/2020", y: 10}],
+			// 		borderColor: '#FFA188',
+			// 		backgroundColor: '#FFA188',
+			// 		fill: true,
+			// 	}
+			// ]
+
+			// Line Graph
+			const results_by_date = this.group_by_date(results)
+
+			dates = []
+			values = []
+			for (i in results_by_date) {
+				dates.push(results_by_date[i].date)
+				values.push(results_by_date[i].week_gross)
+			}
+
+			x = [
+				{
+					label: "Box Office",
+					data: values,
+					borderColor: ['#FFCDD2'],
+					backgroundColor: ['#FFCDD2'],
+					pointStyle: 'circle',
+					tension: 0.3,
+					fill: false,
+				}
+			]
+			this.$set(this.chartdata = {
+				labels: dates,
+				datasets: x
+			})
+
+			// Scorecards
+			this.boxOffice = values.reduce((a, b) => a + b, 0)
+
+			// Film Table
+			this.filmTableData = this.group_by_film(results)
+
+			this.loaded = true
+		},
+
+		filter_date: function() {
+			let start_date = this.date_picker_start.dateSelected.toISOString().split('T', 1)[0]
+			let end_date = this.date_picker_end.dateSelected.toISOString().split('T', 1)[0]
+
+			// need to get data
+			this.query_api(start_date, end_date)
 		}
 	}
 })

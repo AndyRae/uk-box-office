@@ -4,44 +4,65 @@
 Home
 {% endblock %}
 
-{% block header %}
-	
-{% endblock %}
-
 {% block content %}
-	<div id="dash" class="container">
-		<div class="columns pt-2 pb-2">
-			<div class="column col-xs-6 pt-b2 pb-2">
-				<div class="input-group pt-2 pb-2">
-					<input id="start" class="form-input input-sm"></input>
-					<input id="end" class="form-input input-sm"></input>
-					<button class="btn btn-primary input-group-btn btn-sm" v-on:click="filter_date">Filter</button>
+	<div id="dash" class="container dash">
+		<div class="columns col-gapless">
+			<div class="column col-xs-3">
+				<div class="input-group">
+					<input id="start" class="date-picker grid-section filler form-input input-sm"></input>
+					<input id="end" class="form-input grid-section filler date-picker input-sm"></input>
+					<button class="btn btn-primary input-group-btn btn-sm bg-dark" v-on:click="filter_date">Filter</button>
 				</div> 
 			</div>
-			<div class="column col-xs-6">
+			<div class="column col-md-9 filler"></div>
+			<div class="column col-md-9 filler"></div>
+		</div>
+		<div class="columns text-center col-gapless">
+			<div class="column col-xs-3 filler grid-section">
+				Total Box Office: £ ${ boxOffice | Currency }
+				
+			</div>
+			<div class="column col-xs-3 filler grid-section">
+				Weekend Box Office: £ 120m
 
 			</div>
+			<div class="column col-xs-3 filler grid-section">
+				Number of cinemas: 701
+
+			</div>
+			<div class="column col-xs-3 filler grid-section">
+				Last update: 07/10/2021
+			</div>
+			<div class="column col-xs-3 filler grid-section">
+				
+			</div>
+
 		</div>
 		<div class="columns">
 			<div class="column col-xs-6">
-				<line-chart class="pt-2 pb-2" v-if="loaded" :chartdata="chartdata" :options="options"></line-chart>
-			</div>
+				<line-chart class="pt-2 pl-2 pr-2" v-if="loaded" :chartdata="chartdata" :options="options"></line-chart>
+				<div class="divider"></div>
+				<area-chart class="pt-2 pl-2 pr-2" v-if="loaded" :chartdataarea="chartdataarea" :optionsarea="optionsarea"></area-chart>
+			</div>	
+			<div class="divider-vert"></div>
 			<div class="column col-xs-6">
-				<table class="table box-table table-hover pt-2">
+				<table class="table box-table table-hover">
 					<thead>
 						<tr>
-							<th>#</th>
+							<th></th>
 							<th>Title</th>
+							<th>Distributor</th>
 							<th>Weeks</th>
 							<th>Total Gross</th>
 						</tr>
 					  </thead>
 					  <tbody id="results">
-							<tr class="" v-for="(item, index) in sortedfilms">
+							<tr class="" v-for="(item, index) in sortedfilms.slice(0, 50)">
 								<td class="text-small">${ index + 1 }</td>
-								<td class="text-small">${ item.film_id | TitleCase }</td>
-								<td class="text-small">${ item.weeks_on_release }</td>
-								<td class="text-small">£ ${ item.week_gross | Currency }</td>
+								<td class="text-small"><a :href="`/films/${ item.film_slug }`">${ item.film | TitleCase }</a></td>
+								<td class="text-small">${ item.distributor_id | TitleCase }</td>
+								<td class="text-small">100</td>
+								<td class="text-small" style="min-width:100px">£ ${ item.week_gross | Currency }</td>
 							</tr>
 					  </tbody>
 				</table>
@@ -50,6 +71,8 @@ Home
 	</div>
 
 	<link rel="stylesheet" href="https://unpkg.com/js-datepicker/dist/datepicker.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 	<script src="https://unpkg.com/js-datepicker"></script>
 	<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
