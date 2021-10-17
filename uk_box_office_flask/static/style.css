@@ -29,7 +29,7 @@ body {
 
 .dash {
 	border: 1px solid lightgrey;
-	font-family: monospace;
+	/* font-family: monospace; */
 }
 
 .navbar {

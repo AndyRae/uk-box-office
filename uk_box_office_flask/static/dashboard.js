@@ -48,60 +48,36 @@ Vue.component('line-chart', {
 })
 
 // This structure is so the charts updates when chartdata changes
-Vue.component('bar-chart', {
-	extends: VueChartJs.Bar,
+Vue.component('area-chart', {
+	extends: VueChartJs.Line,
 	props: {
-		chartdata: {
-			labels: [],
+		chartdataarea: {
 			datasets: [],
 			default: null
 		},
-		options: {
+		optionsarea: {
 			type: Object,
 			default: null
 		}
 	},
-	data: {
-		options1: {
-			responsive: true,
-			maintainAspectRatio: false,
-			scales: {
-				yAxes: [{
-					stacked: true,
-					beginAtZero: true,
-					ticks: {
-						callback: function(value, index, values) {
-							return '£ ' + value;
-						}
-					},
-				}],
-				xAxes: [{
-					stacked: true,
-				}],
-			},
-			legend: {
-				display: false,
-			},
-		}
-
-	},
 	computed: {
 		data: function() {
-		  return this.chartdata;
+			return this.chartdataarea;
 		}
 	},
 	methods: {
-		renderLineChart: function() {
-			this.renderChart(this.data, this.options1)
+		renderAreaChart: function() {
+			console.log(this.data)
+			this.renderChart(this.data, this.optionsarea)
 		}
 	},
 	mounted () {
-		this.renderLineChart()
+		this.renderAreaChart()
 	},
 	watch: {
 		data: function() {
 			this.$data._chart.destroy();
-			this.renderLineChart();
+			this.renderAreaChart();
 		}
 	}
 })
@@ -113,9 +89,13 @@ var vm = new Vue({
 	data: () => ({
 		loaded: false,
 		boxOffice: 0,
-		filmdata: [],
+		filmTableData: [],
 		chartdata: {
 			labels: [],
+			datasets: [],
+			default: null
+		},
+		chartdataarea: {
 			datasets: [],
 			default: null
 		},
@@ -135,18 +115,43 @@ var vm = new Vue({
 			legend: {
 				display: false,
 			},
+		},
+		optionsarea: {
+			responsive: true,
+			maintainAspectRatio: false,
+			scales: {
+				xAxes: [{
+				  type: 'time',
+				  offset: true,
+				  distribution: 'series',
+				  time: {
+					unit: 'week'
+				  },
+				  // stacked: true,
+				}],
+				yAxes: [{
+				  // stacked: true,
+				  ticks: {
+					beginAtZero: true,
+				  },
+				}]
+			},
+			legend: {
+				display: false,
+			},
 		}
 	}),
+
 	computed: {
 		sortedfilms: function () {
-			return this.filmdata.sort(function(a, b) {
+			return this.filmTableData.sort(function(a, b) {
 				return b.week_gross - a.week_gross;
 			})
 		}
-	},
-	async mounted () {
-		console.log("Running...")
 
+	},
+
+	async mounted () {
 		this.generate_date_pickers()
 
 		// get dates
@@ -155,7 +160,9 @@ var vm = new Vue({
 
 		this.query_api(start_date, end_date)
 	},
+
 	methods: {
+
 		async query_api(start_date, end_date) {
 			const baseUrl = '/api?start_date='+start_date+'&end_date='+end_date+"&limit=100&start=";
 			let page = 1;
@@ -184,6 +191,7 @@ var vm = new Vue({
 
 			this.update_chart(results)
 		},
+
 		generate_date_pickers: function() {
 			var e = new Date();
 			var s = new Date();
@@ -195,34 +203,88 @@ var vm = new Vue({
 			this.date_picker_start.calendarContainer.style.setProperty('font-size', '0.8rem')
 			this.date_picker_end.calendarContainer.style.setProperty('font-size', '0.8rem')
 		},
+
 		group_by_date: function(results) {
-			return Array.from(results.reverse().reduce(
+			groupedDate = Array.from(results)
+			return Array.from(groupedDate.reverse().reduce(
 				(m, {date, week_gross}) => m.set(date, (m.get(date) || 0) + week_gross), new Map
 				), ([date, week_gross]) => ({date, week_gross}));
 		},
+
 		group_by_film: function(results) {
-			results.forEach(function(v){ delete v.date });
-			return Array.from(results.reduce((acc, {week_gross, ...r}) => {
+			groupedFilm = Array.from(results)
+			groupedFilm.forEach(function(v){ delete v.date });
+			return Array.from(groupedFilm.reduce((acc, {week_gross, ...r}) => {
 				const key = JSON.stringify(r);
 				const current = acc.get(key) || {...r, week_gross: 0};  
 				return acc.set(key, {...current, week_gross: current.week_gross + week_gross});
 			  }, new Map).values());
 		},
+
+		group_for_area: function(results) {
+			// flatten into a list of the films.
+			// then re-loop over the results, adding weeks in, making the objects into data sets.
+
+			let colors = ['#FFA18880', '#00627780', '#FF473E80', '#009F4180', '#FF832180']
+
+			groupedArea = Array.from(results)
+			let result = Array.from(groupedArea.reduce(
+				(m, {film}) => m.set(film, (m.get(film) || 0)), new Map
+				), ([film]) => ({film}));
+
+			datasets = []
+			for (i in result) {
+				x = {
+						label: result[i].film,
+						// data: [],
+						borderColor: colors[Math.floor(Math.random()*colors.length)],
+						backgroundColor: colors[Math.floor(Math.random()*colors.length)],
+						fill: true,
+				}
+				
+				weeks = []
+				for (j in results) {
+					if(results[j].film == result[i].film) {
+						weeks.push({x: results[j].date, y: results[j].week_gross })
+					} 
+				}
+				x.data = weeks
+				datasets.push(x)
+			}
+			return datasets
+		},
+
 		update_chart: function(results) {
+			// Where to do the data logic for each graph
+
+			// Area Graph
+			let areaData = this.group_for_area(results)
+
+			this.$set(this.chartdataarea = {
+				datasets: areaData
+			})
+			console.log(this.chartdataarea)
+
+			// i = [
+			// 	{
+			// 		label: "Film name",
+			// 		data: [{x: "20/01/2020", y: 100}, {x: "27/01/2020", y: 10}],
+			// 		borderColor: '#FFA188',
+			// 		backgroundColor: '#FFA188',
+			// 		fill: true,
+			// 	}
+			// ]
+
+			// Line Graph
 			const results_by_date = this.group_by_date(results)
-			this.filmdata = this.group_by_film(results)
-	
-			console.log(this.filmdata)
-			
+
 			dates = []
 			values = []
 			for (i in results_by_date) {
 				dates.push(results_by_date[i].date)
 				values.push(results_by_date[i].week_gross)
 			}
-			// sum up for the total
-			this.boxOffice = values.reduce((a, b) => a + b, 0)
-	
+
 			x = [
 				{
 					label: "Box Office",
@@ -238,9 +300,16 @@ var vm = new Vue({
 				labels: dates,
 				datasets: x
 			})
-			this.loaded = true
 
+			// Scorecards
+			this.boxOffice = values.reduce((a, b) => a + b, 0)
+
+			// Film Table
+			this.filmTableData = this.group_by_film(results)
+
+			this.loaded = true
 		},
+
 		filter_date: function() {
 			let start_date = this.date_picker_start.dateSelected.toISOString().split('T', 1)[0]
 			let end_date = this.date_picker_end.dateSelected.toISOString().split('T', 1)[0]

@@ -42,8 +42,8 @@ Home
 			<div class="column col-xs-6">
 				<line-chart class="pt-2 pl-2 pr-2" v-if="loaded" :chartdata="chartdata" :options="options"></line-chart>
 				<div class="divider"></div>
-				<bar-chart class="pt-2 pl-2 pr-2" v-if="loaded" :chartdata="chartdata" :options="options"></bar-chart>
-			</div>
+				<area-chart class="pt-2 pl-2 pr-2" v-if="loaded" :chartdataarea="chartdataarea" :optionsarea="optionsarea"></area-chart>
+			</div>	
 			<div class="divider-vert"></div>
 			<div class="column col-xs-6">
 				<table class="table box-table table-hover">
@@ -71,6 +71,8 @@ Home
 	</div>
 
 	<link rel="stylesheet" href="https://unpkg.com/js-datepicker/dist/datepicker.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 	<script src="https://unpkg.com/js-datepicker"></script>
 	<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
