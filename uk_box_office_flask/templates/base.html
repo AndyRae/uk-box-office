@@ -1,83 +1,96 @@
 <!doctype html>
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="apple-mobile-web-app-capable" content="yes">
-	<meta name="mobile-web-app-capable" content="yes">
-	<link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
-	<meta name="theme-color" content="#000"/>
+<html lang="en">
 
-	<link rel="apple-touch-icon" type="image/png" href="{{ url_for('static', filename='apple-icon.png') }}">
-	<link rel="apple-touch-icon-180x180" sizes="180x180" type="image/png" href="{{ url_for('static', filename='apple-icon-180x180.png') }}">
-	<link rel="icon" type="image/png" sizes="192x192" href="{{ url_for('static', filename='icon-hires.png') }}">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="mobile-web-app-capable" content="yes">
+		<link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+		<meta name="theme-color" content="#000"/>
+
+		<link rel="apple-touch-icon" type="image/png" href="{{ url_for('static', filename='apple-icon.png') }}">
+		<link rel="apple-touch-icon-180x180" sizes="180x180" type="image/png" href="{{ url_for('static', filename='apple-icon-180x180.png') }}">
+		<link rel="icon" type="image/png" sizes="192x192" href="{{ url_for('static', filename='icon-hires.png') }}">
+		
+		<title>{% block title %}{% endblock %} - UK Box Office</title>
+		<meta name="description" content="UK Box Office cinema data dashboard, statistics and analysis, with current top 10 films." />
+
+		<meta property="og:title" content="UK Box Office Data" />
+		<meta property="og:description" content="UK Box Office cinema data dashboard, statistics, and analysis, with current top 10 films." />
+		<meta property="og:image" content="{{ url_for('static', filename='1.png') }}" />
+
+		<meta name="twitter:card" content="summary">
+		<meta name="twitter:creator" content="@AndyRae_">
+		<meta name="twitter:image" content="{{ url_for('static', filename='1.png') }}">
+		<meta name="twitter:description" content="UK Box Office cinema data dashboard 2020, statistics, reports, and analysis, with current top 10 films." />
 	
-	<title>{% block title %}{% endblock %} - UK Box Office</title>
-	<meta name="description" content="UK Box Office cinema data dashboard, statistics and analysis, with current top 10 films." />
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+		
+		<script type="application/ld+json">
+		{% block schema %}{% endblock %}
+		</script>
+		
+	</head>
 
-	<meta property="og:title" content="UK Box Office Data" />
-	<meta property="og:description" content="UK Box Office cinema data dashboard, statistics, and analysis, with current top 10 films." />
-	<meta property="og:image" content="{{ url_for('static', filename='1.png') }}" />
-
-	<meta name="twitter:card" content="summary">
-	<meta name="twitter:creator" content="@AndyRae_">
-	<meta name="twitter:image" content="{{ url_for('static', filename='1.png') }}">
-	<meta name="twitter:description" content="UK Box Office cinema data dashboard 2020, statistics, reports, and analysis, with current top 10 films." />
-  
-	<link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
-	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-	
-	<script type="application/ld+json">
-	{% block schema %}{% endblock %}
-	</script>
-	
-</head>
-
-<header class="navbar">
-	<section class="navbar-section">
-		<a href="/" class="navbar-brand mr-2 text-dark">UK Box Office Data</a>
-		<a href="{{ url_for('index.films') }}" class="btn btn-link text-dark">Films</a>
-		<a href="{{ url_for('index.time') }}" class="btn btn-link text-dark">Time</a>
-		<a href="{{ url_for('index.distributors') }}" class="btn btn-link text-dark">Distributors</a>
-	</section>
-	<section class="navbar-section">
-		<div class="input-group input-inline">
-			<input class="form-input input-sm search-bar" type="text" placeholder="search">
-			<button class="btn btn-primary input-group-btn btn-sm bg-dark">Search</button>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<div class="container-fluid">
+		  <a class="navbar-brand" href="/">Uk Box Office Data</a>
+		  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		  </button>
+		  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+				<li class="nav-item">
+					<a class="nav-link" href="{{ url_for('index.films') }}">Films</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{{ url_for('index.time') }}">Time</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{{ url_for('index.distributors') }}">Distributors</a>
+			  </li>
+			</ul>
+			<form class="d-flex">
+			  <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+			  <button class="btn btn-outline-light" type="submit">Search</button>
+			</form>
+		  </div>
 		</div>
-	</section>
-</header>
+	  </nav>
 
-<div class="content" style="min-height: 850px;">
-  <header>
-	<div class="container grid-lg">
-		<div class="columns">
-			<div class="column col-xs-6">
-				{% block header %}{% endblock %}
+	<div class="content" style="min-height: 850px;">
+	<header>
+		<div class="container">
+					{% block header %}{% endblock %}
 		</div>
+	</header>
+
+	{% block content %}{% endblock %}
 	</div>
-  </header>
 
-  {% block content %}{% endblock %}
-</div>
+	<footer class="mt-5 footer">
+		
+		<div class="container-sm">
 
-<footer class="p-2 mt-5 footer">
-	
-	<div class="container grid-lg pt-2">
+			<div class="seperator mt-5 mb-5"></div>
+			<strong>
+				<a href="{{ url_for('index.index') }}" class="">UK Box Office</a>
+			</strong>
+			<a href="{{ url_for('api.api') }}" class="mx-2">About</a>
+			<a href="{{ url_for('api.api') }}" class="mx-2">Contact</a>
+			<a href="{{ url_for('api.api') }}" class="mx-2">Privacy</a>
+			<a href="{{ url_for('api.api') }}" class="mx-2">API</a>
+			<a href="{{ url_for('index.films') }}" class="mx-2">Films</a>
+			<a href="{{ url_for('index.time') }}" class="mx-2">Time</a>
+			<a href="{{ url_for('index.distributors') }}" class="mx-2">Distributors</a>
+			<a href="{{ url_for('index.countries') }}" class="mx-2">Countries</a>
+			<a href="{{ url_for('index.countries') }}" class="mx-2">Random</a>
 
-		<hr class="seperator mt-5 mb-5">
-		<strong>
-			<a href="{{ url_for('index.index') }}" class="text-secondary mr-2">UK Box Office</a>
-		</strong>
-		<a href="{{ url_for('api.api') }}" class="text-secondary ml-2 mr-2">About</a>
-		<a href="{{ url_for('api.api') }}" class="text-secondary ml-2 mr-2">Contact</a>
-		<a href="{{ url_for('api.api') }}" class="text-secondary ml-2 mr-2">Privacy</a>
-		<a href="{{ url_for('api.api') }}" class="text-secondary ml-2 mr-2">API</a>
-		<a href="{{ url_for('index.films') }}" class="text-secondary ml-2 mr-2">Films</a>
-		<a href="{{ url_for('index.time') }}" class="text-secondary ml-2 mr-2">Time</a>
-		<a href="{{ url_for('index.distributors') }}" class="text-secondary ml-2 mr-2">Distributors</a>
-		<a href="{{ url_for('index.countries') }}" class="text-secondary ml-2 mr-2">Countries</a>
-		<a href="{{ url_for('index.countries') }}" class="text-secondary ml-2 mr-2">Random</a>
+		</div>
+	</footer>
 
-	</div>
-</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</html>
