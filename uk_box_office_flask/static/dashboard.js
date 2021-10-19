@@ -227,6 +227,7 @@ var vm = new Vue({
 				dates.push(results_by_date[i].date)
 				values.push(results_by_date[i].week_gross)
 			}
+			console.log(values)
 
 			x = [
 				{

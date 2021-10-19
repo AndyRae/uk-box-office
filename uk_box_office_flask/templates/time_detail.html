@@ -81,7 +81,7 @@
 					</tr>
 					</thead>
 					<tbody>
-					{% for i in data %}
+					{% for i in table_data %}
 						<tr class="">
 							<td>{{ loop.index }}</td>
 							<td><a class="action" href="{{ url_for('index.film', slug=i['slug']) }}">{{ i['title']|title }}</a></td>
@@ -93,6 +93,7 @@
 		</div>
 	</div>
 
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js" integrity="sha512-Wt1bJGtlnMtGP0dqNFH1xlkLBNpEodaiQ8ZN5JLA5wpc1sUlk/O5uuOMNgvzddzkpvZ9GLyYNa8w2s7rqiTk5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 	<script>
@@ -118,6 +119,13 @@
 				},
 				options: {
 					scales: {
+						x: [{
+							type: 'time',
+							offset: true,
+							time: {
+								unit: 'week'
+							},
+						}],
 						y: {
 							beginAtZero: true,
 							ticks: {
@@ -133,7 +141,7 @@
 		
 		var time_dates = []
 		var week_gross = []
-		'{% for i in w %}'
+		'{% for i in graph_data %}'
 	
 			time_dates.push('{{ i["date"]|date_convert }}')
 			week_gross.push('{{ i["week_gross"] }}')
