@@ -122,7 +122,7 @@ def data_grouped_by_film(data):
         df.groupby(["title", "slug"])
         .sum()
         .sort_values(by=["week_gross"], ascending=False)
-    ).head(20)
+    ).head(50)
     return df.reset_index().to_dict(orient="records")
 
 

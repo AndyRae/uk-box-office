@@ -67,7 +67,6 @@ Vue.component('area-chart', {
 	},
 	methods: {
 		renderAreaChart: function() {
-			console.log(this.data)
 			this.renderChart(this.data, this.optionsarea)
 		}
 	},
@@ -89,7 +88,8 @@ var vm = new Vue({
 	data: () => ({
 		loaded: false,
 		boxOffice: 0,
-		lastUpdated: null,
+		weekendBoxOffice: 0,
+		lastUpdated: "-",
 		filmTableData: [],
 		chartdata: {
 			labels: [],
@@ -193,8 +193,8 @@ var vm = new Vue({
 				lastResult = data;
 				data.results.forEach(week => {
 					// destructure the object and add to array
-					const { date, film, film_slug, distributor_id, week_gross } = week;
-					results.push({ date, film, film_slug, distributor_id, week_gross });
+					const { date, film, film_slug, distributor_id, week_gross, weekend_gross } = week;
+					results.push({ date, film, film_slug, distributor_id, week_gross, weekend_gross });
 				});
 				// increment the page with 20 on each loop
 				page += 100;
@@ -210,15 +210,13 @@ var vm = new Vue({
 
 		updateChart: function(results) {
 			// Where to do the data logic for each graph
-
+			
 			// Area Graph
-			let areaData = this.groupForAreaChart(results)
+			const areaData = this.groupForAreaChart(results)
 
 			this.$set(this.chartdataarea = {
 				datasets: areaData
 			})
-			console.log(this.chartdataarea)
-
 
 			// Line Graph
 			const results_by_date = this.groupForLineChart(results)
@@ -248,6 +246,7 @@ var vm = new Vue({
 
 			// Scorecards
 			this.boxOffice = values.reduce((a, b) => a + b, 0)
+			this.weekendBoxOffice = 0
 
 			// Film Table
 			this.filmTableData = this.groupForTable(results)
@@ -264,7 +263,7 @@ var vm = new Vue({
 
 		groupForTable: function(results) {
 			groupedFilm = Array.from(results)
-			groupedFilm.forEach(function(v){ delete v.date });
+			groupedFilm.forEach(function(v){ delete v.date, delete v.weekend_gross });
 			return Array.from(groupedFilm.reduce((acc, {week_gross, ...r}) => {
 				const key = JSON.stringify(r);
 				const current = acc.get(key) || {...r, week_gross: 0};  
@@ -313,12 +312,16 @@ var vm = new Vue({
 		},
 
 		generateDatePickers: function() {
-			var e = new Date();
-			var s = new Date();
-			s.setDate(s.getDate() - 90 );
+			var start = new Date();
+			var end = new Date();
+			var min = new Date();
+			start.setDate(start.getDate() - 90 );
+			min.setDate(min.getDate() - 547); // allow to go back 1.5 years
 	
-			this.date_picker_start = datepicker('#start', { dateSelected: new Date(s)}, { id: 1 })
-			this.date_picker_end = datepicker('#end', { dateSelected: new Date(e)}, { id: 1 })
+			this.date_picker_start = datepicker('#start', { dateSelected: new Date(start)}, { id: 1 })
+			this.date_picker_end = datepicker('#end', { dateSelected: new Date(end)}, { id: 1 })
+
+			this.date_picker_start.setMin(min)
 			
 			this.date_picker_start.calendarContainer.style.setProperty('font-size', '0.8rem')
 			this.date_picker_end.calendarContainer.style.setProperty('font-size', '0.8rem')
@@ -329,6 +332,17 @@ var vm = new Vue({
 			let end_date = this.date_picker_end.dateSelected.toISOString().split('T', 1)[0]
 
 			this.queryApi(start_date, end_date)
-		}
+		},
+
+		filter_days: function(days) {
+			var s = new Date();
+			var end = new Date();
+			s.setDate(s.getDate() - days );
+
+			this.date_picker_start.setDate(new Date(s), true)
+			this.date_picker_end.setDate(new Date(end), true)
+
+			this.filter_date()
+		} 
 	}
 })

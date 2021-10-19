@@ -6,35 +6,35 @@ Home
 
 {% block content %}
 	<div id="dash" class="container-fluid dash">
-		<div class="row align-items-start">
-			<div class="col">
-				<div class="input-group">
-					<input id="start" class="date-picker grid-section filler form-input input-sm dropdown-toggle"></input>
-					<input id="end" class="form-input grid-section filler date-picker input-sm"></input>
-					<button class="btn btn-primary input-group-btn btn-sm bg-dark" v-on:click="filter_date">Filter</button>
-				</div> 
-			</div>
-		</div>
-		<div class="row align-items-start text-center">
-			<div class="col">
-				Total Box Office: £ ${ boxOffice | Currency }
-				
-			</div>
-			<div class="col">
-				Weekend Box Office: £ 120m
+		<div class="row control-row align-items-start mb-3">
+			<div class="col-4">
+				<div class="input-group input-group-sm">
+					<input id="start" class="date-picker btn form-control form-control-sm control-element"></input>
+					<input id="end" class="date-picker btn form-control form-control-sm control-element"></input>
 
+					<!-- <input type="date" id="startd" class="date-picker btn form-control form-control-sm control-element">
+					<input type="date" id="endd" class="date-picker btn form-control form-control-sm control-element">					 -->
+					<button class="btn btn-primary btn-filter input-group-btn btn-sm" v-on:click="filter_date">Filter</button>
+					<button type="button" class="btn btn-success btn-filter input-group-btn btn-sm" v-on:click="filter_days(7)">7 days</button>
+					<button type="button" class="btn btn-warning btn-filter input-group-btn btn-sm" v-on:click="filter_days(30)">30 days</button>
+					<button type="button" class="btn btn-danger btn-filter input-group-btn btn-sm" v-on:click="filter_days(90)">3 months</button>
+				</div>
 			</div>
-			<div class="col">
-				Number of cinemas: 701
-
+			<!-- <div class="col-sm-2 control-element">
+				<button type="button" class="btn btn-primary btn-filter input-group-btn btn-sm">7 days</button>
+				<button class="badge bg-primary" href="">7 days</button>
+				<a class="badge rounded-pill bg-dark text-light" href="">30 days</a>
+				<a class="badge rounded-pill bg-dark text-light" href="">3 months</a>
+			</div> -->
+			<div class="col-2 control-element control-text">
+				<small>Total Box Office: £ ${ boxOffice | Currency }</small>
 			</div>
-			<div class="col">
-				Last updated: ${ lastUpdated }
+			<!-- <div class="col-2 control-element">
+				<small>Weekend Box Office: £ ${ weekendBoxOffice | Currency }</small>
+			</div> -->
+			<div class="col-2 control-element control-text">
+				<small>Last updated: ${ lastUpdated }</small>
 			</div>
-			<div class="col">
-				
-			</div>
-
 		</div>
 		<div class="row align-items-start">
 			<div class="col">
@@ -44,7 +44,7 @@ Home
 			</div>	
 			<div class="vr"></div>
 			<div class="col">
-				<table class="table box-table table-hover">
+				<table class="table table-sm box-table table-hover">
 					<thead>
 						<tr>
 							<th></th>
