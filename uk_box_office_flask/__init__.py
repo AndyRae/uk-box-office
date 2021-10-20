@@ -22,7 +22,7 @@ def create_app(test_config=None):
         SECRET_KEY=SECRET,
         DATABASE=os.path.join(app.instance_path, "uk_box_office_flask.sqlite"),
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
-        # SQLALCHEMY_DATABASE_URI=(os.path.join("sqlite:///"+app.instance_path, "uk_box_office_flask.sqlite")),
+        SQLALCHEMY_DATABASE_URI=(os.path.join("sqlite:///"+app.instance_path, "uk_box_office_flask.sqlite")),
     )
 
     if test_config is None:
@@ -45,20 +45,23 @@ def create_app(test_config=None):
     toolbar.init_app(app)
 
     with app.app_context():
-        from . import etl, api, views
+        from . import run, etl, api, views
 
         # create the database tables
         db.create_all()
 
         db.session.commit()
 
+        # from . import run
+        app.cli.add_command(etl.fill_db_command)
+
         # loads some test data
         # api.test_data()
 
         # load a big chunk of test data
-        path = "./data/test.csv"
-        test_data = pd.read_csv(path)
-        etl.load_dataframe(test_data)
+        # path = "./data/test.csv"
+        # test_data = pd.read_csv(path)
+        # etl.load_dataframe(test_data)
 
         # load archive
         # path = "./data/archive.csv"
