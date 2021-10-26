@@ -5,48 +5,39 @@ Home
 {% endblock %}
 
 {% block content %}
-	<div id="dash" class="container dash">
-		<div class="columns col-gapless">
-			<div class="column col-xs-3">
-				<div class="input-group">
-					<input id="start" class="date-picker grid-section filler form-input input-sm"></input>
-					<input id="end" class="form-input grid-section filler date-picker input-sm"></input>
-					<button class="btn btn-primary input-group-btn btn-sm bg-dark" v-on:click="filter_date">Filter</button>
-				</div> 
+	<div id="dash" class="container-fluid dash">
+		<div class="row control-row align-items-start mb-3">
+			<div class="col-4">
+				<div class="input-group input-group-sm">
+					<input id="start" class="date-picker btn form-control form-control-sm control-element"></input>
+					<input id="end" class="date-picker btn form-control form-control-sm control-element"></input>
+
+					<!-- <input type="date" id="startd" class="date-picker btn form-control form-control-sm control-element">
+					<input type="date" id="endd" class="date-picker btn form-control form-control-sm control-element">					 -->
+					<button class="btn btn-primary btn-filter input-group-btn btn-sm" v-on:click="filter_date">Filter</button>
+					<button type="button" class="btn btn-success btn-filter input-group-btn btn-sm" v-on:click="filter_days(7)">7 days</button>
+					<button type="button" class="btn btn-warning btn-filter input-group-btn btn-sm" v-on:click="filter_days(30)">30 days</button>
+					<button type="button" class="btn btn-danger btn-filter input-group-btn btn-sm" v-on:click="filter_days(90)">3 months</button>
+				</div>
 			</div>
-			<div class="column col-md-9 filler"></div>
-			<div class="column col-md-9 filler"></div>
+
+			<div class="col-2 control-element control-text">
+				<small>Total Box Office: £ ${ boxOffice | Currency }</small>
+			</div>
+
+			<div class="col-2 control-element control-text">
+				<small>Last updated: ${ lastUpdated }</small>
+			</div>
 		</div>
-		<div class="columns text-center col-gapless">
-			<div class="column col-xs-3 filler grid-section">
-				Total Box Office: £ ${ boxOffice | Currency }
-				
-			</div>
-			<div class="column col-xs-3 filler grid-section">
-				Weekend Box Office: £ 120m
-
-			</div>
-			<div class="column col-xs-3 filler grid-section">
-				Number of cinemas: 701
-
-			</div>
-			<div class="column col-xs-3 filler grid-section">
-				Last update: 07/10/2021
-			</div>
-			<div class="column col-xs-3 filler grid-section">
-				
-			</div>
-
-		</div>
-		<div class="columns">
-			<div class="column col-xs-6">
-				<line-chart class="pt-2 pl-2 pr-2" v-if="loaded" :chartdata="chartdata" :options="options"></line-chart>
-				<div class="divider"></div>
-				<area-chart class="pt-2 pl-2 pr-2" v-if="loaded" :chartdataarea="chartdataarea" :optionsarea="optionsarea"></area-chart>
+		<div class="row align-items-start">
+			<div class="col">
+				<line-chart class="" v-if="loaded" :chartdata="chartdata" :options="options"></line-chart>
+				<hr>
+				<area-chart class="" v-if="loaded" :chartdataarea="chartdataarea" :optionsarea="optionsarea"></area-chart>
 			</div>	
-			<div class="divider-vert"></div>
-			<div class="column col-xs-6">
-				<table class="table box-table table-hover">
+			<div class="vr"></div>
+			<div class="col">
+				<table class="table table-sm box-table table-hover">
 					<thead>
 						<tr>
 							<th></th>

@@ -45,61 +45,55 @@
 {% endblock %}
 
 {% block header %}
-	<ul class="breadcrumb">
-		<li class="breadcrumb-item">
-		<a href="/">Home</a>
-		</li>
-		<li class="breadcrumb-item">
-		<a href="{{ url_for('index.time') }}">Dates</a>
-		</li>
-		<li class="breadcrumb-item">
-		<a href="">{{ time }}</a>
-		</li>
-	</ul>
-	<h1 class="pt-2 pb-2">UK Box Office {{ time }}</h1>
+	<nav aria-label="breadcrumb" class="mt-5">
+		<ol class="breadcrumb">
+		  <li class="breadcrumb-item"><a href="/">Home</a></li>
+		  <li class="breadcrumb-item"><a href="{{ url_for('index.time') }}">Dates</a></li>
+		  <li class="breadcrumb-item active" aria-current="page">{{ time }}</li>
+		</ol>
+	  </nav>
+
+	<h1 class="mt-4">UK Box Office {{ time }}</h1>
 {% endblock %}
 
 {% block content %}	
 
-	<div class="container grid-lg">
-		<div class="p-centered pt-2 pb-2">
+	<div class="container">
+		<div class="p-centered">
 
-			<canvas id="myChart" class="pt-2 pb-2" width="100%" height="50px"></canvas>
+			<canvas id="myChart" class="" width="100%" height="50px"></canvas>
 			
-			<div class="divider pb-2 pt-2"></div>
+			<hr>
 
 			{% for j in months %}
-				<a class="action chip pt-2 pb-2" href="{{ url_for('index.month', year=year, month=j) }}">{{ j|date_convert_to_month }}</a>
+				<a class="badge rounded-pill bg-light text-dark" href="{{ url_for('index.month', year=year, month=j) }}">{{ j|date_convert_to_month }}</a>
 			{% endfor %}
-			<button class="btn float-right">Export (.csv)</button>	
+			<button type="button" class="btn btn-outline-primary float-end">Export (.csv)</button>
 		</div>
 
 		<div class="columns">
-			<div class="column col-xs-6">
-
-				<table class="table table-striped table-hover pt-2 pb-2">
-					<thead>
-						<tr>
-						  <th>Rank</th>
-						  <th>Film</th>
-						  <th>Total Gross     </th>
+			<table class="table table-striped table-hover">
+				<thead>
+					<tr>
+						<th>Rank</th>
+						<th>Film</th>
+						<th>Total Gross</th>
+					</tr>
+					</thead>
+					<tbody>
+					{% for i in table_data %}
+						<tr class="">
+							<td>{{ loop.index }}</td>
+							<td><a class="action" href="{{ url_for('index.film', slug=i['slug']) }}">{{ i['title']|title }}</a></td>
+							<td>{{ "£ {:,}".format(i['week_gross']) }}</td>
 						</tr>
-					  </thead>
-					  <tbody>
-						{% for i in data %}
-							<tr class="">
-								<td>{{ loop.index }}</td>
-								<td><a class="action" href="{{ url_for('index.film', slug=i['slug']) }}">{{ i['title']|title }}</a></td>
-								<td>{{ "£ {:,}".format(i['week_gross']) }}</td>
-							</tr>
-						{% endfor %}
-					  </tbody>
-				</table>
-
-			</div>
+					{% endfor %}
+					</tbody>
+			</table>
 		</div>
 	</div>
 
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js" integrity="sha512-Wt1bJGtlnMtGP0dqNFH1xlkLBNpEodaiQ8ZN5JLA5wpc1sUlk/O5uuOMNgvzddzkpvZ9GLyYNa8w2s7rqiTk5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 	<script>
@@ -113,10 +107,10 @@
 						label: 'Box Office',
 						data: week_gross,
 						backgroundColor: [
-							'#FFCDD2',
+							'#FF8321',
 						],
 						borderColor: [
-							'#FFCDD2',
+							'#FF8321',
 						],
 						pointStyle: 'circle',
 						tension: 0.3,
@@ -125,6 +119,13 @@
 				},
 				options: {
 					scales: {
+						x: [{
+							type: 'time',
+							offset: true,
+							time: {
+								unit: 'week'
+							},
+						}],
 						y: {
 							beginAtZero: true,
 							ticks: {
@@ -140,7 +141,7 @@
 		
 		var time_dates = []
 		var week_gross = []
-		'{% for i in w %}'
+		'{% for i in graph_data %}'
 	
 			time_dates.push('{{ i["date"]|date_convert }}')
 			week_gross.push('{{ i["week_gross"] }}')

@@ -19,5 +19,4 @@ settings.py
 *.xls
 .DS_store
 .vscode
-*.json
 .env
