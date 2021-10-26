@@ -8,33 +8,9 @@ import urllib
 from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
 
-
-import click
 import pandas as pd
-from flask import current_app, g
-from flask import Flask
-from flask.cli import with_appcontext
 
-from . import db, models, run
-
-def fill_db():
-    country = models.Country(name="UK")
-    distributor = models.Distributor(name="SONY")
-
-    db.session.add(country)
-    # path = "./data/test.csv"
-    # test_data = pd.read_csv(path)
-    # load_dataframe(test_data)
-    # api.test_data()
-    print("Hello World!")
-
-
-@click.command("fill-db")
-@with_appcontext
-def fill_db_command():
-    """Clear the existing data and create new tables."""
-    fill_db()
-    click.echo("Initialised the database.")
+from . import db, models
 
 
 def get_country(country: str) -> models.Country:
@@ -98,14 +74,7 @@ def load_dataframe(archive: pd.DataFrame) -> None:
     for i in list_of_films:
         i["country"] = get_country(i["country"])
         i["distributor"] = get_distributor(i["distributor"])
-        # i["title"] = get_film(i["title"], i["distributor"], i["country"])
         i["film"] = get_film(i["film"], i["distributor"], i["country"])
-
-        # for key in i:  # TODO: probably can change data to not need this.
-        #     try:
-        #         i[key] = int(i[key])
-        #     except TypeError:
-        #         pass
 
         week = models.Week(**i)
         db.session.add(week)

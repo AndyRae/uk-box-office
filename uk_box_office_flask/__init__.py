@@ -20,9 +20,11 @@ def create_app(test_config=None):
     SECRET = os.environ.get("secret")
     app.config.from_mapping(
         SECRET_KEY=SECRET,
-        DATABASE=os.path.join(app.instance_path, "uk_box_office_flask.sqlite"),
+        DATABASE=os.path.join(app.instance_path, "db.sqlite"),
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
-        SQLALCHEMY_DATABASE_URI=(os.path.join("sqlite:///"+app.instance_path, "uk_box_office_flask.sqlite")),
+        SQLALCHEMY_DATABASE_URI=(
+            os.path.join("sqlite:///" + app.instance_path, "db.sqlite")
+        ),
     )
 
     if test_config is None:
@@ -52,28 +54,9 @@ def create_app(test_config=None):
 
         db.session.commit()
 
-        # from . import run
-        app.cli.add_command(etl.fill_db_command)
+        from . import run
 
-        # loads some test data
-        # api.test_data()
-
-        # load a big chunk of test data
-        # path = "./data/test.csv"
-        # test_data = pd.read_csv(path)
-        # etl.load_dataframe(test_data)
-
-        # load archive
-        # path = "./data/archive.csv"
-        # archive = pd.read_csv(path)
-        # etl.load_dataframe(archive)
-
-        # load excel weekly
-        # load_dotenv()
-        # source_url = os.environ.get("source_url")
-        # path = etl.get_excel_file(source_url)
-        # df = etl.extract_box_office(path + ".xls")
-        # etl.load_dataframe(df)
+        app.cli.add_command(run.fill_db_command)
 
         app.register_blueprint(api.bp)
         app.register_blueprint(views.bp)

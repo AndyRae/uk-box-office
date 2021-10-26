@@ -79,7 +79,9 @@ def film(slug):
     df = df.asfreq("W", fill_value=0)
 
     return render_template(
-        "film_detail.html", data=data, chart_data=df.reset_index().to_dict(orient="records")
+        "film_detail.html",
+        data=data,
+        chart_data=df.reset_index().to_dict(orient="records"),
     )
 
 
@@ -152,7 +154,12 @@ def year(year: int):
     months = range(1, 13)
 
     return render_template(
-        "time_detail.html", table_data=df, graph_data=df_2, time=year, months=months, year=year
+        "time_detail.html",
+        table_data=df,
+        graph_data=df_2,
+        time=year,
+        months=months,
+        year=year,
     )
 
 
@@ -178,7 +185,12 @@ def month(year: str, month: str):
     df_2 = data_grouped_by_date(data)
 
     return render_template(
-        "time_detail.html", table_data=df, graph_data=df_2, time=time, months=months, year=year
+        "time_detail.html",
+        table_data=df,
+        graph_data=df_2,
+        time=time,
+        months=months,
+        year=year,
     )
 
 

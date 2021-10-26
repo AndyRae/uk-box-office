@@ -94,7 +94,9 @@ class Week(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     # film_id = db.Column(db.Integer, db.ForeignKey("film.title"), nullable=False)
     film_id = db.Column(db.Integer, db.ForeignKey("film.id"), nullable=False)
-    film = db.relationship("Film", back_populates="weeks", innerjoin=True, lazy="joined")
+    film = db.relationship(
+        "Film", back_populates="weeks", innerjoin=True, lazy="joined"
+    )
     country_id = db.Column(db.Integer, db.ForeignKey("country.name"), nullable=False)
     distributor_id = db.Column(
         db.Integer, db.ForeignKey("distributor.name"), nullable=False
