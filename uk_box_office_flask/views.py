@@ -1,13 +1,12 @@
 import calendar
 import datetime
 
-from flask import Blueprint, render_template, request, url_for, make_response, jsonify
+import pandas as pd
 
+from flask import Blueprint, render_template, request, url_for
 from uk_box_office_flask import db, models
-
 from werkzeug.exceptions import abort
 
-import pandas as pd
 
 bp = Blueprint("index", __name__, template_folder="templates")
 
@@ -108,6 +107,9 @@ def country(slug: str):
 
 
 def data_grouped_by_date(data):
+    """
+    Calculates the gross by date
+    """
     df = pd.DataFrame([i.as_df() for i in data], columns=["date", "week_gross"])
     df = df.groupby(["date"]).sum().sort_values(by=["date"])
     return df.reset_index().to_dict(orient="records")
@@ -115,7 +117,7 @@ def data_grouped_by_date(data):
 
 def data_grouped_by_film(data):
     """
-    Calculates the total gross for this collection of weeks
+    Calculates the total gross per film for this collection of weeks
     """
     df = pd.DataFrame(
         [i.as_df2() for i in data], columns=["title", "slug", "week_gross"]

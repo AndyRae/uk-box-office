@@ -1,14 +1,16 @@
-from datetime import datetime
 import os
-
-from dotenv import load_dotenv
-from flask import Flask, json
-from flask_sqlalchemy import SQLAlchemy
-from flask_debugtoolbar import DebugToolbarExtension
 
 import pandas as pd
 
+from dotenv import load_dotenv
+from flask import Flask
+from flask_apscheduler import APScheduler
+from flask_sqlalchemy import SQLAlchemy
+from flask_debugtoolbar import DebugToolbarExtension
+
+
 db = SQLAlchemy()
+scheduler = APScheduler()
 toolbar = DebugToolbarExtension()
 
 
@@ -22,9 +24,9 @@ def create_app(test_config=None):
         SECRET_KEY=SECRET,
         DATABASE=os.path.join(app.instance_path, "db.sqlite"),
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
-        SQLALCHEMY_DATABASE_URI=(
-            os.path.join("sqlite:///" + app.instance_path, "db.sqlite")
-        ),
+        # SQLALCHEMY_DATABASE_URI=(
+        #     os.path.join("sqlite:///" + app.instance_path, "db.sqlite")
+        # ),
     )
 
     if test_config is None:
@@ -46,19 +48,27 @@ def create_app(test_config=None):
     # Debug toolbar
     toolbar.init_app(app)
 
+    # Scheduler
+    scheduler.init_app(app)
+
     with app.app_context():
-        from . import run, etl, api, views
+        from . import cli, etl, api, views
 
         # create the database tables
         db.create_all()
-
         db.session.commit()
 
-        from . import run
+        path = "./data/test.csv"
+        input_data = pd.read_csv(path)
+        etl.load_dataframe(input_data)
 
-        app.cli.add_command(run.fill_db_command)
+        app.cli.add_command(cli.fill_db_command)
 
         app.register_blueprint(api.bp)
         app.register_blueprint(views.bp)
+
+        from . import tasks
+
+        # scheduler.start()
 
         return app

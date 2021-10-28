@@ -1,16 +1,12 @@
-import math
 import os
-import pandas as pd
-from pandas.tseries.offsets import Week
 import requests
 import urllib
-
 from datetime import datetime, timedelta
-from bs4 import BeautifulSoup
 
 import pandas as pd
 
-from . import db, models
+from bs4 import BeautifulSoup
+from uk_box_office_flask import db, models
 
 
 def get_country(country: str) -> models.Country:
@@ -93,8 +89,9 @@ def get_excel_file(source_url: str) -> str:
             excel_link = excel_element.get("href")
             excel_title = row.find("span").get_text().split("-")[-1]
             print(f"Found {excel_title}")
-            urllib.request.urlretrieve(excel_link, excel_title + ".xls")
-            return excel_title
+            path = "./data/" + excel_title + ".xls"
+            urllib.request.urlretrieve(excel_link, path)
+            return path
 
 
 def spellcheck_distributor(distributor: pd.Series) -> str:
@@ -146,7 +143,7 @@ def get_week_box_office(row: pd.Series) -> int:
     Returns the week box office
     Used in an apply method with pandas.
     """
-    title = row["title"]
+    film = row["film"]
 
     # If it's week 1
     if row["weeks_on_release"] == 1:
@@ -159,7 +156,7 @@ def get_week_box_office(row: pd.Series) -> int:
 
     most_recent_film_match = (
         models.Week.query.filter(
-            models.Film.title == title,
+            models.Film.title == film,
             models.Week.date >= previous_period,
             models.Week.date <= filter_date,
         )
@@ -198,7 +195,7 @@ def extract_box_office(filename: str) -> pd.DataFrame:
 
     df.columns = [
         "rank",
-        "title",
+        "film",
         "country",
         "weekend_gross",
         "distributor",
@@ -211,11 +208,11 @@ def extract_box_office(filename: str) -> pd.DataFrame:
     df = df.dropna(how="all", axis=1, thresh=2)
 
     df.insert(0, "date", date)
-    df["title"] = df["title"].astype(str).str.upper()
+    df["film"] = df["film"].astype(str).str.upper()
     df["country"] = df["country"].astype(str).str.upper()
     df["distributor"] = df["distributor"].astype(str).str.upper()
 
-    df["title"] = df["title"].map(spellcheck_film)
+    df["film"] = df["film"].map(spellcheck_film)
     df["distributor"] = df["distributor"].map(spellcheck_distributor)
 
     df["week_gross"] = df.apply(get_week_box_office, axis=1)
@@ -223,7 +220,7 @@ def extract_box_office(filename: str) -> pd.DataFrame:
     df = df.astype(
         {
             "rank": int,
-            "title": str,
+            "film": str,
             "country": str,
             "weekend_gross": int,
             "distributor": str,
@@ -246,7 +243,7 @@ def build_archive() -> None:
         columns=[
             "date",
             "rank",
-            "title",
+            "film",
             "country",
             "weekend_gross",
             "distributor",
@@ -280,7 +277,7 @@ def transform_archive(filename: str) -> None:
     df.columns = [
         "date",
         "rank",
-        "title",
+        "film",
         "country",
         "weekend_gross",
         "distributor",
