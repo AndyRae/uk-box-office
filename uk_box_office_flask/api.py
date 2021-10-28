@@ -1,17 +1,9 @@
 from datetime import datetime
-from operator import and_
 from typing import Dict, List
-from warnings import filters
 from flask import (
     Blueprint,
-    flash,
-    g,
-    json,
-    redirect,
-    render_template,
     make_response,
     request,
-    url_for,
     jsonify,
 )
 
@@ -30,7 +22,8 @@ def page_not_found(e):
 @bp.route("/api")
 def api():
     """
-    Main API endpoint.
+    Main API endpoint - returns box office data.
+    Can filter on title, start date, end date, distributor.
     """
     query = db.session.query(models.Week)
 
@@ -64,6 +57,9 @@ def api():
 
 @bp.route("/api/films")
 def films():
+    """
+    Films endpoint - returns list of films data by title.
+    """
     query = db.session.query(models.Film)
     if "title" in request.args:
         title = str(request.args["title"])
@@ -85,6 +81,9 @@ def films():
 
 @bp.route("/api/film")
 def film():
+    """
+    Film endpoint - returns single film data by title.
+    """
     if "title" in request.args:
         title = str(request.args["title"])
 
@@ -100,6 +99,9 @@ def film():
 
 @bp.route("/api/distributors")
 def distributors():
+    """
+    Distributors endpoint - returns list of distributors by name
+    """
     query = db.session.query(models.Distributor)
     if "name" in request.args:
         name = str(request.args["name"])
@@ -120,6 +122,10 @@ def distributors():
 
 
 def to_date(date_string: str):
+    """
+    Converts date string to a date object.
+    Helper function for the main api endpoint.
+    """
     return datetime.strptime(date_string, "%Y-%m-%d")
 
 

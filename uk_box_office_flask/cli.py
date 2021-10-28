@@ -1,19 +1,20 @@
+import os
+
 import click
 import pandas as pd
-from flask.cli import with_appcontext
-import os
-from dotenv import load_dotenv
 
-from . import etl
+from flask.cli import with_appcontext
+from dotenv import load_dotenv
+from uk_box_office_flask import etl
 
 
 @with_appcontext
 def fill_db():
     # full archive
-    # path = "./data/archive.csv"
+    path = "./data/archive.csv"
 
     # some test data
-    path = "./data/test.csv"
+    # path = "./data/test.csv"
     input_data = pd.read_csv(path)
     etl.load_dataframe(input_data)
 

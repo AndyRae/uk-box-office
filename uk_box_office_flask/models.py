@@ -1,10 +1,7 @@
 from datetime import datetime
 
 from uk_box_office_flask import db
-
 from slugify import slugify
-
-import functools
 
 
 class Country(db.Model):
@@ -57,7 +54,6 @@ class Film(db.Model):
     __tablename__ = "film"
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(160), nullable=False)
-    # weeks = db.relationship("Week", backref="title", lazy="dynamic")
     weeks = db.relationship("Week", back_populates="film")
     country_id = db.Column(db.Integer, db.ForeignKey("country.name"), nullable=False)
     distributor_id = db.Column(
@@ -92,7 +88,6 @@ class Film(db.Model):
 class Week(db.Model):
     __tablename__ = "week"
     id = db.Column(db.Integer, primary_key=True)
-    # film_id = db.Column(db.Integer, db.ForeignKey("film.title"), nullable=False)
     film_id = db.Column(db.Integer, db.ForeignKey("film.id"), nullable=False)
     film = db.relationship(
         "Film", back_populates="weeks", innerjoin=True, lazy="joined"
