@@ -1,3 +1,5 @@
+"""Front end pages"""
+
 import calendar
 import datetime
 

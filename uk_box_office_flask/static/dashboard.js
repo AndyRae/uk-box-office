@@ -7,8 +7,7 @@ Vue.filter("TitleCase", value => {
 
 
 Vue.filter("Currency", value => {
-	value= "" + value
-	return value.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+	return value.toLocaleString('en-US')
 });
 
 
