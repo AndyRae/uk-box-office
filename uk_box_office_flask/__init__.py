@@ -2,7 +2,6 @@ import os
 
 import pandas as pd
 
-from dotenv import load_dotenv
 from flask import Flask
 from flask_apscheduler import APScheduler
 from flask_sqlalchemy import SQLAlchemy
@@ -16,25 +15,12 @@ toolbar = DebugToolbarExtension()
 
 
 def create_app(test_config=None):
-    # create the app
     app = Flask(__name__, instance_relative_config=True)
-    # app.debug = True
-    # load_dotenv()
-    # SECRET = os.environ.get("secret")
-    
-    # app.config.from_mapping(
-    #     SECRET_KEY=SECRET,
-    #     DATABASE=os.path.join(app.instance_path, "db.sqlite"),
-    #     SQLALCHEMY_TRACK_MODIFICATIONS=False,
-    #     # SQLALCHEMY_DATABASE_URI=(
-    #     #     os.path.join("sqlite:///" + app.instance_path, "db.sqlite")
-    #     # ),
-    # )
 
     if test_config is None:
         # load the instance config - if it exists, when not testing
         app.config.from_object(settings.DevelopmentConfig)
-        
+
         # Debug toolbar
         toolbar.init_app(app)
     else:
@@ -49,8 +35,6 @@ def create_app(test_config=None):
 
     # Database
     db.init_app(app)
-
-
 
     # Scheduler
     scheduler.init_app(app)
@@ -70,8 +54,6 @@ def create_app(test_config=None):
 
         app.register_blueprint(api.bp)
         app.register_blueprint(views.bp)
-
-        # from . import tasks
 
         scheduler.start()
 
