@@ -55,7 +55,7 @@ tomli==1.2.1
 typing-extensions==3.10.0.2
 tzdata==2021.5
 tzlocal==4.0.2
--e git+ssh://git@github.com/AndyRae/uk-box-office-flask.git@cd268aaf56cbc5f4973111eca1f31a266c3cdc51#egg=uk_box_office_flask
+-e git+ssh://git@github.com/AndyRae/uk-box-office-flask.git@7e21588d4c16ada545ece7b8124306af53f9b0c8#egg=uk_box_office_flask
 urllib3==1.26.6
 vine==5.0.0
 wcwidth==0.2.5

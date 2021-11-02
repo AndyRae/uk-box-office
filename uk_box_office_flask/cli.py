@@ -1,3 +1,5 @@
+"""CLI for database loading"""
+
 import os
 
 import click

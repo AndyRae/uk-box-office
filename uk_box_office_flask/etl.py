@@ -1,3 +1,5 @@
+"""ETL Pipeline for box office data"""
+
 import os
 import requests
 import urllib
