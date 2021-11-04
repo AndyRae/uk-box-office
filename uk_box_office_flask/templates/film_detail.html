@@ -74,7 +74,7 @@
 			Distributor: <a class="action" href="{{ url_for('index.distributor', slug=data['distributor']['slug']) }}">{{ data.distributor|title }}</a>
 			</div>
 			<div class="col">
-				<button type="button" class="btn btn-outline-primary float-end">Export (.csv)</button>
+				<button type="button" class="btn btn-outline-primary float-end" href="{{ url_for('index.film_csv', slug=data['slug']) }}.csv">Export (.csv)</button>
 			</div>
 		</div>
 

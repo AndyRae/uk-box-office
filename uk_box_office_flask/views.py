@@ -5,7 +5,7 @@ import datetime
 
 import pandas as pd
 
-from flask import Blueprint, render_template, request, url_for
+from flask import Blueprint, render_template, request, url_for, make_response
 from uk_box_office_flask import db, models
 from werkzeug.exceptions import abort
 
@@ -82,8 +82,28 @@ def film(slug):
     return render_template(
         "film_detail.html",
         data=data,
-        chart_data=df.reset_index().to_dict(orient="records"),
+        chart_data=df.reset_index().to_dict(orient="records")
     )
+
+@bp.route("/csv/<slug>")
+def film_csv(slug):
+    query = db.session.query(models.Film)
+    query = query.filter(models.Film.slug == slug)
+    data = query.first()
+
+    if data is None:
+        abort(404)
+
+    # Builds the missing dates if needed
+    df = pd.DataFrame([i.as_df() for i in data.weeks], columns=["date", "week_gross"])
+    df.set_index(pd.DatetimeIndex(df["date"].values), inplace=True)
+    df.drop(["date"], axis=1, inplace=True)
+    df = df.asfreq("W", fill_value=0)
+
+    resp = make_response(df.to_csv())
+    resp.headers["Content-Disposition"] = "attachment; filename=export.csv"
+    resp.headers["Content-Type"] = "text/csv"
+    return resp
 
 
 @bp.route("/distributors/<slug>/")
