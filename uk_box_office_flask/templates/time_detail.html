@@ -66,9 +66,11 @@
 			<hr>
 
 			{% for j in months %}
-				<a class="badge rounded-pill bg-light text-dark" href="{{ url_for('index.month', year=year, month=j) }}">{{ j|date_convert_to_month }}</a>
+				<a class="badge rounded-pill bg-light text-dark" href="{{ url_for('index.all_time', year=year, month=j) }}">{{ j|date_convert_to_month }}</a>
 			{% endfor %}
-			<button type="button" class="btn btn-outline-primary float-end">Export (.csv)</button>
+			<a href="{{ url_for('index.time_csv', year=year) }}">
+				<button type="button" class="btn btn-outline-primary float-end">Export (.csv)</button>
+			</a>
 		</div>
 
 		<div class="columns">

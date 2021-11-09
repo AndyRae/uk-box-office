@@ -85,7 +85,7 @@ def film(slug):
         chart_data=df.reset_index().to_dict(orient="records")
     )
 
-@bp.route("/csv/<slug>")
+@bp.route("/film-csv/<slug>")
 def film_csv(slug):
     query = db.session.query(models.Film)
     query = query.filter(models.Film.slug == slug)
@@ -160,62 +160,108 @@ def time():
     return render_template("time.html", years=years, months=months)
 
 
+def get_time_data(year: int, start_month=1, end_month=12):
+    """
+    
+    """
+    last_day = calendar.monthrange(year, end_month)[1]
+
+    query = db.session.query(models.Week)
+    start_date = datetime.date(int(year), start_month, 1)
+    end_date = datetime.date(int(year), end_month, last_day)
+
+    query = query.filter(models.Week.date >= start_date)
+    query = query.filter(models.Week.date <= end_date)
+    return query.all()
+
+
+# @bp.route("/time/<int:year>/")
+# def year(year: int):
+#     data = get_time_data(year)
+
+#     if len(data) == 0:
+#         abort(404)
+
+#     table_data = data_grouped_by_film(data)
+#     graph_data = data_grouped_by_date(data)
+#     months = range(1, 13)
+
+#     return render_template(
+#         "time_detail.html",
+#         table_data=table_data,
+#         graph_data=graph_data,
+#         time=year,
+#         months=months,
+#         year=year,
+#     )
+
 @bp.route("/time/<int:year>/")
-def year(year: int):
-    query = db.session.query(models.Week)
-    start_date = datetime.date(int(year), 1, 1)
-    end_date = datetime.date(int(year), 12, 31)
-
-    query = query.filter(models.Week.date >= start_date)
-    query = query.filter(models.Week.date <= end_date)
-    data = query.all()
-
-    if len(data) == 0:
-        abort(404)
-
-    df = data_grouped_by_film(data)
-    df_2 = data_grouped_by_date(data)
-    months = range(1, 13)
-
-    return render_template(
-        "time_detail.html",
-        table_data=df,
-        graph_data=df_2,
-        time=year,
-        months=months,
-        year=year,
-    )
-
-
 @bp.route("/time/<int:year>/<int:month>/")
-def month(year: str, month: str):
-    last_day = calendar.monthrange(year, month)[1]
+def all_time(year: str, month: str):
+    if month is not None:
+        data = get_time_data(year, month, month)
+    else:
+        data = get_time_data(year)
 
-    query = db.session.query(models.Week)
-    start_date = datetime.date(int(year), int(month), 1)
-    end_date = datetime.date(int(year), int(month), last_day)
+    # data = get_time_data(year, month, month)
 
-    query = query.filter(models.Week.date >= start_date)
-    query = query.filter(models.Week.date <= end_date)
-    data = query.all()
+    time = datetime.date(int(year), month, 1).strftime("%B %Y")
 
-    time = end_date.strftime("%B %Y")
     months = range(1, 13)
 
     if len(data) == 0:
         abort(404)
 
-    df = data_grouped_by_film(data)
-    df_2 = data_grouped_by_date(data)
+    table_data = data_grouped_by_film(data)
+    graph_data = data_grouped_by_date(data)
 
     return render_template(
         "time_detail.html",
-        table_data=df,
-        graph_data=df_2,
+        table_data=table_data,
+        graph_data=graph_data,
         time=time,
         months=months,
         year=year,
     )
+
+
+# @bp.route("/time/<int:year>/<int:month>/")
+# def month(year: str, month: str):
+#     data = get_time_data(year, month, month)
+
+#     time = datetime.date(int(year), month, 1).strftime("%B %Y")
+
+#     months = range(1, 13)
+
+#     if len(data) == 0:
+#         abort(404)
+
+#     table_data = data_grouped_by_film(data)
+#     graph_data = data_grouped_by_date(data)
+
+#     return render_template(
+#         "time_detail.html",
+#         table_data=table_data,
+#         graph_data=graph_data,
+#         time=time,
+#         months=months,
+#         year=year,
+#     )
+
+@bp.route("/time-csv/<year>")
+@bp.route("/time-csv/<year>/<month>")
+def time_csv(year, month=1):
+    data = get_time_data(year, month, month)
+
+    if data is None:
+        abort(404)
+
+    df = data_grouped_by_film(data)
+
+    resp = make_response(df.to_csv())
+    resp.headers["Content-Disposition"] = "attachment; filename=export.csv"
+    resp.headers["Content-Type"] = "text/csv"
+    return resp
 
 
 @bp.app_template_filter()
