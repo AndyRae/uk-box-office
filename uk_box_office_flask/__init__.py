@@ -6,6 +6,7 @@ from flask import Flask
 from flask_apscheduler import APScheduler
 from flask_sqlalchemy import SQLAlchemy
 from flask_debugtoolbar import DebugToolbarExtension
+from elasticsearch import Elasticsearch
 from uk_box_office_flask import settings
 
 
@@ -38,6 +39,13 @@ def create_app(test_config=None):
 
     # Scheduler
     scheduler.init_app(app)
+
+    # Elasticsearch
+    app.elasticsearch = (
+        Elasticsearch([app.config["ELASTICSEARCH_URL"]])
+        if app.config["ELASTICSEARCH_URL"]
+        else None
+    )
 
     with app.app_context():
         from . import cli, etl, api, views, tasks

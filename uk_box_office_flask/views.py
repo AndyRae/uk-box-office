@@ -5,8 +5,8 @@ import datetime
 
 import pandas as pd
 
-from flask import Blueprint, render_template, request, url_for, make_response
-from uk_box_office_flask import db, models
+from flask import Blueprint, render_template, request, url_for, make_response, g
+from uk_box_office_flask import db, models, forms
 from werkzeug.exceptions import abort
 
 
@@ -16,6 +16,13 @@ bp = Blueprint("index", __name__, template_folder="templates")
 @bp.route("/")
 def index():
     return render_template("index.html")
+
+
+@bp.before_app_request
+def before_request():
+    db.session.commit()
+    g.search_form = SearchForm()
+    g.locale = str(get_locale())
 
 
 @bp.errorhandler(404)
@@ -82,8 +89,9 @@ def film(slug):
     return render_template(
         "film_detail.html",
         data=data,
-        chart_data=df.reset_index().to_dict(orient="records")
+        chart_data=df.reset_index().to_dict(orient="records"),
     )
+
 
 @bp.route("/film-csv/<slug>")
 def film_csv(slug):
@@ -160,10 +168,8 @@ def time():
     return render_template("time.html", years=years, months=months)
 
 
-def get_time_data(year: int, start_month: int=1, end_month: int=12):
-    """
-    
-    """
+def get_time_data(year: int, start_month: int = 1, end_month: int = 12):
+    """ """
     last_day = calendar.monthrange(int(year), int(end_month))[1]
 
     query = db.session.query(models.Week)
@@ -177,7 +183,7 @@ def get_time_data(year: int, start_month: int=1, end_month: int=12):
 
 @bp.route("/time/<int:year>/")
 @bp.route("/time/<int:year>/<int:month>/<int:end_month>")
-def time_detail(year: str, month: str=1, end_month: str=12):
+def time_detail(year: str, month: str = 1, end_month: str = 12):
     data = get_time_data(year, month, end_month)
 
     time = datetime.date(int(year), month, 1).strftime("%Y")

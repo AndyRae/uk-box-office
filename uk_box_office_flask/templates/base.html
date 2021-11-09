@@ -53,7 +53,7 @@
 					<a class="nav-link" href="{{ url_for('index.distributors') }}">Distributors</a>
 			  </li>
 			</ul>
-			<form class="d-flex">
+			<form class="d-flex" method="get" action="{{ url_for('main.search') }}">
 			  <input class="form-control form-control-sm search me-2" type="search" placeholder="Search" aria-label="Search">
 			  <!-- <button class="btn btn-outline-light" type="submit">Search</button> -->
 			</form>
