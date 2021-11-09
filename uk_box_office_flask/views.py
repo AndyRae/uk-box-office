@@ -160,11 +160,11 @@ def time():
     return render_template("time.html", years=years, months=months)
 
 
-def get_time_data(year: int, start_month=1, end_month=12):
+def get_time_data(year: int, start_month: int=1, end_month: int=12):
     """
     
     """
-    last_day = calendar.monthrange(year, end_month)[1]
+    last_day = calendar.monthrange(int(year), int(end_month))[1]
 
     query = db.session.query(models.Week)
     start_date = datetime.date(int(year), start_month, 1)
@@ -175,37 +175,12 @@ def get_time_data(year: int, start_month=1, end_month=12):
     return query.all()
 
 
-# @bp.route("/time/<int:year>/")
-# def year(year: int):
-#     data = get_time_data(year)
-
-#     if len(data) == 0:
-#         abort(404)
-
-#     table_data = data_grouped_by_film(data)
-#     graph_data = data_grouped_by_date(data)
-#     months = range(1, 13)
-
-#     return render_template(
-#         "time_detail.html",
-#         table_data=table_data,
-#         graph_data=graph_data,
-#         time=year,
-#         months=months,
-#         year=year,
-#     )
-
 @bp.route("/time/<int:year>/")
-@bp.route("/time/<int:year>/<int:month>/")
-def all_time(year: str, month: str):
-    if month is not None:
-        data = get_time_data(year, month, month)
-    else:
-        data = get_time_data(year)
+@bp.route("/time/<int:year>/<int:month>/<int:end_month>")
+def time_detail(year: str, month: str=1, end_month: str=12):
+    data = get_time_data(year, month, end_month)
 
-    # data = get_time_data(year, month, month)
-
-    time = datetime.date(int(year), month, 1).strftime("%B %Y")
+    time = datetime.date(int(year), month, 1).strftime("%Y")
 
     months = range(1, 13)
 
@@ -225,38 +200,15 @@ def all_time(year: str, month: str):
     )
 
 
-# @bp.route("/time/<int:year>/<int:month>/")
-# def month(year: str, month: str):
-#     data = get_time_data(year, month, month)
-
-#     time = datetime.date(int(year), month, 1).strftime("%B %Y")
-
-#     months = range(1, 13)
-
-#     if len(data) == 0:
-#         abort(404)
-
-#     table_data = data_grouped_by_film(data)
-#     graph_data = data_grouped_by_date(data)
-
-#     return render_template(
-#         "time_detail.html",
-#         table_data=table_data,
-#         graph_data=graph_data,
-#         time=time,
-#         months=months,
-#         year=year,
-#     )
-
 @bp.route("/time-csv/<year>")
 @bp.route("/time-csv/<year>/<month>")
 def time_csv(year, month=1):
-    data = get_time_data(year, month, month)
+    data = get_time_data(year, month)
 
     if data is None:
         abort(404)
 
-    df = data_grouped_by_film(data)
+    df = pd.DataFrame(data_grouped_by_film(data))
 
     resp = make_response(df.to_csv())
     resp.headers["Content-Disposition"] = "attachment; filename=export.csv"

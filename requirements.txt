@@ -14,6 +14,7 @@ click-repl==0.2.0
 colorama==0.4.4
 commonmark==0.9.1
 coverage==5.5
+elasticsearch==7.15.1
 Flask==2.0.1
 Flask-APScheduler==1.12.2
 Flask-DebugToolbar==0.11.0
@@ -55,7 +56,7 @@ tomli==1.2.1
 typing-extensions==3.10.0.2
 tzdata==2021.5
 tzlocal==4.0.2
--e git+ssh://git@github.com/AndyRae/uk-box-office-flask.git@7e21588d4c16ada545ece7b8124306af53f9b0c8#egg=uk_box_office_flask
+-e git+ssh://git@github.com/AndyRae/uk-box-office-flask.git@b58da59e7ecda8771aaacb091ec6b64fb5911031#egg=uk_box_office_flask
 urllib3==1.26.6
 vine==5.0.0
 wcwidth==0.2.5
