@@ -5,7 +5,15 @@ import datetime
 
 import pandas as pd
 
-from flask import Blueprint, render_template, request, url_for, make_response, g
+from flask import (
+    Blueprint,
+    render_template,
+    request,
+    url_for,
+    make_response,
+    g,
+    redirect,
+)
 from uk_box_office_flask import db, models, forms
 from werkzeug.exceptions import abort
 
@@ -21,8 +29,33 @@ def index():
 @bp.before_app_request
 def before_request():
     db.session.commit()
-    g.search_form = SearchForm()
-    g.locale = str(get_locale())
+    g.search_form = forms.SearchForm()
+    # g.locale = str(get_locale())
+
+
+@bp.route("/search")
+def search():
+    # if not g.search_form.validate():
+    #     return redirect("index.index")
+    page = request.args.get("page", 1, type=int)
+    results, total = models.Film.search(g.search_form.q.data, page, 20)
+    next_url = (
+        url_for("index.search", q=g.search_form.q.data, page=page + 1)
+        if total > page * 20
+        else None
+    )
+    prev_url = (
+        url_for("index.search", q=g.search_form.q.data, page=page - 1)
+        if page > 1
+        else None
+    )
+    return render_template(
+        "search.html",
+        title=("Search"),
+        results=results,
+        next_url=next_url,
+        prev_url=prev_url,
+    )
 
 
 @bp.errorhandler(404)

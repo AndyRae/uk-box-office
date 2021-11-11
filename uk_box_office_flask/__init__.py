@@ -54,6 +54,7 @@ def create_app(test_config=None):
         db.create_all()
         db.session.commit()
 
+        # test data
         path = "./data/test.csv"
         input_data = pd.read_csv(path)
         etl.load_dataframe(input_data)
