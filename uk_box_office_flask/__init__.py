@@ -50,7 +50,7 @@ def create_app(test_config=None):
     with app.app_context():
         from . import cli, etl, api, views, tasks
 
-        # create the database tables
+        # Create the database tables
         db.create_all()
         db.session.commit()
 
