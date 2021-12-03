@@ -4,11 +4,13 @@ services:
   db:
     image: postgres
     volumes:
-      - ./data/db:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data/
     environment:
-      - POSTGRES_DB=postgres
+      - POSTGRES_DB=uk_box_office
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    networks:
+      - elastic-network
   elastic:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
     container_name: elastic
@@ -25,10 +27,9 @@ services:
     ports:
       - 9200:9200
     networks:
-      - elastic
+      - elastic-network
   web:
     build: .
-    command: flask run
     volumes:
       - .:/app
     ports:
@@ -36,12 +37,15 @@ services:
     depends_on:
       - db
       - elastic
+    networks:
+      - elastic-network
 
 volumes:
   data01:
     driver: local
+  postgres_data:
 
 
 networks:
-  elastic:
+  elastic-network:
     driver: bridge

@@ -7,26 +7,40 @@ import pandas as pd
 
 from flask.cli import with_appcontext
 from dotenv import load_dotenv
-from uk_box_office_flask import etl
+from uk_box_office_flask import etl, db
 
 
 @with_appcontext
 def fill_db():
     # full archive
-    path = "./data/archive.csv"
+    # path = "./data/archive.csv"
 
     # some test data
-    # path = "./data/test.csv"
+    path = "./data/test.csv"
     input_data = pd.read_csv(path)
     etl.load_dataframe(input_data)
+
+
+@with_appcontext
+def init_db():
+    db.create_all()
+    db.session.commit()
+
+
+@click.command("init-db")
+@with_appcontext
+def init_db_command():
+    """Create new tables."""
+    init_db()
+    click.echo("Initialised the database.")
 
 
 @click.command("fill-db")
 @with_appcontext
 def fill_db_command():
-    """Clear the existing data and create new tables."""
+    """Fills db with archive data"""
     fill_db()
-    click.echo("Initialised the database.")
+    click.echo("Filled the database.")
 
 
 @click.command("weekly-etl")

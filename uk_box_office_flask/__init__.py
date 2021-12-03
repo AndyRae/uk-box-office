@@ -42,7 +42,7 @@ def create_app(test_config=None):
 
     # Elasticsearch
     app.elasticsearch = (
-        Elasticsearch([app.config["ELASTICSEARCH_URL"]])
+        Elasticsearch([{'host': app.config["ELASTICSEARCH_URL"], 'port': 9200}])
         if app.config["ELASTICSEARCH_URL"]
         else None
     )
@@ -50,16 +50,8 @@ def create_app(test_config=None):
     with app.app_context():
         from . import cli, etl, api, views, tasks
 
-        # Create the database tables
-        db.create_all()
-        db.session.commit()
-
-        # test data
-        path = "./data/test.csv"
-        input_data = pd.read_csv(path)
-        etl.load_dataframe(input_data)
-
         app.cli.add_command(cli.fill_db_command)
+        app.cli.add_command(cli.init_db_command)
 
         app.register_blueprint(api.bp)
         app.register_blueprint(views.bp)
