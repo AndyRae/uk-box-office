@@ -7,7 +7,7 @@ from flask_apscheduler import APScheduler
 from flask_sqlalchemy import SQLAlchemy
 from flask_debugtoolbar import DebugToolbarExtension
 from elasticsearch import Elasticsearch
-from uk_box_office_flask import settings
+from uk_box_office import settings
 
 
 db = SQLAlchemy()

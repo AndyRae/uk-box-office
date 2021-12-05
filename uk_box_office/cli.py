@@ -7,7 +7,7 @@ import pandas as pd
 
 from flask.cli import with_appcontext
 from dotenv import load_dotenv
-from uk_box_office_flask import etl, db
+from uk_box_office import etl, db
 
 
 @with_appcontext
@@ -23,6 +23,9 @@ def fill_db():
 
 @with_appcontext
 def init_db():
+    db.reflect()
+    db.drop_all()
+    db.session.commit()
     db.create_all()
     db.session.commit()
 

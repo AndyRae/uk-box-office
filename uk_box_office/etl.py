@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 import pandas as pd
 
 from bs4 import BeautifulSoup
-from uk_box_office_flask import db, models
+from uk_box_office import db, models
 
 
 def get_country(country: str) -> models.Country:

@@ -1,7 +1,7 @@
 from datetime import datetime
 
-from uk_box_office_flask import db
-from uk_box_office_flask.search import add_to_index, remove_from_index, query_index
+from uk_box_office import db
+from uk_box_office.search import add_to_index, remove_from_index, query_index
 from slugify import slugify
 
 
@@ -100,9 +100,9 @@ class Film(SearchableMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(160), nullable=False)
     weeks = db.relationship("Week", back_populates="film")
-    country_id = db.Column(db.Integer, db.ForeignKey("country.name"), nullable=False)
+    country_id = db.Column(db.Integer, db.ForeignKey("country.id"), nullable=False)
     distributor_id = db.Column(
-        db.Integer, db.ForeignKey("distributor.name"), nullable=False
+        db.Integer, db.ForeignKey("distributor.id"), nullable=False
     )
     slug = db.Column(db.String(160), nullable=False, unique=True)
 
@@ -137,9 +137,9 @@ class Week(db.Model):
     film = db.relationship(
         "Film", back_populates="weeks", innerjoin=True, lazy="joined"
     )
-    country_id = db.Column(db.Integer, db.ForeignKey("country.name"), nullable=False)
+    country_id = db.Column(db.Integer, db.ForeignKey("country.id"), nullable=False)
     distributor_id = db.Column(
-        db.Integer, db.ForeignKey("distributor.name"), nullable=False
+        db.Integer, db.ForeignKey("distributor.id"), nullable=False
     )
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     rank = db.Column(db.Integer, nullable=False)

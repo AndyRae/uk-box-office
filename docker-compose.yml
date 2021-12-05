@@ -10,7 +10,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     networks:
-      - elastic-network
+      - deploy-network
   elastic:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
     container_name: elastic
@@ -23,11 +23,11 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - data01:/usr/share/elasticsearch/data
+      - elastic_data:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
     networks:
-      - elastic-network
+      - deploy-network
   web:
     build: .
     volumes:
@@ -38,14 +38,14 @@ services:
       - db
       - elastic
     networks:
-      - elastic-network
+      - deploy-network
 
 volumes:
-  data01:
+  elastic_data:
     driver: local
   postgres_data:
 
 
 networks:
-  elastic-network:
+  deploy-network:
     driver: bridge

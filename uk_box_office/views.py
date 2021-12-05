@@ -6,7 +6,7 @@ import datetime
 import pandas as pd
 
 from flask import Blueprint, render_template, request, url_for, make_response, g
-from uk_box_office_flask import db, models, forms
+from uk_box_office import db, models, forms
 from werkzeug.exceptions import abort
 
 

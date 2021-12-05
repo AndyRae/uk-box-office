@@ -2,7 +2,7 @@
 FROM python:3
 WORKDIR /app
 ENV PYTHONUNBUFFERED=1
-ENV FLASK_APP=uk_box_office_flask
+ENV FLASK_APP=uk_box_office
 ENV FLASK_ENV=development
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
