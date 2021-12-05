@@ -6,7 +6,8 @@ from flask import Flask
 from flask_apscheduler import APScheduler
 from flask_sqlalchemy import SQLAlchemy
 from flask_debugtoolbar import DebugToolbarExtension
-from uk_box_office_flask import settings
+from elasticsearch import Elasticsearch
+from uk_box_office import settings
 
 
 db = SQLAlchemy()
@@ -39,18 +40,18 @@ def create_app(test_config=None):
     # Scheduler
     scheduler.init_app(app)
 
+    # Elasticsearch
+    app.elasticsearch = (
+        Elasticsearch([{'host': app.config["ELASTICSEARCH_URL"], 'port': 9200}])
+        if app.config["ELASTICSEARCH_URL"]
+        else None
+    )
+
     with app.app_context():
         from . import cli, etl, api, views, tasks
 
-        # create the database tables
-        db.create_all()
-        db.session.commit()
-
-        path = "./data/test.csv"
-        input_data = pd.read_csv(path)
-        etl.load_dataframe(input_data)
-
         app.cli.add_command(cli.fill_db_command)
+        app.cli.add_command(cli.init_db_command)
 
         app.register_blueprint(api.bp)
         app.register_blueprint(views.bp)
