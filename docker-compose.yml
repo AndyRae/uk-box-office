@@ -6,7 +6,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
-      - POSTGRES_DB=uk_box_office
+      - POSTGRES_DB=ukbo_app
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     networks:
@@ -29,7 +29,7 @@ services:
     networks:
       - deploy-network
   web:
-    build: .
+    build: app
     volumes:
       - .:/app
     ports:

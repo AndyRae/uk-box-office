@@ -1,7 +1,7 @@
 from datetime import datetime
 
-from uk_box_office import db
-from uk_box_office.search import add_to_index, remove_from_index, query_index
+from . import db
+from .search import add_to_index, remove_from_index, query_index
 from slugify import slugify
 
 

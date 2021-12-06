@@ -1,3 +1,0 @@
-graft uk_box_office_flask/static
-graft uk_box_office_flask/templates
-global-exclude *.pyc

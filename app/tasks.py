@@ -3,7 +3,7 @@
 import os
 
 from dotenv import load_dotenv
-from uk_box_office import scheduler, etl
+from . import scheduler, etl
 
 
 @scheduler.task(

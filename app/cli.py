@@ -7,7 +7,7 @@ import pandas as pd
 
 from flask.cli import with_appcontext
 from dotenv import load_dotenv
-from uk_box_office import etl, db
+from . import etl, db
 
 
 @with_appcontext
