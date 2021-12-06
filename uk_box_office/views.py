@@ -56,7 +56,7 @@ def search():
 def films():
     page = request.args.get("page", 1, type=int)
     query = db.session.query(models.Film)
-    data = query.order_by(models.Film.title.asc()).paginate(page, 20, False)
+    data = query.order_by(models.Film.name.asc()).paginate(page, 20, False)
     if data is None:
         abort(404)
     next_url = url_for("index.films", page=data.next_num) if data.has_next else None

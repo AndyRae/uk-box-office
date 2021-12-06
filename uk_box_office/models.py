@@ -71,8 +71,9 @@ class Country(db.Model):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
-class Distributor(db.Model):
+class Distributor(SearchableMixin, db.Model):
     __tablename__ = "distributor"
+    __searchable__ = ["name"]
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
     films = db.relationship("Film", backref="distributor", lazy=True)
@@ -96,9 +97,9 @@ class Distributor(db.Model):
 
 class Film(SearchableMixin, db.Model):
     __tablename__ = "film"
-    __searchable__ = ["title"]
+    __searchable__ = ["name"]
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(160), nullable=False)
+    name = db.Column(db.String(160), nullable=False)
     weeks = db.relationship("Week", back_populates="film")
     country_id = db.Column(db.Integer, db.ForeignKey("country.id"), nullable=False)
     distributor_id = db.Column(
@@ -108,19 +109,19 @@ class Film(SearchableMixin, db.Model):
 
     def __init__(self, *args, **kwargs):
         if "slug" not in kwargs:
-            kwargs["slug"] = slugify(kwargs.get("title", ""))
+            kwargs["slug"] = slugify(kwargs.get("name", ""))
         super().__init__(*args, **kwargs)
 
     def __repr__(self) -> str:
-        return self.title
+        return self.name
 
     def __eq__(self, o: object) -> bool:
-        return self.title == o
+        return self.name == o
 
     def as_dict(self):
         return {
             "id": self.id,
-            "title": self.title,
+            "name": self.name,
             "weeks": self.serialize_weeks(),
             "country": self.country_id,
             "distributor": self.distributor_id,
@@ -158,7 +159,7 @@ class Week(db.Model):
     def as_dict(self):
         return {
             "id": self.id,
-            "film": self.film.title,
+            "film": self.film.name,
             "film_slug": self.film.slug,
             "country_id": self.country_id,
             "distributor_id": self.distributor_id,
@@ -175,4 +176,4 @@ class Week(db.Model):
         return [self.date, self.week_gross]
 
     def as_df2(self):
-        return [self.film.title, self.film.slug, self.week_gross]
+        return [self.film.name, self.film.slug, self.week_gross]
