@@ -27,7 +27,7 @@
 				<tbody>
 				{% for i in data %}
 					<tr class="">
-						<td><a class="action" href="{{ url_for('index.film', slug=i['slug']) }}">{{ i['title']|title }}</a></td>
+						<td><a class="action" href="{{ url_for('index.film', slug=i['slug']) }}">{{ i['name']|title }}</a></td>
 						<td><a class="action" href="{{ url_for('index.distributor', slug=i['distributor']['slug']) }}">{{ i['distributor']|title }}</a></td>
 						<td>{{ "£ {:,}".format(i['weeks'][-1]['total_gross']) }}</td>
 					</tr>

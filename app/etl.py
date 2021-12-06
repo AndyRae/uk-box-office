@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 import pandas as pd
 
 from bs4 import BeautifulSoup
-from uk_box_office import db, models
+from . import db, models
 
 
 def get_country(country: str) -> models.Country:
@@ -51,11 +51,11 @@ def get_film(
     If not - creates it, adds it to the database and returns it
     """
     film = film.strip()
-    filtered_films = models.Film.query.filter_by(title=film).first()
+    filtered_films = models.Film.query.filter_by(name=film).first()
 
     if film == filtered_films:
         return filtered_films
-    new = models.Film(title=film, distributor=distributor, country=country)
+    new = models.Film(name=film, distributor=distributor, country=country)
     db.session.add(new)
     db.session.commit()
     return new

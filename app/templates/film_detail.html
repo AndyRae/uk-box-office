@@ -1,17 +1,17 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ data.title|title }}{% endblock %}
+{% block title %}{{ data.name|title }}{% endblock %}
 
 {% block schema %}
 	{
 		"@context":"https://schema.org/",
 		"@type":"Dataset",
-		"name":"{{ data.title }} Box Office Data",
-		"description":"Weekly UK Cinema Box Office data for {{ data.title }}.",
+		"name":"{{ data.name }} Box Office Data",
+		"description":"Weekly UK Cinema Box Office data for {{ data.name }}.",
 		"url":"/",
 		"isBasedOn":"https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures",
 		"keywords":[
-		   "BOX OFFICE DATA > CINEMA > {{ data.title }}",
+		   "BOX OFFICE DATA > CINEMA > {{ data.name }}",
 		],
 		"isAccessibleForFree" : true,
 		"creator":{
@@ -49,11 +49,11 @@
 		<ol class="breadcrumb">
 		  <li class="breadcrumb-item"><a href="/">Home</a></li>
 		  <li class="breadcrumb-item"><a href="{{ url_for('index.films') }}">Films</a></li>
-		  <li class="breadcrumb-item active" aria-current="page">{{ data.title|title }}</li>
+		  <li class="breadcrumb-item active" aria-current="page">{{ data.name|title }}</li>
 		</ol>
 	  </nav>
 
-	<h1 class="mt-4">{{ data.title|title }}</h1>
+	<h1 class="mt-4">{{ data.name|title }}</h1>
 {% endblock %}
 
 {% block content %}	

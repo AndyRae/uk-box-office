@@ -8,7 +8,7 @@ def test_data():
     db.session.commit()
 
     film1 = models.Film(
-        title="CANDYMAN",
+        name="CANDYMAN",
         country=country,
         distributor=distributor,
     )

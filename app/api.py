@@ -11,7 +11,7 @@ from flask import (
 
 from werkzeug.exceptions import abort
 
-from uk_box_office import db, models
+from . import db, models
 
 bp = Blueprint("api", __name__)
 
@@ -65,8 +65,8 @@ def films():
     query = db.session.query(models.Film)
     if "title" in request.args:
         title = str(request.args["title"])
-        query = query.filter(models.Film.title == title)
-    data = query.order_by(models.Film.title.asc()).all()
+        query = query.filter(models.Film.name == title)
+    data = query.order_by(models.Film.name.asc()).all()
     if data is None:
         abort(404)
 
@@ -90,7 +90,7 @@ def film():
         title = str(request.args["title"])
 
         query = db.session.query(models.Film)
-        query = query.filter(models.Film.title == title)
+        query = query.filter(models.Film.name == title)
         data = query.first()
 
         if data is None:

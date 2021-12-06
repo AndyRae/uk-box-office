@@ -7,7 +7,7 @@ from flask_apscheduler import APScheduler
 from flask_sqlalchemy import SQLAlchemy
 from flask_debugtoolbar import DebugToolbarExtension
 from elasticsearch import Elasticsearch
-from uk_box_office import settings
+from . import settings
 
 
 db = SQLAlchemy()
@@ -42,7 +42,7 @@ def create_app(test_config=None):
 
     # Elasticsearch
     app.elasticsearch = (
-        Elasticsearch([{'host': app.config["ELASTICSEARCH_URL"], 'port': 9200}])
+        Elasticsearch([{"host": app.config["ELASTICSEARCH_URL"], "port": 9200}])
         if app.config["ELASTICSEARCH_URL"]
         else None
     )
