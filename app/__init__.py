@@ -45,8 +45,10 @@ def create_app(test_config=None):
 
         return app
 
+
 def register_extensions(app):
     from . import tasks
+
     # Database
     db.init_app(app)
 
@@ -66,8 +68,8 @@ def register_blueprints(app):
 
 def register_cli(app):
     from . import cli
-    
+
     app.cli.add_command(cli.fill_db_command)
     app.cli.add_command(cli.init_db_command)
-    
+
     return None

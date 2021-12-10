@@ -1,5 +1,6 @@
 """Scheduled tasks"""
 
+from datetime import timezone
 import os
 
 from dotenv import load_dotenv
@@ -15,6 +16,7 @@ from . import scheduler, etl
     hour=12,
     minute=00,
     second=00,
+    timezone="UTC"
 )
 def run_etl():
     """
