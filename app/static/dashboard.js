@@ -209,7 +209,7 @@ var vm = new Vue({
 
 		updateChart: function(results) {
 			// Where to do the data logic for each graph
-			
+
 			// Area Graph
 			const areaData = this.groupForAreaChart(results)
 
@@ -266,7 +266,7 @@ var vm = new Vue({
 			groupedFilm.forEach(function(v){ delete v.date, delete v.weekend_gross });
 			return Array.from(groupedFilm.reduce((acc, {week_gross, ...r}) => {
 				const key = JSON.stringify(r);
-				const current = acc.get(key) || {...r, week_gross: 0};  
+				const current = acc.get(key) || {...r, week_gross: 0};
 				return acc.set(key, {...current, week_gross: current.week_gross + week_gross});
 			  }, new Map).values());
 		},
@@ -285,9 +285,9 @@ var vm = new Vue({
 			groupedFilms.splice(30)
 
 			const colors = ['#FFA188', '#006277', '#FF473E', '#009F41', '#FF8321', '#003f5c', '#2f4b7c',
-			'#665191', '#a05195', '#d45087', '#f95d6a', '#ff7c43', '#ffa600'] 
+			'#665191', '#a05195', '#d45087', '#f95d6a', '#ff7c43', '#ffa600']
 
-			// Create the dataset objects - loop through the films, and then original results for matching weeks 
+			// Create the dataset objects - loop through the films, and then original results for matching weeks
 			datasets = []
 			for (i in groupedFilms) {
 				let randomColor = colors[Math.floor(Math.random()*colors.length)]
@@ -298,12 +298,12 @@ var vm = new Vue({
 						backgroundColor: randomColor+'4d',
 						fill: true,
 				}
-				
+
 				weeks = []
 				for (j in results) {
 					if(results[j].film == groupedFilms[i].film) {
 						weeks.push({x: results[j].date, y: results[j].week_gross })
-					} 
+					}
 				}
 				x.data = weeks
 				datasets.push(x)
@@ -317,12 +317,12 @@ var vm = new Vue({
 			var min = new Date();
 			start.setDate(start.getDate() - 90 );
 			min.setDate(min.getDate() - 547); // allow to go back 1.5 years
-	
+
 			this.date_picker_start = datepicker('#start', { dateSelected: new Date(start)}, { id: 1 })
 			this.date_picker_end = datepicker('#end', { dateSelected: new Date(end)}, { id: 1 })
 
 			this.date_picker_start.setMin(min)
-			
+
 			this.date_picker_start.calendarContainer.style.setProperty('font-size', '0.8rem')
 			this.date_picker_end.calendarContainer.style.setProperty('font-size', '0.8rem')
 		},
@@ -343,6 +343,6 @@ var vm = new Vue({
 			this.date_picker_end.setDate(new Date(end), true)
 
 			this.filter_date()
-		} 
+		}
 	}
 })
