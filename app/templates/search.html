@@ -16,11 +16,24 @@
 
 {% block content %}
     <div class="container">
-
-        {% for result in results %}
-
-            <td><a class="action" href="{{ url_for('index.film', slug=result['slug']) }}">{{ result['name']|title }}</a></td>
-        {% endfor %}
+        <table class="table table-striped table-hover mt-4">
+			<thead>
+				<tr>
+					<th>Film</th>
+					<th>Distributor</th>
+					<th>Country</th>
+				</tr>
+				</thead>
+				<tbody>
+				{% for i in results %}
+					<tr class="">
+						<td><a class="action" href="{{ url_for('index.film', slug=i['slug']) }}">{{ i['name']|title }}</a></td>
+						<td>{{ i['distributor']|title}}</td>
+						<td>{{ i['country']}}</td>
+					</tr>
+				{% endfor %}
+				</tbody>
+		</table>
 
         <nav aria-label="...">
             <ul class="pager">

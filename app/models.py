@@ -71,9 +71,8 @@ class Country(db.Model):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
-class Distributor(SearchableMixin, db.Model):
+class Distributor(db.Model):
     __tablename__ = "distributor"
-    __searchable__ = ["name"]
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
     films = db.relationship("Film", backref="distributor", lazy=True)

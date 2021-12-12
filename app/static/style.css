@@ -33,11 +33,11 @@ a:visited {
 }
 
 .box-table {
-    -ms-overflow-style: none;  
-    scrollbar-width: none;  
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
-.box-table::-webkit-scrollbar { 
-    display: none;  
+.box-table::-webkit-scrollbar {
+    display: none;
 }
 
 .dash {
@@ -67,10 +67,10 @@ a:visited {
 	box-shadow: none;
 }
 
-::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+/* ::placeholder {
 	color: #fff !important;
-}
-  
+} */
+
 .date-picker {
 	/* padding-left: 15px !important; */
 	border: none;
@@ -184,7 +184,7 @@ a:visited {
 .mb-5 {
 	margin-bottom: 2rem !important;
 } */
-/* 
+/*
 @media (prefers-color-scheme:dark) {
 	body {
 		background: #21212C;

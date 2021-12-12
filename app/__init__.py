@@ -1,7 +1,5 @@
 import os
 
-import pandas as pd
-
 from flask import Flask
 from flask_apscheduler import APScheduler
 from flask_sqlalchemy import SQLAlchemy
@@ -28,17 +26,7 @@ def create_app(test_config=None):
         # load the test config if passed in
         app.config.from_mapping(test_config)
 
-    # ensure the instance folder exists
-    try:
-        os.makedirs(app.instance_path)
-    except OSError:
-        pass
-
-    # Database
-    db.init_app(app)
-
-    # Scheduler
-    scheduler.init_app(app)
+    register_extensions(app)
 
     # Elasticsearch
     app.elasticsearch = (
@@ -48,14 +36,40 @@ def create_app(test_config=None):
     )
 
     with app.app_context():
-        from . import cli, etl, api, views, tasks
+        # from . import tasks
 
-        app.cli.add_command(cli.fill_db_command)
-        app.cli.add_command(cli.init_db_command)
-
-        app.register_blueprint(api.bp)
-        app.register_blueprint(views.bp)
+        register_blueprints(app)
+        register_cli(app)
 
         scheduler.start()
 
         return app
+
+
+def register_extensions(app):
+    from . import tasks
+
+    # Database
+    db.init_app(app)
+
+    # Scheduler
+    scheduler.init_app(app)
+
+    return None
+
+
+def register_blueprints(app):
+    from . import api, views
+
+    app.register_blueprint(api.bp)
+    app.register_blueprint(views.bp)
+    return None
+
+
+def register_cli(app):
+    from . import cli
+
+    app.cli.add_command(cli.fill_db_command)
+    app.cli.add_command(cli.init_db_command)
+
+    return None

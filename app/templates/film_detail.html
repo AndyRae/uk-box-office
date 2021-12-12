@@ -56,7 +56,7 @@
 	<h1 class="mt-4">{{ data.name|title }}</h1>
 {% endblock %}
 
-{% block content %}	
+{% block content %}
 
 	<div class="container mt-4">
 		<div id="dash" class="mt-4">
@@ -97,12 +97,12 @@
 					<tr class="">
 						<td>{{ i['weeks_on_release'] }}</td>
 						<td>{{ i['date']|date_convert }}</td>
-						
+
 						<td>{{ i['rank']}}</td>
 						<td>{{ i['number_of_cinemas'] }}</td>
 						<td>{{ "£ {:,}".format(i['week_gross']) }}</td>
-						<td>{{ "£ {:,}".format(i['weekend_gross']) }}</td> 
-						<td>{{ "£ {:,}".format(i['total_gross']) }}</td> 
+						<td>{{ "£ {:,}".format(i['weekend_gross']) }}</td>
+						<td>{{ "£ {:,}".format(i['total_gross']) }}</td>
 					</tr>
 				{% endfor %}
 				</tbody>
@@ -146,7 +146,7 @@
 			}
 		});
 	}
-	
+
 	var time_dates = []
 	var week_gross = []
 	var cum_gross = []
