@@ -4,7 +4,7 @@ attrs==21.2.0
 backports.entry-points-selectable==1.1.1
 beautifulsoup4==4.10.0
 billiard==3.6.4.0
-black==21.9b0
+black==21.12b0
 blinker==1.4
 certifi==2021.5.30
 cfgv==3.3.1
@@ -19,6 +19,7 @@ coverage==5.5
 distlib==0.3.4
 elasticsearch==7.13.4
 filelock==3.4.0
+flake8==4.0.1
 Flask==2.0.1
 Flask-APScheduler==1.12.2
 Flask-DebugToolbar==0.11.0
@@ -32,6 +33,8 @@ itsdangerous==2.0.1
 Jinja2==3.0.1
 kombu==5.1.0
 MarkupSafe==2.0.1
+mccabe==0.6.1
+mypy==0.910
 mypy-extensions==0.4.3
 nodeenv==1.6.0
 numpy==1.21.2
@@ -44,7 +47,9 @@ pre-commit==2.16.0
 prompt-toolkit==3.0.21
 psycopg2==2.9.2
 py==1.10.0
+pycodestyle==2.8.0
 pydantic==1.8.2
+pyflakes==2.4.0
 Pygments==2.10.0
 pyparsing==2.4.7
 pytest==6.2.5

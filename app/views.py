@@ -1,11 +1,20 @@
 """Front end pages"""
 
 import calendar
-import datetime
+from datetime import datetime, date
+from typing import Any, Dict, List
+from flask.wrappers import Response
 
 import pandas as pd
 
-from flask import Blueprint, render_template, request, url_for, make_response, g
+from flask import (
+    Blueprint,
+    render_template,
+    request,
+    url_for,
+    make_response,
+    g,
+)
 from . import db, models, forms
 from werkzeug.exceptions import abort
 
@@ -14,33 +23,43 @@ bp = Blueprint("index", __name__, template_folder="templates")
 
 
 @bp.route("/")
-def index():
+def index() -> str:
     return render_template("index.html")
 
 
 @bp.before_app_request
-def before_request():
+def before_request() -> None:
     db.session.commit()
     g.search_form = forms.SearchForm()
 
 
 @bp.errorhandler(404)
-def page_not_found(e):
+def page_not_found(e: Any) -> str:
     return render_template("404.html")
 
 
 @bp.route("/search")
-def search():
-    page = request.args.get("page", 1, type=int)
-    results, total = models.Film.search(g.search_form.q.data, page, 20)
+def search() -> str:
+    page = request.args.get("page", default=1, type=int)
+    results, total = models.Film.search(
+        g.search_form.q.data, page, 20  # type: ignore
+    )
     next_url = (
-        url_for("index.search", q=g.search_form.q.data, page=page + 1)
-        if total > page * 20
+        url_for(
+            "index.search",
+            q=g.search_form.q.data,
+            page=page + 1,  # type: ignore
+        )
+        if total > page * 20  # type: ignore
         else None
     )
     prev_url = (
-        url_for("index.search", q=g.search_form.q.data, page=page - 1)
-        if page > 1
+        url_for(
+            "index.search",
+            q=g.search_form.q.data,
+            page=page - 1,  # type: ignore
+        )
+        if page > 1  # type: ignore
         else None
     )
     return render_template(
@@ -53,39 +72,52 @@ def search():
 
 
 @bp.route("/films")
-def films():
+def films() -> str:
     page = request.args.get("page", 1, type=int)
     query = db.session.query(models.Film)
     data = query.order_by(models.Film.name.asc()).paginate(page, 20, False)
     if data is None:
         abort(404)
-    next_url = url_for("index.films", page=data.next_num) if data.has_next else None
-    prev_url = url_for("index.films", page=data.prev_num) if data.has_prev else None
+    next_url = (
+        url_for("index.films", page=data.next_num) if data.has_next else None
+    )
+    prev_url = (
+        url_for("index.films", page=data.prev_num) if data.has_prev else None
+    )
     return render_template(
         "films.html", data=data.items, next_url=next_url, prev_url=prev_url
     )
 
 
 @bp.route("/distributors")
-def distributors():
+def distributors() -> str:
     page = request.args.get("page", 1, type=int)
     query = db.session.query(models.Distributor)
-    data = query.order_by(models.Distributor.name.asc()).paginate(page, 20, False)
+    data = query.order_by(models.Distributor.name.asc()).paginate(
+        page, 20, False
+    )
     if data is None:
         abort(404)
     next_url = (
-        url_for("index.distributors", page=data.next_num) if data.has_next else None
+        url_for("index.distributors", page=data.next_num)
+        if data.has_next
+        else None
     )
     prev_url = (
-        url_for("index.distributors", page=data.prev_num) if data.has_prev else None
+        url_for("index.distributors", page=data.prev_num)
+        if data.has_prev
+        else None
     )
     return render_template(
-        "distributors.html", data=data.items, next_url=next_url, prev_url=prev_url
+        "distributors.html",
+        data=data.items,
+        next_url=next_url,
+        prev_url=prev_url,
     )
 
 
 @bp.route("/countries")
-def countries():
+def countries() -> str:
     query = db.session.query(models.Country)
     data = query.order_by(models.Country.name.asc()).all()
     if data is None:
@@ -94,7 +126,7 @@ def countries():
 
 
 @bp.route("/films/<slug>/")
-def film(slug):
+def film(slug: str) -> str:
     query = db.session.query(models.Film)
     query = query.filter(models.Film.slug == slug)
     data = query.first()
@@ -103,7 +135,9 @@ def film(slug):
         abort(404)
 
     # Builds the missing dates if needed
-    df = pd.DataFrame([i.as_df() for i in data.weeks], columns=["date", "week_gross"])
+    df = pd.DataFrame(
+        [i.as_df() for i in data.weeks], columns=["date", "week_gross"]
+    )
     df.set_index(pd.DatetimeIndex(df["date"].values), inplace=True)
     df.drop(["date"], axis=1, inplace=True)
     df = df.asfreq("W", fill_value=0)
@@ -116,7 +150,7 @@ def film(slug):
 
 
 @bp.route("/film-csv/<slug>")
-def film_csv(slug):
+def film_csv(slug: str) -> Response:
     query = db.session.query(models.Film)
     query = query.filter(models.Film.slug == slug)
     data = query.first()
@@ -125,7 +159,9 @@ def film_csv(slug):
         abort(404)
 
     # Builds the missing dates if needed
-    df = pd.DataFrame([i.as_df() for i in data.weeks], columns=["date", "week_gross"])
+    df = pd.DataFrame(
+        [i.as_df() for i in data.weeks], columns=["date", "week_gross"]
+    )
     df.set_index(pd.DatetimeIndex(df["date"].values), inplace=True)
     df.drop(["date"], axis=1, inplace=True)
     df = df.asfreq("W", fill_value=0)
@@ -137,7 +173,7 @@ def film_csv(slug):
 
 
 @bp.route("/distributors/<slug>/")
-def distributor(slug):
+def distributor(slug: str) -> str:
     query = db.session.query(models.Distributor)
     query = query.filter(models.Distributor.slug == slug)
     data = query.first()
@@ -148,7 +184,7 @@ def distributor(slug):
 
 
 @bp.route("/countries/<slug>/")
-def country(slug: str):
+def country(slug: str) -> str:
     query = db.session.query(models.Country)
     query = query.filter(models.Country.slug == slug)
     data = query.first()
@@ -158,16 +194,18 @@ def country(slug: str):
     return render_template("country_detail.html", data=data)
 
 
-def data_grouped_by_date(data):
+def data_grouped_by_date(data: List[Any]) -> Dict[str, Any]:
     """
     Calculates the gross by date
     """
-    df = pd.DataFrame([i.as_df() for i in data], columns=["date", "week_gross"])
+    df = pd.DataFrame(
+        [i.as_df() for i in data], columns=["date", "week_gross"]
+    )
     df = df.groupby(["date"]).sum().sort_values(by=["date"])
     return df.reset_index().to_dict(orient="records")
 
 
-def data_grouped_by_film(data):
+def data_grouped_by_film(data: List[Any]) -> Dict[str, Any]:
     """
     Calculates the total gross per film for this collection of weeks
     """
@@ -183,20 +221,20 @@ def data_grouped_by_film(data):
 
 
 @bp.route("/time/")
-def time():
+def time() -> str:
     years = range(2021, 2006, -1)
     months = range(1, 13)
 
     return render_template("time.html", years=years, months=months)
 
 
-def get_time_data(year: int, start_month: int = 1, end_month: int = 12):
+def get_time_data(year: int, start_month: int = 1, end_month: int = 12) -> Any:
     """ """
     last_day = calendar.monthrange(int(year), int(end_month))[1]
 
     query = db.session.query(models.Week)
-    start_date = datetime.date(int(year), start_month, 1)
-    end_date = datetime.date(int(year), end_month, last_day)
+    start_date = date(int(year), start_month, 1)
+    end_date = date(int(year), end_month, last_day)
 
     query = query.filter(models.Week.date >= start_date)
     query = query.filter(models.Week.date <= end_date)
@@ -205,10 +243,10 @@ def get_time_data(year: int, start_month: int = 1, end_month: int = 12):
 
 @bp.route("/time/<int:year>/")
 @bp.route("/time/<int:year>/<int:month>/<int:end_month>")
-def time_detail(year: str, month: str = 1, end_month: str = 12):
+def time_detail(year: int, month: int = 1, end_month: int = 12) -> str:
     data = get_time_data(year, month, end_month)
 
-    time = datetime.date(int(year), month, 1).strftime("%Y")
+    time = date(int(year), month, 1).strftime("%Y")
 
     months = range(1, 13)
 
@@ -230,7 +268,7 @@ def time_detail(year: str, month: str = 1, end_month: str = 12):
 
 @bp.route("/time-csv/<year>")
 @bp.route("/time-csv/<year>/<month>")
-def time_csv(year, month=1):
+def time_csv(year: int, month: int = 1) -> Response:
     data = get_time_data(year, month)
 
     if data is None:
@@ -245,11 +283,11 @@ def time_csv(year, month=1):
 
 
 @bp.app_template_filter()
-def date_convert(datetime):
+def date_convert(datetime: datetime) -> str:
     return datetime.strftime("%d / %m / %Y")
 
 
 @bp.app_template_filter()
-def date_convert_to_month(m: int):
-    date = datetime.date(2020, m, 1)
-    return date.strftime("%B")
+def date_convert_to_month(m: int) -> str:
+    d = date(2020, m, 1)
+    return d.strftime("%B")

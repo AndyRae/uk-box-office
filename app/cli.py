@@ -11,7 +11,7 @@ from . import etl, db
 
 
 @with_appcontext
-def fill_db():
+def fill_db() -> None:
     # full archive
     # path = "./data/archive.csv"
 
@@ -22,7 +22,7 @@ def fill_db():
 
 
 @with_appcontext
-def init_db():
+def init_db() -> None:
     db.reflect()
     db.drop_all()
     db.session.commit()
@@ -32,7 +32,7 @@ def init_db():
 
 @click.command("init-db")
 @with_appcontext
-def init_db_command():
+def init_db_command() -> None:
     """Clears data and creates new tables."""
     init_db()
     click.echo("Initialised the database.")
@@ -40,7 +40,7 @@ def init_db_command():
 
 @click.command("fill-db")
 @with_appcontext
-def fill_db_command():
+def fill_db_command() -> None:
     """Fills db with archive data"""
     fill_db()
     click.echo("Filled the database.")
@@ -48,11 +48,14 @@ def fill_db_command():
 
 @click.command("weekly-etl")
 @with_appcontext
-def weekly_etl_command():
+def weekly_etl_command() -> None:
     """Runs the weekly etl for new box office data."""
     load_dotenv()
     source_url = os.environ.get("source_url")
-    path = etl.get_excel_file(source_url)
-    df = etl.extract_box_office(path + ".xls")
-    etl.load_dataframe(df)
-    click.echo("Weekly ETL finished.")
+    if source_url is not None:
+        path = etl.get_excel_file(source_url)
+        df = etl.extract_box_office(path + ".xls")
+        etl.load_dataframe(df)
+        click.echo("Weekly ETL finished.")
+    else:
+        click.echo("Weekly ETL failed.")

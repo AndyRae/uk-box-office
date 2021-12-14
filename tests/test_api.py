@@ -1,5 +1,9 @@
+from app import db
+from app import models
+from datetime import datetime
 
-def test_data():
+
+def test_data() -> None:
     country = models.Country(name="UK")
     distributor = models.Distributor(name="SONY")
 
