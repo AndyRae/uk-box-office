@@ -1,13 +1,14 @@
 """API access"""
 
 from datetime import datetime
-from typing import Dict, List
+from typing import Dict, List, Any
 from flask import (
     Blueprint,
     make_response,
     request,
     jsonify,
 )
+from flask.wrappers import Response
 
 from werkzeug.exceptions import abort
 
@@ -17,30 +18,25 @@ bp = Blueprint("api", __name__)
 
 
 @bp.errorhandler(404)
-def page_not_found(e):
+def page_not_found(e: Any) -> Response:
     return make_response(jsonify({"error": "Not found"}), 404)
 
 
 @bp.route("/api")
-def api():
+def api() -> Response:
     """
     Main API endpoint - returns box office data.
-    Can filter on title, start date, end date, distributor.
+    Can filter on start date, end date.
     """
     query = db.session.query(models.Week)
 
-    if "title" in request.args:
-        title = str(request.args.get("title"))
-        query = query.filter(models.Week.film_id == title)
-    if "distributor" in request.args:
-        distributor = str(request.args.get("distributor"))
-        query = query.filter(models.Week.distributor_id == distributor)
-    if "start_date" in request.args:
-        start_date = to_date(request.args.get("start_date"))
-        query = query.filter(models.Week.date >= start_date)
-    if "end_date" in request.args:
-        end_date = to_date(request.args.get("end_date"))
-        query = query.filter(models.Week.date <= end_date)
+    start_date = request.args.get("start_date")
+    if start_date is not None:
+        query = query.filter(models.Week.date >= to_date(start_date))
+
+    end_date = request.args.get("end_date")
+    if end_date is not None:
+        query = query.filter(models.Week.date <= to_date(end_date))
 
     data = query.order_by(models.Week.date.desc()).all()
     if data is None:
@@ -58,7 +54,7 @@ def api():
 
 
 @bp.route("/api/films")
-def films():
+def films() -> Response:
     """
     Films endpoint - returns list of films data by title.
     """
@@ -82,7 +78,7 @@ def films():
 
 
 @bp.route("/api/film")
-def film():
+def film() -> Response:
     """
     Film endpoint - returns single film data by title.
     """
@@ -100,7 +96,7 @@ def film():
 
 
 @bp.route("/api/distributors")
-def distributors():
+def distributors() -> Response:
     """
     Distributors endpoint - returns list of distributors by name
     """
@@ -123,7 +119,7 @@ def distributors():
     )
 
 
-def to_date(date_string: str):
+def to_date(date_string: str = "2000-01-01") -> datetime:
     """
     Converts date string to a date object.
     Helper function for the main api endpoint.
@@ -131,7 +127,9 @@ def to_date(date_string: str):
     return datetime.strptime(date_string, "%Y-%m-%d")
 
 
-def get_paginated_list(results: List[Dict], url: str, start: int, limit: int):
+def get_paginated_list(
+    results: List[Any], url: str, start: int, limit: int
+) -> Dict[str, Any]:
     """
     Pagination for the API.
     Returns a dict of the results, with additions
@@ -142,7 +140,13 @@ def get_paginated_list(results: List[Dict], url: str, start: int, limit: int):
     if count < start:
         abort(404)
     # make response
-    obj = {"start": start, "limit": limit, "count": count}
+    obj = {
+        "start": start,
+        "limit": limit,
+        "count": count,
+        "previous": str,
+        "next": str,
+    }
     # make URLs
     # make previous url
     if start == 1:

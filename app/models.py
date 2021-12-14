@@ -1,24 +1,33 @@
 from datetime import datetime
+from typing import Any, Dict, List, Tuple
 
 from . import db
 from .search import add_to_index, remove_from_index, query_index
-from slugify import slugify
+from slugify import slugify  # type: ignore
 
 
 class SearchableMixin(object):
+    __tablename__: str
+    query: Any
+    id: Any
+
     @classmethod
-    def search(cls, expression, page, per_page):
+    def search(
+        cls, expression: str, page: int, per_page: int
+    ) -> Tuple[Any, int]:
         ids, total = query_index(cls.__tablename__, expression, page, per_page)
         if total == 0:
             return cls.query.filter_by(id=0), 0
         when = [(ids[i], i) for i in range(len(ids))]
         return (
-            cls.query.filter(cls.id.in_(ids)).order_by(db.case(when, value=cls.id)),
+            cls.query.filter(cls.id.in_(ids)).order_by(
+                db.case(when, value=cls.id)
+            ),
             total,
         )
 
     @classmethod
-    def before_commit(cls, session):
+    def before_commit(cls, session: Any) -> None:
         session._changes = {
             "add": list(session.new),
             "update": list(session.dirty),
@@ -26,7 +35,7 @@ class SearchableMixin(object):
         }
 
     @classmethod
-    def after_commit(cls, session):
+    def after_commit(cls, session: Any) -> None:
         for obj in session._changes["add"]:
             if isinstance(obj, SearchableMixin):
                 add_to_index(obj.__tablename__, obj)
@@ -39,7 +48,7 @@ class SearchableMixin(object):
         session._changes = None
 
     @classmethod
-    def reindex(cls):
+    def reindex(cls) -> None:
         for obj in cls.query:
             add_to_index(cls.__tablename__, obj)
 
@@ -48,7 +57,7 @@ db.event.listen(db.session, "before_commit", SearchableMixin.before_commit)
 db.event.listen(db.session, "after_commit", SearchableMixin.after_commit)
 
 
-class Country(db.Model):
+class Country(db.Model):  # type: ignore
     __tablename__ = "country"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
@@ -56,7 +65,7 @@ class Country(db.Model):
     weeks = db.relationship("Week", backref="country", lazy="dynamic")
     slug = db.Column(db.String(160), nullable=False, unique=True)
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: str, **kwargs: str) -> None:
         if "slug" not in kwargs:
             kwargs["slug"] = slugify(kwargs.get("name", ""))
         super().__init__(*args, **kwargs)
@@ -67,11 +76,11 @@ class Country(db.Model):
     def __eq__(self, o: object) -> bool:
         return self.name == o
 
-    def as_dict(self):
+    def as_dict(self) -> Dict[str, Any]:
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
-class Distributor(db.Model):
+class Distributor(db.Model):  # type: ignore
     __tablename__ = "distributor"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
@@ -79,7 +88,7 @@ class Distributor(db.Model):
     weeks = db.relationship("Week", backref="distributor", lazy="dynamic")
     slug = db.Column(db.String(160), nullable=False, unique=True)
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: str, **kwargs: str) -> None:
         if "slug" not in kwargs:
             kwargs["slug"] = slugify(kwargs.get("name", ""))
         super().__init__(*args, **kwargs)
@@ -90,23 +99,25 @@ class Distributor(db.Model):
     def __eq__(self, o: object) -> bool:
         return self.name == o
 
-    def as_dict(self):
+    def as_dict(self) -> Dict[str, Any]:
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
-class Film(SearchableMixin, db.Model):
+class Film(SearchableMixin, db.Model):  # type: ignore
     __tablename__ = "film"
     __searchable__ = ["name"]
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(160), nullable=False)
     weeks = db.relationship("Week", back_populates="film")
-    country_id = db.Column(db.Integer, db.ForeignKey("country.id"), nullable=False)
+    country_id = db.Column(
+        db.Integer, db.ForeignKey("country.id"), nullable=False
+    )
     distributor_id = db.Column(
         db.Integer, db.ForeignKey("distributor.id"), nullable=False
     )
     slug = db.Column(db.String(160), nullable=False, unique=True)
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: str, **kwargs: str) -> None:
         if "slug" not in kwargs:
             kwargs["slug"] = slugify(kwargs.get("name", ""))
         super().__init__(*args, **kwargs)
@@ -117,7 +128,7 @@ class Film(SearchableMixin, db.Model):
     def __eq__(self, o: object) -> bool:
         return self.name == o
 
-    def as_dict(self):
+    def as_dict(self) -> Dict[str, Any]:
         return {
             "id": self.id,
             "name": self.name,
@@ -126,18 +137,20 @@ class Film(SearchableMixin, db.Model):
             "distributor": self.distributor_id,
         }
 
-    def serialize_weeks(self):
+    def serialize_weeks(self) -> List[Any]:
         return [item.as_dict() for item in self.weeks]
 
 
-class Week(db.Model):
+class Week(db.Model):  # type: ignore
     __tablename__ = "week"
     id = db.Column(db.Integer, primary_key=True)
     film_id = db.Column(db.Integer, db.ForeignKey("film.id"), nullable=False)
     film = db.relationship(
         "Film", back_populates="weeks", innerjoin=True, lazy="joined"
     )
-    country_id = db.Column(db.Integer, db.ForeignKey("country.id"), nullable=False)
+    country_id = db.Column(
+        db.Integer, db.ForeignKey("country.id"), nullable=False
+    )
     distributor_id = db.Column(
         db.Integer, db.ForeignKey("distributor.id"), nullable=False
     )
@@ -155,7 +168,7 @@ class Week(db.Model):
     def __eq__(self, o: object) -> bool:
         return self.total_gross > o
 
-    def as_dict(self):
+    def as_dict(self) -> Dict[str, Any]:
         return {
             "id": self.id,
             "film": self.film.name,
@@ -171,8 +184,8 @@ class Week(db.Model):
             "total_gross": self.total_gross,
         }
 
-    def as_df(self):
+    def as_df(self) -> List[Any]:
         return [self.date, self.week_gross]
 
-    def as_df2(self):
+    def as_df2(self) -> List[Any]:
         return [self.film.name, self.film.slug, self.week_gross]

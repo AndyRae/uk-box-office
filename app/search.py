@@ -1,25 +1,30 @@
+from typing import Any, List, Tuple
 from flask import current_app
 
 
-def add_to_index(index, model):
-    if not current_app.elasticsearch:
+def add_to_index(index: Any, model: Any) -> Any:
+    if not current_app.elasticsearch:  # type: ignore
         return
     payload = {field: getattr(model, field) for field in model.__searchable__}
-    current_app.elasticsearch.index(
+    current_app.elasticsearch.index(  # type: ignore
         index=index, doc_type=index, id=model.id, body=payload
     )
 
 
-def remove_from_index(index, model):
-    if not current_app.elasticsearch:
+def remove_from_index(index: Any, model: Any) -> Any:
+    if not current_app.elasticsearch:  # type: ignore
         return
-    current_app.elasticsearch.delete(index=index, doc_type=index, id=model.id)
+    current_app.elasticsearch.delete(  # type: ignore
+        index=index, doc_type=index, id=model.id
+    )
 
 
-def query_index(index, query, page, per_page):
-    if not current_app.elasticsearch:
+def query_index(
+    index: Any, query: str, page: int, per_page: int
+) -> Tuple[List[Any], int]:
+    if not current_app.elasticsearch:  # type: ignore
         return [], 0
-    search = current_app.elasticsearch.search(
+    search = current_app.elasticsearch.search(  # type: ignore
         index=index,
         doc_type=index,
         body={

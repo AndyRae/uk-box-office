@@ -1,8 +1,8 @@
 """ETL Pipeline for box office data"""
 
 import os
-import requests
-import urllib
+import requests  # type: ignore
+import urllib.request
 from datetime import datetime, timedelta
 
 import pandas as pd
@@ -33,7 +33,9 @@ def get_distributor(distributor: str) -> models.Distributor:
     If not - creates it, adds it to the database and returns it
     """
     distributor = distributor.strip()
-    filtered_distributors = models.Distributor.query.filter_by(name=distributor).first()
+    filtered_distributors = models.Distributor.query.filter_by(
+        name=distributor
+    ).first()
 
     if distributor == filtered_distributors:
         return filtered_distributors
@@ -65,7 +67,9 @@ def load_dataframe(archive: pd.DataFrame) -> None:
     """
     Loads a films dataframe into the database
     """
-    archive["date"] = pd.to_datetime(archive["date"], format="%Y%m%d", yearfirst=True)
+    archive["date"] = pd.to_datetime(
+        archive["date"], format="%Y%m%d", yearfirst=True
+    )
 
     list_of_films = [row.to_dict() for index, row in archive.iterrows()]
 
@@ -83,7 +87,9 @@ def get_excel_file(source_url: str) -> str:
     """
     Fetches first (latest) excel file on the source page
     """
-    soup = BeautifulSoup(requests.get(source_url, timeout=5).content, "html.parser")
+    soup = BeautifulSoup(
+        requests.get(source_url, timeout=5).content, "html.parser"
+    )
 
     for row in soup.find_all("div", {"class": "sc-fzoJMP kyojiS"}):
         excel_element = row.find("a")
@@ -94,6 +100,8 @@ def get_excel_file(source_url: str) -> str:
             path = "./data/" + excel_title + ".xls"
             urllib.request.urlretrieve(excel_link, path)
             return path
+    print("Failed weekly ETL.")
+    return "/"
 
 
 def spellcheck_distributor(distributor: pd.Series) -> str:
@@ -124,7 +132,9 @@ def spellcheck_film(film_title: pd.Series) -> str:
     film_list.columns = ["key", "correction"]
 
     if film_title in film_list["key"].values:
-        film_list = film_list[film_list["key"].str.contains(film_title, regex=False)]
+        film_list = film_list[
+            film_list["key"].str.contains(film_title, regex=False)
+        ]
         film_title = film_list["correction"].iloc[0].strip()
     return film_title
 
@@ -150,8 +160,11 @@ def get_week_box_office(row: pd.Series) -> int:
     # If it's week 1
     if row["weeks_on_release"] == 1:
         return row["total_gross"]
-    # days_to_look_back is a tradeoff - increasing captures more accurate data for some films.
-    # but for others it does create inaccurate data, as the source is unreliable.
+    """
+    days_to_look_back is a tradeoff
+    Increasing gives more accurate data for some films.
+    but for others it creates inaccurate data, as the source is unreliable.
+    """
     days_to_look_back = 90
     filter_date = pd.to_datetime(row["date"], format="%Y%m%d", yearfirst=True)
     previous_period = filter_date - timedelta(days=days_to_look_back)
@@ -192,8 +205,12 @@ def extract_box_office(filename: str) -> pd.DataFrame:
     df = df.dropna(subset=["Rank"])
     df = df.dropna(how="all", axis=1, thresh=5)
 
-    date = get_last_sunday()  # TODO: This should really be from the filename nowadays
-    df = df.drop(columns=["% change on last week", "Site average"], errors="ignore")
+    date = (
+        get_last_sunday()
+    )  # TODO: This should really be from the filename nowadays
+    df = df.drop(
+        columns=["% change on last week", "Site average"], errors="ignore"
+    )
 
     df.columns = [
         "rank",
@@ -239,7 +256,8 @@ def extract_box_office(filename: str) -> pd.DataFrame:
 def build_archive() -> None:
     """
     Legacy function for building the archive from raw excel files.
-    Keep this function if it's needed again, but it is not used in the programme.
+    Keep this function if it's needed again
+    But it is not used in the programme.
     """
     df = pd.DataFrame(
         columns=[
@@ -263,7 +281,7 @@ def build_archive() -> None:
         if filename.endswith("xls"):
             print(filename)
             path = archive_path + filename
-            films = extract_box_office(path, "archive", archive_path)
+            films = extract_box_office(path)
             df = df.append(films)
 
     df.to_csv("./data/built-archive.csv", mode="a", index=False, header=False)
@@ -272,7 +290,8 @@ def build_archive() -> None:
 def transform_archive(filename: str) -> None:
     """
     Legacy function for transforming the archive from raw excel files.
-    Keep this function if it's needed again, but it is not used in the programme.
+    Keep this function if it's needed again.
+    But it is not used in the programme.
     """
     df = pd.read_csv(filename)
 
@@ -289,7 +308,9 @@ def transform_archive(filename: str) -> None:
     ]
 
     archive = pd.read_csv("./data/archive.csv")
-    archive["date"] = pd.to_datetime(archive["date"], format="%Y%m%d", yearfirst=True)
+    archive["date"] = pd.to_datetime(
+        archive["date"], format="%Y%m%d", yearfirst=True
+    )
 
     df["week_gross"] = df.apply(get_week_box_office, axis=1, archive=archive)
 

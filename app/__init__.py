@@ -1,5 +1,5 @@
-import os
-
+from typing import Any, Mapping
+import elasticsearch
 from flask import Flask
 from flask_apscheduler import APScheduler
 from flask_sqlalchemy import SQLAlchemy
@@ -13,7 +13,7 @@ scheduler = APScheduler()
 toolbar = DebugToolbarExtension()
 
 
-def create_app(test_config=None):
+def create_app(test_config: Any = None) -> Flask:
     app = Flask(__name__, instance_relative_config=True)
 
     if test_config is None:
@@ -29,8 +29,10 @@ def create_app(test_config=None):
     register_extensions(app)
 
     # Elasticsearch
-    app.elasticsearch = (
-        Elasticsearch([{"host": app.config["ELASTICSEARCH_URL"], "port": 9200}])
+    app.elasticsearch = (  # type: ignore
+        Elasticsearch(
+            [{"host": app.config["ELASTICSEARCH_URL"], "port": 9200}]
+        )
         if app.config["ELASTICSEARCH_URL"]
         else None
     )
@@ -46,7 +48,7 @@ def create_app(test_config=None):
         return app
 
 
-def register_extensions(app):
+def register_extensions(app: Flask) -> None:
     from . import tasks
 
     # Database
@@ -58,7 +60,7 @@ def register_extensions(app):
     return None
 
 
-def register_blueprints(app):
+def register_blueprints(app: Flask) -> None:
     from . import api, views
 
     app.register_blueprint(api.bp)
@@ -66,7 +68,7 @@ def register_blueprints(app):
     return None
 
 
-def register_cli(app):
+def register_cli(app: Flask) -> None:
     from . import cli
 
     app.cli.add_command(cli.fill_db_command)

@@ -1,6 +1,5 @@
 """Scheduled tasks"""
 
-from datetime import timezone
 import os
 
 from dotenv import load_dotenv
@@ -16,9 +15,9 @@ from . import scheduler, etl
     hour=12,
     minute=00,
     second=00,
-    timezone="UTC"
+    timezone="UTC",
 )
-def run_etl():
+def run_etl() -> None:
     """
     Weekly task for the ETL pipeline of box office data.
     Added when app starts.
@@ -27,7 +26,8 @@ def run_etl():
     with scheduler.app.app_context():
         load_dotenv()
         source_url = os.environ.get("source_url")
-        path = etl.get_excel_file(source_url)
-        df = etl.extract_box_office(path)
-        etl.load_dataframe(df)
-        print("Finished ETL Pipeline task")
+        if source_url is not None:
+            path = etl.get_excel_file(source_url)
+            df = etl.extract_box_office(path)
+            etl.load_dataframe(df)
+            print("Finished ETL Pipeline task")
