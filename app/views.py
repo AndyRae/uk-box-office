@@ -1,7 +1,9 @@
 """Front end pages"""
 
 import calendar
-from datetime import datetime, date
+
+# from datetime import datetime, date, timedelta
+import datetime
 from typing import Any, Dict, List
 from flask.wrappers import Response
 
@@ -209,6 +211,7 @@ def data_grouped_by_film(data: List[Any]) -> Dict[str, Any]:
     """
     Calculates the total gross per film for this collection of weeks
     """
+    table_size = 100
     df = pd.DataFrame(
         [i.as_df2() for i in data], columns=["title", "slug", "week_gross"]
     )
@@ -216,7 +219,7 @@ def data_grouped_by_film(data: List[Any]) -> Dict[str, Any]:
         df.groupby(["title", "slug"])
         .sum()
         .sort_values(by=["week_gross"], ascending=False)
-    ).head(50)
+    ).head(table_size)
     return df.reset_index().to_dict(orient="records")
 
 
@@ -228,27 +231,85 @@ def time() -> str:
     return render_template("time.html", years=years, months=months)
 
 
-def get_time_data(year: int, start_month: int = 1, end_month: int = 12) -> Any:
-    """ """
-    last_day = calendar.monthrange(int(year), int(end_month))[1]
-
+def get_time_data(start_date: datetime.date, end_date: datetime.date) -> Any:
+    """
+    Queries the weeks database with a start and end filter
+    Returns the query object
+    """
     query = db.session.query(models.Week)
-    start_date = date(int(year), start_month, 1)
-    end_date = date(int(year), end_month, last_day)
-
     query = query.filter(models.Week.date >= start_date)
     query = query.filter(models.Week.date <= end_date)
     return query.all()
 
 
 @bp.route("/time/<int:year>/")
-@bp.route("/time/<int:year>/<int:month>/<int:end_month>")
-def time_detail(year: int, month: int = 1, end_month: int = 12) -> str:
-    data = get_time_data(year, month, end_month)
+def year_detail(year: int) -> str:
 
-    time = date(int(year), month, 1).strftime("%Y")
+    start_date = datetime.date(int(year), 1, 1)
+    end_date = datetime.date(int(year), 12, 31)
 
-    months = range(1, 13)
+    data = get_time_data(start_date, end_date)
+
+    if len(data) == 0:
+        abort(404)
+
+    table_data = data_grouped_by_film(data)
+    graph_data = data_grouped_by_date(data)
+
+    time = start_date.strftime("%Y")
+    # previous = (start_date.replace(start_date.year - 1)).strftime("%Y")
+    # next = (start_date.replace(start_date.year + 1)).strftime("%Y")
+
+    return render_template(
+        "time_detail.html",
+        table_data=table_data,
+        graph_data=graph_data,
+        time=time,
+        year=year,
+        next=year + 1,
+    )
+
+
+@bp.route("/time/<int:year>/<int:month>/")
+def month_detail(year: int, month: int) -> str:
+
+    # Get the last day of the month
+    end_day = calendar.monthrange(year, month)[1]
+
+    start_date = datetime.date(year, month, 1)
+    end_date = datetime.date(year, month, end_day)
+
+    data = get_time_data(start_date, end_date)
+
+    time = start_date.strftime("%B %Y")
+
+    if len(data) == 0:
+        abort(404)
+
+    table_data = data_grouped_by_film(data)
+    graph_data = data_grouped_by_date(data)
+
+    # previous = (start_date.replace(start_date.month - 1)).strftime("%Y")
+    next = (start_date.replace(start_date.month + 1)).strftime("%Y/%m")
+
+    return render_template(
+        "time_detail.html",
+        table_data=table_data,
+        graph_data=graph_data,
+        time=time,
+        year=year,
+        next=next,
+    )
+
+
+@bp.route("/time/<int:year>/<int:month>/<int:start_day>/")
+def week_detail(year: int, month: int, start_day: int) -> str:
+
+    start_date = datetime.date(year, month, start_day)
+
+    data = get_time_data(start_date, start_date)
+
+    time = start_date.strftime("%d %B %Y")
 
     if len(data) == 0:
         abort(404)
@@ -261,15 +322,17 @@ def time_detail(year: int, month: int = 1, end_month: int = 12) -> str:
         table_data=table_data,
         graph_data=graph_data,
         time=time,
-        months=months,
         year=year,
     )
 
 
+# TODO: Refactor the csv export functions
 @bp.route("/time-csv/<year>")
 @bp.route("/time-csv/<year>/<month>")
 def time_csv(year: int, month: int = 1) -> Response:
-    data = get_time_data(year, month)
+    start_date = datetime.date(year, month, 1)
+
+    data = get_time_data(start_date, start_date)
 
     if data is None:
         abort(404)
@@ -283,11 +346,11 @@ def time_csv(year: int, month: int = 1) -> Response:
 
 
 @bp.app_template_filter()
-def date_convert(datetime: datetime) -> str:
+def date_convert(datetime: datetime.datetime) -> str:
     return datetime.strftime("%d / %m / %Y")
 
 
 @bp.app_template_filter()
 def date_convert_to_month(m: int) -> str:
-    d = date(2020, m, 1)
+    d = datetime.date(2020, m, 1)
     return d.strftime("%B")
