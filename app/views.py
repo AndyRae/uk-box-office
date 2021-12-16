@@ -198,12 +198,16 @@ def country(slug: str) -> str:
 
 def data_grouped_by_date(data: List[Any]) -> Dict[str, Any]:
     """
-    Calculates the gross by date
+    Calculates the gross by date given a list of weeks
+    TODO: This is the place to add columns to the dates table.
+    Add number of releases? Number of cinemas? Weekend gross
+    PCT change of weekend gross
     """
     df = pd.DataFrame(
         [i.as_df() for i in data], columns=["date", "week_gross"]
     )
     df = df.groupby(["date"]).sum().sort_values(by=["date"])
+    df["pct_change"] = df.pct_change()
     return df.reset_index().to_dict(orient="records")
 
 
@@ -257,8 +261,6 @@ def year_detail(year: int) -> str:
     graph_data = data_grouped_by_date(data)
 
     time = start_date.strftime("%Y")
-    # previous = (start_date.replace(start_date.year - 1)).strftime("%Y")
-    # next = (start_date.replace(start_date.year + 1)).strftime("%Y")
 
     return render_template(
         "time_detail.html",
@@ -281,16 +283,14 @@ def month_detail(year: int, month: int) -> str:
 
     data = get_time_data(start_date, end_date)
 
-    time = start_date.strftime("%B %Y")
-
     if len(data) == 0:
         abort(404)
 
     table_data = data_grouped_by_film(data)
     graph_data = data_grouped_by_date(data)
 
-    # previous = (start_date.replace(start_date.month - 1)).strftime("%Y")
-    next = (start_date.replace(start_date.month + 1)).strftime("%Y/%m")
+    next = (start_date + datetime.timedelta(days=end_day)).strftime("%Y/%m")
+    time = start_date.strftime("%B %Y")
 
     return render_template(
         "time_detail.html",
@@ -309,13 +309,14 @@ def week_detail(year: int, month: int, start_day: int) -> str:
 
     data = get_time_data(start_date, start_date)
 
-    time = start_date.strftime("%d %B %Y")
-
     if len(data) == 0:
         abort(404)
 
     table_data = data_grouped_by_film(data)
     graph_data = data_grouped_by_date(data)
+
+    next = (start_date + datetime.timedelta(days=7)).strftime("%Y/%m/%d")
+    time = start_date.strftime("%d %B %Y")
 
     return render_template(
         "time_detail.html",
@@ -323,6 +324,7 @@ def week_detail(year: int, month: int, start_day: int) -> str:
         graph_data=graph_data,
         time=time,
         year=year,
+        next=next,
     )
 
 
