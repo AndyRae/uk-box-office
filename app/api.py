@@ -26,7 +26,7 @@ def page_not_found(e: Any) -> Response:
 def api() -> Response:
     """
     Main API endpoint - returns box office data.
-    Can filter on start date, end date.
+    Can filter on start date, end date - format: 2020-08-31
     """
     query = db.session.query(models.Week)
 

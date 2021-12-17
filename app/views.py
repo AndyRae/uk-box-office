@@ -1,7 +1,9 @@
 """Front end pages"""
 
 import calendar
-from datetime import datetime, date
+
+# from datetime import datetime, date, timedelta
+import datetime
 from typing import Any, Dict, List
 from flask.wrappers import Response
 
@@ -196,12 +198,35 @@ def country(slug: str) -> str:
 
 def data_grouped_by_date(data: List[Any]) -> Dict[str, Any]:
     """
-    Calculates the gross by date
+    Calculates the statistics by date given a list of weeks
     """
     df = pd.DataFrame(
-        [i.as_df() for i in data], columns=["date", "week_gross"]
+        [i.as_df() for i in data],
+        columns=[
+            "date",
+            "week_gross",
+            "weekend_gross",
+            "number_of_cinemas",
+            "id",
+        ],
     )
-    df = df.groupby(["date"]).sum().sort_values(by=["date"])
+
+    df = (
+        df.groupby(["date"])
+        .agg(
+            {
+                "week_gross": ["sum"],
+                "weekend_gross": ["sum"],
+                "number_of_cinemas": ["max"],
+                "id": ["size"],
+            }
+        )
+        .sort_values(by=["date"])
+    )
+    df.columns = df.columns.get_level_values(0)
+
+    df["pct_change_weekend"] = df["week_gross"].pct_change()
+    df["pct_change_week"] = df["week_gross"].pct_change()
     return df.reset_index().to_dict(orient="records")
 
 
@@ -209,6 +234,7 @@ def data_grouped_by_film(data: List[Any]) -> Dict[str, Any]:
     """
     Calculates the total gross per film for this collection of weeks
     """
+    table_size = 100
     df = pd.DataFrame(
         [i.as_df2() for i in data], columns=["title", "slug", "week_gross"]
     )
@@ -216,7 +242,7 @@ def data_grouped_by_film(data: List[Any]) -> Dict[str, Any]:
         df.groupby(["title", "slug"])
         .sum()
         .sort_values(by=["week_gross"], ascending=False)
-    ).head(50)
+    ).head(table_size)
     return df.reset_index().to_dict(orient="records")
 
 
@@ -228,27 +254,26 @@ def time() -> str:
     return render_template("time.html", years=years, months=months)
 
 
-def get_time_data(year: int, start_month: int = 1, end_month: int = 12) -> Any:
-    """ """
-    last_day = calendar.monthrange(int(year), int(end_month))[1]
-
+def get_time_data(start_date: datetime.date, end_date: datetime.date) -> Any:
+    """
+    Queries the weeks database with a start and end filter
+    Returns the query object
+    """
     query = db.session.query(models.Week)
-    start_date = date(int(year), start_month, 1)
-    end_date = date(int(year), end_month, last_day)
-
     query = query.filter(models.Week.date >= start_date)
     query = query.filter(models.Week.date <= end_date)
     return query.all()
 
 
 @bp.route("/time/<int:year>/")
-@bp.route("/time/<int:year>/<int:month>/<int:end_month>")
-def time_detail(year: int, month: int = 1, end_month: int = 12) -> str:
-    data = get_time_data(year, month, end_month)
+def year_detail(year: int) -> str:
+    """
+    Comment
+    """
+    start_date = datetime.date(int(year), 1, 1)
+    end_date = datetime.date(int(year), 12, 31)
 
-    time = date(int(year), month, 1).strftime("%Y")
-
-    months = range(1, 13)
+    data = get_time_data(start_date, end_date)
 
     if len(data) == 0:
         abort(404)
@@ -256,20 +281,85 @@ def time_detail(year: int, month: int = 1, end_month: int = 12) -> str:
     table_data = data_grouped_by_film(data)
     graph_data = data_grouped_by_date(data)
 
+    time = start_date.strftime("%Y")
+
     return render_template(
         "time_detail.html",
         table_data=table_data,
         graph_data=graph_data,
         time=time,
-        months=months,
         year=year,
+        next=year + 1,
     )
 
 
+@bp.route("/time/<int:year>/<int:month>/")
+def month_detail(year: int, month: int) -> str:
+    """
+    Comment
+    """
+    # Get the last day of the month
+    end_day = calendar.monthrange(year, month)[1]
+
+    start_date = datetime.date(year, month, 1)
+    end_date = datetime.date(year, month, end_day)
+
+    data = get_time_data(start_date, end_date)
+
+    if len(data) == 0:
+        abort(404)
+
+    table_data = data_grouped_by_film(data)
+    graph_data = data_grouped_by_date(data)
+
+    next = (start_date + datetime.timedelta(days=end_day)).strftime("%Y/%m")
+    time = start_date.strftime("%B %Y")
+
+    return render_template(
+        "time_detail.html",
+        table_data=table_data,
+        graph_data=graph_data,
+        time=time,
+        year=year,
+        next=next,
+    )
+
+
+@bp.route("/time/<int:year>/<int:month>/<int:start_day>/")
+def week_detail(year: int, month: int, start_day: int) -> str:
+    """
+    Comment
+    """
+    start_date = datetime.date(year, month, start_day)
+
+    data = get_time_data(start_date, start_date)
+
+    if len(data) == 0:
+        abort(404)
+
+    table_data = data_grouped_by_film(data)
+    graph_data = data_grouped_by_date(data)
+
+    next = (start_date + datetime.timedelta(days=7)).strftime("%Y/%m/%d")
+    time = start_date.strftime("%d %B %Y")
+
+    return render_template(
+        "time_detail.html",
+        table_data=table_data,
+        graph_data=graph_data,
+        time=time,
+        year=year,
+        next=next,
+    )
+
+
+# TODO: Refactor the csv export functions
 @bp.route("/time-csv/<year>")
 @bp.route("/time-csv/<year>/<month>")
 def time_csv(year: int, month: int = 1) -> Response:
-    data = get_time_data(year, month)
+    start_date = datetime.date(year, month, 1)
+
+    data = get_time_data(start_date, start_date)
 
     if data is None:
         abort(404)
@@ -283,11 +373,11 @@ def time_csv(year: int, month: int = 1) -> Response:
 
 
 @bp.app_template_filter()
-def date_convert(datetime: datetime) -> str:
+def date_convert(datetime: datetime.datetime) -> str:
     return datetime.strftime("%d / %m / %Y")
 
 
 @bp.app_template_filter()
 def date_convert_to_month(m: int) -> str:
-    d = date(2020, m, 1)
+    d = datetime.date(2020, m, 1)
     return d.strftime("%B")

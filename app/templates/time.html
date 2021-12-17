@@ -26,11 +26,11 @@
 				<tbody>
 				{% for i in years %}
 					<tr class="">
-						<td><a class="badge rounded-pill bg-light text-dark" href="{{ url_for('index.time_detail', year=i) }}">{{ i }}</a></td>
+						<td><a class="badge rounded-pill bg-light text-dark" href="{{ url_for('index.year_detail', year=i) }}">{{ i }}</a></td>
 						<td>
 							{% for j in months %}
 
-								<a class="badge rounded-pill bg-light text-dark" href="{{ url_for('index.time_detail', year=i, month=j, end_month=j) }}">{{ j|date_convert_to_month }}</a>
+								<a class="badge rounded-pill bg-light text-dark" href="{{ url_for('index.month_detail', year=i, month=j) }}">{{ j|date_convert_to_month }}</a>
 
 							{% endfor %}
 						</td>
