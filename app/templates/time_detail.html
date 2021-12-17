@@ -92,16 +92,28 @@
 							<thead>
 								<tr>
 									<th>Date Week Ending</th>
-									<th>Total Gross</th>
-									<th>Percent Change</th>
+									<th>Weekend Gross</th>
+									<th>Week Gross</th>
+									<th>Week Percent Change</th>
+									<th>Number of Releases</th>
+									<th>Number of Cinemas</th>
 								</tr>
 								</thead>
 								<tbody>
 								{% for i in graph_data|reverse %}
 									<tr class="">
 										<td><a class="action" href="{{ url_for('index.week_detail', year=i['date']['year'], month=i['date']['month'], start_day=i['date']['day']) }}">{{ i['date']|date_convert }}</a></td>
+										<td>{{ "£ {:,}".format(i['weekend_gross']) }}</td>
 										<td>{{ "£ {:,}".format(i['week_gross']) }}</td>
-										<td>{{ i['pct_change']|round(2) }}%</td>
+										{% if i['pct_change_week']|round(2) > 0 %}
+											<td class="text-success">{{ i['pct_change_week']|round(2) }}%</td>
+										{% elif i['pct_change_week']|round(2) < 0 %}
+										    <td class="text-danger">{{ i['pct_change_week']|round(2) }}%</td>
+										{% else %}
+										    <td class="">-</td>
+										{% endif %}
+										<td>{{ i['id']}}</td>
+										<td>{{ i['number_of_cinemas']}}</td>
 									</tr>
 								{% endfor %}
 								</tbody>

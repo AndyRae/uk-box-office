@@ -198,16 +198,35 @@ def country(slug: str) -> str:
 
 def data_grouped_by_date(data: List[Any]) -> Dict[str, Any]:
     """
-    Calculates the gross by date given a list of weeks
-    TODO: This is the place to add columns to the dates table.
-    Add number of releases? Number of cinemas? Weekend gross
-    PCT change of weekend gross
+    Calculates the statistics by date given a list of weeks
     """
     df = pd.DataFrame(
-        [i.as_df() for i in data], columns=["date", "week_gross"]
+        [i.as_df() for i in data],
+        columns=[
+            "date",
+            "week_gross",
+            "weekend_gross",
+            "number_of_cinemas",
+            "id",
+        ],
     )
-    df = df.groupby(["date"]).sum().sort_values(by=["date"])
-    df["pct_change"] = df.pct_change()
+
+    df = (
+        df.groupby(["date"])
+        .agg(
+            {
+                "week_gross": ["sum"],
+                "weekend_gross": ["sum"],
+                "number_of_cinemas": ["max"],
+                "id": ["size"],
+            }
+        )
+        .sort_values(by=["date"])
+    )
+    df.columns = df.columns.get_level_values(0)
+
+    df["pct_change_weekend"] = df["week_gross"].pct_change()
+    df["pct_change_week"] = df["week_gross"].pct_change()
     return df.reset_index().to_dict(orient="records")
 
 
@@ -248,7 +267,9 @@ def get_time_data(start_date: datetime.date, end_date: datetime.date) -> Any:
 
 @bp.route("/time/<int:year>/")
 def year_detail(year: int) -> str:
-
+    """
+    Comment
+    """
     start_date = datetime.date(int(year), 1, 1)
     end_date = datetime.date(int(year), 12, 31)
 
@@ -274,7 +295,9 @@ def year_detail(year: int) -> str:
 
 @bp.route("/time/<int:year>/<int:month>/")
 def month_detail(year: int, month: int) -> str:
-
+    """
+    Comment
+    """
     # Get the last day of the month
     end_day = calendar.monthrange(year, month)[1]
 
@@ -304,7 +327,9 @@ def month_detail(year: int, month: int) -> str:
 
 @bp.route("/time/<int:year>/<int:month>/<int:start_day>/")
 def week_detail(year: int, month: int, start_day: int) -> str:
-
+    """
+    Comment
+    """
     start_date = datetime.date(year, month, start_day)
 
     data = get_time_data(start_date, start_date)
