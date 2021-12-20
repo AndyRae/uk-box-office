@@ -19,7 +19,7 @@ Home
 						<input id="end" class="date-picker btn form-control form-control-sm"></input>
 					</div>
 				</div>
-				<div class="col-sm-2 pt-2">
+				<div class="col-sm-6 pt-2">
 					<button class="btn btn-primary btn-filter input-group-btn btn-sm" v-on:click="filter_date">Filter</button>
 					<button type="button" class="btn btn-outline-primary btn-filter input-group-btn btn-sm" v-on:click="filter_days(7)">7 days</button>
 					<button type="button" class="btn btn-outline-primary btn-filter input-group-btn btn-sm" v-on:click="filter_days(30)">30 days</button>
@@ -61,6 +61,25 @@ Home
 							<div class="card-body">
 								<h5 class="card-title">${ lastUpdated }</h5>
 								<small>Last updated</small>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row mb-3">
+					<div class="col-sm-6">
+						<div class="card mt-2 bg-dash text-center">
+							<div class="card-body">
+								<h5 class="card-title">${ numberOfFilms }</h5>
+								<small>Number of films</small>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="card mt-2 bg-dash text-center">
+							<div class="card-body">
+								<h5 class="card-title">${ numberOfCinemas }</h5>
+								<small>Number of cinemas</small>
 							</div>
 						</div>
 					</div>

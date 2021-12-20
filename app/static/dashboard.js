@@ -88,6 +88,8 @@ var vm = new Vue({
 		loaded: false,
 		boxOffice: 0,
 		weekendBoxOffice: 0,
+		numberOfFilms: 0,
+		numberOfCinemas: 0,
 		lastUpdated: "-",
 		filmTableData: [],
 		chartdata: {
@@ -221,8 +223,8 @@ var vm = new Vue({
 				lastResult = data;
 				data.results.forEach(week => {
 					// destructure the object and add to array
-					const { date, film, film_slug, distributor_id, week_gross, weekend_gross } = week;
-					results.push({ date, film, film_slug, distributor_id, week_gross, weekend_gross });
+					const { date, film, film_slug, distributor_id, week_gross, weekend_gross, number_of_cinemas } = week;
+					results.push({ date, film, film_slug, distributor_id, week_gross, weekend_gross, number_of_cinemas });
 				});
 				// increment the page with 20 on each loop
 				page += 100;
@@ -263,8 +265,8 @@ var vm = new Vue({
 					borderColor: ['#FF8321'],
 					backgroundColor: ['#FF8321'],
 					pointStyle: 'circle',
-					tension: 0.2,
-					fill: true,
+					tension: 0.5,
+					fill: false,
 				}
 			]
 			this.$set(this.chartdata = {
@@ -275,6 +277,8 @@ var vm = new Vue({
 			// Scorecards
 			this.boxOffice = values.reduce((a, b) => a + b, 0)
 			this.weekendBoxOffice = 0
+			this.numberOfFilms = this.calculateNumberOfFilms(results)
+			this.numberOfCinemas = this.calculateNumberOfCinemas(results)
 
 			// Film Table
 			this.filmTableData = this.groupForTable(results)
@@ -291,7 +295,7 @@ var vm = new Vue({
 
 		groupForTable: function(results) {
 			groupedFilm = Array.from(results)
-			groupedFilm.forEach(function(v){ delete v.date, delete v.weekend_gross });
+			groupedFilm.forEach(function(v){ delete v.date, delete v.weekend_gross, delete v.number_of_cinemas });
 			return Array.from(groupedFilm.reduce((acc, {week_gross, ...r}) => {
 				const key = JSON.stringify(r);
 				const current = acc.get(key) || {...r, week_gross: 0};
@@ -307,10 +311,11 @@ var vm = new Vue({
 				), ([film, week_gross]) => ({film, week_gross}));
 
 			// Filter so we only graph the top N
+			topNFilms = 30
 			groupedFilms.sort(function(a, b) {
 				return b.week_gross - a.week_gross;
 			})
-			groupedFilms.splice(30)
+			groupedFilms.splice(topNFilms)
 
 			const colors = ['#FFA188', '#006277', '#FF473E', '#009F41', '#FF8321', '#003f5c', '#2f4b7c',
 			'#665191', '#a05195', '#d45087', '#f95d6a', '#ff7c43', '#ffa600']
@@ -324,7 +329,7 @@ var vm = new Vue({
 						label: groupedFilms[i].film,
 						borderColor: randomColor+'4d',
 						backgroundColor: randomColor+'4d',
-						fill: true,
+						fill: false,
 				}
 
 				weeks = []
@@ -337,6 +342,22 @@ var vm = new Vue({
 				datasets.push(x)
 			}
 			return datasets
+		},
+
+		calculateNumberOfFilms: function(results) {
+			// Reduce array to number of unique films
+			grouped = Array.from(results)
+			let groupedNumber = Array.from(groupedArea.reduce(
+				(m, {film, week_gross}) => m.set(film, (m.get(film) || 0) + week_gross), new Map
+				), ([film, week_gross]) => ({film, week_gross}));
+			return groupedNumber.length
+		},
+
+		calculateNumberOfCinemas: function(results) {
+			// return 0
+			console.log(results)
+			x = Math.max.apply(Math, results.map(function(o) { return o.number_of_cinemas; }))
+			return x
 		},
 
 		generateDatePickers: function() {
