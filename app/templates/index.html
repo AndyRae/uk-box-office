@@ -5,58 +5,92 @@ Home
 {% endblock %}
 
 {% block content %}
-	<div id="dash" class="container-fluid dash">
-		<div class="row control-row align-items-start mb-3">
-			<div class="col-4">
-				<div class="input-group input-group-sm">
-					<input id="start" class="date-picker btn form-control form-control-sm control-element"></input>
-					<input id="end" class="date-picker btn form-control form-control-sm control-element"></input>
+	<div id="dash" class="container-fluid dash mt-3">
 
-					<!-- <input type="date" id="startd" class="date-picker btn form-control form-control-sm control-element">
-					<input type="date" id="endd" class="date-picker btn form-control form-control-sm control-element">					 -->
+		<div class="col">
+			<div class="row mb-3">
+				<div class="col-sm-1 pt-2">
+					<div class="card bg-dash text-center">
+						<input id="start" class="date-picker btn form-control form-control-sm"></input>
+					</div>
+				</div>
+				<div class="col-sm-1 pt-2">
+					<div class="card bg-dash text-center">
+						<input id="end" class="date-picker btn form-control form-control-sm"></input>
+					</div>
+				</div>
+				<div class="col-sm-2 pt-2">
 					<button class="btn btn-primary btn-filter input-group-btn btn-sm" v-on:click="filter_date">Filter</button>
-					<button type="button" class="btn btn-success btn-filter input-group-btn btn-sm" v-on:click="filter_days(7)">7 days</button>
-					<button type="button" class="btn btn-warning btn-filter input-group-btn btn-sm" v-on:click="filter_days(30)">30 days</button>
-					<button type="button" class="btn btn-danger btn-filter input-group-btn btn-sm" v-on:click="filter_days(90)">3 months</button>
+					<button type="button" class="btn btn-outline-primary btn-filter input-group-btn btn-sm" v-on:click="filter_days(7)">7 days</button>
+					<button type="button" class="btn btn-outline-primary btn-filter input-group-btn btn-sm" v-on:click="filter_days(30)">30 days</button>
+					<button type="button" class="btn btn-outline-primary btn-filter input-group-btn btn-sm" v-on:click="filter_days(90)">3 months</button>
+				</div>
+
+			</div>
+		</div>
+
+		<div class="row align-items-start">
+			<div class="col">
+				<div class="row mb-3">
+					<div class="card mt-2 border-dash">
+						<small class="card-title text-muted">Total UK Box Office</small>
+						<line-chart class="card-body" v-if="loaded" :chartdata="chartdata" :options="options"></line-chart>
+					</div>
+				</div>
+				<div class="row mb-3">
+					<div class="card mt-2 border-dash">
+						<small class="card-title text-muted">UK Box Office per film</small>
+						<area-chart class="card-body" v-if="loaded" :chartdataarea="chartdataarea" :optionsarea="optionsarea"></area-chart>
+					</div>
+
 				</div>
 			</div>
 
-			<div class="col-2 control-element control-text">
-				<small>Total Box Office: £ ${ boxOffice | Currency }</small>
-			</div>
+			<div class="col">
+				<div class="row mb-3">
+					<div class="col-sm-6">
+						<div class="card mt-2 bg-dash text-center">
+							<div class="card-body">
+								<h5 class="card-title">£ ${ boxOffice | Currency }</h5>
+								<small>Total Box Office</small>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="card mt-2 bg-dash text-center">
+							<div class="card-body">
+								<h5 class="card-title">${ lastUpdated }</h5>
+								<small>Last updated</small>
+							</div>
+						</div>
+					</div>
+				</div>
 
-			<div class="col-2 control-element control-text">
-				<small>Last updated: ${ lastUpdated }</small>
-			</div>
-		</div>
-		<div class="row align-items-start">
-			<div class="col">
-				<line-chart class="" v-if="loaded" :chartdata="chartdata" :options="options"></line-chart>
-				<hr>
-				<area-chart class="" v-if="loaded" :chartdataarea="chartdataarea" :optionsarea="optionsarea"></area-chart>
-			</div>
-			<div class="vr"></div>
-			<div class="col">
-				<table class="table table-sm box-table table-hover">
-					<thead>
-						<tr>
-							<th></th>
-							<th>Title</th>
-							<th>Distributor</th>
-							<th>Weeks</th>
-							<th>Total Gross</th>
-						</tr>
-					  </thead>
-					  <tbody id="results">
-							<tr class="" v-for="(item, index) in sortedfilms.slice(0, 50)">
-								<td class="text-small">${ index + 1 }</td>
-								<td class="text-small"><a :href="`/films/${ item.film_slug }`">${ item.film | TitleCase }</a></td>
-								<td class="text-small">${ item.distributor_id | TitleCase }</td>
-								<td class="text-small">100</td>
-								<td class="text-small" style="min-width:100px">£ ${ item.week_gross | Currency }</td>
+				<div class="card border-dash">
+					<table class="table table-sm box-table table-hover card-body">
+						<thead>
+							<tr>
+								<th></th>
+								<th>Title</th>
+								<th>Total Gross</th>
+								<th>Distributor</th>
+								<th>Weeks</th>
+
 							</tr>
-					  </tbody>
-				</table>
+						  </thead>
+						  <tbody id="results">
+								<tr class="" v-for="(item, index) in sortedfilms.slice(0, 50)">
+									<td class="text-small">${ index + 1 }</td>
+									<td class="text-small"><a :href="`/films/${ item.film_slug }`">${ item.film | TitleCase }</a></td>
+									<td class="text-small" style="min-width:100px">£ ${ item.week_gross | Currency }</td>
+									<td class="text-small">${ item.distributor_id | TitleCase }</td>
+									<td class="text-small">100</td>
+
+								</tr>
+						  </tbody>
+					</table>
+				</div>
+
 			</div>
 		</div>
 	</div>

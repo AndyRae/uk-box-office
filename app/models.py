@@ -193,5 +193,8 @@ class Week(db.Model):  # type: ignore
             self.id,
         ]
 
+    def as_df_film(self) -> List[Any]:
+        return [self.date, self.week_gross]
+
     def as_df2(self) -> List[Any]:
         return [self.film.name, self.film.slug, self.week_gross]

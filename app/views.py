@@ -138,7 +138,7 @@ def film(slug: str) -> str:
 
     # Builds the missing dates if needed
     df = pd.DataFrame(
-        [i.as_df() for i in data.weeks], columns=["date", "week_gross"]
+        [i.as_df_film() for i in data.weeks], columns=["date", "week_gross"]
     )
     df.set_index(pd.DatetimeIndex(df["date"].values), inplace=True)
     df.drop(["date"], axis=1, inplace=True)

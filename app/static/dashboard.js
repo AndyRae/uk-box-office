@@ -105,22 +105,40 @@ var vm = new Vue({
 			scales: {
 				xAxes: [{
 					type: 'time',
-					offset: true,
+					distribution: 'series',
+					ticks: {
+						maxRotation: 0,
+						minRotation: 0,
+						autoSkip: true
+					},
 					time: {
-					  unit: 'week'
+					  unit: 'week',
+					  tooltipFormat:'DD/MM/YYYY',
+					},
+					gridLines: {
+						display:false
 					},
 				}],
 				yAxes: [{
 					ticks: {
 						beginAtZero: true,
+						autoSkip: true,
+						stepSize: 10000000,
 						callback: function(value, index, values) {
-							return '£ ' + value;
+							return '£ ' + value / 1e6 + 'M';
 						}
 					},
 				}],
 			},
 			legend: {
 				display: false,
+			},
+			tooltips: {
+				callbacks: {
+					label: function(tooltipItems, data) {
+						return "£" + tooltipItems.yLabel.toString();
+					}
+				}
 			},
 		},
 		optionsarea: {
@@ -129,16 +147,27 @@ var vm = new Vue({
 			scales: {
 				xAxes: [{
 					type: 'time',
-					offset: true,
+					distribution: 'series',
+					ticks: {
+						maxRotation: 0,
+						minRotation: 0,
+						autoSkip: true
+					},
 					time: {
-						unit: 'week'
+						unit: 'week',
+						tooltipFormat:'DD/MM/YYYY',
+					},
+					gridLines: {
+						display:false
 					},
 				}],
 				yAxes: [{
 					ticks: {
 						beginAtZero: true,
+						autoSkip: true,
+						stepSize: 10000000,
 						callback: function(value, index, values) {
-							return '£ ' + value;
+							return '£ ' + value / 1e6 + 'M';
 						}
 					},
 				}],
@@ -226,7 +255,6 @@ var vm = new Vue({
 				dates.push(results_by_date[i].date)
 				values.push(results_by_date[i].week_gross)
 			}
-			console.log(values)
 
 			x = [
 				{
@@ -235,8 +263,8 @@ var vm = new Vue({
 					borderColor: ['#FF8321'],
 					backgroundColor: ['#FF8321'],
 					pointStyle: 'circle',
-					tension: 0.3,
-					fill: false,
+					tension: 0.2,
+					fill: true,
 				}
 			]
 			this.$set(this.chartdata = {
