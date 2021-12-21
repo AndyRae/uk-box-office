@@ -223,8 +223,8 @@ var vm = new Vue({
 				lastResult = data;
 				data.results.forEach(week => {
 					// destructure the object and add to array
-					const { date, film, film_slug, distributor_id, week_gross, weekend_gross, number_of_cinemas } = week;
-					results.push({ date, film, film_slug, distributor_id, week_gross, weekend_gross, number_of_cinemas });
+					const { date, film, film_slug, distributor_id, week_gross, weekend_gross, number_of_cinemas, weeks_on_release } = week;
+					results.push({ date, film, film_slug, distributor_id, week_gross, weekend_gross, number_of_cinemas, weeks_on_release });
 				});
 				// increment the page with 20 on each loop
 				page += 100;
@@ -294,13 +294,28 @@ var vm = new Vue({
 		},
 
 		groupForTable: function(results) {
-			groupedFilm = Array.from(results)
-			groupedFilm.forEach(function(v){ delete v.date, delete v.weekend_gross, delete v.number_of_cinemas });
-			return Array.from(groupedFilm.reduce((acc, {week_gross, ...r}) => {
+			// HERE! The code below turns everything but the week_gross into a string, and uses that as a key. So unique
+			// elements will create multiple objects - not the intention.
+			// need to either calculate the week before this and set it.
+			// or do a lookup to the results to get it back? A join?
+			// like create an array of objects that has the film, and the max from weeks_on_release - and then "join"
+			grouped = Array.from(results)
+			grouped.forEach(function(v){ delete v.date, delete v.weekend_gross, delete v.number_of_cinemas, delete v.week_gross });
+			x =  Array.from(grouped.reduce((acc, {weeks_on_release, ...r}) => {
 				const key = JSON.stringify(r);
-				const current = acc.get(key) || {...r, week_gross: 0};
-				return acc.set(key, {...current, week_gross: current.week_gross + week_gross});
+				const current = acc.get(key) || {...r, weeks_on_release: 0};
+				return acc.set(key, {...current, weeks_on_release: current.weeks_on_release});
 			  }, new Map).values());
+			console.log(x)
+
+
+			// groupedFilm = Array.from(results)
+			// groupedFilm.forEach(function(v){ delete v.date, delete v.weekend_gross, delete v.number_of_cinemas, delete v.weeks_on_release });
+			// return Array.from(groupedFilm.reduce((acc, {week_gross, ...r}) => {
+			// 	const key = JSON.stringify(r);
+			// 	const current = acc.get(key) || {...r, week_gross: 0};
+			// 	return acc.set(key, {...current, week_gross: current.week_gross + week_gross});
+			//   }, new Map).values());
 		},
 
 		groupForAreaChart: function(results) {
@@ -327,7 +342,7 @@ var vm = new Vue({
 
 				x = {
 						label: groupedFilms[i].film,
-						borderColor: randomColor+'4d',
+						borderColor: randomColor,
 						backgroundColor: randomColor+'4d',
 						fill: false,
 				}
@@ -354,8 +369,6 @@ var vm = new Vue({
 		},
 
 		calculateNumberOfCinemas: function(results) {
-			// return 0
-			console.log(results)
 			x = Math.max.apply(Math, results.map(function(o) { return o.number_of_cinemas; }))
 			return x
 		},

@@ -174,7 +174,7 @@ class Week(db.Model):  # type: ignore
             "film": self.film.name,
             "film_slug": self.film.slug,
             "country_id": self.country_id,
-            "distributor_id": self.distributor_id,
+            "distributor_id": self.distributor.name,
             "date": datetime.strftime(self.date, "%Y-%m-%d"),
             "rank": self.rank,
             "weeks_on_release": self.weeks_on_release,
