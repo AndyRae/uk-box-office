@@ -51,7 +51,7 @@ Home
 					<div class="col-sm-6">
 						<div class="card mt-2 bg-dash text-center">
 							<div class="card-body">
-								<h5 class="card-title">£ ${ boxOffice | Currency }</h5>
+								<h2 class="card-title">£ ${ boxOffice | Currency }</h2>
 								<small>Total Box Office</small>
 							</div>
 						</div>
@@ -59,7 +59,7 @@ Home
 					<div class="col-sm-6">
 						<div class="card mt-2 bg-dash text-center">
 							<div class="card-body">
-								<h5 class="card-title">${ lastUpdated }</h5>
+								<h2 class="card-title">${ lastUpdated }</h2>
 								<small>Last updated</small>
 							</div>
 						</div>
@@ -70,7 +70,7 @@ Home
 					<div class="col-sm-6">
 						<div class="card mt-2 bg-dash text-center">
 							<div class="card-body">
-								<h5 class="card-title">${ numberOfFilms }</h5>
+								<h2 class="card-title">${ numberOfFilms }</h2>
 								<small>Number of films</small>
 							</div>
 						</div>
@@ -78,7 +78,7 @@ Home
 					<div class="col-sm-6">
 						<div class="card mt-2 bg-dash text-center">
 							<div class="card-body">
-								<h5 class="card-title">${ numberOfCinemas }</h5>
+								<h2 class="card-title">${ numberOfCinemas }</h2>
 								<small>Number of cinemas</small>
 							</div>
 						</div>
@@ -88,22 +88,22 @@ Home
 				<div class="card border-dash">
 					<table class="table table-sm box-table table-hover card-body">
 						<thead>
-							<tr>
+							<tr class="text-center">
 								<th></th>
 								<th>Title</th>
-								<th>Total Gross</th>
+								<th>Box Office</th>
+								<th class="text-center">Week</th>
 								<th>Distributor</th>
-								<th>Weeks</th>
 
 							</tr>
 						  </thead>
 						  <tbody id="results">
 								<tr class="" v-for="(item, index) in sortedfilms.slice(0, 50)">
-									<td class="text-small">${ index + 1 }</td>
+									<td class="text-small text-center">${ index + 1 }</td>
 									<td class="text-small"><a :href="`/films/${ item.film_slug }`">${ item.film | TitleCase }</a></td>
 									<td class="text-small" style="min-width:100px">£ ${ item.week_gross | Currency }</td>
+									<td class="text-small text-center">${ item.weeks }</td>
 									<td class="text-small">${ item.distributor_id | TitleCase }</td>
-									<td class="text-small">${ item.weeks }</td>
 
 								</tr>
 						  </tbody>

@@ -83,7 +83,18 @@ a:visited {
 
 .btn-primary:hover {
 	background-color: #ffac6c;
+	border-color: #ffac6c;
 	color: #000;
+}
+
+.btn-outline-primary {
+	color: #000;
+	border-color: #FF8321;
+}
+
+.btn-outline-primary:hover {
+	background-color: #FF8321;
+	border-color: #FF8321;
 }
 
 .search {

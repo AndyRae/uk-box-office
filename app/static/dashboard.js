@@ -87,7 +87,6 @@ var vm = new Vue({
 	data: () => ({
 		loaded: false,
 		boxOffice: 0,
-		weekendBoxOffice: 0,
 		numberOfFilms: 0,
 		numberOfCinemas: 0,
 		lastUpdated: "-",
@@ -223,13 +222,13 @@ var vm = new Vue({
 				lastResult = data;
 				data.results.forEach(week => {
 					// destructure the object and add to array
-					const { date, film, film_slug, distributor_id, week_gross, weekend_gross, number_of_cinemas, weeks_on_release } = week;
-					results.push({ date, film, film_slug, distributor_id, week_gross, weekend_gross, number_of_cinemas, weeks_on_release });
+					const { date, film, film_slug, distributor_id, week_gross, number_of_cinemas, weeks_on_release } = week;
+					results.push({ date, film, film_slug, distributor_id, week_gross, number_of_cinemas, weeks_on_release });
 				});
 				// increment the page with 20 on each loop
 				page += 100;
 				} catch (err) {
-				console.error(`Oeps, something is wrong ${err}`);
+				console.error(`Something is wrong ${err}`);
 				break
 				}
 				// keep running until there's no next page
@@ -276,7 +275,6 @@ var vm = new Vue({
 
 			// Scorecards
 			this.boxOffice = values.reduce((a, b) => a + b, 0)
-			this.weekendBoxOffice = 0
 			this.numberOfFilms = this.calculateNumberOfFilms(results)
 			this.numberOfCinemas = this.calculateNumberOfCinemas(results)
 
@@ -294,9 +292,7 @@ var vm = new Vue({
 		},
 
 		groupForTable: function(results) {
-			// Explain this.
-			results.forEach(function(v){ delete v.date, delete v.weekend_gross, delete v.number_of_cinemas });
-
+			// TODO: Explain this.
 			var result = results.reduce( (acc, curr) => {
 				let item = acc.find(x => x.film == curr["film"]);
 				if(!item){
@@ -306,12 +302,12 @@ var vm = new Vue({
 				item.weeks[curr.weeks_on_release] = (item.weeks[curr.weeks_on_release] || 0) + curr.week_gross
 				return acc;
 			},[])
-			.map(x => ({
-			  "film": x.film,
-			  "film_slug": x.slug,
-			  "distributor_id": x.distributor,
-			  "weeks": Math.max(...Object.keys(x.weeks).map(Number)),
-			  "week_gross": Object.values(x.weeks).reduce( (a,b) => a+b ,0)
+				.map(x => ({
+				"film": x.film,
+				"film_slug": x.slug,
+				"distributor_id": x.distributor,
+				"weeks": Math.max(...Object.keys(x.weeks).map(Number)),
+				"week_gross": Object.values(x.weeks).reduce( (a,b) => a+b ,0)
 			}))
 
 			return result
