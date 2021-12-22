@@ -294,28 +294,27 @@ var vm = new Vue({
 		},
 
 		groupForTable: function(results) {
-			// HERE! The code below turns everything but the week_gross into a string, and uses that as a key. So unique
-			// elements will create multiple objects - not the intention.
-			// need to either calculate the week before this and set it.
-			// or do a lookup to the results to get it back? A join?
-			// like create an array of objects that has the film, and the max from weeks_on_release - and then "join"
-			grouped = Array.from(results)
-			grouped.forEach(function(v){ delete v.date, delete v.weekend_gross, delete v.number_of_cinemas, delete v.week_gross });
-			x =  Array.from(grouped.reduce((acc, {weeks_on_release, ...r}) => {
-				const key = JSON.stringify(r);
-				const current = acc.get(key) || {...r, weeks_on_release: 0};
-				return acc.set(key, {...current, weeks_on_release: current.weeks_on_release});
-			  }, new Map).values());
-			console.log(x)
+			// Explain this.
+			results.forEach(function(v){ delete v.date, delete v.weekend_gross, delete v.number_of_cinemas });
 
+			var result = results.reduce( (acc, curr) => {
+				let item = acc.find(x => x.film == curr["film"]);
+				if(!item){
+					item = {film: curr["film"], slug: curr["film_slug"], distributor: curr["distributor_id"], weeks:{}}
+					acc.push(item);
+				}
+				item.weeks[curr.weeks_on_release] = (item.weeks[curr.weeks_on_release] || 0) + curr.week_gross
+				return acc;
+			},[])
+			.map(x => ({
+			  "film": x.film,
+			  "film_slug": x.slug,
+			  "distributor_id": x.distributor,
+			  "weeks": Math.max(...Object.keys(x.weeks).map(Number)),
+			  "week_gross": Object.values(x.weeks).reduce( (a,b) => a+b ,0)
+			}))
 
-			// groupedFilm = Array.from(results)
-			// groupedFilm.forEach(function(v){ delete v.date, delete v.weekend_gross, delete v.number_of_cinemas, delete v.weeks_on_release });
-			// return Array.from(groupedFilm.reduce((acc, {week_gross, ...r}) => {
-			// 	const key = JSON.stringify(r);
-			// 	const current = acc.get(key) || {...r, week_gross: 0};
-			// 	return acc.set(key, {...current, week_gross: current.week_gross + week_gross});
-			//   }, new Map).values());
+			return result
 		},
 
 		groupForAreaChart: function(results) {
