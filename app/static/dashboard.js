@@ -87,7 +87,8 @@ var vm = new Vue({
 	data: () => ({
 		loaded: false,
 		boxOffice: 0,
-		weekendBoxOffice: 0,
+		numberOfFilms: 0,
+		numberOfCinemas: 0,
 		lastUpdated: "-",
 		filmTableData: [],
 		chartdata: {
@@ -105,22 +106,40 @@ var vm = new Vue({
 			scales: {
 				xAxes: [{
 					type: 'time',
-					offset: true,
+					distribution: 'series',
+					ticks: {
+						maxRotation: 0,
+						minRotation: 0,
+						autoSkip: true
+					},
 					time: {
-					  unit: 'week'
+					  unit: 'week',
+					  tooltipFormat:'DD/MM/YYYY',
+					},
+					gridLines: {
+						display:false
 					},
 				}],
 				yAxes: [{
 					ticks: {
 						beginAtZero: true,
+						autoSkip: true,
+						stepSize: 10000000,
 						callback: function(value, index, values) {
-							return '£ ' + value;
+							return '£ ' + value / 1e6 + 'M';
 						}
 					},
 				}],
 			},
 			legend: {
 				display: false,
+			},
+			tooltips: {
+				callbacks: {
+					label: function(tooltipItems, data) {
+						return "£" + tooltipItems.yLabel.toString();
+					}
+				}
 			},
 		},
 		optionsarea: {
@@ -129,16 +148,27 @@ var vm = new Vue({
 			scales: {
 				xAxes: [{
 					type: 'time',
-					offset: true,
+					distribution: 'series',
+					ticks: {
+						maxRotation: 0,
+						minRotation: 0,
+						autoSkip: true
+					},
 					time: {
-						unit: 'week'
+						unit: 'week',
+						tooltipFormat:'DD/MM/YYYY',
+					},
+					gridLines: {
+						display:false
 					},
 				}],
 				yAxes: [{
 					ticks: {
 						beginAtZero: true,
+						autoSkip: true,
+						stepSize: 10000000,
 						callback: function(value, index, values) {
-							return '£ ' + value;
+							return '£ ' + value / 1e6 + 'M';
 						}
 					},
 				}],
@@ -192,13 +222,13 @@ var vm = new Vue({
 				lastResult = data;
 				data.results.forEach(week => {
 					// destructure the object and add to array
-					const { date, film, film_slug, distributor_id, week_gross, weekend_gross } = week;
-					results.push({ date, film, film_slug, distributor_id, week_gross, weekend_gross });
+					const { date, film, film_slug, distributor_id, week_gross, number_of_cinemas, weeks_on_release } = week;
+					results.push({ date, film, film_slug, distributor_id, week_gross, number_of_cinemas, weeks_on_release });
 				});
 				// increment the page with 20 on each loop
 				page += 100;
 				} catch (err) {
-				console.error(`Oeps, something is wrong ${err}`);
+				console.error(`Something is wrong ${err}`);
 				break
 				}
 				// keep running until there's no next page
@@ -226,7 +256,6 @@ var vm = new Vue({
 				dates.push(results_by_date[i].date)
 				values.push(results_by_date[i].week_gross)
 			}
-			console.log(values)
 
 			x = [
 				{
@@ -235,7 +264,7 @@ var vm = new Vue({
 					borderColor: ['#FF8321'],
 					backgroundColor: ['#FF8321'],
 					pointStyle: 'circle',
-					tension: 0.3,
+					tension: 0.5,
 					fill: false,
 				}
 			]
@@ -246,7 +275,8 @@ var vm = new Vue({
 
 			// Scorecards
 			this.boxOffice = values.reduce((a, b) => a + b, 0)
-			this.weekendBoxOffice = 0
+			this.numberOfFilms = this.calculateNumberOfFilms(results)
+			this.numberOfCinemas = this.calculateNumberOfCinemas(results)
 
 			// Film Table
 			this.filmTableData = this.groupForTable(results)
@@ -262,13 +292,25 @@ var vm = new Vue({
 		},
 
 		groupForTable: function(results) {
-			groupedFilm = Array.from(results)
-			groupedFilm.forEach(function(v){ delete v.date, delete v.weekend_gross });
-			return Array.from(groupedFilm.reduce((acc, {week_gross, ...r}) => {
-				const key = JSON.stringify(r);
-				const current = acc.get(key) || {...r, week_gross: 0};
-				return acc.set(key, {...current, week_gross: current.week_gross + week_gross});
-			  }, new Map).values());
+			// TODO: Explain this.
+			var result = results.reduce( (acc, curr) => {
+				let item = acc.find(x => x.film == curr["film"]);
+				if(!item){
+					item = {film: curr["film"], slug: curr["film_slug"], distributor: curr["distributor_id"], weeks:{}}
+					acc.push(item);
+				}
+				item.weeks[curr.weeks_on_release] = (item.weeks[curr.weeks_on_release] || 0) + curr.week_gross
+				return acc;
+			},[])
+				.map(x => ({
+				"film": x.film,
+				"film_slug": x.slug,
+				"distributor_id": x.distributor,
+				"weeks": Math.max(...Object.keys(x.weeks).map(Number)),
+				"week_gross": Object.values(x.weeks).reduce( (a,b) => a+b ,0)
+			}))
+
+			return result
 		},
 
 		groupForAreaChart: function(results) {
@@ -279,10 +321,11 @@ var vm = new Vue({
 				), ([film, week_gross]) => ({film, week_gross}));
 
 			// Filter so we only graph the top N
+			topNFilms = 30
 			groupedFilms.sort(function(a, b) {
 				return b.week_gross - a.week_gross;
 			})
-			groupedFilms.splice(30)
+			groupedFilms.splice(topNFilms)
 
 			const colors = ['#FFA188', '#006277', '#FF473E', '#009F41', '#FF8321', '#003f5c', '#2f4b7c',
 			'#665191', '#a05195', '#d45087', '#f95d6a', '#ff7c43', '#ffa600']
@@ -294,9 +337,9 @@ var vm = new Vue({
 
 				x = {
 						label: groupedFilms[i].film,
-						borderColor: randomColor+'4d',
+						borderColor: randomColor,
 						backgroundColor: randomColor+'4d',
-						fill: true,
+						fill: false,
 				}
 
 				weeks = []
@@ -309,6 +352,20 @@ var vm = new Vue({
 				datasets.push(x)
 			}
 			return datasets
+		},
+
+		calculateNumberOfFilms: function(results) {
+			// Reduce array to number of unique films
+			grouped = Array.from(results)
+			let groupedNumber = Array.from(groupedArea.reduce(
+				(m, {film, week_gross}) => m.set(film, (m.get(film) || 0) + week_gross), new Map
+				), ([film, week_gross]) => ({film, week_gross}));
+			return groupedNumber.length
+		},
+
+		calculateNumberOfCinemas: function(results) {
+			x = Math.max.apply(Math, results.map(function(o) { return o.number_of_cinemas; }))
+			return x
 		},
 
 		generateDatePickers: function() {

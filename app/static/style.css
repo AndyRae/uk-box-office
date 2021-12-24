@@ -40,21 +40,17 @@ a:visited {
     display: none;
 }
 
-.dash {
-	/* border: 1px solid lightgrey; */
-	/* font-family: monospace; */
-}
+@media (min-width: 768px) {
+	.navbar-brand.abs
+		{
+			position: absolute;
+			width: auto;
+			left: 50%;
+			transform: translateX(-50%);
+			text-align: center;
+		}
+	}
 
-.navbar {
-	/* height: 40px; */
-	/* padding-left: 20px; */
-	background-color: rgba(0,0,0,0.8) !important;
-}
-
-.navbar-nav.navbar-center {
-	margin-left: auto;
-	margin-right: auto;
-}
 
 .form-input {
 	background: #fff0;
@@ -66,15 +62,9 @@ a:visited {
 	border: none;
 	box-shadow: none;
 }
-
-/* ::placeholder {
-	color: #fff !important;
-} */
-
 .date-picker {
-	/* padding-left: 15px !important; */
 	border: none;
-	background-color: #d3d3d33b;
+	font-size: 0.9em;
 }
 
 .qs-datepicker-container {
@@ -82,66 +72,34 @@ a:visited {
 }
 
 .btn-filter {
-	border-radius: 0;
-	border: none;
+	height: 100%;
 }
 
 .btn-primary {
 	background-color: #FF8321;
+	border-color: #FF8321;
 	color: #000;
 }
 
 .btn-primary:hover {
 	background-color: #ffac6c;
+	border-color: #ffac6c;
 	color: #000;
 }
 
-.btn-success {
-	background-color: #ff9948;
+.btn-outline-primary {
 	color: #000;
+	border-color: #FF8321;
 }
 
-.btn-warning {
-	background-color: #ffaf6f;
-	color: #000;
-}
-
-.btn-danger {
-	background-color: #ffc597;
-	color: #000;
-}
-
-.btn-success:hover {
-	background-color: #faa45d;
-	color: #000;
-}
-
-.btn-warning:hover {
-	background-color: #fcc293;
-	color: #000;
-}
-
-.btn-danger:hover {
-	background-color: #f8d8bf;
-	color: #000;
+.btn-outline-primary:hover {
+	background-color: #FF8321;
+	border-color: #FF8321;
 }
 
 .search {
 	background-color: #fff0;
 	border: none;
-}
-
-.control-row {
-	border-bottom: 1px solid lightgrey;
-}
-
-.control-element {
-	border-right: 1px solid lightgrey !important;
-	height: 31px;
-}
-
-.control-text {
-	padding-top: 3px;
 }
 
 .footer {
@@ -173,8 +131,17 @@ a:visited {
     width: 100%;
 }
 
-.vr {
-	padding: 0;
+.dash {
+	max-width: 1900px;
+}
+
+.bg-dash {
+	background-color: #FFECEB;
+	border: none;
+}
+
+.border-dash {
+    border: 1px solid #FFBDB7;
 }
 
 /* .mt-5 {
