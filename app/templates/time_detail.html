@@ -68,9 +68,7 @@
 			{% for j in range(1,13) %}
 				<a class="badge rounded-pill bg-light text-dark" href="{{ url_for('index.month_detail', year=year, month=j) }}">{{ j|date_convert_to_month }}</a>
 			{% endfor %}
-			<!-- <a href="{{ url_for('index.time_csv', year=year) }}">
-				<button type="button" class="btn btn-outline-primary float-end">Export (.csv)</button>
-			</a> -->
+
 			{% if next %}
 			    <a class="badge rounded-pill bg-light text-dark" href="{{ url_for('index.time') }}{{next}}/">Next ></a>
 			{% endif %}
@@ -88,36 +86,40 @@
 				  </h2>
 				  <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne">
 					<div class="accordion-body">
-						<table class="table table-striped table-hover">
-							<thead>
-								<tr>
-									<th>Date Week Ending</th>
-									<th>Weekend Gross</th>
-									<th>Week Gross</th>
-									<th>Week Percent Change</th>
-									<th>Number of Releases</th>
-									<th>Number of Cinemas</th>
-								</tr>
-								</thead>
-								<tbody>
-								{% for i in graph_data|reverse %}
-									<tr class="">
-										<td><a class="action" href="{{ url_for('index.week_detail', year=i['date']['year'], month=i['date']['month'], start_day=i['date']['day']) }}">{{ i['date']|date_convert }}</a></td>
-										<td>{{ "£ {:,}".format(i['weekend_gross']) }}</td>
-										<td>{{ "£ {:,}".format(i['week_gross']) }}</td>
-										{% if i['pct_change_week']|round(2) > 0 %}
-											<td class="text-success">{{ i['pct_change_week']|round(2) }}%</td>
-										{% elif i['pct_change_week']|round(2) < 0 %}
-										    <td class="text-danger">{{ i['pct_change_week']|round(2) }}%</td>
-										{% else %}
-										    <td class="">-</td>
-										{% endif %}
-										<td>{{ i['id']}}</td>
-										<td>{{ i['number_of_cinemas']}}</td>
+						<div class="table-responsive">
+							<table class="table table-striped table-hover">
+								<thead>
+									<tr>
+										<th>Date Week Ending</th>
+										<th>Weekend Box Office</th>
+										<th>Week Box Office</th>
+										<th>Week Percent Change</th>
+										<th>Number of Releases</th>
+										<th>Number of Cinemas</th>
 									</tr>
-								{% endfor %}
-								</tbody>
-						</table>
+									</thead>
+									<tbody>
+										{% for i in graph_data|reverse %}
+											<tr class="">
+												<td><a class="action" href="{{ url_for('index.week_detail', year=i['date']['year'], month=i['date']['month'], start_day=i['date']['day']) }}">
+													{{ i['date']|date_convert }}
+												</a></td>
+												<td>{{ "£ {:,}".format(i['weekend_gross']) }}</td>
+												<td>{{ "£ {:,}".format(i['week_gross']) }}</td>
+												{% if i['pct_change_week']|round(2) > 0 %}
+													<td class="text-success">{{ i['pct_change_week']|round(2) }}%</td>
+												{% elif i['pct_change_week']|round(2) < 0 %}
+													<td class="text-danger">{{ i['pct_change_week']|round(2) }}%</td>
+												{% else %}
+													<td class="">-</td>
+												{% endif %}
+												<td>{{ i['id']}}</td>
+												<td>{{ i['number_of_cinemas']}}</td>
+											</tr>
+										{% endfor %}
+									</tbody>
+							</table>
+						</div>
 					</div>
 				  </div>
 				</div>
@@ -129,25 +131,30 @@
 				  </h2>
 				  <div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo">
 					<div class="accordion-body">
-						<table class="table table-striped table-hover">
-							<thead>
-								<tr>
-									<th>Rank</th>
-									<th>Film</th>
-									<th>Total Gross</th>
-								</tr>
+						<button type="button" onclick="exportToCSV(filmsTable)" class="btn btn-outline-primary">
+							Export (.csv)
+						</button>
+
+						<div class="table-responsive">
+							<table class="table table-striped table-hover" id="filmsTable">
+								<thead>
+									<tr>
+										<th class="text-center">Rank</th>
+										<th>Film</th>
+										<th class="text-center">Total Box Office</th>
+									</tr>
 								</thead>
 								<tbody>
-								{% for i in table_data %}
-									<tr class="">
-										<td>{{ loop.index }}</td>
-										<td><a class="action" href="{{ url_for('index.film', slug=i['slug']) }}">{{ i['title']|title }}</a></td>
-										<td>{{ "£ {:,}".format(i['week_gross']) }}</td>
-									</tr>
-								{% endfor %}
+									{% for i in table_data %}
+										<tr class="">
+											<td class="text-center">{{ loop.index }}</td>
+											<td><a class="action" href="{{ url_for('index.film', slug=i['slug']) }}">{{ i['title']|title }}</a></td>
+											<td class="text-center">{{ "£ {:,}".format(i['week_gross']) }}</td>
+										</tr>
+									{% endfor %}
 								</tbody>
-						</table>
-
+							</table>
+						</div>
 					</div>
 				  </div>
 				</div>
@@ -200,6 +207,35 @@
 				}
 			});
 		}
+
+		function exportToCSV(tableEle, separator = ','){
+		const head = ["Rank", "Film", "Box Office"]
+		let csvRows = [head]
+		//only get direct children of the table in question (thead, tbody)
+		Array.from(tableEle.children).forEach(function(node){
+			//using scope to only get direct tr of node
+			node.querySelectorAll(':scope > tr').forEach(function(tr){
+				let csvLine = []
+				//again scope to only get direct children
+				tr.querySelectorAll(':scope > td').forEach(function(td){
+					//clone as to not remove anything from original
+					let copytd = td.cloneNode(true)
+					let data = copytd.textContent
+
+					data = data.replace(/(\s\s)/gm, ' ').replace(/"/g, '""')
+					csvLine.push('"'+data+'"')
+				})
+				csvRows.push(csvLine.join(separator))
+			})
+		})
+		var a = document.createElement("a")
+		a.style = "display: none; visibility: hidden" //safari needs visibility hidden
+		a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvRows.join('\n'))
+		a.download = '{{ time }}.csv'
+		document.body.appendChild(a)
+		a.click()
+		a.remove()
+	}
 
 		var time_dates = []
 		var week_gross = []

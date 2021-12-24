@@ -1,8 +1,6 @@
 """Front end pages"""
 
 import calendar
-
-# from datetime import datetime, date, timedelta
 import datetime
 from typing import Any, Dict, List
 from flask.wrappers import Response
@@ -149,29 +147,6 @@ def film(slug: str) -> str:
         data=data,
         chart_data=df.reset_index().to_dict(orient="records"),
     )
-
-
-@bp.route("/film-csv/<slug>")
-def film_csv(slug: str) -> Response:
-    query = db.session.query(models.Film)
-    query = query.filter(models.Film.slug == slug)
-    data = query.first()
-
-    if data is None:
-        abort(404)
-
-    # Builds the missing dates if needed
-    df = pd.DataFrame(
-        [i.as_df() for i in data.weeks], columns=["date", "week_gross"]
-    )
-    df.set_index(pd.DatetimeIndex(df["date"].values), inplace=True)
-    df.drop(["date"], axis=1, inplace=True)
-    df = df.asfreq("W", fill_value=0)
-
-    resp = make_response(df.to_csv())
-    resp.headers["Content-Disposition"] = "attachment; filename=export.csv"
-    resp.headers["Content-Type"] = "text/csv"
-    return resp
 
 
 @bp.route("/distributors/<slug>/")
@@ -351,25 +326,6 @@ def week_detail(year: int, month: int, start_day: int) -> str:
         year=year,
         next=next,
     )
-
-
-# TODO: Refactor the csv export functions
-@bp.route("/time-csv/<year>")
-@bp.route("/time-csv/<year>/<month>")
-def time_csv(year: int, month: int = 1) -> Response:
-    start_date = datetime.date(year, month, 1)
-
-    data = get_time_data(start_date, start_date)
-
-    if data is None:
-        abort(404)
-
-    df = pd.DataFrame(data_grouped_by_film(data))
-
-    resp = make_response(df.to_csv())
-    resp.headers["Content-Disposition"] = "attachment; filename=export.csv"
-    resp.headers["Content-Type"] = "text/csv"
-    return resp
 
 
 @bp.app_template_filter()
