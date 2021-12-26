@@ -30,7 +30,11 @@
 					{% for i in data.films|reverse %}
 						<tr class="">
 							<td><a class="action" href="{{ url_for('index.film', slug=i['slug']) }}">{{ i['name']|title }}</a></td>
-							<td>{{ i['country']|title }}</td>
+							<td>
+								{% for j in i.countries %}
+									<a class="action" href="{{ url_for('index.country', slug=j['slug']) }}">{{ j.name }}</a>
+								{% endfor %}
+							</td>
 							<td>{{ i['weeks'][0]['date']|date_convert }}</td>
 							<td>{{ i['weeks'][-1]['weeks_on_release'] }}</td>
 							<td>{{ "£ {:,}".format(i['weeks'][-1]['total_gross']) }}</td>

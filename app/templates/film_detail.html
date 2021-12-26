@@ -68,7 +68,10 @@
 
 		<div class="row align-items-start">
 			<div class="col">
-			Country: {{ data.country }}
+			Country:
+			{% for i in data.countries %}
+				<a class="action" href="{{ url_for('index.country', slug=i['slug']) }}">{{ i.name }}</a>
+			{% endfor %}
 			</div>
 			<div class="col">
 			Distributor: <a class="action" href="{{ url_for('index.distributor', slug=data['distributor']['slug']) }}">{{ data.distributor|title }}</a>

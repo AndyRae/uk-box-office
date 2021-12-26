@@ -57,12 +57,21 @@ db.event.listen(db.session, "before_commit", SearchableMixin.before_commit)
 db.event.listen(db.session, "after_commit", SearchableMixin.after_commit)
 
 
+countries = db.Table(
+    "countries",
+    db.Column(
+        "country_id", db.Integer, db.ForeignKey("country.id"), primary_key=True
+    ),
+    db.Column(
+        "film_id", db.Integer, db.ForeignKey("film.id"), primary_key=True
+    ),
+)
+
+
 class Country(db.Model):  # type: ignore
     __tablename__ = "country"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
-    films = db.relationship("Film", backref="country", lazy=True)
-    weeks = db.relationship("Week", backref="country", lazy="dynamic")
     slug = db.Column(db.String(160), nullable=False, unique=True)
 
     def __init__(self, *args: str, **kwargs: str) -> None:
@@ -84,7 +93,7 @@ class Distributor(db.Model):  # type: ignore
     __tablename__ = "distributor"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
-    films = db.relationship("Film", backref="distributor", lazy=True)
+    films = db.relationship("Film", backref="distributor", lazy="dynamic")
     weeks = db.relationship("Week", backref="distributor", lazy="dynamic")
     slug = db.Column(db.String(160), nullable=False, unique=True)
 
@@ -109,9 +118,13 @@ class Film(SearchableMixin, db.Model):  # type: ignore
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(160), nullable=False)
     weeks = db.relationship("Week", back_populates="film")
-    country_id = db.Column(
-        db.Integer, db.ForeignKey("country.id"), nullable=False
+    countries = db.relationship(
+        "Country",
+        secondary=countries,
+        lazy="joined",
+        backref=db.backref("films", lazy="joined"),
     )
+    country_id = db.Column(db.Integer, db.ForeignKey("country.id"))
     distributor_id = db.Column(
         db.Integer, db.ForeignKey("distributor.id"), nullable=False
     )
@@ -148,9 +161,6 @@ class Week(db.Model):  # type: ignore
     film = db.relationship(
         "Film", back_populates="weeks", innerjoin=True, lazy="joined"
     )
-    country_id = db.Column(
-        db.Integer, db.ForeignKey("country.id"), nullable=False
-    )
     distributor_id = db.Column(
         db.Integer, db.ForeignKey("distributor.id"), nullable=False
     )
@@ -173,7 +183,6 @@ class Week(db.Model):  # type: ignore
             "id": self.id,
             "film": self.film.name,
             "film_slug": self.film.slug,
-            "country_id": self.country_id,
             "distributor_id": self.distributor.name,
             "date": datetime.strftime(self.date, "%Y-%m-%d"),
             "rank": self.rank,

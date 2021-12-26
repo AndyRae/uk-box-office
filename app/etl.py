@@ -1,6 +1,7 @@
 """ETL Pipeline for box office data"""
 
 import os
+from typing import List
 import requests  # type: ignore
 import urllib.request
 from datetime import datetime, timedelta
@@ -11,20 +12,28 @@ from bs4 import BeautifulSoup
 from . import db, models
 
 
-def get_country(country: str) -> models.Country:
+def get_country(country: str) -> List[models.Country]:
     """
-    Checks the database if the country exists - returns the class
-    If not - creates it, adds it to the database and returns it
+    Splits up the string of countries, and one by one:
+    Checks the database if the country exists.
+    If not - creates it, adds it to the database.
+    Returns a list of the countries
     """
     country = country.strip()
-    filtered_countries = models.Country.query.filter_by(name=country).first()
+    countries = country.split("/")
+    new_countries = []
+    for i in countries:
 
-    if country == filtered_countries:
-        return filtered_countries
-    new = models.Country(name=country)
-    db.session.add(new)
-    db.session.commit()
-    return new
+        filtered_countries = models.Country.query.filter_by(name=i).first()
+
+        if i == filtered_countries:
+            new_countries.append(filtered_countries)
+        else:
+            new = models.Country(name=i)
+            db.session.add(new)
+            db.session.commit()
+            new_countries.append(new)
+    return new_countries
 
 
 def get_distributor(distributor: str) -> models.Distributor:
@@ -46,7 +55,7 @@ def get_distributor(distributor: str) -> models.Distributor:
 
 
 def get_film(
-    film: str, distributor: models.Distributor, country: models.Country
+    film: str, distributor: models.Distributor, countries: List[models.Country]
 ) -> models.Film:
     """
     Checks the database if the film exists - returns the class
@@ -57,7 +66,10 @@ def get_film(
 
     if film == filtered_films:
         return filtered_films
-    new = models.Film(name=film, distributor=distributor, country=country)
+    new = models.Film(name=film, distributor=distributor)
+    for i in countries:
+        new.countries.append(i)
+
     db.session.add(new)
     db.session.commit()
     return new
@@ -77,6 +89,8 @@ def load_dataframe(archive: pd.DataFrame) -> None:
         i["country"] = get_country(i["country"])
         i["distributor"] = get_distributor(i["distributor"])
         i["film"] = get_film(i["film"], i["distributor"], i["country"])
+
+        i.pop("country", None)
 
         week = models.Week(**i)
         db.session.add(week)
