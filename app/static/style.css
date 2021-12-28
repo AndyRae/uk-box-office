@@ -174,8 +174,19 @@ a:visited {
 	.card {
 		background: #21212C;
 	}
+	.accordion-item, .accordion-button {
+		color: #fff;
+		background: #21212C;
+	}
+	.accordion-button:not(.collapsed) {
+		background: #000;
+		color: #fff;
+	}
 	.chip {
 		color: #000 !important;
+	}
+	.list-group-item {
+		background: #21212C;
 	}
 	.table {
 		color: #fff;

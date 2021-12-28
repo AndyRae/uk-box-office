@@ -402,6 +402,63 @@ def week_detail(year: int, month: int, start_day: int) -> str:
     )
 
 
+@bp.route("/sitemap.xml")
+def sitemap() -> Response:
+    """
+    Sitemap generator - queries all models for all slugs.
+    TODO: Fetch static
+    """
+    data = []
+    url = "https://boxofficedata.co.uk/"
+    now = datetime.datetime.now() - datetime.timedelta(days=10)
+    lastmod = now.strftime("%Y-%m-%d")
+
+    for rule in g.url_map.iter_rules():
+        data.append([url + rule.rule, lastmod])
+        # omit auth and admin routes and if route has parameters.
+        # if 'GET' in rule.methods and len(rule.arguments) == 0 \
+        #         and not rule.rule.startswith('/admin') \
+        #         and not rule.rule.startswith('/auth') \
+        #         and not rule.rule.startswith('/test'):
+        #     data.append(['https://www.kevin7.net' + rule.rule, lastmod])
+
+    films = db.session.query(models.Film.slug).all()
+    for i in films:
+        slug = f"{url}films/{i.slug}/"
+        data.append([slug, lastmod])
+
+    countries = db.session.query(models.Country.slug).all()
+    for i in countries:
+        slug = f"{url}countries/{i.slug}/"
+        data.append([slug, lastmod])
+
+    distributors = db.session.query(models.Distributor.slug).all()
+    for i in distributors:
+        slug = f"{url}distributors/{i.slug}/"
+        data.append([slug, lastmod])
+
+    time = db.session.query(models.Week.date)
+    for i in time:
+        date = i.date.strftime("%Y/%m/%d")
+        slug = f"{url}time/{date}"
+        data.append([slug, i.date])
+
+    # Creates time range slugs
+    for i in range(2007, now.year):
+        slug = f"{url}time/{i}/"
+        data.append([slug, i])
+
+        for j in range(1, 13):
+            slug = f"{url}time/{i}/{j}/"
+            data.append([slug, i])
+
+    sitemap_template = render_template("sitemap.xml", data=data)
+    response = make_response(sitemap_template)
+    response.headers["Content-Type"] = "application/xml"
+
+    return response
+
+
 @bp.app_template_filter()
 def date_convert(datetime: datetime.datetime) -> str:
     return datetime.strftime("%d / %m / %Y")
