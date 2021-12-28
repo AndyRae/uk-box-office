@@ -1,16 +1,16 @@
 {% extends 'base.html' %}
 
-{% block title%}{{data.name|title}}{% endblock%}
+{% block title%}{{distributor.name|title}}{% endblock%}
 
 {% block header %}
 	<nav aria-label="breadcrumb" class="mt-5">
 		<ol class="breadcrumb">
 		  <li class="breadcrumb-item"><a href="/">Home</a></li>
 		  <li class="breadcrumb-item"><a href="{{ url_for('index.distributors') }}">Distributors</a></li>
-		  <li class="breadcrumb-item active" aria-current="page">{{ data.name|title }}</li>
+		  <li class="breadcrumb-item active" aria-current="page">{{ distributor.name|title }}</li>
 		</ol>
 	</nav>
-	<h1 class="mt-4">{{ data.name|title }}</h1>
+	<h1 class="mt-4">{{ distributor.name|title }}</h1>
 {% endblock %}
 
 {% block content %}
@@ -21,24 +21,43 @@
 					<tr>
 						<th>Title</th>
 						<th>Country</th>
-						<th>Release Weekend</th>
-						<th>Weeks</th>
-						<th>Cumulative Gross</th>
+						<th>Last Updated</th>
+						<th class="text-center">Weeks</th>
+						<th class="text-center">Box Office Total</th>
 					</tr>
 					</thead>
-					<tbody>
-					{% for i in data.films|reverse %}
-						<tr class="">
-							<td><a class="action" href="{{ url_for('index.film', slug=i['slug']) }}">{{ i['name']|title }}</a></td>
-							<td>{{ i['country']|title }}</td>
-							<td>{{ i['weeks'][0]['date']|date_convert }}</td>
-							<td>{{ i['weeks'][-1]['weeks_on_release'] }}</td>
-							<td>{{ "£ {:,}".format(i['weeks'][-1]['total_gross']) }}</td>
+					{% for i in data %}
+						<tr>
+							<td>
+								<a href="{{ url_for('index.film', slug=i['slug']) }}">{{ i|title }}</a>
+							</td>
+							<td>
+								{% for j in i.countries %}
+									<a href="{{ url_for('index.country', slug=j['slug']) }}">{{ j }}</a>
+								{% endfor %}
+							</td>
+							<td>
+								{{ i.weeks[0].date|date_convert }}
+							</td>
+							<td class="text-center">
+								{{ i.weeks[0].weeks_on_release }}
+							</td>
+							<td class="text-center">
+								{{ "£ {:,}".format(i.weeks[0].total_gross) }}
+							</td>
 						</tr>
 					{% endfor %}
+					<tbody>
+
 					</tbody>
 			</table>
 		</div>
+		{% if prev_url %}
+			<a href="{{ prev_url }}">Previous</a>
+		{% endif %}
+		{% if next_url %}
+			<a href="{{ next_url }}">Next</a>
+		{% endif %}
 
 	</div>
 {% endblock %}

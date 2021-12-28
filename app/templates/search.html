@@ -30,7 +30,11 @@
                         <tr class="">
                             <td><a class="action" href="{{ url_for('index.film', slug=i['slug']) }}">{{ i['name']|title }}</a></td>
                             <td>{{ i['distributor']|title}}</td>
-                            <td>{{ i['country']}}</td>
+                            <td>
+                                {% for j in i.countries %}
+                                    <a href="{{ url_for('index.country', slug=j['slug']) }}">{{ j }}</a>
+                                {% endfor %}
+                            </td>
                         </tr>
                     {% endfor %}
                     </tbody>

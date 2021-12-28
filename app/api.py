@@ -4,6 +4,7 @@ from datetime import datetime
 from typing import Dict, List, Any
 from flask import (
     Blueprint,
+    render_template,
     make_response,
     request,
     jsonify,
@@ -110,7 +111,7 @@ def distributors() -> Response:
 
     results = [ix.as_dict() for ix in data]
     return jsonify(
-        get_paginated_list(
+        data=get_paginated_list(
             results,
             "/api/distributor",
             start=int(request.args.get("start", 1)),

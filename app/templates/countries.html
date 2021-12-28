@@ -1,32 +1,31 @@
 {% extends 'base.html' %}
 
-{% block header %}
-<ul class="breadcrumb">
-	<li class="breadcrumb-item">
-	<a href="/">Home</a>
-	</li>
-	<li class="breadcrumb-item">
-	<a href="{{ url_for('index.countries') }}">Countries</a>
-	</li>
-</ul>
+{% block title %}Countries{% endblock %}
 
-<h1>Countries</h1>
+{% block header %}
+	<nav aria-label="breadcrumb" class="mt-5">
+		<ol class="breadcrumb">
+		<li class="breadcrumb-item"><a href="/">Home</a></li>
+		<li class="breadcrumb-item active" aria-current="page">Countries</li>
+		</ol>
+	</nav>
+
+	<h1 class="mt-4">Countries</h1>
 
 {% endblock %}
 
 {% block content %}
-	<div class="container grid-lg">
+	<div class="container mt-4">
 		<div class="columns">
-			<div class="column col-xs-10">
-				<ol>
+			<div class="col-sm-4">
+				<ul class="list-group list-group-flush">
 				{% for i in data %}
 
-					<li><a class="action" href="{{ url_for('index.country', slug=i['slug']) }}">{{ i["name"]|title }}</a></li>
+					<a class="list-group-item list-group-item-action" href="{{ url_for('index.country', slug=i['slug']) }}">{{ i["name"] }}</a>
 
 				{% endfor %}
 				</ol>
 			</div>
-			<div class="column col-xs-2"></div>
 		</div>
 	</div>
 {% endblock %}

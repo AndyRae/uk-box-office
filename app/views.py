@@ -4,6 +4,7 @@ import calendar
 import datetime
 from typing import Any, Dict, List
 from flask.wrappers import Response
+from flask_sqlalchemy import model
 
 import pandas as pd
 
@@ -15,6 +16,7 @@ from flask import (
     make_response,
     g,
 )
+
 from . import db, models, forms
 from werkzeug.exceptions import abort
 
@@ -71,11 +73,18 @@ def search() -> str:
     )
 
 
-@bp.route("/films")
+@bp.route("/films/")
 def films() -> str:
+    """
+    List of all films.
+    TODO: Should be ordered by last updated...
+    """
     page = request.args.get("page", 1, type=int)
-    query = db.session.query(models.Film)
-    data = query.order_by(models.Film.name.asc()).paginate(page, 20, False)
+    query = db.session.query(models.Film).options(
+        db.joinedload(models.Film.weeks)
+    )
+    query = query.join(models.Distributor)
+    data = query.order_by(models.Film.name).paginate(page, 20, False)
     if data is None:
         abort(404)
     next_url = (
@@ -89,8 +98,11 @@ def films() -> str:
     )
 
 
-@bp.route("/distributors")
+@bp.route("/distributors/")
 def distributors() -> str:
+    """
+    List of all distributors.
+    """
     page = request.args.get("page", 1, type=int)
     query = db.session.query(models.Distributor)
     data = query.order_by(models.Distributor.name.asc()).paginate(
@@ -116,8 +128,11 @@ def distributors() -> str:
     )
 
 
-@bp.route("/countries")
+@bp.route("/countries/")
 def countries() -> str:
+    """
+    List of all countries.
+    """
     query = db.session.query(models.Country)
     data = query.order_by(models.Country.name.asc()).all()
     if data is None:
@@ -127,6 +142,9 @@ def countries() -> str:
 
 @bp.route("/films/<slug>/")
 def film(slug: str) -> str:
+    """
+    Film detail.
+    """
     query = db.session.query(models.Film)
     query = query.filter(models.Film.slug == slug)
     data = query.first()
@@ -151,24 +169,77 @@ def film(slug: str) -> str:
 
 @bp.route("/distributors/<slug>/")
 def distributor(slug: str) -> str:
+    """
+    Distributor detail.
+    """
+    page = request.args.get("page", 1, type=int)
+    query = db.session.query(models.Film).options(
+        db.joinedload(models.Film.weeks)
+    )
+    query = query.join(models.Distributor)
+    query = query.filter(models.Distributor.slug == slug)
+    data = query.paginate(page, 20, False)
+    next_url = (
+        url_for("index.distributor", slug=slug, page=data.next_num)
+        if data.has_next
+        else None
+    )
+    prev_url = (
+        url_for("index.distributor", slug=slug, page=data.prev_num)
+        if data.has_prev
+        else None
+    )
+
     query = db.session.query(models.Distributor)
     query = query.filter(models.Distributor.slug == slug)
-    data = query.first()
+    distributor = query.first()
 
     if data is None:
         abort(404)
-    return render_template("distributor_detail.html", data=data)
+    return render_template(
+        "distributor_detail.html",
+        data=data.items,
+        distributor=distributor,
+        next_url=next_url,
+        prev_url=prev_url,
+    )
 
 
 @bp.route("/countries/<slug>/")
 def country(slug: str) -> str:
+    """
+    Country detail.
+    """
+    page = request.args.get("page", 1, type=int)
     query = db.session.query(models.Country)
     query = query.filter(models.Country.slug == slug)
-    data = query.first()
+    country = query.first()
+
+    query = db.session.query(models.Film).options(
+        db.selectinload(models.Film.weeks)
+    )
+    query = query.filter(models.Film.countries.contains(country))
+    data = query.paginate(page, 20, False)
+    next_url = (
+        url_for("index.country", slug=slug, page=data.next_num)
+        if data.has_next
+        else None
+    )
+    prev_url = (
+        url_for("index.country", slug=slug, page=data.prev_num)
+        if data.has_prev
+        else None
+    )
 
     if data is None:
         abort(404)
-    return render_template("country_detail.html", data=data)
+    return render_template(
+        "country_detail.html",
+        country=country,
+        data=data.items,
+        next_url=next_url,
+        prev_url=prev_url,
+    )
 
 
 def data_grouped_by_date(data: List[Any]) -> Dict[str, Any]:
@@ -221,14 +292,6 @@ def data_grouped_by_film(data: List[Any]) -> Dict[str, Any]:
     return df.reset_index().to_dict(orient="records")
 
 
-@bp.route("/time/")
-def time() -> str:
-    years = range(2021, 2006, -1)
-    months = range(1, 13)
-
-    return render_template("time.html", years=years, months=months)
-
-
 def get_time_data(start_date: datetime.date, end_date: datetime.date) -> Any:
     """
     Queries the weeks database with a start and end filter
@@ -240,10 +303,21 @@ def get_time_data(start_date: datetime.date, end_date: datetime.date) -> Any:
     return query.all()
 
 
+@bp.route("/time/")
+def time() -> str:
+    """
+    List of all time periods.
+    """
+    years = range(2021, 2006, -1)
+    months = range(1, 13)
+
+    return render_template("time.html", years=years, months=months)
+
+
 @bp.route("/time/<int:year>/")
 def year_detail(year: int) -> str:
     """
-    Comment
+    Year Detail.
     """
     start_date = datetime.date(int(year), 1, 1)
     end_date = datetime.date(int(year), 12, 31)
@@ -271,7 +345,7 @@ def year_detail(year: int) -> str:
 @bp.route("/time/<int:year>/<int:month>/")
 def month_detail(year: int, month: int) -> str:
     """
-    Comment
+    Month detail.
     """
     # Get the last day of the month
     end_day = calendar.monthrange(year, month)[1]
@@ -303,7 +377,7 @@ def month_detail(year: int, month: int) -> str:
 @bp.route("/time/<int:year>/<int:month>/<int:start_day>/")
 def week_detail(year: int, month: int, start_day: int) -> str:
     """
-    Comment
+    Week detail.
     """
     start_date = datetime.date(year, month, start_day)
 

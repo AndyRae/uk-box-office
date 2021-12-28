@@ -222,8 +222,8 @@ var vm = new Vue({
 				lastResult = data;
 				data.results.forEach(week => {
 					// destructure the object and add to array
-					const { date, film, film_slug, distributor_id, week_gross, number_of_cinemas, weeks_on_release } = week;
-					results.push({ date, film, film_slug, distributor_id, week_gross, number_of_cinemas, weeks_on_release });
+					const { date, film, film_slug, distributor, week_gross, number_of_cinemas, weeks_on_release } = week;
+					results.push({ date, film, film_slug, distributor, week_gross, number_of_cinemas, weeks_on_release });
 				});
 				// increment the page with 20 on each loop
 				page += 100;
@@ -296,7 +296,7 @@ var vm = new Vue({
 			var result = results.reduce( (acc, curr) => {
 				let item = acc.find(x => x.film == curr["film"]);
 				if(!item){
-					item = {film: curr["film"], slug: curr["film_slug"], distributor: curr["distributor_id"], weeks:{}}
+					item = {film: curr["film"], slug: curr["film_slug"], distributor: curr["distributor"], weeks:{}}
 					acc.push(item);
 				}
 				item.weeks[curr.weeks_on_release] = (item.weeks[curr.weeks_on_release] || 0) + curr.week_gross
@@ -305,7 +305,7 @@ var vm = new Vue({
 				.map(x => ({
 				"film": x.film,
 				"film_slug": x.slug,
-				"distributor_id": x.distributor,
+				"distributor": x.distributor,
 				"weeks": Math.max(...Object.keys(x.weeks).map(Number)),
 				"week_gross": Object.values(x.weeks).reduce( (a,b) => a+b ,0)
 			}))
