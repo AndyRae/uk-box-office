@@ -4,6 +4,7 @@ from datetime import datetime
 from typing import Dict, List, Any
 from flask import (
     Blueprint,
+    render_template,
     make_response,
     request,
     jsonify,
@@ -51,6 +52,37 @@ def api() -> Response:
             limit=int(request.args.get("limit", 20)),
         )
     )
+
+
+@bp.route("/apimeasure")
+def api_measure() -> str:
+    """
+    Main API endpoint - returns box office data.
+    Can filter on start date, end date - format: 2020-08-31
+    """
+    query = db.session.query(models.Week)
+    query = query.join(models.Distributor)  # WHY????????
+
+    start_date = request.args.get("start_date")
+    if start_date is not None:
+        query = query.filter(models.Week.date >= to_date(start_date))
+
+    end_date = request.args.get("end_date")
+    if end_date is not None:
+        query = query.filter(models.Week.date <= to_date(end_date))
+
+    data = query.order_by(models.Week.date.desc()).all()
+    if data is None:
+        abort(404)
+
+    results = [ix.as_dict() for ix in data]
+    i = get_paginated_list(
+        results,
+        "/api",
+        start=int(request.args.get("start", 1)),
+        limit=int(request.args.get("limit", 20)),
+    )
+    return render_template("api.html", data=i)
 
 
 @bp.route("/api/films")
@@ -110,7 +142,7 @@ def distributors() -> Response:
 
     results = [ix.as_dict() for ix in data]
     return jsonify(
-        get_paginated_list(
+        data=get_paginated_list(
             results,
             "/api/distributor",
             start=int(request.args.get("start", 1)),

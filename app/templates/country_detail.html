@@ -1,18 +1,18 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ data.name }}{% endblock %}
+{% block title %}{{ country.name }}{% endblock %}
 
 {% block header %}
 	<nav aria-label="breadcrumb" class="mt-5">
 		<ol class="breadcrumb">
 		<li class="breadcrumb-item"><a href="/">Home</a></li>
 		<li class="breadcrumb-item"><a href="{{ url_for('index.countries') }}">Countries</a></li>
-		<li class="breadcrumb-item active" aria-current="page">{{ data.name }}</li>
+		<li class="breadcrumb-item active" aria-current="page">{{ country.name }}</li>
 
 		</ol>
 	</nav>
 
-	<h1 class="mt-4">{{ data.name }}</h1>
+	<h1 class="mt-4">{{ country.name }}</h1>
 {% endblock %}
 
 {% block content %}
@@ -29,7 +29,7 @@
 					</tr>
 					</thead>
 					<tbody>
-					{% for i in films|reverse %}
+					{% for i in data|reverse %}
 						<tr class="">
 							<td><a class="action" href="{{ url_for('index.film', slug=i['slug']) }}">{{ i['name']|title }}</a></td>
 							<td><a class="action" href="{{ url_for('index.distributor', slug=i['distributor']['slug']) }}">{{ i['distributor']|title }}</a></td>
@@ -41,6 +41,12 @@
 					</tbody>
 			</table>
 		</div>
+		{% if prev_url %}
+			<a href="{{ prev_url }}">Previous</a>
+		{% endif %}
+		{% if next_url %}
+			<a href="{{ next_url }}">Next</a>
+		{% endif %}
 
 	</div>
 {% endblock %}
