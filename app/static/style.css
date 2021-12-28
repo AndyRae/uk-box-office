@@ -144,35 +144,66 @@ a:visited {
     border: 1px solid #FFBDB7;
 }
 
-/* .mt-5 {
-	margin-top: 2rem !important;
-}
 
-.mb-5 {
-	margin-bottom: 2rem !important;
-} */
-/*
 @media (prefers-color-scheme:dark) {
 	body {
 		background: #21212C;
 		color: #fff;
 	}
+	.bg-light {
+		background: #21212C !important;
+	}
+	.text-dark {
+		color: #fff !important;
+	}
 	a {
 		color: #fff !important;
+	}
+	.btn {
+		color: #fff;
+	}
+	.btn-outline-primary {
+		color: #fff;
+	}
+	.btn:hover {
+		color: #fff;
+	}
+	.btn:active {
+		color: #000;
+	}
+	.card {
+		background: #21212C;
 	}
 	.chip {
 		color: #000 !important;
 	}
+	.table {
+		color: #fff;
+	}
 	.table.table-striped tbody tr:nth-of-type(odd) {
 		background: #000;
+		color: #fff;
 	}
-	.table.table-hover tbody tr:hover {
+	.table-striped>tbody>tr:nth-of-type(odd)>* {
+		color: #fff;
+	}
+	.table.table-hover tbody tr:hover* {
 		background: #000;
+		color: #fff;
+	}
+	.table-hover>tbody>tr:hover>* {
+		color: #fff;
+		background-color: #000;
 	}
 	.form-input {
 		color: #FFF;
 	}
-	.search-bar {
-		color: #000 !important;
+	.form-control {
+		background-color: #000;
+		color: #fff;
 	}
-} */
+	.form-control:focus {
+		background-color: #000;
+		color: #fff;
+	}
+}

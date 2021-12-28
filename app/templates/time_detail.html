@@ -91,11 +91,11 @@
 								<thead>
 									<tr>
 										<th>Date Week Ending</th>
-										<th>Weekend Box Office</th>
-										<th>Week Box Office</th>
-										<th>Week Percent Change</th>
-										<th>Number of Releases</th>
-										<th>Number of Cinemas</th>
+										<th class="text-center">Weekend Box Office</th>
+										<th class="text-center">Week Box Office</th>
+										<th class="text-center">Week Percent Change</th>
+										<th class="text-center">Number of Releases</th>
+										<th class="text-center">Number of Cinemas</th>
 									</tr>
 									</thead>
 									<tbody>
@@ -104,17 +104,17 @@
 												<td><a class="action" href="{{ url_for('index.week_detail', year=i['date']['year'], month=i['date']['month'], start_day=i['date']['day']) }}">
 													{{ i['date']|date_convert }}
 												</a></td>
-												<td>{{ "£ {:,}".format(i['weekend_gross']) }}</td>
-												<td>{{ "£ {:,}".format(i['week_gross']) }}</td>
+												<td class="text-center">{{ "£ {:,}".format(i['weekend_gross']) }}</td>
+												<td class="text-center">{{ "£ {:,}".format(i['week_gross']) }}</td>
 												{% if i['pct_change_week']|round(2) > 0 %}
-													<td class="text-success">{{ i['pct_change_week']|round(2) }}%</td>
+													<td class="text-success text-center">{{ i['pct_change_week']|round(2) }}%</td>
 												{% elif i['pct_change_week']|round(2) < 0 %}
-													<td class="text-danger">{{ i['pct_change_week']|round(2) }}%</td>
+													<td class="text-danger text-center">{{ i['pct_change_week']|round(2) }}%</td>
 												{% else %}
-													<td class="">-</td>
+													<td class="text-center">-</td>
 												{% endif %}
-												<td>{{ i['id']}}</td>
-												<td>{{ i['number_of_cinemas']}}</td>
+												<td class="text-center">{{ i['id']}}</td>
+												<td class="text-center">{{ i['number_of_cinemas']}}</td>
 											</tr>
 										{% endfor %}
 									</tbody>
@@ -188,16 +188,17 @@
 				},
 				options: {
 					scales: {
-						x: [{
-							type: 'time',
-							offset: true,
-							time: {
-								unit: 'week'
+						x: {
+							grid: {
+								display:false
 							},
-						}],
+							offset: false,
+						},
 						y: {
 							beginAtZero: true,
 							ticks: {
+								autoSkip: true,
+								stepSize: 10000000,
 								callback: function(value, index, values) {
 									return '£ ' + value;
 								}

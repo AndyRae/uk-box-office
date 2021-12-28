@@ -132,16 +132,29 @@
 					borderColor: [
 						'#FF8321',
 					],
-					pointStyle: 'line',
-					tension: 0.3,
+					pointStyle: 'circle',
+					tension: 0.5,
 				}]
 			},
 			options: {
 				responsive: true,
 				scales: {
+					x: {
+						grid: {
+							display:false
+						},
+						distribution: 'series',
+						ticks: {
+							maxRotation: 0,
+							minRotation: 0,
+							autoSkip: true
+						},
+					},
 					y: {
 						beginAtZero: true,
 						ticks: {
+							autoSkip: true,
+							stepSize: 10000000,
 							callback: function(value, index, values) {
 								return '£ ' + value;
 							}
