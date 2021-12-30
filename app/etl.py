@@ -101,21 +101,22 @@ def get_excel_file(source_url: str) -> str:
     """
     Fetches first (latest) excel file on the source page
     """
+    # Fetches first (latest) excel file on the source page
     soup = BeautifulSoup(
         requests.get(source_url, timeout=5).content, "html.parser"
     )
 
-    for row in soup.find_all("div", {"class": "sc-fzoJMP kyojiS"}):
-        excel_element = row.find("a")
-        if excel_element:
-            excel_link = excel_element.get("href")
-            excel_title = row.find("span").get_text().split("-")[-1]
-            print(f"Found {excel_title}")
-            path = "./data/" + excel_title + ".xls"
-            urllib.request.urlretrieve(excel_link, path)
-            return path
-    print("Failed weekly ETL.")
-    return "/"
+    all = soup.find("article")
+    # First link in the class
+    link = all.find_all("a")[0]
+    if link is not None:
+        excel_link = link.get("href")
+        excel_title = link.find("span").get_text().split("-")[-1]
+        print(f"Found {excel_title}")
+        urllib.request.urlretrieve(excel_link, excel_title + ".xls")
+        return excel_title
+    print("Fetch failed")
+    return ""
 
 
 def spellcheck_distributor(distributor: pd.Series) -> str:
@@ -185,7 +186,7 @@ def get_week_box_office(row: pd.Series) -> int:
 
     most_recent_film_match = (
         models.Week.query.filter(
-            models.Film.title == film,
+            models.Film.name == film,
             models.Week.date >= previous_period,
             models.Week.date <= filter_date,
         )

@@ -71,7 +71,10 @@ def register_blueprints(app: Flask) -> None:
 def register_cli(app: Flask) -> None:
     from . import cli
 
-    app.cli.add_command(cli.fill_db_command)
     app.cli.add_command(cli.init_db_command)
+    app.cli.add_command(cli.fill_db_command)
+    app.cli.add_command(cli.weekly_etl_command)
+    app.cli.add_command(cli.backup_etl)
+    app.cli.add_command(cli.rollback_etl_command)
 
     return None

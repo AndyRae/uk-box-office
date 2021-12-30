@@ -4,10 +4,11 @@ import os
 
 import click
 import pandas as pd
+import urllib.request
 
 from flask.cli import with_appcontext
 from dotenv import load_dotenv
-from . import etl, db
+from . import etl, db, models
 
 
 @with_appcontext
@@ -59,3 +60,33 @@ def weekly_etl_command() -> None:
         click.echo("Weekly ETL finished.")
     else:
         click.echo("Weekly ETL failed.")
+
+
+@click.command("backup-etl")
+@click.argument("source_url")
+@with_appcontext
+def backup_etl(source_url: str) -> None:
+    """
+    A backup CLI for the pipeline - pass the excel file link directly
+    """
+    if source_url is not None:
+        urllib.request.urlretrieve(source_url, "test" + ".xls")
+        df = etl.extract_box_office("test" + ".xls")
+        etl.load_dataframe(df)
+        click.echo("Backup ETL finished.")
+    else:
+        click.echo("Backup ETL failed.")
+
+
+@click.command("rollback-etl")
+@with_appcontext
+def rollback_etl_command() -> None:
+    """Deletes the last week of data."""
+    query = db.session.query(models.Week)
+    last_date = query.order_by(models.Week.date.desc()).first().date
+    print(f"👉{last_date}")
+
+    query = query.filter(models.Week.date >= last_date)
+    data = query.all()
+    db.session.delete(data)
+    db.session.commit()
