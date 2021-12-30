@@ -5,7 +5,7 @@ body {
 	-moz-osx-font-smoothing: grayscale;
 }
 ::selection {
-	background: #FF8321;
+	background: #FE7E6D;
 	color: white;
 }
 a {
@@ -76,8 +76,8 @@ a:visited {
 }
 
 .btn-primary {
-	background-color: #FF8321;
-	border-color: #FF8321;
+	background-color: #FE7E6D;
+	border-color: #FE7E6D;
 	color: #000;
 }
 
@@ -89,12 +89,12 @@ a:visited {
 
 .btn-outline-primary {
 	color: #000;
-	border-color: #FF8321;
+	border-color: #FE7E6D;
 }
 
 .btn-outline-primary:hover {
-	background-color: #FF8321;
-	border-color: #FF8321;
+	background-color: #FE7E6D;
+	border-color: #FE7E6D;
 }
 
 .search {
@@ -136,12 +136,12 @@ a:visited {
 }
 
 .bg-dash {
-	background-color: #FFECEB;
+	background-color: #FEECE9;
 	border: none;
 }
 
 .border-dash {
-    border: 1px solid #FFBDB7;
+    border: 1px solid #FEECE9;
 }
 
 
