@@ -24,6 +24,8 @@ Home
 					<button type="button" class="btn btn-outline-primary btn-filter input-group-btn btn-sm" v-on:click="filter_days(7)">7 days</button>
 					<button type="button" class="btn btn-outline-primary btn-filter input-group-btn btn-sm" v-on:click="filter_days(30)">30 days</button>
 					<button type="button" class="btn btn-outline-primary btn-filter input-group-btn btn-sm" v-on:click="filter_days(90)">3 months</button>
+					<button type="button" class="btn btn-outline-primary btn-filter input-group-btn btn-sm" v-on:click="filter_days(183)">6 months</button>
+					<button type="button" class="btn btn-outline-primary btn-filter input-group-btn btn-sm" v-on:click="filter_days(365)">1 year</button>
 				</div>
 
 			</div>
@@ -42,7 +44,25 @@ Home
 						<small class="card-title text-muted">UK Box Office per film</small>
 						<area-chart class="card-body" v-if="loaded" :chartdataarea="chartdataarea" :optionsarea="optionsarea"></area-chart>
 					</div>
+				</div>
 
+				<div class="row mb-3">
+					<div class="col-sm-6">
+						<div class="card mt-2 bg-dash border-dash text-center">
+							<div class="card-body">
+								<h2 class="card-title">${ numberOfCinemas }</h2>
+								<small>Number of cinemas</small>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="card mt-2 bg-dash border-dash text-center">
+							<div class="card-body">
+								<h2 class="card-title">${ numberOfFilms }</h2>
+								<small>Number of films</small>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 
@@ -57,10 +77,12 @@ Home
 						</div>
 					</div>
 					<div class="col-sm-6">
-						<div class="card mt-2 bg-dash border-dash text-center">
+						<div class="card mt-2 bg-dash border-dash">
 							<div class="card-body">
-								<h2 class="card-title">${ lastUpdated }</h2>
-								<small>Last updated</small>
+								<h6>UK Box Office Data Dashboard</h6>
+								<small>Visualising box office data back to 2001, updates on Wednesdays.
+									Built by <a href="https://rae.li">rae.li</a>
+								</small>
 							</div>
 						</div>
 					</div>
@@ -70,16 +92,15 @@ Home
 					<div class="col-sm-6">
 						<div class="card mt-2 bg-dash border-dash text-center">
 							<div class="card-body">
-								<h2 class="card-title">${ numberOfFilms }</h2>
-								<small>Number of films</small>
+								<h2 class="card-title">${ lastUpdated }</h2>
+								<small>Last updated</small>
 							</div>
 						</div>
 					</div>
 					<div class="col-sm-6">
 						<div class="card mt-2 bg-dash border-dash text-center">
 							<div class="card-body">
-								<h2 class="card-title">${ numberOfCinemas }</h2>
-								<small>Number of cinemas</small>
+								<small>List of dates?</small>
 							</div>
 						</div>
 					</div>
@@ -89,10 +110,10 @@ Home
 					<div class="table-responsive">
 						<table class="table table-sm box-table table-hover card-body">
 							<thead>
-								<tr class="text-center">
+								<tr>
 									<th></th>
-									<th>Title</th>
-									<th>Box Office</th>
+									<th >Title</th>
+									<th class="text-center">Box Office</th>
 									<th class="text-center">Week</th>
 									<th>Distributor</th>
 
