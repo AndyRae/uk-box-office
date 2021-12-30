@@ -1,5 +1,6 @@
 """CLI for database loading"""
 
+import datetime
 import os
 
 import click
@@ -55,7 +56,7 @@ def weekly_etl_command() -> None:
     source_url = os.environ.get("source_url")
     if source_url is not None:
         path = etl.get_excel_file(source_url)
-        df = etl.extract_box_office(path + ".xls")
+        df = etl.extract_box_office(path)
         etl.load_dataframe(df)
         click.echo("Weekly ETL finished.")
     else:
@@ -70,8 +71,11 @@ def backup_etl(source_url: str) -> None:
     A backup CLI for the pipeline - pass the excel file link directly
     """
     if source_url is not None:
-        urllib.request.urlretrieve(source_url, "test" + ".xls")
-        df = etl.extract_box_office("test" + ".xls")
+        now = datetime.datetime.now().strftime("ETL%Y%m%d%M%H%S")
+        file_path = f"./data/{now}.xls"
+        urllib.request.urlretrieve(source_url, file_path)
+
+        df = etl.extract_box_office(file_path)
         etl.load_dataframe(df)
         click.echo("Backup ETL finished.")
     else:
@@ -84,9 +88,13 @@ def rollback_etl_command() -> None:
     """Deletes the last week of data."""
     query = db.session.query(models.Week)
     last_date = query.order_by(models.Week.date.desc()).first().date
-    print(f"👉{last_date}")
 
     query = query.filter(models.Week.date >= last_date)
     data = query.all()
-    db.session.delete(data)
+
+    for i in data:
+        db.session.delete(i)
     db.session.commit()
+    click.echo(
+        f"Rollback ETL finished - deleted {len(data)} entries for {last_date}."
+    )

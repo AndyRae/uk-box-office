@@ -14,7 +14,8 @@ from . import db, models
 
 def get_country(country: str) -> List[models.Country]:
     """
-    Splits up the string of countries, and one by one:
+    Splits up the string of countries, and one by one.
+    Maps it to the full country name.
     Checks the database if the country exists.
     If not - creates it, adds it to the database.
     Returns a list of the countries
@@ -113,9 +114,19 @@ def get_excel_file(source_url: str) -> str:
         excel_link = link.get("href")
         excel_title = link.find("span").get_text().split("-")[-1]
         print(f"Found {excel_title}")
-        urllib.request.urlretrieve(excel_link, excel_title + ".xls")
-        return excel_title
-    print("Fetch failed")
+
+        excel_date = datetime.strptime(excel_title, "%d %B %Y")
+        query = db.session.query(models.Week)
+        last_date = query.order_by(models.Week.date.desc()).first().date
+
+        if excel_date <= last_date:
+            print("Fetch failed - website file is pending update.")
+            return ""
+
+        file_path = f"./data/{excel_title}.xls"
+        urllib.request.urlretrieve(excel_link, file_path)
+        return file_path
+    print("Fetch failed - couldn't find file")
     return ""
 
 
@@ -187,6 +198,7 @@ def get_week_box_office(row: pd.Series) -> int:
     most_recent_film_match = (
         models.Week.query.filter(
             models.Film.name == film,
+            # models.Week.film.name == film,
             models.Week.date >= previous_period,
             models.Week.date <= filter_date,
         )
