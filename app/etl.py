@@ -1,7 +1,7 @@
 """ETL Pipeline for box office data"""
 
 import os
-from typing import List
+from typing import List, Tuple
 import requests  # type: ignore
 import urllib.request
 from datetime import datetime, timedelta
@@ -25,6 +25,7 @@ def get_country(country: str) -> List[models.Country]:
     new_countries = []
     for i in countries:
 
+        i = spellcheck_country(i)
         filtered_countries = models.Country.query.filter_by(name=i).first()
 
         if i == filtered_countries:
@@ -128,6 +129,19 @@ def get_excel_file(source_url: str) -> str:
         return file_path
     print("Fetch failed - couldn't find file")
     return ""
+
+
+def spellcheck_country(country: str) -> str:
+    """
+    Uses a list of the common distributor mistakes and returns the correction
+    """
+    country_list = pd.read_csv("./data/country_check.csv", header=None)
+    country_list.columns = ["key", "correction", "flag"]
+
+    if country in country_list["key"].values:
+        country_list = country_list[country_list["key"].str.match(country)]
+        country = country_list["correction"].iloc[0]
+    return country
 
 
 def spellcheck_distributor(distributor: pd.Series) -> str:
@@ -254,12 +268,13 @@ def extract_box_office(filename: str) -> pd.DataFrame:
     df = df.dropna(how="all", axis=1, thresh=2)
 
     df.insert(0, "date", date)
-    df["film"] = df["film"].astype(str).str.upper()
-    df["country"] = df["country"].astype(str).str.upper()
-    df["distributor"] = df["distributor"].astype(str).str.upper()
+    df["film"] = df["film"].astype(str).str.upper().str.strip()
+    df["country"] = df["country"].astype(str).str.upper().str.strip()
+    df["distributor"] = df["distributor"].astype(str).str.upper().str.strip()
 
     df["film"] = df["film"].map(spellcheck_film)
     df["distributor"] = df["distributor"].map(spellcheck_distributor)
+    df["country"] = df["country"].map(spellcheck_country)
 
     df["week_gross"] = df.apply(get_week_box_office, axis=1)
 

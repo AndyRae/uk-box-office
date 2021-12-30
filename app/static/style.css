@@ -188,6 +188,10 @@ a:visited {
 	.list-group-item {
 		background: #21212C;
 	}
+	.list-group-item:hover {
+		background: #000;
+		color: #fff;
+	}
 	.table {
 		color: #fff;
 	}
