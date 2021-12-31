@@ -18,7 +18,7 @@ from flask import (
     g,
 )
 
-from . import db, models, forms
+from . import db, models, forms, cache
 from werkzeug.exceptions import abort
 
 
@@ -26,6 +26,7 @@ bp = Blueprint("index", __name__, template_folder="templates")
 
 
 @bp.route("/")
+@cache.cached(timeout=50)
 def index() -> str:
     return render_template("index.html")
 

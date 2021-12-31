@@ -82,8 +82,8 @@ a:visited {
 }
 
 .btn-primary:hover {
-	background-color: #ffac6c;
-	border-color: #ffac6c;
+	background-color: #f59f94;
+	border-color: #f59f94;
 	color: #000;
 }
 
@@ -93,6 +93,11 @@ a:visited {
 }
 
 .btn-outline-primary:hover {
+	background-color: #FE7E6D;
+	border-color: #FE7E6D;
+}
+
+.btn-outline-primary:active {
 	background-color: #FE7E6D;
 	border-color: #FE7E6D;
 }

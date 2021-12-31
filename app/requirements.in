@@ -5,11 +5,13 @@ elasticsearch
 flake8
 Flask
 Flask-APScheduler
+Flask-Caching
 Flask-DebugToolbar
 Flask-SQLAlchemy
 Flask-WTF
 mypy
 pandas
+pip-audit
 pip-tools
 pre-commit
 psycopg2
