@@ -3,7 +3,9 @@
 import os
 
 from dotenv import load_dotenv
-from . import scheduler, etl
+from flask import current_app
+
+from . import etl, scheduler
 
 
 @scheduler.task(
@@ -28,6 +30,9 @@ def run_etl() -> None:
         source_url = os.environ.get("source_url")
         if source_url is not None:
             path = etl.get_excel_file(source_url)
-            df = etl.extract_box_office(path)
-            etl.load_dataframe(df)
-            print("Finished ETL Pipeline task")
+            if path[0] is True:
+                df = etl.extract_box_office(path[1])
+                etl.load_dataframe(df)
+                current_app.logger.info("Weekly-ETL auto run succesful.")
+            else:
+                current_app.logger.warning("Weekly-ETL auto run failed.")

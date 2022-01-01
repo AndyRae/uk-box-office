@@ -3,30 +3,28 @@
 import calendar
 import datetime
 from typing import Any, Dict, List
-from flask.wrappers import Response
-from flask_sqlalchemy import model
 
 import pandas as pd
-
 from flask import (
     Blueprint,
     current_app,
+    g,
+    make_response,
     render_template,
     request,
     url_for,
-    make_response,
-    g,
 )
-
-from . import db, models, forms, cache
+from flask.wrappers import Response
+from flask_sqlalchemy import model
 from werkzeug.exceptions import abort
 
+from . import cache, db, forms, models
 
 bp = Blueprint("index", __name__, template_folder="templates")
 
 
 @bp.route("/")
-@cache.cached(timeout=50)
+@cache.cached()
 def index() -> str:
     return render_template("index.html")
 
@@ -76,6 +74,7 @@ def search() -> str:
 
 
 @bp.route("/films/")
+@cache.cached()
 def films() -> str:
     """
     List of all films.
@@ -101,6 +100,7 @@ def films() -> str:
 
 
 @bp.route("/distributors/")
+@cache.cached()
 def distributors() -> str:
     """
     List of all distributors.
@@ -131,6 +131,7 @@ def distributors() -> str:
 
 
 @bp.route("/countries/")
+@cache.cached()
 def countries() -> str:
     """
     List of all countries.
@@ -143,6 +144,7 @@ def countries() -> str:
 
 
 @bp.route("/films/<slug>/")
+@cache.cached()
 def film(slug: str) -> str:
     """
     Film detail.
@@ -170,6 +172,7 @@ def film(slug: str) -> str:
 
 
 @bp.route("/distributors/<slug>/")
+@cache.cached()
 def distributor(slug: str) -> str:
     """
     Distributor detail.
@@ -208,6 +211,7 @@ def distributor(slug: str) -> str:
 
 
 @bp.route("/countries/<slug>/")
+@cache.cached()
 def country(slug: str) -> str:
     """
     Country detail.
@@ -405,6 +409,7 @@ def week_detail(year: int, month: int, start_day: int) -> str:
 
 
 @bp.route("/sitemap.xml")
+@cache.cached()
 def sitemap() -> Response:
     """
     Sitemap generator - queries all models for all slugs.

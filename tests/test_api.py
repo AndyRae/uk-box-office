@@ -1,6 +1,6 @@
-from app import db
-from app import models
 from datetime import datetime
+
+from app import db, models
 
 
 def test_data() -> None:

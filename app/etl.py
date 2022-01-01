@@ -1,14 +1,15 @@
 """ETL Pipeline for box office data"""
 
 import os
-from typing import List, Tuple
-import requests  # type: ignore
 import urllib.request
 from datetime import datetime, timedelta
+from typing import List, Tuple
 
 import pandas as pd
-
+import requests  # type: ignore
 from bs4 import BeautifulSoup
+from flask import current_app
+
 from . import db, models
 
 
@@ -99,9 +100,10 @@ def load_dataframe(archive: pd.DataFrame) -> None:
         db.session.commit()
 
 
-def get_excel_file(source_url: str) -> str:
+def get_excel_file(source_url: str) -> Tuple[bool, str]:
     """
     Fetches first (latest) excel file on the source page
+    Returns whether fetch has been succesful, and path to the file
     """
     # Fetches first (latest) excel file on the source page
     soup = BeautifulSoup(
@@ -114,21 +116,23 @@ def get_excel_file(source_url: str) -> str:
     if link is not None:
         excel_link = link.get("href")
         excel_title = link.find("span").get_text().split("-")[-1]
-        print(f"Found {excel_title}")
+        current_app.logger.info(f"ETL fetch - Found {excel_title}.")
 
         excel_date = datetime.strptime(excel_title, "%d %B %Y")
         query = db.session.query(models.Week)
         last_date = query.order_by(models.Week.date.desc()).first().date
 
         if excel_date <= last_date:
-            print("Fetch failed - website file is pending update.")
-            return ""
+            current_app.logger.warning(
+                "ETL fetch failed - website file is pending update."
+            )
+            return (False, "")
 
         file_path = f"./data/{excel_title}.xls"
         urllib.request.urlretrieve(excel_link, file_path)
-        return file_path
-    print("Fetch failed - couldn't find file")
-    return ""
+        return (True, file_path)
+    current_app.logger.error("ETL fetch failed - couldn't download file.")
+    return (False, "")
 
 
 def spellcheck_country(country: str) -> str:

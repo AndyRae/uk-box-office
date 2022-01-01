@@ -2,14 +2,15 @@
 
 import datetime
 import os
+import urllib.request
 
 import click
 import pandas as pd
-import urllib.request
-
-from flask.cli import with_appcontext
 from dotenv import load_dotenv
-from . import etl, db, models
+from flask import current_app
+from flask.cli import with_appcontext
+
+from . import db, etl, models
 
 
 @with_appcontext
@@ -52,15 +53,20 @@ def fill_db_command() -> None:
 @with_appcontext
 def weekly_etl_command() -> None:
     """Runs the weekly etl for new box office data."""
+    current_app.logger.info("Weekly-etl running manually")
     load_dotenv()
     source_url = os.environ.get("source_url")
     if source_url is not None:
         path = etl.get_excel_file(source_url)
-        df = etl.extract_box_office(path)
-        etl.load_dataframe(df)
-        click.echo("Weekly ETL finished.")
+
+        if path[0] is True:
+            df = etl.extract_box_office(path[1])
+            etl.load_dataframe(df)
+            current_app.logger.info("Weekly-ETL manual run succesful.")
+        else:
+            current_app.logger.error("Weekly-ETL manual run failed.")
     else:
-        click.echo("Weekly ETL failed.")
+        current_app.logger.error("Weekly-ETL manual run failed.")
 
 
 @click.command("backup-etl")
@@ -70,6 +76,7 @@ def backup_etl(source_url: str) -> None:
     """
     A backup CLI for the pipeline - pass the excel file link directly
     """
+    current_app.logger.info("Backup-ETL manual running.")
     if source_url is not None:
         now = datetime.datetime.now().strftime("ETL%Y%m%d%M%H%S")
         file_path = f"./data/{now}.xls"
@@ -77,9 +84,9 @@ def backup_etl(source_url: str) -> None:
 
         df = etl.extract_box_office(file_path)
         etl.load_dataframe(df)
-        click.echo("Backup ETL finished.")
+        current_app.logger.info("Backup-ETL manual run succesful.")
     else:
-        click.echo("Backup ETL failed.")
+        current_app.logger.error("Backup-ETL manual run failed.")
 
 
 @click.command("rollback-etl")
@@ -95,6 +102,6 @@ def rollback_etl_command() -> None:
     for i in data:
         db.session.delete(i)
     db.session.commit()
-    click.echo(
+    current_app.logger.info(
         f"Rollback ETL finished - deleted {len(data)} entries for {last_date}."
     )

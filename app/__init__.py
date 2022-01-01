@@ -1,18 +1,18 @@
-from typing import Any, Mapping
-import elasticsearch
+from typing import Any
+
+from elasticsearch import Elasticsearch
 from flask import Flask
 from flask_apscheduler import APScheduler
 from flask_caching import Cache
-from flask_sqlalchemy import SQLAlchemy
 from flask_debugtoolbar import DebugToolbarExtension
-from elasticsearch import Elasticsearch
-from . import settings
+from flask_sqlalchemy import SQLAlchemy
 
+from . import settings
 
 db = SQLAlchemy()
 scheduler = APScheduler()
 toolbar = DebugToolbarExtension()
-cache = Cache(config={"CACHE_TYPE": "SimpleCache"})
+cache = Cache()
 
 
 def create_app(test_config: Any = None) -> Flask:
@@ -40,8 +40,6 @@ def create_app(test_config: Any = None) -> Flask:
     )
 
     with app.app_context():
-        # from . import tasks
-
         register_blueprints(app)
         register_cli(app)
 
@@ -56,7 +54,6 @@ def register_extensions(app: Flask) -> None:
     db.init_app(app)
     scheduler.init_app(app)
     cache.init_app(app)
-
     return None
 
 

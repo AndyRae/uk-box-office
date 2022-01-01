@@ -7,8 +7,10 @@ Flask
 Flask-APScheduler
 Flask-Caching
 Flask-DebugToolbar
+Flask-Limiter
 Flask-SQLAlchemy
 Flask-WTF
+isort
 mypy
 pandas
 pip-audit
