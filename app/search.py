@@ -1,4 +1,5 @@
 from typing import Any, List, Tuple
+
 from flask import current_app
 
 

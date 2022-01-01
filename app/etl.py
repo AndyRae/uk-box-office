@@ -1,20 +1,22 @@
 """ETL Pipeline for box office data"""
 
 import os
-from typing import List
-import requests  # type: ignore
 import urllib.request
 from datetime import datetime, timedelta
+from typing import List, Tuple
 
 import pandas as pd
-
+import requests  # type: ignore
 from bs4 import BeautifulSoup
+from flask import current_app
+
 from . import db, models
 
 
 def get_country(country: str) -> List[models.Country]:
     """
-    Splits up the string of countries, and one by one:
+    Splits up the string of countries, and one by one.
+    Maps it to the full country name.
     Checks the database if the country exists.
     If not - creates it, adds it to the database.
     Returns a list of the countries
@@ -24,6 +26,7 @@ def get_country(country: str) -> List[models.Country]:
     new_countries = []
     for i in countries:
 
+        i = spellcheck_country(i)
         filtered_countries = models.Country.query.filter_by(name=i).first()
 
         if i == filtered_countries:
@@ -97,25 +100,52 @@ def load_dataframe(archive: pd.DataFrame) -> None:
         db.session.commit()
 
 
-def get_excel_file(source_url: str) -> str:
+def get_excel_file(source_url: str) -> Tuple[bool, str]:
     """
     Fetches first (latest) excel file on the source page
+    Returns whether fetch has been succesful, and path to the file
     """
+    # Fetches first (latest) excel file on the source page
     soup = BeautifulSoup(
         requests.get(source_url, timeout=5).content, "html.parser"
     )
 
-    for row in soup.find_all("div", {"class": "sc-fzoJMP kyojiS"}):
-        excel_element = row.find("a")
-        if excel_element:
-            excel_link = excel_element.get("href")
-            excel_title = row.find("span").get_text().split("-")[-1]
-            print(f"Found {excel_title}")
-            path = "./data/" + excel_title + ".xls"
-            urllib.request.urlretrieve(excel_link, path)
-            return path
-    print("Failed weekly ETL.")
-    return "/"
+    all = soup.find("article")
+    # First link in the class
+    link = all.find_all("a")[0]
+    if link is not None:
+        excel_link = link.get("href")
+        excel_title = link.find("span").get_text().split("-")[-1]
+        current_app.logger.info(f"ETL fetch - Found {excel_title}.")
+
+        excel_date = datetime.strptime(excel_title, "%d %B %Y")
+        query = db.session.query(models.Week)
+        last_date = query.order_by(models.Week.date.desc()).first().date
+
+        if excel_date <= last_date:
+            current_app.logger.warning(
+                "ETL fetch failed - website file is pending update."
+            )
+            return (False, "")
+
+        file_path = f"./data/{excel_title}.xls"
+        urllib.request.urlretrieve(excel_link, file_path)
+        return (True, file_path)
+    current_app.logger.error("ETL fetch failed - couldn't download file.")
+    return (False, "")
+
+
+def spellcheck_country(country: str) -> str:
+    """
+    Uses a list of the common distributor mistakes and returns the correction
+    """
+    country_list = pd.read_csv("./data/country_check.csv", header=None)
+    country_list.columns = ["key", "correction", "flag"]
+
+    if country in country_list["key"].values:
+        country_list = country_list[country_list["key"].str.match(country)]
+        country = country_list["correction"].iloc[0]
+    return country
 
 
 def spellcheck_distributor(distributor: pd.Series) -> str:
@@ -185,7 +215,8 @@ def get_week_box_office(row: pd.Series) -> int:
 
     most_recent_film_match = (
         models.Week.query.filter(
-            models.Film.title == film,
+            models.Film.name == film,
+            # models.Week.film.name == film,
             models.Week.date >= previous_period,
             models.Week.date <= filter_date,
         )
@@ -241,12 +272,13 @@ def extract_box_office(filename: str) -> pd.DataFrame:
     df = df.dropna(how="all", axis=1, thresh=2)
 
     df.insert(0, "date", date)
-    df["film"] = df["film"].astype(str).str.upper()
-    df["country"] = df["country"].astype(str).str.upper()
-    df["distributor"] = df["distributor"].astype(str).str.upper()
+    df["film"] = df["film"].astype(str).str.upper().str.strip()
+    df["country"] = df["country"].astype(str).str.upper().str.strip()
+    df["distributor"] = df["distributor"].astype(str).str.upper().str.strip()
 
     df["film"] = df["film"].map(spellcheck_film)
     df["distributor"] = df["distributor"].map(spellcheck_distributor)
+    df["country"] = df["country"].map(spellcheck_country)
 
     df["week_gross"] = df.apply(get_week_box_office, axis=1)
 

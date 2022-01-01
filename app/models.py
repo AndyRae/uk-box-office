@@ -1,9 +1,10 @@
 from datetime import datetime
 from typing import Any, Dict, List, Tuple
 
-from . import db
-from .search import add_to_index, remove_from_index, query_index
 from slugify import slugify  # type: ignore
+
+from . import db
+from .search import add_to_index, query_index, remove_from_index
 
 
 class SearchableMixin(object):

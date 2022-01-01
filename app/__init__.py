@@ -1,16 +1,18 @@
-from typing import Any, Mapping
-import elasticsearch
+from typing import Any
+
+from elasticsearch import Elasticsearch
 from flask import Flask
 from flask_apscheduler import APScheduler
-from flask_sqlalchemy import SQLAlchemy
+from flask_caching import Cache
 from flask_debugtoolbar import DebugToolbarExtension
-from elasticsearch import Elasticsearch
-from . import settings
+from flask_sqlalchemy import SQLAlchemy
 
+from . import settings
 
 db = SQLAlchemy()
 scheduler = APScheduler()
 toolbar = DebugToolbarExtension()
+cache = Cache()
 
 
 def create_app(test_config: Any = None) -> Flask:
@@ -38,8 +40,6 @@ def create_app(test_config: Any = None) -> Flask:
     )
 
     with app.app_context():
-        # from . import tasks
-
         register_blueprints(app)
         register_cli(app)
 
@@ -51,12 +51,9 @@ def create_app(test_config: Any = None) -> Flask:
 def register_extensions(app: Flask) -> None:
     from . import tasks
 
-    # Database
     db.init_app(app)
-
-    # Scheduler
     scheduler.init_app(app)
-
+    cache.init_app(app)
     return None
 
 
@@ -71,7 +68,10 @@ def register_blueprints(app: Flask) -> None:
 def register_cli(app: Flask) -> None:
     from . import cli
 
-    app.cli.add_command(cli.fill_db_command)
     app.cli.add_command(cli.init_db_command)
+    app.cli.add_command(cli.fill_db_command)
+    app.cli.add_command(cli.weekly_etl_command)
+    app.cli.add_command(cli.backup_etl)
+    app.cli.add_command(cli.rollback_etl_command)
 
     return None

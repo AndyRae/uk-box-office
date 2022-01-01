@@ -1,4 +1,5 @@
 from typing import Any
+
 from flask import request
 from flask_wtf import FlaskForm
 from wtforms import StringField

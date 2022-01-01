@@ -261,8 +261,8 @@ var vm = new Vue({
 				{
 					label: "Box Office",
 					data: values,
-					borderColor: ['#FF8321'],
-					backgroundColor: ['#FF8321'],
+					borderColor: ['#FE7E6D'],
+					backgroundColor: ['#FE7E6D'],
 					pointStyle: 'circle',
 					tension: 0.5,
 					fill: false,
@@ -327,7 +327,7 @@ var vm = new Vue({
 			})
 			groupedFilms.splice(topNFilms)
 
-			const colors = ['#FFA188', '#006277', '#FF473E', '#009F41', '#FF8321', '#003f5c', '#2f4b7c',
+			const colors = ['#FFA188', '#006277', '#FF473E', '#009F41', '#FE7E6D', '#003f5c', '#2f4b7c',
 			'#665191', '#a05195', '#d45087', '#f95d6a', '#ff7c43', '#ffa600']
 
 			// Create the dataset objects - loop through the films, and then original results for matching weeks

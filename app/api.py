@@ -1,19 +1,13 @@
 """API access"""
 
 from datetime import datetime
-from typing import Dict, List, Any
-from flask import (
-    Blueprint,
-    render_template,
-    make_response,
-    request,
-    jsonify,
-)
-from flask.wrappers import Response
+from typing import Any, Dict, List
 
+from flask import Blueprint, jsonify, make_response, request
+from flask.wrappers import Response
 from werkzeug.exceptions import abort
 
-from . import db, models
+from . import cache, db, models
 
 bp = Blueprint("api", __name__)
 
