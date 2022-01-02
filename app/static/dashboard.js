@@ -375,8 +375,15 @@ var vm = new Vue({
 			start.setDate(start.getDate() - 90 );
 			min.setDate(min.getDate() - 547); // allow to go back 1.5 years
 
-			this.date_picker_start = datepicker('#start', { dateSelected: new Date(start)}, { id: 1 })
-			this.date_picker_end = datepicker('#end', { dateSelected: new Date(end)}, { id: 1 })
+			this.date_picker_start = datepicker('.start', {
+				formatter: (input, date, instance) => {
+					input.value = date.toLocaleDateString()
+			  	}, id: 1, dateSelected: new Date(start)},  )
+
+			this.date_picker_end = datepicker('.end', {
+				formatter: (input, date, instance) => {
+					input.value = date.toLocaleDateString()
+				}, id: 1, dateSelected: new Date(end)}, )
 
 			this.date_picker_start.setMin(min)
 

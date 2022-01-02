@@ -11,21 +11,24 @@ Home
 			<div class="row mb-3">
 				<div class="col-sm-1 pt-2">
 					<div class="card bg-dash text-center">
-						<input id="start" class="date-picker btn form-control form-control-sm"></input>
+						<input class="date-picker btn form-control form-control-sm start"></input>
 					</div>
 				</div>
 				<div class="col-sm-1 pt-2">
 					<div class="card bg-dash text-center">
-						<input id="end" class="date-picker btn form-control form-control-sm"></input>
+						<input class="date-picker btn form-control form-control-sm end"></input>
 					</div>
 				</div>
-				<div class="col-sm-6 pt-2">
+				<div class="col-sm-8 pt-2">
 					<button class="btn btn-primary btn-filter input-group-btn btn-sm" v-on:click="filter_date">Filter</button>
-					<button type="button" class="btn btn-outline-primary btn-filter input-group-btn btn-sm" v-on:click="filter_days(7)">7 days</button>
-					<button type="button" class="btn btn-outline-primary btn-filter input-group-btn btn-sm" v-on:click="filter_days(30)">30 days</button>
-					<button type="button" class="btn btn-outline-primary btn-filter input-group-btn btn-sm" v-on:click="filter_days(90)">3 months</button>
-					<button type="button" class="btn btn-outline-primary btn-filter input-group-btn btn-sm" v-on:click="filter_days(183)">6 months</button>
-					<button type="button" class="btn btn-outline-primary btn-filter input-group-btn btn-sm" v-on:click="filter_days(365)">1 year</button>
+					<div class="btn-group" role="group" aria-label="Basic example">
+
+						<button type="button" class="btn btn-outline-primary btn-filter input-group-btn btn-sm" v-on:click="filter_days(7)">7 days</button>
+						<button type="button" class="btn btn-outline-primary btn-filter input-group-btn btn-sm" v-on:click="filter_days(30)">30 days</button>
+						<button type="button" class="btn btn-outline-primary btn-filter input-group-btn btn-sm" v-on:click="filter_days(90)">3 months</button>
+						<button type="button" class="btn btn-outline-primary btn-filter input-group-btn btn-sm" v-on:click="filter_days(183)">6 months</button>
+						<!-- <button type="button" class="btn btn-outline-primary btn-filter input-group-btn btn-sm" v-on:click="filter_days(365)">1 year</button> -->
+					</div>
 				</div>
 			</div>
 		</div>
