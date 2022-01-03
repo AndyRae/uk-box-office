@@ -82,7 +82,7 @@ Home
 						<div class="card mt-2 bg-dash border-dash">
 							<div class="card-body">
 								<h6>UK Box Office Data Dashboard</h6>
-								<small>Visualising box office data back to 2001, updates on Wednesdays.
+								<small>Visualising box office data back to 2001. Updates on Wednesdays.
 									Built by <a href="https://rae.li">rae.li</a>
 								</small>
 							</div>
@@ -102,7 +102,26 @@ Home
 					<div class="col-sm-6">
 						<div class="card mt-2 bg-dash border-dash text-center">
 							<div class="card-body">
-								<small>List of dates?</small>
+								<h6>Recent</h6>
+								<row>
+									{% for i in dates[:3] %}
+										<small>
+											<a href="{{ url_for('index.week_detail', year=i['date']['year'], month=i['date']['month'], start_day=i['date']['day']) }}">
+												{{ i.date|date_convert }}
+											</a>
+										</small> -
+									{% endfor %}
+									<div class="w-100"></div>
+								</row>
+								<row>
+									{% for i in dates[3:] %}
+										<small>
+											<a href="{{ url_for('index.week_detail', year=i['date']['year'], month=i['date']['month'], start_day=i['date']['day']) }}">
+												{{ i.date|date_convert }}
+											</a>
+										</small> -
+									{% endfor %}
+								</row>
 							</div>
 						</div>
 					</div>

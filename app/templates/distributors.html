@@ -21,19 +21,34 @@
 				</tr>
 				</thead>
 				<tbody>
-				{% for i in data %}
+				{% for i in data.items %}
 					<tr class="">
 						<td><a class="action" href="{{ url_for('index.distributor', slug=i['slug']) }}">{{ i["name"]|title }}</a></td>
 					</tr>
 				{% endfor %}
 				</tbody>
 		</table>
-
-		{% if prev_url %}
-			<a href="{{ prev_url }}">Previous</a>
-		{% endif %}
-		{% if next_url %}
-			<a href="{{ next_url }}">Next</a>
-		{% endif %}
+		<a href="" class="btn btn-outline-dark {% if data.page == 1 %}disabled{% endif %}">
+		</a>
+		<!-- Loop through the number of pages to display a link for each-->
+		{% for page_num in data.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+			{% if page_num %}
+			<!-- Check for the active page and set the link to "Active"-->
+				{% if data.page == page_num %}
+				<a href="{{ url_for('index.distributors', page=page_num) }}" class="btn btn-dark">
+					{{ page_num }}
+				</a>
+				{% else %}
+				<a href="{{ url_for('index.distributors', page=page_num) }}" class="btn btn-outline-dark">
+					{{ page_num }}
+				</a>
+				{% endif %}
+			{% else %}
+				...
+			{% endif %}
+		{% endfor %}
+		<a href="" class="btn btn-outline-dark
+		   {% if data.page == data.pages %}disabled{% endif %}">
+		</a>
 	</div>
 {% endblock %}
