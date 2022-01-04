@@ -1,6 +1,6 @@
 body {
   	margin: 0;
-	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	/* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
@@ -71,10 +71,6 @@ a:visited {
 	border-radius: 0 !important;
 }
 
-.btn-filter {
-	height: 100%;
-}
-
 .btn-primary {
 	background-color: #FE7E6D;
 	border-color: #FE7E6D;
@@ -138,6 +134,7 @@ a:visited {
 
 .dash {
 	max-width: 1900px;
+	/* margin: 5px; */
 }
 
 .bg-dash {
@@ -149,7 +146,7 @@ a:visited {
     border: 1px solid #FEECE9;
 }
 
-
+/*
 @media (prefers-color-scheme:dark) {
 	body {
 		background: #21212C;
@@ -176,8 +173,11 @@ a:visited {
 	.btn:active {
 		color: #000;
 	}
-	.card {
-		background: #21212C;
+	.uk-card-default {
+		background-color: #21212C !important;
+	}
+	.uk-card-title {
+		color: #fff !important;
 	}
 	.accordion-item, .accordion-button {
 		color: #fff;
@@ -226,4 +226,4 @@ a:visited {
 		background-color: #000;
 		color: #fff;
 	}
-}
+} */

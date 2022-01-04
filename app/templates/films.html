@@ -3,29 +3,26 @@
 {% block title %}Films{% endblock %}
 
 {% block header %}
-<nav aria-label="breadcrumb" class="mt-5">
-	<ol class="breadcrumb">
-	  <li class="breadcrumb-item"><a href="/">Home</a></li>
-	  <li class="breadcrumb-item active">Films</li>
-	</ol>
-</nav>
+	<div class="uk-container">
+		<ul class="uk-breadcrumb">
+			<li><a href="/">Home</a></li>
+			<li aria-current="page"><span>Films</span></li>
+		</ul>
 
-<h1 class="mt-4">Films</h1>
-
+		<h1 class="">Films</h1>
+	</div>
 {% endblock %}
 
 {% block content %}
-	<div class="container mt-4">
+	<div class="uk-container uk-margin-small-top">
 
 		{% if g.search_form %}
-			<form class="d-flex" method="get" action="{{ url_for('index.search') }}">
-				<div class="form-group">
-					{{ g.search_form.q(size=20, class='form-control',
-						placeholder="Search films") }}
-				</div>
+			<form class="uk-search uk-search-default uk-margin-small-top" method="get" action="{{ url_for('index.search') }}">
+				<span class="uk-search-icon-flip" uk-search-icon></span>
+					{{ g.search_form.q(size=20, class='uk-search-input', placeholder="Search films") }}
 			</form>
 		{% endif %}
-		<table class="table table-striped table-hover mt-4">
+		<table class="uk-table uk-table-small uk-table-divider uk-table-hover uk-table-striped">
 			<thead>
 				<tr>
 					<th>Title</th>
@@ -46,28 +43,48 @@
 				</tbody>
 		</table>
 
-	<a href="" class="btn btn-outline-dark {% if data.page == 1 %}disabled{% endif %}">
-    </a>
-	<!-- Loop through the number of pages to display a link for each-->
-    {% for page_num in data.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
-		{% if page_num %}
-		<!-- Check for the active page and set the link to "Active"-->
-            {% if data.page == page_num %}
-            <a href="{{ url_for('index.films', page=page_num) }}" class="btn btn-dark">
-                {{ page_num }}
-            </a>
-            {% else %}
-            <a href="{{ url_for('index.films', page=page_num) }}" class="btn btn-outline-dark">
-                {{ page_num }}
-            </a>
-            {% endif %}
-        {% else %}
-            ...
-        {% endif %}
-    {% endfor %}
-    <a href="" class="btn btn-outline-dark
-       {% if data.page == data.pages %}disabled{% endif %}">
-    </a>
+	<ul class="uk-pagination">
+
+		{% if data.has_prev %}
+			<li><a href="{{ url_for('index.films', page=data.prev_num) }}"><span uk-pagination-previous></span></a></li>
+		{% endif %}
+
+		<li>
+			<a href="" class="{% if data.page == 1 %}uk-disabled{% endif %}">
+			</a>
+		</li>
+
+		<!-- Loop through the number of pages to display a link for each-->
+		{% for page_num in data.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+			{% if page_num %}
+			<!-- Check for the active page and set the link to "Active"-->
+				{% if data.page == page_num %}
+				<li class="uk-active">
+					<a href="{{ url_for('index.films', page=page_num) }}">
+						{{ page_num }}
+					</a>
+				</li>
+				{% else %}
+				<li>
+					<a href="{{ url_for('index.films', page=page_num) }}">
+						{{ page_num }}
+					</a>
+				</li>
+				{% endif %}
+			{% else %}
+				<li class="uk-disabled"><span>...</span></li>
+			{% endif %}
+		{% endfor %}
+		<li>
+			<a href="" class="
+			{% if data.page == data.pages %}uk-disabled{% endif %}">
+			</a>
+		</li>
+		{% if data.has_next %}
+			<li><a href="{{ url_for('index.films', page=data.next_num) }}"><span uk-pagination-next></span></a></li>
+		{% endif %}
+	</ul>
+
 
 	</div>
 {% endblock %}

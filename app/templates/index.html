@@ -5,155 +5,137 @@ Home
 {% endblock %}
 
 {% block content %}
-	<div id="dash" class="container-fluid dash mt-3">
+	<div id="dash" class="uk-container-expand dash">
 
-		<div class="col">
-			<div class="row mb-3">
-				<div class="col-sm-1 pt-2">
-					<div class="card bg-dash text-center">
-						<input class="date-picker btn form-control form-control-sm start"></input>
-					</div>
-				</div>
-				<div class="col-sm-1 pt-2">
-					<div class="card bg-dash text-center">
-						<input class="date-picker btn form-control form-control-sm end"></input>
-					</div>
-				</div>
-				<div class="col-sm-8 pt-2">
-					<button class="btn btn-primary btn-filter input-group-btn btn-sm" v-on:click="filter_date">Filter</button>
-					<div class="btn-group" role="group" aria-label="Basic example">
+		<div class="uk-grid">
 
-						<button type="button" class="btn btn-outline-primary btn-filter input-group-btn btn-sm" v-on:click="filter_days(7)">7 days</button>
-						<button type="button" class="btn btn-outline-primary btn-filter input-group-btn btn-sm" v-on:click="filter_days(30)">30 days</button>
-						<button type="button" class="btn btn-outline-primary btn-filter input-group-btn btn-sm" v-on:click="filter_days(90)">3 months</button>
-						<button type="button" class="btn btn-outline-primary btn-filter input-group-btn btn-sm" v-on:click="filter_days(183)">6 months</button>
-						<!-- <button type="button" class="btn btn-outline-primary btn-filter input-group-btn btn-sm" v-on:click="filter_days(365)">1 year</button> -->
-					</div>
+				<input class="uk-width-auto uk-button uk-button-default uk-button-small date-picker form-control form-control-sm start"></input>
+				<input class="uk-width-auto uk-button uk-button-default uk-button-small date-picker form-control form-control-sm end"></input>
+				<button class="uk-width-auto uk-button uk-button-default uk-button-small" v-on:click="filter_date">Filter</button>
+
+				<div class="uk-button-group uk-width-auto" role="group" aria-label="Filters">
+					<button type="button" class="uk-button uk-button-default uk-button-small" v-on:click="filter_days(7)">7 days</button>
+					<button type="button" class="uk-button uk-button-default uk-button-small" v-on:click="filter_days(30)">30 days</button>
+					<button type="button" class="uk-button uk-button-default uk-button-small" v-on:click="filter_days(90)">3 months</button>
+					<button type="button" class="uk-button uk-button-default uk-button-small" v-on:click="filter_days(183)">6 months</button>
 				</div>
-			</div>
 		</div>
 
-		<div class="row align-items-start">
-			<div class="col">
-				<div class="row mb-3">
-					<div class="card mt-2 border-dash">
-						<small class="card-title text-muted">Total UK Box Office</small>
-						<line-chart class="card-body" v-if="loaded" :chartdata="chartdata" :options="options"></line-chart>
-					</div>
-				</div>
-				<div class="row mb-3">
-					<div class="card mt-2 border-dash">
-						<small class="card-title text-muted">UK Box Office per film</small>
-						<area-chart class="card-body" v-if="loaded" :chartdataarea="chartdataarea" :optionsarea="optionsarea"></area-chart>
-					</div>
-				</div>
+		<div class="uk-grid uk-child-width-expand uk-margin-small-top" uk-grid="masonry: true">
 
-				<div class="row mb-3">
-					<div class="col-sm-6">
-						<div class="card mt-2 bg-dash border-dash text-center">
-							<div class="card-body">
-								<h2 class="card-title">${ numberOfCinemas }</h2>
-								<small>Number of cinemas</small>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-6">
-						<div class="card mt-2 bg-dash border-dash text-center">
-							<div class="card-body">
-								<h2 class="card-title">${ numberOfFilms }</h2>
-								<small>Number of films</small>
-							</div>
-						</div>
+			<div class="uk-width-1-2@l">
+				<div class="uk-card uk-card-small uk-card-body border-dash">
+					<h6 class="uk-text-meta">Total UK Box Office</h6>
+					<line-chart v-if="loaded" :chartdata="chartdata" :options="options"></line-chart>
+				</div>
+			</div>
+
+			<div class="uk-width-1-4@l">
+				<div class="uk-card uk-card-small bg-dash border-dash uk-text-center">
+					<div class="uk-card-body">
+						<h2 class="uk-card-title">£ ${ boxOffice | Currency }</h2>
+						<small class="uk-text-meta">Total Box Office</small>
 					</div>
 				</div>
 			</div>
 
-			<div class="col">
-				<div class="row mb-3">
-					<div class="col-sm-6">
-						<div class="card mt-2 bg-dash border-dash text-center">
-							<div class="card-body">
-								<h2 class="card-title">£ ${ boxOffice | Currency }</h2>
-								<small>Total Box Office</small>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-6">
-						<div class="card mt-2 bg-dash border-dash">
-							<div class="card-body">
-								<h6>UK Box Office Data Dashboard</h6>
-								<small>Visualising box office data back to 2001. Updates on Wednesdays.
-									Built by <a href="https://rae.li">rae.li</a>
-								</small>
-							</div>
-						</div>
+			<div class="uk-width-1-4@l">
+				<div class="uk-card uk-card-small bg-dash border-dash">
+					<div class="uk-card-body">
+						<h6 class="uk-card-title">UK Box Office Data Dashboard</h6>
+						<small class="uk-text-meta">Visualising box office data back to 2001.
+							Built by <a href="https://rae.li">rae.li</a>
+						</small>
 					</div>
 				</div>
+			</div>
 
-				<div class="row mb-3">
-					<div class="col-sm-6">
-						<div class="card mt-2 bg-dash border-dash text-center">
-							<div class="card-body">
-								<h2 class="card-title">${ lastUpdated }</h2>
-								<small>Last updated</small>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-6">
-						<div class="card mt-2 bg-dash border-dash text-center">
-							<div class="card-body">
-								<h6>Recent</h6>
-								<row>
-									{% for i in dates[:3] %}
-										<small>
-											<a href="{{ url_for('index.week_detail', year=i['date']['year'], month=i['date']['month'], start_day=i['date']['day']) }}">
-												{{ i.date|date_convert }}
-											</a>
-										</small> -
-									{% endfor %}
-									<div class="w-100"></div>
-								</row>
-								<row>
-									{% for i in dates[3:] %}
-										<small>
-											<a href="{{ url_for('index.week_detail', year=i['date']['year'], month=i['date']['month'], start_day=i['date']['day']) }}">
-												{{ i.date|date_convert }}
-											</a>
-										</small> -
-									{% endfor %}
-								</row>
-							</div>
-						</div>
+			<div class="uk-width-1-2@l">
+				<div class="uk-card uk-card-small uk-card-body border-dash">
+					<h6 class="uk-text-meta">UK Box Office per film</h6>
+					<area-chart v-if="loaded" :chartdataarea="chartdataarea" :optionsarea="optionsarea"></area-chart>
+				</div>
+			</div>
+
+			<div class="uk-width-1-4@l">
+				<div class="uk-card uk-card-small bg-dash border-dash uk-text-center">
+					<div class="uk-card-body">
+						<h2 class="uk-card-title">${ lastUpdated }</h2>
+						<small class="uk-text-meta">Last updated</small>
 					</div>
 				</div>
+			</div>
 
-				<div class="card border-dash">
-					<div class="table-responsive">
-						<table class="table table-sm box-table table-hover card-body">
+			<div class="uk-width-1-4@l">
+				<div class="uk-card uk-card-small bg-dash border-dash uk-text-center">
+					<div class="uk-card-body">
+
+							{% for i in dates[:3] %}
+									<a href="{{ url_for('index.week_detail', year=i['date']['year'], month=i['date']['month'], start_day=i['date']['day']) }}">
+										{{ i.date|date_convert }}
+									</a>
+							{% endfor %}
+
+							<h6 class="uk-text-meta">Recent</h6>
+					</div>
+				</div>
+			</div>
+
+			<div class="uk-width-1-2@l">
+				<div class="uk-card uk-card-small bg-dash border-dash uk-text-center">
+					<div class="uk-card-body">
+						<h2 class="uk-card-title">${ numberOfFilms }</h2>
+						<small>Number of films</small>
+					</div>
+				</div>
+			</div>
+
+			<div class="uk-width-1-2@l">
+				<div class="uk-card uk-card-small border-dash">
+					<div class="uk-overflow-auto">
+						<table class="uk-table uk-table-small uk-table-divider uk-table-hover uk-table-striped box-table uk-card-body">
 							<thead>
 								<tr>
 									<th></th>
-									<th >Title</th>
-									<th class="text-center">Box Office</th>
-									<th class="text-center">Week</th>
+									<th>Title</th>
+									<th class="uk-text-center">Box Office</th>
+									<th class="uk-text-center">Week</th>
 									<th>Distributor</th>
 
 								</tr>
-							  </thead>
-							  <tbody id="results">
+								</thead>
+								<tbody id="results">
 									<tr class="" v-for="(item, index) in sortedfilms.slice(0, 100)">
-										<td class="text-small text-center">${ index + 1 }</td>
+										<td class="text-small uk-text-center">${ index + 1 }</td>
 										<td class="text-small"><a :href="`/films/${ item.film_slug }`">${ item.film | TitleCase }</a></td>
 										<td class="text-small" style="min-width:100px">£ ${ item.week_gross | Currency }</td>
-										<td class="text-small text-center">${ item.weeks }</td>
+										<td class="text-small uk-text-center">${ item.weeks }</td>
 										<td class="text-small">${ item.distributor | TitleCase }</td>
 									</tr>
-							  </tbody>
+								</tbody>
 						</table>
 					</div>
 				</div>
-
 			</div>
+
+			<div class="uk-width-1-4@l">
+				<div class="uk-card uk-card-small bg-dash border-dash uk-text-center">
+					<div class="uk-card-body">
+						<h2 class="uk-card-title">${ numberOfCinemas }</h2>
+						<small>Number of cinemas</small>
+					</div>
+				</div>
+			</div>
+
+			<div class="uk-width-1-4@l">
+				<div class="uk-card uk-card-small bg-dash border-dash uk-text-center">
+					<div class="uk-card-body">
+						<h2 class="uk-card-title">${ numberOfCinemas }</h2>
+						<small>Number of cinemas</small>
+					</div>
+				</div>
+			</div>
+
 		</div>
 	</div>
 
