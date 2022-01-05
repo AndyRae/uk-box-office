@@ -1,0 +1,85 @@
+{% macro render_pagination(data, endpoint) %}
+<ul class="uk-pagination">
+	{% if data.has_prev %}
+		<li><a href="{{ url_for(endpoint, page=data.prev_num) }}"><span uk-pagination-previous></span></a></li>
+	{% endif %}
+
+	<li>
+		<a href="" class="{% if data.page == 1 %}uk-disabled{% endif %}">
+		</a>
+	</li>
+
+	<!-- Loop through the number of pages to display a link for each-->
+	{% for page_num in data.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+		{% if page_num %}
+		<!-- Check for the active page and set the link to "Active"-->
+			{% if data.page == page_num %}
+			<li class="uk-active">
+				<a href="{{ url_for(endpoint, page=page_num) }}">
+					{{ page_num }}
+				</a>
+			</li>
+			{% else %}
+			<li>
+				<a href="{{ url_for(endpoint, page=page_num) }}">
+					{{ page_num }}
+				</a>
+			</li>
+			{% endif %}
+		{% else %}
+			<li class="uk-disabled"><span>...</span></li>
+		{% endif %}
+	{% endfor %}
+	<li>
+		<a href="" class="
+		{% if data.page == data.pages %}uk-disabled{% endif %}">
+		</a>
+	</li>
+	{% if data.has_next %}
+		<li><a href="{{ url_for(endpoint, page=data.next_num) }}"><span uk-pagination-next></span></a></li>
+	{% endif %}
+</ul>
+{% endmacro %}
+
+{% macro render_detailed_pagination(data, slug, endpoint) %}
+<ul class="uk-pagination">
+	{% if data.has_prev %}
+		<li><a href="{{ url_for(endpoint, slug=slug, page=data.prev_num) }}"><span uk-pagination-previous></span></a></li>
+	{% endif %}
+
+	<li>
+		<a href="" class="{% if data.page == 1 %}uk-disabled{% endif %}">
+		</a>
+	</li>
+
+	<!-- Loop through the number of pages to display a link for each-->
+	{% for page_num in data.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+		{% if page_num %}
+		<!-- Check for the active page and set the link to "Active"-->
+			{% if data.page == page_num %}
+			<li class="uk-active">
+				<a href="{{ url_for(endpoint, slug=slug, page=page_num) }}">
+					{{ page_num }}
+				</a>
+			</li>
+			{% else %}
+			<li>
+				<a href="{{ url_for(endpoint, slug=slug, page=page_num) }}">
+					{{ page_num }}
+				</a>
+			</li>
+			{% endif %}
+		{% else %}
+			<li class="uk-disabled"><span>...</span></li>
+		{% endif %}
+	{% endfor %}
+	<li>
+		<a href="" class="
+		{% if data.page == data.pages %}uk-disabled{% endif %}">
+		</a>
+	</li>
+	{% if data.has_next %}
+		<li><a href="{{ url_for(endpoint, slug=slug, page=data.next_num) }}"><span uk-pagination-next></span></a></li>
+	{% endif %}
+</ul>
+{% endmacro %}

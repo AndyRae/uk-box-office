@@ -1,20 +1,22 @@
 {% extends 'base.html' %}
+{% import 'includes/pagination.html' as pagination %}
 
 {% block header %}
-<nav aria-label="breadcrumb" class="mt-5">
-	<ol class="breadcrumb">
-	  <li class="breadcrumb-item"><a href="/">Home</a></li>
-	  <li class="breadcrumb-item active">Distributors</li>
-	</ol>
-</nav>
 
-<h1 class="mt-4">Distributors</h1>
+	<div class="uk-container">
+		<ul class="uk-breadcrumb">
+			<li><a href="/">Home</a></li>
+			<li aria-current="page"><span>Distributors</span></li>
+		</ul>
+
+		<h1 class="">Distributors</h1>
+	</div>
 
 {% endblock %}
 
 {% block content %}
-	<div class="container grid-lg">
-		<table class="table table-striped table-hover">
+	<div class="uk-container uk-margin-medium-top">
+		<table class="uk-table uk-table-small uk-table-divider uk-table-hover uk-table-striped">
 			<thead>
 				<tr>
 					<th>Distributor</th>
@@ -28,27 +30,7 @@
 				{% endfor %}
 				</tbody>
 		</table>
-		<a href="" class="btn btn-outline-dark {% if data.page == 1 %}disabled{% endif %}">
-		</a>
-		<!-- Loop through the number of pages to display a link for each-->
-		{% for page_num in data.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
-			{% if page_num %}
-			<!-- Check for the active page and set the link to "Active"-->
-				{% if data.page == page_num %}
-				<a href="{{ url_for('index.distributors', page=page_num) }}" class="btn btn-dark">
-					{{ page_num }}
-				</a>
-				{% else %}
-				<a href="{{ url_for('index.distributors', page=page_num) }}" class="btn btn-outline-dark">
-					{{ page_num }}
-				</a>
-				{% endif %}
-			{% else %}
-				...
-			{% endif %}
-		{% endfor %}
-		<a href="" class="btn btn-outline-dark
-		   {% if data.page == data.pages %}disabled{% endif %}">
-		</a>
+
+		{{ pagination.render_pagination(data, 'index.distributors') }}
 	</div>
 {% endblock %}

@@ -280,7 +280,7 @@ def time() -> str:
     """
     List of all time periods.
     """
-    years = range(2021, 2006, -1)
+    years = range(2022, 2006, -1)
     months = range(1, 13)
 
     return render_template("time.html", years=years, months=months)

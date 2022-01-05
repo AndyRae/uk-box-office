@@ -1,29 +1,31 @@
 {% extends 'base.html' %}
+{% import 'includes/pagination.html' as pagination %}
 
 {% block title%}{{distributor.name|title}}{% endblock%}
 
 {% block header %}
-	<nav aria-label="breadcrumb" class="mt-5">
-		<ol class="breadcrumb">
-		  <li class="breadcrumb-item"><a href="/">Home</a></li>
-		  <li class="breadcrumb-item"><a href="{{ url_for('index.distributors') }}">Distributors</a></li>
-		  <li class="breadcrumb-item active" aria-current="page">{{ distributor.name|title }}</li>
-		</ol>
-	</nav>
-	<h1 class="mt-4">{{ distributor.name|title }}</h1>
+	<div class="uk-container">
+		<ul class="uk-breadcrumb">
+			<li><a href="/">Home</a></li>
+			<li><a href="{{ url_for('index.distributors') }}">Distributors</a></li>
+			<li aria-current="page"><span>{{ distributor.name|title }}</span></li>
+		</ul>
+
+		<h1 class="">{{ distributor.name|title }}</h1>
+	</div>
 {% endblock %}
 
 {% block content %}
-	<div class="container">
-		<div class="table-responsive">
-			<table class="table table-striped table-hover">
+	<div class="uk-container uk-margin-medium-top">
+		<div class="uk-overflow-auto">
+			<table class="uk-table uk-table-small uk-table-divider uk-table-hover uk-table-striped">
 				<thead>
 					<tr>
 						<th>Title</th>
 						<th>Country</th>
 						<th>Last Updated</th>
-						<th class="text-center">Weeks</th>
-						<th class="text-center">Box Office Total</th>
+						<th class="uk-text-center">Weeks</th>
+						<th class="uk-text-center">Box Office Total</th>
 					</tr>
 					</thead>
 					{% for i in data.items %}
@@ -39,10 +41,10 @@
 							<td>
 								{{ i.weeks[0].date|date_convert }}
 							</td>
-							<td class="text-center">
+							<td class="uk-text-center">
 								{{ i.weeks[0].weeks_on_release }}
 							</td>
-							<td class="text-center">
+							<td class="uk-text-center">
 								{{ "£ {:,}".format(i.weeks[0].total_gross) }}
 							</td>
 						</tr>
@@ -53,28 +55,7 @@
 			</table>
 		</div>
 
-		<a href="" class="btn btn-outline-dark {% if data.page == 1 %}disabled{% endif %}">
-		</a>
-		<!-- Loop through the number of pages to display a link for each-->
-		{% for page_num in data.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
-			{% if page_num %}
-			<!-- Check for the active page and set the link to "Active"-->
-				{% if data.page == page_num %}
-				<a href="{{ url_for('index.distributor', slug=distributor.slug, page=page_num) }}" class="btn btn-dark">
-					{{ page_num }}
-				</a>
-				{% else %}
-				<a href="{{ url_for('index.distributor', slug=distributor.slug, page=page_num) }}" class="btn btn-outline-dark">
-					{{ page_num }}
-				</a>
-				{% endif %}
-			{% else %}
-				...
-			{% endif %}
-		{% endfor %}
-		<a href="" class="btn btn-outline-dark
-		   {% if data.page == data.pages %}disabled{% endif %}">
-		</a>
+		{{ pagination.render_detailed_pagination(data, distributor.slug, 'index.distributor') }}
 
 	</div>
 {% endblock %}

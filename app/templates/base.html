@@ -2,131 +2,29 @@
 <html lang="en">
 
 	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="apple-mobile-web-app-capable" content="yes">
-		<meta name="mobile-web-app-capable" content="yes">
-		<link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
-		<meta name="theme-color" content="#000"/>
 
-		<link rel="apple-touch-icon" type="image/png" href="{{ url_for('static', filename='apple-icon.png') }}">
-		<link rel="apple-touch-icon-180x180" sizes="180x180" type="image/png" href="{{ url_for('static', filename='apple-icon-180x180.png') }}">
-		<link rel="icon" type="image/png" sizes="192x192" href="{{ url_for('static', filename='icon-hires.png') }}">
-
+		{% include 'includes/meta.html' %}
 		<title>{% block title %}{% endblock %} - UK Box Office</title>
-		<meta name="description" content="UK Box Office cinema data dashboard, statistics and analysis, with current top 10 films." />
-
-		<meta property="og:title" content="UK Box Office Data" />
-		<meta property="og:description" content="UK Box Office cinema data dashboard, statistics, and analysis, with current top 10 films." />
-		<meta property="og:image" content="{{ url_for('static', filename='1.png') }}" />
-
-		<meta name="twitter:card" content="summary">
-		<meta name="twitter:creator" content="@AndyRae_">
-		<meta name="twitter:image" content="{{ url_for('static', filename='1.png') }}">
-		<meta name="twitter:description" content="UK Box Office cinema data dashboard 2020, statistics, reports, and analysis, with current top 10 films." />
-
-		<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"> -->
-		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
-		<!-- UIkit CSS -->
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.9.4/dist/css/uikit.min.css" />
-
-		<!-- UIkit JS -->
-		<script src="https://cdn.jsdelivr.net/npm/uikit@3.9.4/dist/js/uikit.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/uikit@3.9.4/dist/js/uikit-icons.min.js"></script>
 
 		<script type="application/ld+json">
-		{% block schema %}{% endblock %}
+			{% block schema %}{% endblock %}
 		</script>
 
 	</head>
 
-	<!-- Main Navbar -->
-    <nav class="uk-navbar">
-        <div class="uk-navbar-left">
-            <ul class="uk-navbar-nav  uk-visible@s">
-
-				<li><a class="uk-text-large" href="{{ url_for('index.films') }}">Films</a></li>
-				<li><a class="uk-text-large" href="{{ url_for('index.distributors') }}">Distributors</a></li>
-				<li><a class="uk-text-large" href="{{ url_for('index.time') }}">Time</a></li>
-            </ul>
-        </div>
-		<div class="uk-navbar-center">
-			<ul class="uk-navbar-nav">
-				<li class="uk-active">
-					<a href="/">🍿 UK Box Office Data</a>
-				</li>
-			</ul>
-		</div>
-        <div class="uk-navbar-right">
-            <ul class="uk-navbar-nav uk-visible@s">
-                <li>
-					{% if g.search_form %}
-						<a class="uk-navbar-toggle" uk-search-icon href="#"></a>
-						<div class="uk-drop" uk-drop="mode: click; pos: left-center; offset: 0">
-							<form class="uk-search uk-width-1-1" method="get" action="{{ url_for('index.search') }}">
-								{{ g.search_form.q(size=20, class='uk-search-input', placeholder="Search films") }}
-							</form>
-						</div>
-					{% endif %}
-				</li>
-            </ul>
-            <a href="#" class="uk-navbar-toggle uk-hidden@s" uk-navbar-toggle-icon uk-toggle="target: #sidenav"></a>
-        </div>
-    </nav>
-
-	<div id="sidenav" uk-offcanvas="flip: true" class="uk-offcanvas">
-		<div class="uk-offcanvas-bar">
-			<ul class="uk-nav">
-				<li><a class="uk-text-large" href="{{ url_for('index.films') }}">Films</a></li>
-				<li><a class="uk-text-large" href="{{ url_for('index.films') }}">Distributors</a></li>
-				<li><a class="uk-text-large" href="{{ url_for('index.films') }}">Time</a></li>
-				<li>
-					{% if g.search_form %}
-						<form class="uk-search uk-search-default" method="get" action="{{ url_for('index.search') }}">
-							<span class="uk-search-icon-flip" uk-search-icon></span>
-							{{ g.search_form.q(size=20, class='uk-search-input', placeholder="Search films") }}
-						</form>
-					{% endif %}
-				</li>
-			</ul>
-		</div>
-	</div>
+	{% include 'includes/navbar.html' %}
 
 	<div class="content" style="min-height: 850px;">
-	<header>
+		<header>
 
-		{% block header %}{% endblock %}
+			{% block header %}{% endblock %}
 
-	</header>
+		</header>
 
-	{% block content %}{% endblock %}
+		{% block content %}{% endblock %}
 
 	</div>
 
-	<footer class="footer uk-margin-large-top">
+	{% include 'includes/footer.html' %}
 
-		<div class="uk-container uk-margin-large-top">
-
-			<div class="seperator"></div>
-			<div class="uk-margin-medium-top">
-				<strong>
-					<a href="{{ url_for('index.index') }}" class="">UK Box Office</a>
-				</strong>
-				<a href="{{ url_for('api.api') }}" class="uk-margin-medium-left">About</a>
-				<a href="{{ url_for('api.api') }}" class="uk-margin-medium-left">Contact</a>
-				<a href="{{ url_for('api.api') }}" class="uk-margin-medium-left">Privacy</a>
-				<a href="{{ url_for('api.api') }}" class="uk-margin-medium-left">API</a>
-				<a href="{{ url_for('index.films') }}" class="uk-margin-medium-left">Films</a>
-				<a href="{{ url_for('index.distributors') }}" class="uk-margin-medium-left">Distributors</a>
-				<a href="{{ url_for('index.countries') }}" class="uk-margin-medium-left">Countries</a>
-				<a href="{{ url_for('index.time') }}" class="uk-margin-medium-left">Time</a>
-			</div>
-
-
-		</div>
-	</footer>
-
-<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script> -->
 </html>

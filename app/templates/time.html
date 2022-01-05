@@ -3,20 +3,20 @@
 {% block title %}Time{% endblock %}
 
 {% block header %}
-<nav aria-label="breadcrumb" class="mt-5">
-	<ol class="breadcrumb">
-	  <li class="breadcrumb-item"><a href="/">Home</a></li>
-	  <li class="breadcrumb-item active">Time</li>
-	</ol>
-</nav>
+<div class="uk-container">
+	<ul class="uk-breadcrumb">
+		<li><a href="/">Home</a></li>
+		<li aria-current="page"><span>Time</span></li>
+	</ul>
 
-<h1 class="mt-4">Time</h1>
+	<h1 class="">Time</h1>
+</div>
 
 {% endblock %}
 
 {% block content %}
-	<div class="container grid-lg">
-		<table class="table table-striped table-hover">
+	<div class="uk-container uk-margin-medium-top">
+		<table class="uk-table uk-table-small uk-table-divider uk-table-hover uk-table-striped">
 			<thead>
 				<tr>
 					<th>Year</th>
@@ -26,11 +26,11 @@
 				<tbody>
 				{% for i in years %}
 					<tr class="">
-						<td><a class="badge rounded-pill bg-light text-dark" href="{{ url_for('index.year_detail', year=i) }}">{{ i }}</a></td>
+						<td><a class="uk-label" href="{{ url_for('index.year_detail', year=i) }}">{{ i }}</a></td>
 						<td>
 							{% for j in months %}
 
-								<a class="badge rounded-pill bg-light text-dark" href="{{ url_for('index.month_detail', year=i, month=j) }}">{{ j|date_convert_to_month }}</a>
+								<a class="uk-label" href="{{ url_for('index.month_detail', year=i, month=j) }}">{{ j|date_convert_to_month }}</a>
 
 							{% endfor %}
 						</td>
