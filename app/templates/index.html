@@ -7,18 +7,23 @@ Home
 {% block content %}
 	<div id="dash" class="uk-container-expand dash">
 
-		<div class="uk-grid">
+		<div class="">
+			<div class="uk-inline">
+				<span class="uk-form-icon" uk-icon="icon: calendar"></span>
+				<input class="uk-input uk-form-width-small date-picker start"></input>
+			</div>
+			<div class="uk-inline">
+				<span class="uk-form-icon" uk-icon="icon: calendar"></span>
+				<input class="uk-input uk-form-width-small date-picker end"></input>
+			</div>
+			<button class="uk-button uk-button-default uk-button-small" v-on:click="filter_date">Filter</button>
 
-				<input class="uk-width-auto uk-button uk-button-default uk-button-small date-picker form-control form-control-sm start"></input>
-				<input class="uk-width-auto uk-button uk-button-default uk-button-small date-picker form-control form-control-sm end"></input>
-				<button class="uk-width-auto uk-button uk-button-default uk-button-small" v-on:click="filter_date">Filter</button>
-
-				<div class="uk-button-group uk-width-auto" role="group" aria-label="Filters">
-					<button type="button" class="uk-button uk-button-default uk-button-small" v-on:click="filter_days(7)">7 days</button>
-					<button type="button" class="uk-button uk-button-default uk-button-small" v-on:click="filter_days(30)">30 days</button>
-					<button type="button" class="uk-button uk-button-default uk-button-small" v-on:click="filter_days(90)">3 months</button>
-					<button type="button" class="uk-button uk-button-default uk-button-small" v-on:click="filter_days(183)">6 months</button>
-				</div>
+			<div class="uk-button-group uk-width-auto" role="group" aria-label="Filters">
+				<button type="button" class="uk-button uk-button-default uk-button-small" v-on:click="filter_days(7)">7 days</button>
+				<button type="button" class="uk-button uk-button-default uk-button-small" v-on:click="filter_days(30)">30 days</button>
+				<button type="button" class="uk-button uk-button-default uk-button-small" v-on:click="filter_days(90)">3 months</button>
+				<button type="button" class="uk-button uk-button-default uk-button-small" v-on:click="filter_days(183)">6 months</button>
+			</div>
 		</div>
 
 		<div class="uk-grid uk-child-width-expand uk-margin-small-top" uk-grid="masonry: true">
@@ -69,13 +74,11 @@ Home
 			<div class="uk-width-1-4@l">
 				<div class="uk-card uk-card-small bg-dash border-dash uk-text-center">
 					<div class="uk-card-body">
-
 							{% for i in dates[:3] %}
 									<a href="{{ url_for('index.week_detail', year=i['date']['year'], month=i['date']['month'], start_day=i['date']['day']) }}">
 										{{ i.date|date_convert }}
 									</a>
 							{% endfor %}
-
 							<h6 class="uk-text-meta">Recent</h6>
 					</div>
 				</div>
@@ -101,7 +104,6 @@ Home
 									<th class="uk-text-center">Box Office</th>
 									<th class="uk-text-center">Week</th>
 									<th>Distributor</th>
-
 								</tr>
 								</thead>
 								<tbody id="results">
@@ -135,7 +137,6 @@ Home
 					</div>
 				</div>
 			</div>
-
 		</div>
 	</div>
 
