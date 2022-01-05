@@ -5,7 +5,7 @@ Home
 {% endblock %}
 
 {% block content %}
-	<div id="dash" class="uk-container-expand dash">
+	<div id="dash" class="uk-container uk-container-xlarge">
 
 		<div class="">
 			<div class="uk-inline">
@@ -16,7 +16,7 @@ Home
 				<span class="uk-form-icon" uk-icon="icon: calendar"></span>
 				<input class="uk-input uk-form-width-small date-picker end"></input>
 			</div>
-			<button class="uk-button uk-button-default uk-button-small" v-on:click="filter_date">Filter</button>
+			<button class="uk-button uk-button-default uk-button-small bg-red" v-on:click="filter_date">Filter</button>
 
 			<div class="uk-button-group uk-width-auto" role="group" aria-label="Filters">
 				<button type="button" class="uk-button uk-button-default uk-button-small" v-on:click="filter_days(7)">7 days</button>
@@ -26,7 +26,7 @@ Home
 			</div>
 		</div>
 
-		<div class="uk-grid uk-child-width-expand uk-margin-small-top" uk-grid="masonry: true">
+		<div class="uk-grid uk-grid-small uk-child-width-expand uk-margin-small-top" uk-grid="masonry: true">
 
 			<div class="uk-width-1-2@l">
 				<div class="uk-card uk-card-small uk-card-body border-dash">
@@ -35,23 +35,32 @@ Home
 				</div>
 			</div>
 
-			<div class="uk-width-1-4@l">
+			<!-- <div class="uk-width-1-4@l">
 				<div class="uk-card uk-card-small bg-dash border-dash uk-text-center">
 					<div class="uk-card-body">
 						<h2 class="uk-card-title">£ ${ boxOffice | Currency }</h2>
 						<small class="uk-text-meta">Total Box Office</small>
 					</div>
 				</div>
+			</div> -->
+
+			<div class="uk-width-1-4@l">
+				<div class="uk-card uk-card-small bg-dash border-dash uk-text-center">
+					<div class="uk-card-body">
+						<h2>£ ${ boxOffice | Currency }</h2>
+					</div>
+					<small class="uk-text-meta">Total Box Office</small>
+				</div>
 			</div>
 
 			<div class="uk-width-1-4@l">
-				<div class="uk-card uk-card-small bg-dash border-dash">
+				<div class="uk-card uk-card-small bg-dash border-dash uk-text-center">
 					<div class="uk-card-body">
-						<h6 class="uk-card-title">UK Box Office Data Dashboard</h6>
-						<small class="uk-text-meta">Visualising box office data back to 2001.
-							Built by <a href="https://rae.li">rae.li</a>
-						</small>
+						<h2>UK Box Office</h2>
 					</div>
+					<small class="uk-text-meta">Visualising box office data back to 2001.
+						Built by <a href="https://rae.li">rae.li</a>
+					</small>
 				</div>
 			</div>
 
@@ -65,30 +74,30 @@ Home
 			<div class="uk-width-1-4@l">
 				<div class="uk-card uk-card-small bg-dash border-dash uk-text-center">
 					<div class="uk-card-body">
-						<h2 class="uk-card-title">${ lastUpdated }</h2>
-						<small class="uk-text-meta">Last updated</small>
+						<h2>${ lastUpdated }</h2>
 					</div>
+					<small class="uk-text-meta">Last updated</small>
 				</div>
 			</div>
 
 			<div class="uk-width-1-4@l">
 				<div class="uk-card uk-card-small bg-dash border-dash uk-text-center">
 					<div class="uk-card-body">
-							{% for i in dates[:3] %}
-									<a href="{{ url_for('index.week_detail', year=i['date']['year'], month=i['date']['month'], start_day=i['date']['day']) }}">
-										{{ i.date|date_convert }}
-									</a>
-							{% endfor %}
-							<h6 class="uk-text-meta">Recent</h6>
+						<h2>${ numberOfFilms }</h2>
 					</div>
+					<small class="uk-text-meta">Number of films</small>
 				</div>
 			</div>
 
 			<div class="uk-width-1-2@l">
 				<div class="uk-card uk-card-small bg-dash border-dash uk-text-center">
 					<div class="uk-card-body">
-						<h2 class="uk-card-title">${ numberOfFilms }</h2>
-						<small>Number of films</small>
+							{% for i in dates %}
+									<a href="{{ url_for('index.week_detail', year=i['date']['year'], month=i['date']['month'], start_day=i['date']['day']) }}">
+										{{ i.date|date_convert }} -
+									</a>
+							{% endfor %}
+							<h6 class="uk-text-meta">Recent</h6>
 					</div>
 				</div>
 			</div>
@@ -123,20 +132,20 @@ Home
 			<div class="uk-width-1-4@l">
 				<div class="uk-card uk-card-small bg-dash border-dash uk-text-center">
 					<div class="uk-card-body">
-						<h2 class="uk-card-title">${ numberOfCinemas }</h2>
-						<small>Number of cinemas</small>
+						<h2>${ numberOfCinemas }</h2>
 					</div>
+					<small class="uk-text-meta">Number of cinemas</small>
 				</div>
 			</div>
-
+<!--
 			<div class="uk-width-1-4@l">
 				<div class="uk-card uk-card-small bg-dash border-dash uk-text-center">
 					<div class="uk-card-body">
 						<h2 class="uk-card-title">${ numberOfCinemas }</h2>
-						<small>Number of cinemas</small>
+						<small class="uk-text-meta">Number of cinemas</small>
 					</div>
 				</div>
-			</div>
+			</div> -->
 		</div>
 	</div>
 

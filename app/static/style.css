@@ -16,12 +16,10 @@ a:hover {
 	color: #00253C;
 }
 
-a:visited {
-	color: #00253C;
-}
-
-.container {
-	padding: 0;
+.dash {
+	margin-left: auto;
+    margin-right: auto;
+	max-width: 1900px;
 }
 
 .box-table {
@@ -40,28 +38,6 @@ a:visited {
     display: none;
 }
 
-@media (min-width: 768px) {
-	.navbar-brand.abs
-		{
-			position: absolute;
-			width: auto;
-			left: 50%;
-			transform: translateX(-50%);
-			text-align: center;
-		}
-	}
-
-
-.form-input {
-	background: #fff0;
-	color: #000;
-	border-radius: 0;
-	border: none;
-}
-.form-input:focus {
-	border: none;
-	box-shadow: none;
-}
 .date-picker {
 	border: none;
 	font-size: 0.9em;
@@ -71,36 +47,13 @@ a:visited {
 	border-radius: 0 !important;
 }
 
-.btn-primary {
-	background-color: #FE7E6D;
-	border-color: #FE7E6D;
-	color: #000;
+
+.uk-button-default {
+	text-transform: none;
 }
 
-.btn-primary:hover {
-	background-color: #f59f94;
-	border-color: #f59f94;
-	color: #000;
-}
-
-.btn-outline-primary {
-	color: #000;
-	border-color: #FE7E6D;
-}
-
-.btn-outline-primary:hover {
-	background-color: #FE7E6D;
-	border-color: #FE7E6D;
-}
-
-.btn-outline-primary:active {
-	background-color: #FE7E6D;
-	border-color: #FE7E6D;
-}
-
-.search {
-	background-color: #fff0;
-	border: none;
+.uk-navbar-nav>li>a {
+	min-height: 60px;
 }
 
 .footer {
@@ -120,21 +73,10 @@ a:visited {
 	text-decoration: none;
 }
 
-.footer-link {
-	display: inline;
-	padding: 0 10px 0 10px;
-
-}
-
 .seperator {
     border: #FFF 2px solid;
 	background-color: #FFF;
     width: 100%;
-}
-
-.dash {
-	max-width: 1900px;
-	/* margin: 5px; */
 }
 
 .bg-dash {
@@ -146,84 +88,50 @@ a:visited {
     border: 1px solid #FEECE9;
 }
 
-/*
-@media (prefers-color-scheme:dark) {
+.uk-table-hover tbody tr:hover,
+.uk-table-hover>tr:hover  {
+	background-color: #FEECE9;
+}
+
+.bg-red {
+	background-color: #FE7E6D;
+	border-color: #FE7E6D;
+	color: #000;
+}
+
+.bg-red:hover {
+	background-color: #f59f94;
+	border-color: #f59f94;
+	color: #000;
+}
+
+
+/* @media (prefers-color-scheme:dark) {
 	body {
 		background: #21212C;
 		color: #fff;
 	}
-	.bg-light {
-		background: #21212C !important;
-	}
-	.text-dark {
+	a, h1 {
 		color: #fff !important;
 	}
-	a {
-		color: #fff !important;
-	}
-	.btn {
-		color: #fff;
-	}
-	.btn-outline-primary {
-		color: #fff;
-	}
-	.btn:hover {
-		color: #fff;
-	}
-	.btn:active {
-		color: #000;
-	}
-	.uk-card-default {
-		background-color: #21212C !important;
-	}
-	.uk-card-title {
-		color: #fff !important;
-	}
-	.accordion-item, .accordion-button {
-		color: #fff;
-		background: #21212C;
-	}
-	.accordion-button:not(.collapsed) {
-		background: #000;
-		color: #fff;
-	}
-	.chip {
-		color: #000 !important;
-	}
-	.list-group-item {
-		background: #21212C;
-	}
-	.list-group-item:hover {
-		background: #000;
-		color: #fff;
-	}
-	.table {
-		color: #fff;
-	}
-	.table.table-striped tbody tr:nth-of-type(odd) {
-		background: #000;
-		color: #fff;
-	}
-	.table-striped>tbody>tr:nth-of-type(odd)>* {
-		color: #fff;
-	}
-	.table.table-hover tbody tr:hover* {
-		background: #000;
-		color: #fff;
-	}
-	.table-hover>tbody>tr:hover>* {
-		color: #fff;
+	.bg-dash {
 		background-color: #000;
 	}
-	.form-input {
-		color: #FFF;
-	}
-	.form-control {
-		background-color: #000;
+	.uk-button-default,
+	.uk-button-default:hover,
+	.uk-card-title,
+	.uk-breadcrumb>:last-child>span {
 		color: #fff;
 	}
-	.form-control:focus {
-		background-color: #000;
+	.uk-table-striped tbody tr:nth-of-type(odd) {
+		color: #fff;
+		background: #000;
+	}
+
+	.uk-input,
+	.uk-table-hover tbody tr:hover,
+	.uk-table-hover>tr:hover {
+		background-color: #21212c;
 		color: #fff;
 	}
 } */
