@@ -2,102 +2,29 @@
 <html lang="en">
 
 	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="apple-mobile-web-app-capable" content="yes">
-		<meta name="mobile-web-app-capable" content="yes">
-		<link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
-		<meta name="theme-color" content="#000"/>
 
-		<link rel="apple-touch-icon" type="image/png" href="{{ url_for('static', filename='apple-icon.png') }}">
-		<link rel="apple-touch-icon-180x180" sizes="180x180" type="image/png" href="{{ url_for('static', filename='apple-icon-180x180.png') }}">
-		<link rel="icon" type="image/png" sizes="192x192" href="{{ url_for('static', filename='icon-hires.png') }}">
-
+		{% include 'includes/meta.html' %}
 		<title>{% block title %}{% endblock %} - UK Box Office</title>
-		<meta name="description" content="UK Box Office cinema data dashboard, statistics and analysis, with current top 10 films." />
-
-		<meta property="og:title" content="UK Box Office Data" />
-		<meta property="og:description" content="UK Box Office cinema data dashboard, statistics, and analysis, with current top 10 films." />
-		<meta property="og:image" content="{{ url_for('static', filename='1.png') }}" />
-
-		<meta name="twitter:card" content="summary">
-		<meta name="twitter:creator" content="@AndyRae_">
-		<meta name="twitter:image" content="{{ url_for('static', filename='1.png') }}">
-		<meta name="twitter:description" content="UK Box Office cinema data dashboard 2020, statistics, reports, and analysis, with current top 10 films." />
-
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
 		<script type="application/ld+json">
-		{% block schema %}{% endblock %}
+			{% block schema %}{% endblock %}
 		</script>
 
 	</head>
 
-	  <nav class="navbar navbar-expand-md navbar-light bg-light">
-		<div class="container-fluid">
-			<a class="navbar-brand abs" href="/">🍿 UK Box Office Data</a>
-			<button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNavbar">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="navbar-collapse collapse" id="collapseNavbar">
-				<ul class="navbar-nav">
-					<li class="nav-item active">
-						<a class="nav-link" href="{{ url_for('index.films') }}">Films</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="{{ url_for('index.distributors') }}">Distributors</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="{{ url_for('index.time') }}">Time</a>
-					</li>
-				</ul>
-				<ul class="navbar-nav ms-auto">
-					<li class="nav-item">
-						{% if g.search_form %}
-						<form class="d-flex" method="get" action="{{ url_for('index.search') }}">
-							<div class="form-group">
-								{{ g.search_form.q(size=20, class='form-control',
-									placeholder="Search films") }}
-							</div>
-						</form>
-					{% endif %}
-					</li>
-				</ul>
-			</div>
-		</div>
-	</nav>
+	{% include 'includes/navbar.html' %}
 
 	<div class="content" style="min-height: 850px;">
-	<header>
-		<div class="container">
-					{% block header %}{% endblock %}
-		</div>
-	</header>
+		<header>
 
-	{% block content %}{% endblock %}
+			{% block header %}{% endblock %}
+
+		</header>
+
+		{% block content %}{% endblock %}
+
 	</div>
 
-	<footer class="mt-5 footer">
+	{% include 'includes/footer.html' %}
 
-		<div class="container-sm">
-
-			<div class="seperator mt-5 mb-5"></div>
-			<strong>
-				<a href="{{ url_for('index.index') }}" class="">UK Box Office</a>
-			</strong>
-			<a href="{{ url_for('api.api') }}" class="mx-2">About</a>
-			<a href="{{ url_for('api.api') }}" class="mx-2">Contact</a>
-			<a href="{{ url_for('api.api') }}" class="mx-2">Privacy</a>
-			<a href="{{ url_for('api.api') }}" class="mx-2">API</a>
-			<a href="{{ url_for('index.films') }}" class="mx-2">Films</a>
-			<a href="{{ url_for('index.distributors') }}" class="mx-2">Distributors</a>
-			<a href="{{ url_for('index.countries') }}" class="mx-2">Countries</a>
-			<a href="{{ url_for('index.time') }}" class="mx-2">Time</a>
-
-		</div>
-	</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </html>

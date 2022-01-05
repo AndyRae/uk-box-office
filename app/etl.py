@@ -115,9 +115,10 @@ def get_excel_file(source_url: str) -> Tuple[bool, str]:
     link = all.find_all("a")[0]
     if link is not None:
         excel_link = link.get("href")
-        excel_title = link.find("span").get_text().split("-")[-1]
+        excel_title = link.find("span").get_text().split("to ")[-1]
         current_app.logger.info(f"ETL fetch - Found {excel_title}.")
 
+        # Checks whether this excel file is new against the database
         excel_date = datetime.strptime(excel_title, "%d %B %Y")
         query = db.session.query(models.Week)
         last_date = query.order_by(models.Week.date.desc()).first().date

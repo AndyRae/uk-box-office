@@ -3,29 +3,24 @@
 {% block title %}Countries{% endblock %}
 
 {% block header %}
-	<nav aria-label="breadcrumb" class="mt-5">
-		<ol class="breadcrumb">
-		<li class="breadcrumb-item"><a href="/">Home</a></li>
-		<li class="breadcrumb-item active" aria-current="page">Countries</li>
-		</ol>
-	</nav>
+	<div class="uk-container">
+		<ul class="uk-breadcrumb">
+			<li><a href="/">Home</a></li>
+			<li aria-current="page"><span>Countries</span></li>
+		</ul>
 
-	<h1 class="mt-4">Countries</h1>
-
+		<h1 class="">Countries</h1>
+	</div>
 {% endblock %}
 
 {% block content %}
-	<div class="container mt-4">
-		<div class="columns">
-			<div class="col-sm-4">
-				<ul class="list-group list-group-flush">
-				{% for i in data %}
-
-					<a class="list-group-item list-group-item-action" href="{{ url_for('index.country', slug=i['slug']) }}">{{ i["name"] }}</a>
-
-				{% endfor %}
-				</ol>
-			</div>
-		</div>
+	<div class="uk-container uk-margin-medium-top">
+		<ul class="uk-list uk-list-divider">
+			{% for i in data %}
+				<li>
+					<a class="" href="{{ url_for('index.country', slug=i['slug']) }}">{{ i["name"] }}</a>
+				</li>
+			{% endfor %}
+		</ul>
 	</div>
 {% endblock %}

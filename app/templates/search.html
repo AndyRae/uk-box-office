@@ -3,21 +3,22 @@
 {% block title %}Search{% endblock %}
 
 {% block header %}
-<nav aria-label="breadcrumb" class="mt-5">
-	<ol class="breadcrumb">
-	  <li class="breadcrumb-item"><a href="/">Home</a></li>
-	  <li class="breadcrumb-item active">Search</li>
-	</ol>
-</nav>
+<div class="uk-container">
+	<ul class="uk-breadcrumb">
+		<li><a href="/">Home</a></li>
+		<li><a href="{{ url_for('index.search') }}">Search</a></li>
+		<li aria-current="page"><span>Results</span></li>
+	</ul>
 
-<h1 class="mt-4">Results</h1>
+	<h1 class="">Results</h1>
+</div>
 
 {% endblock %}
 
 {% block content %}
-    <div class="container">
-        <div class="table-responsive">
-            <table class="table table-striped table-hover mt-4">
+    <div class="uk-container uk-margin-medium-top">
+        <div class="table-responsive uk-overflow-auto">
+            <table class="uk-table uk-table-small uk-table-divider uk-table-hover uk-table-striped">
                 <thead>
                     <tr>
                         <th>Film</th>
@@ -42,24 +43,25 @@
         </div>
 
         <nav aria-label="...">
-            <ul class="pager">
+            <ul class="uk-pagination">
                 {% if prev_url %}
-                <li class="previous{% if not prev_url %} disabled{% endif %}">
+                <li class="previous{% if not prev_url %} uk-disabled{% endif %}">
                     <a href="{{ prev_url or '#' }}">
-                        <span aria-hidden="true">&larr;</span>
-                        {{ ('Previous results') }}
+                        <span uk-pagination-previous></span>
+                        {{ ('Previous') }}
                     </a>
                 </li>
                 {% endif %}
                 {% if next_url %}
-                <li class="next{% if not next_url %} disabled{% endif %}">
+                <li class="next{% if not next_url %} uk-disabled{% endif %}">
                     <a href="{{ next_url or '#' }}">
-                        {{ ('Next results') }}
-                        <span aria-hidden="true">&rarr;</span>
+                        {{ ('Next') }}
+                        <span uk-pagination-next></span>
                     </a>
                 </li>
                 {% endif %}
             </ul>
+
         </nav>
 
     </div>

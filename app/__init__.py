@@ -5,6 +5,8 @@ from flask import Flask
 from flask_apscheduler import APScheduler
 from flask_caching import Cache
 from flask_debugtoolbar import DebugToolbarExtension
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from flask_sqlalchemy import SQLAlchemy
 
 from . import settings
@@ -13,6 +15,7 @@ db = SQLAlchemy()
 scheduler = APScheduler()
 toolbar = DebugToolbarExtension()
 cache = Cache()
+limiter = Limiter(key_func=get_remote_address)
 
 
 def create_app(test_config: Any = None) -> Flask:
@@ -54,6 +57,7 @@ def register_extensions(app: Flask) -> None:
     db.init_app(app)
     scheduler.init_app(app)
     cache.init_app(app)
+    limiter.init_app(app)
     return None
 
 

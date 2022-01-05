@@ -3,11 +3,11 @@
 from datetime import datetime
 from typing import Any, Dict, List
 
-from flask import Blueprint, jsonify, make_response, request
+from flask import Blueprint, current_app, jsonify, make_response, request
 from flask.wrappers import Response
 from werkzeug.exceptions import abort
 
-from . import cache, db, models
+from . import cache, db, limiter, models
 
 bp = Blueprint("api", __name__)
 
@@ -18,6 +18,7 @@ def page_not_found(e: Any) -> Response:
 
 
 @bp.route("/api")
+@limiter.limit(current_app.config.get("RATELIMIT_API"))
 def api() -> Response:
     """
     Main API endpoint - returns box office data.

@@ -26,7 +26,15 @@ bp = Blueprint("index", __name__, template_folder="templates")
 @bp.route("/")
 @cache.cached()
 def index() -> str:
-    return render_template("index.html")
+    """
+    Main dashboard view - all of work is done in JS. See Template.
+    """
+    # list of dates card
+    query = db.session.query(models.Week)
+    query = query.order_by(models.Week.date.desc())
+    query = query.distinct(models.Week.date)
+    dates = query.all()[:6]
+    return render_template("index.html", dates=dates)
 
 
 @bp.before_app_request
@@ -78,25 +86,19 @@ def search() -> str:
 def films() -> str:
     """
     List of all films.
-    TODO: Should be ordered by last updated...
+    TODO: Should be ordered by last updated
     """
     page = request.args.get("page", 1, type=int)
     query = db.session.query(models.Film).options(
         db.joinedload(models.Film.weeks)
     )
     query = query.join(models.Distributor)
-    data = query.order_by(models.Film.name).paginate(page, 20, False)
+    data = query.order_by(models.Film.name).paginate(
+        page, per_page=20, error_out=False
+    )
     if data is None:
         abort(404)
-    next_url = (
-        url_for("index.films", page=data.next_num) if data.has_next else None
-    )
-    prev_url = (
-        url_for("index.films", page=data.prev_num) if data.has_prev else None
-    )
-    return render_template(
-        "films.html", data=data.items, next_url=next_url, prev_url=prev_url
-    )
+    return render_template("films.html", data=data)
 
 
 @bp.route("/distributors/")
@@ -112,21 +114,9 @@ def distributors() -> str:
     )
     if data is None:
         abort(404)
-    next_url = (
-        url_for("index.distributors", page=data.next_num)
-        if data.has_next
-        else None
-    )
-    prev_url = (
-        url_for("index.distributors", page=data.prev_num)
-        if data.has_prev
-        else None
-    )
     return render_template(
         "distributors.html",
-        data=data.items,
-        next_url=next_url,
-        prev_url=prev_url,
+        data=data,
     )
 
 
@@ -184,16 +174,6 @@ def distributor(slug: str) -> str:
     query = query.join(models.Distributor)
     query = query.filter(models.Distributor.slug == slug)
     data = query.paginate(page, 20, False)
-    next_url = (
-        url_for("index.distributor", slug=slug, page=data.next_num)
-        if data.has_next
-        else None
-    )
-    prev_url = (
-        url_for("index.distributor", slug=slug, page=data.prev_num)
-        if data.has_prev
-        else None
-    )
 
     query = db.session.query(models.Distributor)
     query = query.filter(models.Distributor.slug == slug)
@@ -203,10 +183,8 @@ def distributor(slug: str) -> str:
         abort(404)
     return render_template(
         "distributor_detail.html",
-        data=data.items,
+        data=data,
         distributor=distributor,
-        next_url=next_url,
-        prev_url=prev_url,
     )
 
 
@@ -226,25 +204,13 @@ def country(slug: str) -> str:
     )
     query = query.filter(models.Film.countries.contains(country))
     data = query.paginate(page, 20, False)
-    next_url = (
-        url_for("index.country", slug=slug, page=data.next_num)
-        if data.has_next
-        else None
-    )
-    prev_url = (
-        url_for("index.country", slug=slug, page=data.prev_num)
-        if data.has_prev
-        else None
-    )
 
     if data is None:
         abort(404)
     return render_template(
         "country_detail.html",
         country=country,
-        data=data.items,
-        next_url=next_url,
-        prev_url=prev_url,
+        data=data,
     )
 
 
@@ -314,7 +280,7 @@ def time() -> str:
     """
     List of all time periods.
     """
-    years = range(2021, 2006, -1)
+    years = range(2022, 2006, -1)
     months = range(1, 13)
 
     return render_template("time.html", years=years, months=months)
@@ -471,7 +437,7 @@ def sitemap() -> Response:
 
 @bp.app_template_filter()
 def date_convert(datetime: datetime.datetime) -> str:
-    return datetime.strftime("%d / %m / %Y")
+    return datetime.strftime("%d/%m/%Y")
 
 
 @bp.app_template_filter()

@@ -1,56 +1,50 @@
 {% extends 'base.html' %}
+{% import 'includes/pagination.html' as pagination %}
 
 {% block title %}Films{% endblock %}
 
 {% block header %}
-<nav aria-label="breadcrumb" class="mt-5">
-	<ol class="breadcrumb">
-	  <li class="breadcrumb-item"><a href="/">Home</a></li>
-	  <li class="breadcrumb-item active">Films</li>
-	</ol>
-</nav>
+	<div class="uk-container">
+		<ul class="uk-breadcrumb">
+			<li><a href="/">Home</a></li>
+			<li aria-current="page"><span>Films</span></li>
+		</ul>
 
-<h1 class="mt-4">Films</h1>
-
+		<h1 class="">Films</h1>
+	</div>
 {% endblock %}
 
 {% block content %}
-	<div class="container mt-4">
+	<div class="uk-container uk-margin-small-top">
 
 		{% if g.search_form %}
-			<form class="d-flex" method="get" action="{{ url_for('index.search') }}">
-				<div class="form-group">
-					{{ g.search_form.q(size=20, class='form-control',
-						placeholder="Search films") }}
-				</div>
+			<form class="uk-search uk-search-default uk-margin-small-top" method="get" action="{{ url_for('index.search') }}">
+				<span class="uk-search-icon-flip" uk-search-icon></span>
+					{{ g.search_form.q(size=20, class='uk-search-input', placeholder="Search films") }}
 			</form>
 		{% endif %}
-		<table class="table table-striped table-hover mt-4">
+		<table class="uk-table uk-table-small uk-table-divider uk-table-hover uk-table-striped">
 			<thead>
 				<tr>
 					<th>Title</th>
 					<th>Distributor</th>
 					<th>Last Updated</th>
-					<th>Total Box Office</th>
+					<th class="uk-text-center">Total Box Office</th>
 				</tr>
 				</thead>
 				<tbody>
-				{% for i in data %}
+				{% for i in data.items %}
 					<tr class="">
 						<td><a class="action" href="{{ url_for('index.film', slug=i['slug']) }}">{{ i['name']|title }}</a></td>
 						<td><a class="action" href="{{ url_for('index.distributor', slug=i['distributor']['slug']) }}">{{ i['distributor']|title }}</a></td>
 						<td>{{ i['weeks'][-1]['date']|date_convert }}</td>
-						<td>{{ "£ {:,}".format(i['weeks'][-1]['total_gross']) }}</td>
+						<td class="uk-text-center">{{ "£ {:,}".format(i['weeks'][-1]['total_gross']) }}</td>
 					</tr>
 				{% endfor %}
 				</tbody>
 		</table>
 
-		{% if prev_url %}
-		<a class="" href="{{ prev_url }}">Previous</a>
-		{% endif %}
-		{% if next_url %}
-		<a class="" href="{{ next_url }}">Next</a>
-		{% endif %}
+		{{ pagination.render_pagination(data, 'index.films') }}
+
 	</div>
 {% endblock %}
