@@ -118,7 +118,7 @@ Home
 								<tbody id="results">
 									<tr class="" v-for="(item, index) in sortedfilms.slice(0, 100)">
 										<td class="text-small uk-text-center">${ index + 1 }</td>
-										<td class="text-small"><a :href="`/films/${ item.film_slug }`">${ item.film | TitleCase }</a></td>
+										<td class="text-small"><a :href="`/films/${ item.film_slug }/`">${ item.film | TitleCase }</a></td>
 										<td class="text-small" style="min-width:100px">£ ${ item.week_gross | Currency }</td>
 										<td class="text-small uk-text-center">${ item.weeks }</td>
 										<td class="text-small">${ item.distributor | TitleCase }</td>

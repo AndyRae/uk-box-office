@@ -30,6 +30,7 @@ Flask-Limiter==2.0.4
 Flask-SQLAlchemy==2.5.1
 Flask-WTF==1.0.0
 greenlet==1.1.1
+gunicorn==20.1.0
 html5lib==1.1
 identify==2.4.0
 idna==3.2
@@ -60,7 +61,7 @@ pluggy==1.0.0
 pre-commit==2.16.0
 progress==1.6
 prompt-toolkit==3.0.21
-psycopg2==2.9.2
+psycopg2-binary==2.9.3
 py==1.10.0
 pycodestyle==2.8.0
 pydantic==1.8.2
