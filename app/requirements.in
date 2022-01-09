@@ -10,13 +10,14 @@ Flask-DebugToolbar
 Flask-Limiter
 Flask-SQLAlchemy
 Flask-WTF
+gunicorn
 isort
 mypy
 pandas
 pip-audit
 pip-tools
 pre-commit
-psycopg2
+psycopg2-binary
 pytest
 python-dotenv
 python-slugify
