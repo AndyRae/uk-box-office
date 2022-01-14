@@ -27,7 +27,7 @@ def run_etl() -> None:
     print("ETL Pipeline task")
     with scheduler.app.app_context():
         load_dotenv()
-        source_url = os.environ.get("source_url")
+        source_url = os.environ.get("SOURCE_URL")
         if source_url is not None:
             path = etl.get_excel_file(source_url)
             if path[0] is True:

@@ -55,7 +55,7 @@ def weekly_etl_command() -> None:
     """Runs the weekly etl for new box office data."""
     current_app.logger.info("Weekly-etl running manually")
     load_dotenv()
-    source_url = os.environ.get("source_url")
+    source_url = os.environ.get("SOURCE_URL")
     if source_url is not None:
         path = etl.get_excel_file(source_url)
 
