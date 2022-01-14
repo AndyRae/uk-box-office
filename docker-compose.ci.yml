@@ -1,18 +1,10 @@
 version: "3.9"
 
 services:
-  nginx:
-    build: ./nginx
-    ports:
-      - 1337:80
-    depends_on:
-      - web
-    networks:
-      - deploy-network
   db:
     image: postgres
     env_file:
-      - ./.env.prod
+      - ./.env
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     networks:
@@ -35,21 +27,19 @@ services:
     networks:
       - deploy-network
   web:
-    container_name: web
     build: app
     env_file:
-      - ./.env.prod
-    command: gunicorn --preload --bind 0.0.0.0:5000 "app:create_app()"
+      - ./.env
+    command: flask run --host=0.0.0.0
     volumes:
       - .:/app
-    expose:
-      - 5000
+    ports:
+      - "5000:5000"
     depends_on:
       - db
       - elastic
     networks:
       - deploy-network
-
 
 volumes:
   elastic_data:
