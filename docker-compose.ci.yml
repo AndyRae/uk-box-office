@@ -2,9 +2,10 @@ version: "3.9"
 
 services:
   nginx:
-    context: ./nginx
-    cache_from:
-      - "${NGINX_IMAGE}"
+    build:
+      context: ./nginx
+      cache_from:
+        - "${NGINX_IMAGE}"
     image: "${NGINX_IMAGE}"
     ports:
       - 1337:80
