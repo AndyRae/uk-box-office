@@ -2,7 +2,10 @@ version: "3.9"
 
 services:
   nginx:
-    build: ./nginx
+    context: ./nginx
+    cache_from:
+      - "${NGINX_IMAGE}"
+    image: "${NGINX_IMAGE}"
     ports:
       - 1337:80
     depends_on:
@@ -35,7 +38,11 @@ services:
     networks:
       - deploy-network
   web:
-    build: app
+    build:
+      context: app
+      cache_from:
+        - "${WEB_IMAGE}"
+    image: "${WEB_IMAGE}"
     env_file:
       - ./.env
     command: flask run --host=0.0.0.0
