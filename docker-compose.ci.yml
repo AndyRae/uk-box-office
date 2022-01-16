@@ -1,6 +1,14 @@
 version: "3.9"
 
 services:
+  nginx:
+    build: ./nginx
+    ports:
+      - 1337:80
+    depends_on:
+      - web
+    networks:
+      - deploy-network
   db:
     image: postgres
     env_file:
