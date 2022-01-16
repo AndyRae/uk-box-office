@@ -12,7 +12,7 @@ services:
   db:
     image: postgres
     env_file:
-      - ./.env.prod
+      - ./.env
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     networks:
@@ -38,7 +38,7 @@ services:
     container_name: web
     image: "${WEB_IMAGE}"
     env_file:
-      - ./.env.prod
+      - ./.env
     command: gunicorn --preload --bind 0.0.0.0:5000 "app:create_app()"
     volumes:
       - .:/app
