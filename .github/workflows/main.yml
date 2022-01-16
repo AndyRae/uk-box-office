@@ -12,7 +12,7 @@ jobs:
     name: Build Docker Images
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout master
+      - name: Checkout main
         uses: actions/checkout@v1
       - name: Add environment variables to .env
         run: |
@@ -50,9 +50,9 @@ jobs:
     name: Deploy to DigitalOcean
     runs-on: ubuntu-latest
     needs: build
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/main'
     steps:
-      - name: Checkout master
+      - name: Checkout main
         uses: actions/checkout@v1
       - name: Add environment variables to .env
         run: |
