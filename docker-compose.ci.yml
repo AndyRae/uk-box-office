@@ -39,7 +39,7 @@ services:
     networks:
       - deploy-network
   web:
-    build: app
+    build: ./app
     # build:
     #   context: ./app
     #   cache_from:
