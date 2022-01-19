@@ -39,10 +39,11 @@ services:
     networks:
       - deploy-network
   web:
-    build:
-      context: ./app
-      cache_from:
-        - "${WEB_IMAGE}"
+    build: app
+    # build:
+    #   context: ./app
+    #   cache_from:
+    #     - "${WEB_IMAGE}"
     image: "${WEB_IMAGE}"
     env_file:
       - ./.env
