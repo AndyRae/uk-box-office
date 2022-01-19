@@ -40,9 +40,9 @@ services:
       - deploy-network
   web:
     container_name: web
-    # image: "${WEB_IMAGE}"
-    # restart: always
-    build: app
+    image: "${WEB_IMAGE}"
+    restart: always
+    # build: app
     env_file:
       - ./.env
     command: gunicorn --preload --bind 0.0.0.0:5000 "app:create_app()"
