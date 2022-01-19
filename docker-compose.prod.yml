@@ -3,6 +3,7 @@ version: "3.9"
 services:
   nginx:
     image: "${NGINX_IMAGE}"
+    restart: always
     # build: ./nginx
     ports:
       - 1337:80
@@ -12,6 +13,7 @@ services:
       - deploy-network
   db:
     image: postgres
+    restart: always
     env_file:
       - ./.env
     volumes:
@@ -20,6 +22,7 @@ services:
       - deploy-network
   elastic:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
+    restart: always
     container_name: elastic
     environment:
       - discovery.type=single-node
@@ -38,6 +41,7 @@ services:
   web:
     container_name: web
     image: "${WEB_IMAGE}"
+    restart: always
     # build: app
     env_file:
       - ./.env
