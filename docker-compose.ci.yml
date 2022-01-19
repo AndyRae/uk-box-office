@@ -48,8 +48,6 @@ services:
     env_file:
       - ./.env
     command: flask run --host=0.0.0.0
-    volumes:
-      - .:/app
     ports:
       - "5000:5000"
     depends_on:
@@ -60,7 +58,6 @@ services:
 
 volumes:
   elastic_data:
-    driver: local
   postgres_data:
 
 
