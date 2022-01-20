@@ -45,7 +45,6 @@ services:
 
 volumes:
   elastic_data:
-    driver: local
   postgres_data:
 
 
