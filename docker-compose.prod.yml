@@ -2,7 +2,6 @@ version: "3.9"
 
 services:
   nginx:
-    container_name: nginx
     image: "${NGINX_IMAGE}"
     restart: always
     # build: ./nginx
@@ -13,7 +12,6 @@ services:
     networks:
       - deploy-network
   db:
-    container_name: postgres
     image: postgres
     restart: always
     env_file:
@@ -23,7 +21,6 @@ services:
     networks:
       - deploy-network
   elastic:
-    container_name: elastic
     image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
     restart: always
     environment:
@@ -41,7 +38,6 @@ services:
     networks:
       - deploy-network
   web:
-    container_name: web
     image: "${WEB_IMAGE}"
     # restart: always
     # build: app
@@ -49,7 +45,7 @@ services:
       - ./.env
     command: gunicorn --preload --bind 0.0.0.0:5000 "app:create_app()"
     volumes:
-      - .:/app
+      - ./app:/app
     expose:
       - 5000
     depends_on:
