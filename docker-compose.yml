@@ -2,6 +2,7 @@ version: "3.9"
 
 services:
   db:
+    container_name: postgres
     image: postgres
     env_file:
       - ./.env
@@ -10,8 +11,8 @@ services:
     networks:
       - deploy-network
   elastic:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
     container_name: elastic
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
     environment:
       - discovery.type=single-node
       - bootstrap.memory_lock=true
@@ -27,6 +28,7 @@ services:
     networks:
       - deploy-network
   web:
+    container_name: web
     build: app
     env_file:
       - ./.env

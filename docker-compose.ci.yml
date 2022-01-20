@@ -2,6 +2,7 @@ version: "3.9"
 
 services:
   nginx:
+    container_name: nginx
     build:
       context: ./nginx
       cache_from:
@@ -14,6 +15,7 @@ services:
     networks:
       - deploy-network
   db:
+    container_name: postgres
     image: postgres
     env_file:
       - ./.env
@@ -22,8 +24,8 @@ services:
     networks:
       - deploy-network
   elastic:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
     container_name: elastic
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
     environment:
       - discovery.type=single-node
       - bootstrap.memory_lock=true
@@ -39,6 +41,7 @@ services:
     networks:
       - deploy-network
   web:
+    container_name: web
     build: app
     # build:
     #   context: ./app
@@ -48,6 +51,8 @@ services:
     env_file:
       - ./.env
     command: flask run --host=0.0.0.0
+    volumes:
+      - .:/app
     ports:
       - "5000:5000"
     depends_on:
