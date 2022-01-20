@@ -5,5 +5,4 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV FLASK_APP=app
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
-RUN touch iamhere
 COPY . .
