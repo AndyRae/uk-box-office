@@ -41,7 +41,7 @@ services:
   web:
     container_name: web
     image: "${WEB_IMAGE}"
-    restart: always
+    # restart: always
     # build: app
     env_file:
       - ./.env
