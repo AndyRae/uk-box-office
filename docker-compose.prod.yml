@@ -45,7 +45,7 @@ services:
     # build: app
     env_file:
       - ./.env
-    # command: gunicorn --preload --bind 0.0.0.0:5000 "app:create_app()"
+    command: gunicorn --preload --bind 0.0.0.0:5000 "app:create_app()"
     expose:
       - 5000
     depends_on:
