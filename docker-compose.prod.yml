@@ -38,14 +38,14 @@ services:
     networks:
       - deploy-network
   web:
-    image: "${WEB_IMAGE}"
+    # image: "${WEB_IMAGE}"
     # restart: always
     # build: app
     build:
-      context: app
+      context: ./app
     env_file:
       - ./.env
-    command: gunicorn --preload --bind 0.0.0.0:5000 "app2:create_app()"
+    command: gunicorn --preload --bind 0.0.0.0:5000 "app:create_app()"
     volumes:
       - "./app:/app"
     expose:
