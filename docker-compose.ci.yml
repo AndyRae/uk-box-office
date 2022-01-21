@@ -39,8 +39,8 @@ services:
       - deploy-network
   web:
     # build: app
-    # build:
-    #   context: ./app
+    build:
+      context: ./app
     #   cache_from:
     #     - "${WEB_IMAGE}"
     image: "${WEB_IMAGE}"
@@ -48,7 +48,7 @@ services:
       - ./.env
     command: flask run --host=0.0.0.0
     volumes:
-      - .:/app
+      - "./app:/app"
     ports:
       - "5000:5000"
     depends_on:
