@@ -11,8 +11,6 @@ services:
       - 1337:80
     depends_on:
       - web
-    networks:
-      - deploy-network
   web:
     # build: app
     build:
@@ -27,14 +25,3 @@ services:
       - ".:/app/app"
     ports:
       - "5000:5000"
-    networks:
-      - deploy-network
-
-volumes:
-  elastic_data:
-  postgres_data:
-
-
-networks:
-  deploy-network:
-    driver: bridge
