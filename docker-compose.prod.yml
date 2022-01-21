@@ -42,7 +42,7 @@ services:
     # restart: always
     # build: app
     build:
-      context: ./app/app
+      context: ./app/
     env_file:
       - ./.env
     command: gunicorn --preload --bind 0.0.0.0:5000 "app:create_app()"
