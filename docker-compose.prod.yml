@@ -38,7 +38,7 @@ services:
     networks:
       - deploy-network
   web:
-    # image: "${WEB_IMAGE}"
+    image: "${WEB_IMAGE}"
     # restart: always
     # build: app
     build:
