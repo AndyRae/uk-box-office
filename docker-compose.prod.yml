@@ -4,7 +4,7 @@ services:
   nginx:
     image: "${NGINX_IMAGE}"
     restart: always
-    # build: ./nginx
+    build: ./nginx
     ports:
       - 1337:80
     depends_on:
@@ -42,7 +42,7 @@ services:
     # restart: always
     # build: app
     build:
-      context: ./
+      context: ./app
     env_file:
       - ./.env
     command: gunicorn --preload --bind 0.0.0.0:5000 "app:create_app()"

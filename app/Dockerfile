@@ -6,4 +6,3 @@ ENV FLASK_APP=app
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 COPY . .
-COPY requirements.txt /app/
