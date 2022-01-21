@@ -46,7 +46,7 @@ services:
       - ./.env
     command: gunicorn --preload --bind 0.0.0.0:5000 "app:create_app()"
     volumes:
-      - ".:/app/app/"
+      - ".data:/app/app/"
     expose:
       - 5000
     depends_on:
