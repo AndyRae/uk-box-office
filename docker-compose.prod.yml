@@ -41,12 +41,12 @@ services:
     image: "${WEB_IMAGE}"
     # build: app
     build:
-      context: ./app
+      context: ./app3
     env_file:
       - ./.env
-    command: gunicorn --preload --bind 0.0.0.0:5000 "app:create_app()"
+    command: gunicorn --preload --bind 0.0.0.0:5000 "app3:create_app()"
     volumes:
-      - ".:/app/app"
+      - ".:/app/app3"
     expose:
       - 5000
     depends_on:
