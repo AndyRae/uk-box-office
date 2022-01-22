@@ -12,8 +12,8 @@ services:
     depends_on:
       - web
   web:
-    # build: app
-    build: .
+    build: app
+    # build: .
       # context: ./app
     #   cache_from:
     #     - "${WEB_IMAGE}"

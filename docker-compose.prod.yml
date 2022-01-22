@@ -39,7 +39,7 @@ services:
       - deploy-network
   web:
     image: "${WEB_IMAGE}"
-    build: .
+    build: app
     # build:
       # context: .
     env_file:
