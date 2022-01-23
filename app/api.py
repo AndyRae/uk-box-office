@@ -7,7 +7,7 @@ from flask import Blueprint, current_app, jsonify, make_response, request
 from flask.wrappers import Response
 from werkzeug.exceptions import abort
 
-from . import cache, db, limiter, models
+from app import cache, db, limiter, models
 
 bp = Blueprint("api", __name__)
 
