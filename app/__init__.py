@@ -9,7 +9,8 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask_sqlalchemy import SQLAlchemy
 
-from . import settings
+# from . import settings
+from app import settings
 
 db = SQLAlchemy()
 scheduler = APScheduler()
@@ -52,7 +53,7 @@ def create_app(test_config: Any = None) -> Flask:
 
 
 def register_extensions(app: Flask) -> None:
-    from . import tasks
+    from app import tasks
 
     db.init_app(app)
     scheduler.init_app(app)
@@ -62,7 +63,7 @@ def register_extensions(app: Flask) -> None:
 
 
 def register_blueprints(app: Flask) -> None:
-    from . import api, views
+    from app import api, views
 
     app.register_blueprint(api.bp)
     app.register_blueprint(views.bp)
@@ -70,7 +71,7 @@ def register_blueprints(app: Flask) -> None:
 
 
 def register_cli(app: Flask) -> None:
-    from . import cli
+    from app import cli
 
     app.cli.add_command(cli.init_db_command)
     app.cli.add_command(cli.fill_db_command)
