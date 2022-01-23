@@ -18,7 +18,7 @@ from flask.wrappers import Response
 from flask_sqlalchemy import model
 from werkzeug.exceptions import abort
 
-from . import cache, db, forms, models
+from app import cache, db, forms, models
 
 bp = Blueprint("index", __name__, template_folder="templates")
 

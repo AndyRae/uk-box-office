@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 from flask import current_app
 from flask.cli import with_appcontext
 
-from . import db, etl, models
+from app import db, etl, models
 
 
 @with_appcontext
