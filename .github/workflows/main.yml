@@ -40,7 +40,7 @@ jobs:
           docker pull ${{ env.NGINX_IMAGE }} || true
       - name: Build images
         run: |
-          docker-compose -f docker-compose.prod.yml build
+          docker-compose -f docker-compose.ci.yml build
       - name: Push images
         run: |
           docker push ${{ env.WEB_IMAGE }}
