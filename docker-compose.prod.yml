@@ -41,12 +41,12 @@ services:
     image: "${WEB_IMAGE}"
     # build: app
     build:
-      context: ./app
+      context: .
     env_file:
       - ./.env
     command: gunicorn --preload --bind 0.0.0.0:5000 "app:create_app()"
     volumes:
-      - ".:/app"
+      - "app:/app/app"
     expose:
       - 5000
     depends_on:
@@ -59,6 +59,7 @@ services:
 volumes:
   elastic_data:
   postgres_data:
+  app:
 
 
 networks:
