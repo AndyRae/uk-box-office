@@ -9,8 +9,6 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask_sqlalchemy import SQLAlchemy
 
-from app import settings
-
 db = SQLAlchemy()
 scheduler = APScheduler()
 toolbar = DebugToolbarExtension()
@@ -20,6 +18,8 @@ limiter = Limiter(key_func=get_remote_address)
 
 def create_app(test_config: Any = None) -> Flask:
     app = Flask(__name__, instance_relative_config=True)
+
+    from app import settings
 
     if test_config is None:
         # load the instance config - if it exists, when not testing
