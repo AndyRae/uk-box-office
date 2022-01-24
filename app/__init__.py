@@ -19,7 +19,7 @@ limiter = Limiter(key_func=get_remote_address)
 def create_app(test_config: Any = None) -> Flask:
     app = Flask(__name__, instance_relative_config=True)
 
-    from app import settings
+    from . import settings
 
     if test_config is None:
         # load the instance config - if it exists, when not testing
@@ -52,7 +52,7 @@ def create_app(test_config: Any = None) -> Flask:
 
 
 def register_extensions(app: Flask) -> None:
-    from app import tasks
+    from . import tasks
 
     db.init_app(app)
     scheduler.init_app(app)
@@ -62,7 +62,7 @@ def register_extensions(app: Flask) -> None:
 
 
 def register_blueprints(app: Flask) -> None:
-    from app import api, views
+    from . import api, views
 
     app.register_blueprint(api.bp)
     app.register_blueprint(views.bp)
@@ -70,7 +70,7 @@ def register_blueprints(app: Flask) -> None:
 
 
 def register_cli(app: Flask) -> None:
-    from app import cli
+    from . import cli
 
     app.cli.add_command(cli.init_db_command)
     app.cli.add_command(cli.fill_db_command)
