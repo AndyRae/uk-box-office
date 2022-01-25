@@ -10,7 +10,7 @@ import requests  # type: ignore
 from bs4 import BeautifulSoup
 from flask import current_app
 
-from app import db, models
+from ukbo import db, models
 
 
 def get_country(country: str) -> List[models.Country]:

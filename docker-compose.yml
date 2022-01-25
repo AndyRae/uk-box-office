@@ -1,6 +1,21 @@
 version: "3.9"
 
 services:
+  web:
+    container_name: web
+    build: ukbo
+    env_file:
+      - ./.env
+    command: flask run --host=0.0.0.0
+    volumes:
+      - .:/ukbo
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+      - elastic
+    networks:
+      - deploy-network
   db:
     container_name: postgres
     image: postgres
@@ -27,21 +42,7 @@ services:
       - 9200:9200
     networks:
       - deploy-network
-  web:
-    container_name: web
-    build: app
-    env_file:
-      - ./.env
-    command: flask run --host=0.0.0.0
-    volumes:
-      - .:/app
-    ports:
-      - "5000:5000"
-    depends_on:
-      - db
-      - elastic
-    networks:
-      - deploy-network
+
 
 volumes:
   elastic_data:

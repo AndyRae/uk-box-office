@@ -5,7 +5,7 @@ import os
 from dotenv import load_dotenv
 from flask import current_app
 
-from app import etl, scheduler
+from ukbo import etl, scheduler
 
 
 @scheduler.task(
