@@ -3,13 +3,13 @@ version: "3.9"
 services:
   web:
       image: "${WEB_IMAGE}"
-      build:
-        context: ./src/
+      # build:
+      #  context: ./src/
       env_file:
         - ./.env
       command: gunicorn --preload --bind 0.0.0.0:5000 "ukbo:create_app()"
       volumes:
-        - ".:/ukbo/ukbo"
+        # - ".:/ukbo/ukbo"
         - "./data:/app/data/"
       expose:
         - 5000
@@ -59,7 +59,7 @@ services:
 volumes:
   elastic_data:
   postgres_data:
-  ukbo:
+  # ukbo:
 
 
 networks:
