@@ -2,8 +2,9 @@ version: "3.9"
 
 services:
   web:
-      # image: "${WEB_IMAGE}"
-      build: ukbo
+      image: "${WEB_IMAGE}"
+      build:
+        context: .
       env_file:
         - ./.env
       command: gunicorn --preload --bind 0.0.0.0:5000 "ukbo:create_app()"
