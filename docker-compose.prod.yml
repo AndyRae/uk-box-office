@@ -9,6 +9,7 @@ services:
         - ./.env
       command: gunicorn --preload --bind 0.0.0.0:5000 "ukbo:create_app()"
       volumes:
+        - "ukbo:/app/ukbo"
         - ".:/ukbo"
       expose:
         - 5000
