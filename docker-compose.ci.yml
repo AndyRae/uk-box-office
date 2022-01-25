@@ -7,8 +7,6 @@ services:
     env_file:
       - ./.env
     command: flask run --host=0.0.0.0
-    volumes:
-      - ".:/ukbo"
     ports:
       - "5000:5000"
   nginx:
