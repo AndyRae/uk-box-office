@@ -19,7 +19,7 @@ jobs:
           echo SOURCE_URL=${{ secrets.SOURCE_URL }} >> .env
           echo DATABASE=postgres >> .env
           echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
-          echo FLASK_APP=app >> .env
+          echo FLASK_APP=ukbo >> .env
           echo FLASK_ENV=production >> .env
           echo ELASTICSEARCH_URL=elastic >> .env
           echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> .env
@@ -59,7 +59,7 @@ jobs:
           echo SOURCE_URL=${{ secrets.SOURCE_URL }} >> .env
           echo DATABASE=postgres >> .env
           echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
-          echo FLASK_APP=app >> .env
+          echo FLASK_APP=ukbo >> .env
           echo FLASK_ENV=production >> .env
           echo ELASTICSEARCH_URL=elastic >> .env
           echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> .env
