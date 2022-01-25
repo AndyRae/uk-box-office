@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   web:
-    build: ukbo
+    build: src
     image: "${WEB_IMAGE}"
     env_file:
       - ./.env

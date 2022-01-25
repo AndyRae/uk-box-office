@@ -3,12 +3,12 @@ version: "3.9"
 services:
   web:
     container_name: web
-    build: ukbo
+    build: src
     env_file:
       - ./.env
     command: flask run --host=0.0.0.0
     volumes:
-      - .:/ukbo
+      - ./src/ukbo:/ukbo
     ports:
       - "5000:5000"
     depends_on:
