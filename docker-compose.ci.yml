@@ -1,6 +1,16 @@
 version: "3.9"
 
 services:
+  web:
+    build: ukbo
+    image: "${WEB_IMAGE}"
+    env_file:
+      - ./.env
+    command: flask run --host=0.0.0.0
+    volumes:
+      - ".:/ukbo"
+    ports:
+      - "5000:5000"
   nginx:
     build:
       context: ./nginx
@@ -11,17 +21,3 @@ services:
       - 1337:80
     depends_on:
       - web
-  web:
-    build: ukbo
-    # build: .
-      # context: ./app
-    #   cache_from:
-    #     - "${WEB_IMAGE}"
-    image: "${WEB_IMAGE}"
-    env_file:
-      - ./.env
-    command: flask run --host=0.0.0.0
-    volumes:
-      - ".:/ukbo"
-    ports:
-      - "5000:5000"
