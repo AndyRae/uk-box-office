@@ -1,10 +1,25 @@
 version: "3.9"
 
 services:
+  web:
+      # image: "${WEB_IMAGE}"
+      build: ukbo
+      env_file:
+        - ./.env
+      command: gunicorn --preload --bind 0.0.0.0:5000 "ukbo:create_app()"
+      volumes:
+        - ".:/ukbo"
+      expose:
+        - 5000
+      depends_on:
+        - db
+        - elastic
+      networks:
+        - deploy-network
   nginx:
     image: "${NGINX_IMAGE}"
-    restart: always
     # build: ./nginx
+    restart: always
     ports:
       - 1337:80
     depends_on:
@@ -37,29 +52,12 @@ services:
       - 9200:9200
     networks:
       - deploy-network
-  web:
-    image: "${WEB_IMAGE}"
-    # build: app
-    build:
-      context: .
-    env_file:
-      - ./.env
-    command: gunicorn --preload --bind 0.0.0.0:5000 "app:create_app()"
-    volumes:
-      - "app:/app/app"
-    expose:
-      - 5000
-    depends_on:
-      - db
-      - elastic
-    networks:
-      - deploy-network
 
 
 volumes:
   elastic_data:
   postgres_data:
-  app:
+  ukbo:
 
 
 networks:
