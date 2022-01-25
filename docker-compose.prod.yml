@@ -10,6 +10,7 @@ services:
       command: gunicorn --preload --bind 0.0.0.0:5000 "ukbo:create_app()"
       volumes:
         - ".:/ukbo/ukbo"
+        - "./data:/app/data/"
       expose:
         - 5000
       depends_on:
