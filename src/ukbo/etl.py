@@ -3,12 +3,13 @@
 import os
 import urllib.request
 from datetime import datetime, timedelta
-from typing import List, Tuple
+from typing import Any, List, Tuple
 
 import pandas as pd
 import requests  # type: ignore
 from bs4 import BeautifulSoup
 from flask import current_app
+from slugify import slugify  # type: ignore
 
 from ukbo import db, models
 
@@ -27,9 +28,13 @@ def get_country(country: str) -> List[models.Country]:
     for i in countries:
 
         i = spellcheck_country(i)
-        filtered_countries = models.Country.query.filter_by(name=i).first()
+        slug = slugify(i)
+        filtered_countries = models.Country.query.filter_by(slug=slug).first()
 
-        if i == filtered_countries:
+        if not filtered_countries:
+            break
+
+        if slug == filtered_countries.slug:
             new_countries.append(filtered_countries)
         else:
             new = models.Country(name=i)
@@ -45,12 +50,14 @@ def get_distributor(distributor: str) -> models.Distributor:
     If not - creates it, adds it to the database and returns it
     """
     distributor = distributor.strip()
+    slug = slugify(distributor)
     filtered_distributors = models.Distributor.query.filter_by(
-        name=distributor
+        slug=slug
     ).first()
 
-    if distributor == filtered_distributors:
+    if filtered_distributors and slug == filtered_distributors.slug:
         return filtered_distributors
+
     new = models.Distributor(name=distributor)
     db.session.add(new)
     db.session.commit()
@@ -65,10 +72,12 @@ def get_film(
     If not - creates it, adds it to the database and returns it
     """
     film = film.strip()
-    filtered_films = models.Film.query.filter_by(name=film).first()
+    slug = slugify(film)
+    filtered_films = models.Film.query.filter_by(slug=slug).first()
 
-    if film == filtered_films:
+    if filtered_films and slug == filtered_films.slug:
         return filtered_films
+
     new = models.Film(name=film, distributor=distributor)
     for i in countries:
         new.countries.append(i)
@@ -89,9 +98,9 @@ def load_dataframe(archive: pd.DataFrame) -> None:
     list_of_films = [row.to_dict() for index, row in archive.iterrows()]
 
     for i in list_of_films:
-        i["country"] = get_country(i["country"])
-        i["distributor"] = get_distributor(i["distributor"])
-        i["film"] = get_film(i["film"], i["distributor"], i["country"])
+        i["country"] = get_country(str(i["country"]))
+        i["distributor"] = get_distributor(str(i["distributor"]))
+        i["film"] = get_film(str(i["film"]), i["distributor"], i["country"])
 
         i.pop("country", None)
 
