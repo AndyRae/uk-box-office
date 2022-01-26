@@ -30,11 +30,10 @@ def index() -> str:
     Main dashboard view - all of work is done in JS. See Template.
     """
     # list of dates card
-    # query = db.session.query(models.Week)
-    # query = query.order_by(models.Week.date.desc())
-    # query = query.distinct(models.Week.date)
-    # dates = query.all()[:6]
-    dates: List[str] = []
+    query = db.session.query(models.Week)
+    query = query.order_by(models.Week.date.desc())
+    query = query.distinct(models.Week.date)
+    dates = query.all()[:6]
     return render_template("index.html", dates=dates)
 
 
