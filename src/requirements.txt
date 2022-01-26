@@ -60,7 +60,6 @@ pluggy==1.0.0
 pre-commit==2.16.0
 progress==1.6
 prompt-toolkit==3.0.21
-psycopg2==2.9.2
 psycopg2-binary==2.9.3
 py==1.10.0
 pycodestyle==2.8.0

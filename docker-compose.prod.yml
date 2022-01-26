@@ -7,7 +7,7 @@ services:
       #  context: ./src/
       env_file:
         - ./.env
-      command: gunicorn --preload --bind 0.0.0.0:5000 "ukbo:create_app()"
+      command: gunicorn --preload --bind 0.0.0.0:5000 "ukbo:create_app('production')"
       volumes:
         - "./data:/app/data/"
       expose:
