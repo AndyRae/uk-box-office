@@ -6,9 +6,11 @@ services:
     build: src
     env_file:
       - ./.env
+    environment:
+      - FLASK_APP=ukbo:create_app('dev')
     command: flask run --host=0.0.0.0
     volumes:
-      - ./src/ukbo:/ukbo
+      - ./src/:/app
     ports:
       - "5000:5000"
     depends_on:

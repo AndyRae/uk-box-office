@@ -1,8 +1,6 @@
-black
 beautifulsoup4
 coverage
 elasticsearch
-flake8
 Flask
 Flask-APScheduler
 Flask-Caching
@@ -11,8 +9,6 @@ Flask-Limiter
 Flask-SQLAlchemy
 Flask-WTF
 gunicorn
-isort
-mypy
 pandas
 pip-audit
 pip-tools
