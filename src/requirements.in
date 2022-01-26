@@ -9,6 +9,7 @@ Flask-Limiter
 Flask-SQLAlchemy
 Flask-WTF
 gunicorn
+mypy
 pandas
 pip-audit
 pip-tools
