@@ -88,6 +88,10 @@ markupsafe==2.0.1
     #   wtforms
 msgpack==1.0.3
     # via cachecontrol
+mypy==0.931
+    # via -r src/requirements.in
+mypy-extensions==0.4.3
+    # via mypy
 nodeenv==1.6.0
     # via pre-commit
 numpy==1.21.2
@@ -164,11 +168,15 @@ toml==0.10.2
     #   pre-commit
     #   pytest
 tomli==1.2.1
-    # via pep517
+    # via
+    #   mypy
+    #   pep517
 types-setuptools==57.4.5
     # via cyclonedx-python-lib
 types-toml==0.10.1
     # via cyclonedx-python-lib
+typing-extensions==4.0.1
+    # via mypy
 tzdata==2021.5
     # via pytz-deprecation-shim
 tzlocal==4.0.2
