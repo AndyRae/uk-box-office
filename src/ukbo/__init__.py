@@ -16,20 +16,21 @@ cache = Cache()
 limiter = Limiter(key_func=get_remote_address)
 
 
-def create_app(test_config: Any = None) -> Flask:
+def create_app(config: str = None) -> Flask:
     app = Flask(__name__, instance_relative_config=True)
 
     from . import settings
 
-    if test_config is None:
-        # load the instance config - if it exists, when not testing
+    if config == "production":
+        app.config.from_object(settings.Config)
+
+    elif config == "dev":
         app.config.from_object(settings.DevelopmentConfig)
 
         # Debug toolbar
         toolbar.init_app(app)
     else:
-        # load the test config if passed in
-        app.config.from_mapping(test_config)
+        app.config.from_object(settings.TestConfig)
 
     register_extensions(app)
 

@@ -32,6 +32,13 @@ class DevelopmentConfig(Config):
     CACHE_TYPE = "null"
 
 
+class TestConfig(Config):
+    """Test config."""
+
+    DEBUG = True
+    CACHE_TYPE = "null"
+
+
 """
 Logging config
 """
