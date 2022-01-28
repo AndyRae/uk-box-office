@@ -18,15 +18,23 @@ services:
       networks:
         - deploy-network
   nginx:
-    image: "${NGINX_IMAGE}"
+    image: nginx:latest
     # build: ./nginx
     restart: always
     ports:
-      - 1337:80
+      - 80:80
+      - 443:443
     depends_on:
       - web
     networks:
       - deploy-network
+    volumes:
+      - ./nginx/conf/:/etc/nginx/conf.d/:ro
+  #     - ./certbot/www:/var/www/certbot/:ro
+  # certbot:
+  #   image: certbot/cerbot:latest
+  #   volumes:
+  #     - ./certbot/www/:/var/www/certbot/:rw
   db:
     image: postgres
     restart: always

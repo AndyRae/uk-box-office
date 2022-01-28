@@ -106,7 +106,7 @@ a:hover {
 }
 
 
-/* @media (prefers-color-scheme:dark) {
+@media (prefers-color-scheme:dark) {
 	body {
 		background: #21212C;
 		color: #fff;
@@ -134,4 +134,4 @@ a:hover {
 		background-color: #21212c;
 		color: #fff;
 	}
-} */
+}
