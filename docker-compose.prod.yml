@@ -18,7 +18,7 @@ services:
       networks:
         - deploy-network
   nginx:
-    image: nginx:latest
+    image: "${NGINX_IMAGE}"
     # build: ./nginx
     restart: always
     ports:
@@ -28,8 +28,8 @@ services:
       - web
     networks:
       - deploy-network
-    volumes:
-      - ./nginx/conf:/etc/nginx/conf.d/:ro
+    # volumes:
+    #   - ./nginx/conf:/etc/nginx/conf.d/:ro
   #     - ./certbot/www:/var/www/certbot/:ro
   # certbot:
   #   image: certbot/cerbot:latest
