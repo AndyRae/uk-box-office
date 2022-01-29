@@ -11,7 +11,7 @@ services:
       - "5000:5000"
   nginx:
     image: "${NGINX_IMAGE}"
-    # build: ./nginx
+    build: ./nginx
     restart: always
     ports:
       - 80:80
