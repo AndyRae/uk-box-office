@@ -29,16 +29,16 @@ services:
     networks:
       - deploy-network
     volumes:
-      - ./nginx/conf:/etc/nginx/conf.d/:ro
-      - ./certbot/conf:/etc/letsencrypt/:ro
-      - ./certbot/www:/var/www/certbot/:ro
+#      - ./nginx/conf:/etc/nginx/conf.d/
+      - certbot-etc:/etc/letsencrypt/
+      - certbot-var:/var/www/certbot/
   certbot:
     image: certbot/certbot:latest
     container_name: certbot
     volumes:
-      - ./certbot/conf:/etc/letsencrypt/:rw
-      - ./certbot/www:/var/www/certbot:rw
-    command: certonly --webroot -w /var/www/certbot --force-renewal --email hello@rae.li -d boxofficedata.co.uk --agree-tos
+      - certbot-etc:/etc/letsencrypt/
+      - certbot-var:/var/www/certbot/
+    command: certonly --webroot -w /var/www/certbot --force-renewal --email hello@rae.li --no-eff-email --staging -d boxofficedata.co.uk --agree-tos
   db:
     image: postgres
     restart: always
@@ -70,6 +70,8 @@ services:
 volumes:
   elastic_data:
   postgres_data:
+  certbot-etc:
+  certbot-var:
 
 
 networks:
