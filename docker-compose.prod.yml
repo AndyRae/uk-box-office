@@ -38,7 +38,7 @@ services:
     volumes:
       - certbot-etc:/etc/letsencrypt/
       - certbot-var:/var/www/certbot/
-    command: certonly --webroot -w /var/www/certbot --force-renewal --email hello@rae.li --no-eff-email --staging -d boxofficedata.co.uk --agree-tos
+    command: certonly --webroot -w /var/www/certbot --force-renewal --email hello@rae.li --no-eff-email -d boxofficedata.co.uk --agree-tos
   db:
     image: postgres
     restart: always
