@@ -35,9 +35,6 @@
 <div id="sidenav" uk-offcanvas="flip: true" class="uk-offcanvas">
 	<div class="uk-offcanvas-bar">
 		<ul class="uk-nav">
-			<li><a class="uk-text-large" href="{{ url_for('index.films') }}">Films</a></li>
-			<li><a class="uk-text-large" href="{{ url_for('index.films') }}">Distributors</a></li>
-			<li><a class="uk-text-large" href="{{ url_for('index.films') }}">Time</a></li>
 			<li>
 				{% if g.search_form %}
 					<form class="uk-search uk-search-default" method="get" action="{{ url_for('index.search') }}">
@@ -46,6 +43,10 @@
 					</form>
 				{% endif %}
 			</li>
+			<li><a class="uk-text-default" href="{{ url_for('index.films') }}">Films</a></li>
+			<li><a class="uk-text-default" href="{{ url_for('index.distributors') }}">Distributors</a></li>
+			<li><a class="uk-text-default" href="{{ url_for('index.time') }}">Time</a></li>
+
 		</ul>
 	</div>
 </div>

@@ -26,11 +26,11 @@
 				<tbody>
 				{% for i in years %}
 					<tr class="">
-						<td><a class="uk-label" href="{{ url_for('index.year_detail', year=i) }}">{{ i }}</a></td>
+						<td><a class="uk-label uk-background-secondary" href="{{ url_for('index.year_detail', year=i) }}">{{ i }}</a></td>
 						<td>
 							{% for j in months %}
 
-								<a class="uk-label" href="{{ url_for('index.month_detail', year=i, month=j) }}">{{ j|date_convert_to_month }}</a>
+								<a class="uk-label uk-background-secondary" href="{{ url_for('index.month_detail', year=i, month=j) }}">{{ j|date_convert_to_month }}</a>
 
 							{% endfor %}
 						</td>

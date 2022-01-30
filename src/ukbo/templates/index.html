@@ -28,7 +28,7 @@ Home
 
 		<div class="uk-grid uk-grid-small uk-child-width-expand uk-margin-small-top" uk-grid="masonry: true">
 
-			<div class="uk-width-1-2@l">
+			<div class="uk-width-1-2@l uk-flex-first">
 				<div class="uk-card uk-card-small uk-card-body border-dash">
 					<h6 class="uk-text-meta">Total UK Box Office</h6>
 					<line-chart v-if="loaded" :chartdata="chartdata" :options="options"></line-chart>
@@ -137,8 +137,8 @@ Home
 					<small class="uk-text-meta">Number of cinemas</small>
 				</div>
 			</div>
-<!--
-			<div class="uk-width-1-4@l">
+
+			<!-- <div class="uk-width-1-4@l">
 				<div class="uk-card uk-card-small bg-dash border-dash uk-text-center">
 					<div class="uk-card-body">
 						<h2 class="uk-card-title">${ numberOfCinemas }</h2>
