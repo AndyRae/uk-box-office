@@ -62,17 +62,16 @@
 		<div class="p-centered">
 
 			<canvas id="myChart" class="mt-5" width="100%" height="50px"></canvas>
+
+			<hr class="">
+
 			<canvas id="barChart" class="mt-5" width="100%" height="50px"></canvas>
 
 			<hr>
-			<a class="uk-label" href="{{ url_for('index.year_detail', year=year) }}">{{ year }}</a>
+			<a class="uk-label uk-background-secondary" href="{{ url_for('index.year_detail', year=year) }}">{{ year }}</a>
 			{% for j in range(1,13) %}
-				<a class="uk-label" href="{{ url_for('index.month_detail', year=year, month=j) }}">{{ j|date_convert_to_month }}</a>
+				<a class="uk-label uk-background-secondary" href="{{ url_for('index.month_detail', year=year, month=j) }}">{{ j|date_convert_to_month }}</a>
 			{% endfor %}
-
-			{% if next %}
-			    <a class="uk-label" href="{{ url_for('index.time') }}{{next}}/">Next ></a>
-			{% endif %}
 		</div>
 
 		<hr>
@@ -148,6 +147,9 @@
 				</div>
 			</li>
 		</ul>
+		<div class="">
+			Source: <a class="action" href="https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures" target="_blank">bfi.org.uk</a>
+		</div>
 
 	</div>
 
@@ -189,7 +191,19 @@
 								autoSkip: true,
 								stepSize: 10000000,
 								callback: function(value, index, values) {
-									return '£ ' + value;
+									var ranges = [
+										{ divider: 1e6, suffix: 'M' },
+										{ divider: 1e3, suffix: 'k' }
+									];
+									function formatNumber(n) {
+										for (var i = 0; i < ranges.length; i++) {
+										if (n >= ranges[i].divider) {
+											return (n / ranges[i].divider).toString() + ranges[i].suffix;
+										}
+										}
+										return n;
+									}
+									return '£' + formatNumber(value);
 								}
 							}
 						},
@@ -230,7 +244,19 @@
 								autoSkip: true,
 								stepSize: 10000000,
 								callback: function(value, index, values) {
-									return '£ ' + value;
+									var ranges = [
+										{ divider: 1e6, suffix: 'M' },
+										{ divider: 1e3, suffix: 'k' }
+									];
+									function formatNumber(n) {
+										for (var i = 0; i < ranges.length; i++) {
+										if (n >= ranges[i].divider) {
+											return (n / ranges[i].divider).toString() + ranges[i].suffix;
+										}
+										}
+										return n;
+									}
+									return '£' + formatNumber(value);
 								}
 							}
 						},

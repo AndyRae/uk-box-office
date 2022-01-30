@@ -280,7 +280,12 @@ def time() -> str:
     """
     List of all time periods.
     """
-    years = range(2022, 2006, -1)
+    query = db.session.query(models.Week)
+    query = query.order_by(models.Week.date.desc())
+    first = query.first()
+    end = first.date
+
+    years = range(end.year, 2000, -1)
     months = range(1, 13)
 
     return render_template("time.html", years=years, months=months)
@@ -310,7 +315,6 @@ def year_detail(year: int) -> str:
         graph_data=graph_data,
         time=time,
         year=year,
-        next=year + 1,
     )
 
 
@@ -333,7 +337,6 @@ def month_detail(year: int, month: int) -> str:
     table_data = data_grouped_by_film(data)
     graph_data = data_grouped_by_date(data)
 
-    next = (start_date + datetime.timedelta(days=end_day)).strftime("%Y/%m")
     time = start_date.strftime("%B %Y")
 
     return render_template(
@@ -342,7 +345,6 @@ def month_detail(year: int, month: int) -> str:
         graph_data=graph_data,
         time=time,
         year=year,
-        next=next,
     )
 
 
@@ -361,7 +363,6 @@ def week_detail(year: int, month: int, start_day: int) -> str:
     table_data = data_grouped_by_film(data)
     graph_data = data_grouped_by_date(data)
 
-    next = (start_date + datetime.timedelta(days=7)).strftime("%Y/%m/%d")
     time = start_date.strftime("%d %B %Y")
 
     return render_template(
@@ -370,7 +371,6 @@ def week_detail(year: int, month: int, start_day: int) -> str:
         graph_data=graph_data,
         time=time,
         year=year,
-        next=next,
     )
 
 

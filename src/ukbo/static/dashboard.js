@@ -327,18 +327,14 @@ var vm = new Vue({
 			})
 			groupedFilms.splice(topNFilms)
 
-			const colors = ['#FFA188', '#006277', '#FF473E', '#009F41', '#FE7E6D', '#003f5c', '#2f4b7c',
-			'#665191', '#a05195', '#d45087', '#f95d6a', '#ff7c43', '#ffa600']
-
 			// Create the dataset objects - loop through the films, and then original results for matching weeks
 			datasets = []
 			for (i in groupedFilms) {
-				let randomColor = colors[Math.floor(Math.random()*colors.length)]
+				let randomColor = Math.floor(Math.random()*16777215).toString(16);
 
 				x = {
 						label: groupedFilms[i].film,
-						borderColor: randomColor,
-						backgroundColor: randomColor+'4d',
+						borderColor: '#'+randomColor,
 						fill: false,
 				}
 

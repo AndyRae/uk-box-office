@@ -52,6 +52,14 @@ a:hover {
 	text-transform: none;
 }
 
+.uk-button-small {
+	padding: 0 8px;
+}
+
+.uk-label {
+	text-transform: none;
+}
+
 .uk-navbar-nav>li>a {
 	min-height: 60px;
 }
@@ -71,6 +79,7 @@ a:hover {
 .footer a {
 	color: #FFF;
 	text-decoration: none;
+	text-transform: none !important;
 }
 
 .seperator {
@@ -109,9 +118,9 @@ a:hover {
 @media (prefers-color-scheme:dark) {
 	body {
 		background: #21212C;
-		color: #fff;
+		color: #fff !important;
 	}
-	a, h1 {
+	a, h1, h2 {
 		color: #fff !important;
 	}
 	.bg-dash {
@@ -133,5 +142,8 @@ a:hover {
 	.uk-table-hover>tr:hover {
 		background-color: #21212c;
 		color: #fff;
+	}
+	.border-dash {
+		border: none;
 	}
 }

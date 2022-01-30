@@ -1,19 +1,51 @@
-<footer class="footer uk-margin-large-top">
+<div class="uk-section footer uk-section-primary tm-section-primary uk-margin-large-top uk-padding-remove-bottom">
+	<div class="uk-container uk-text-center">
+		<hr class="uk-margin-remove-bottom uk-margin-medium-top">
+		<div class="uk-margin-top uk-margin-bottom">
+			<div uk-grid="" class="uk-child-width-auto@m uk-flex-middle uk-grid uk-grid-stack">
+				<div class="uk-first-column">
+					<div class="uk-text-left@m uk-text-center">
+						<a href="{{ url_for('index.index') }}" class="">
+							<strong>UK Box Office Data</strong>
+						</a>
 
-	<div class="uk-container uk-margin-large-top">
-		<div class="seperator"></div>
-		<div class="uk-margin-medium-top">
-			<strong>
-				<a href="{{ url_for('index.index') }}" class="">UK Box Office</a>
-			</strong>
-			<a href="{{ url_for('api.api') }}" class="uk-margin-medium-left">About</a>
-			<a href="{{ url_for('api.api') }}" class="uk-margin-medium-left">Contact</a>
-			<a href="{{ url_for('api.api') }}" class="uk-margin-medium-left">Privacy</a>
-			<a href="{{ url_for('api.api') }}" class="uk-margin-medium-left">API</a>
-			<a href="{{ url_for('index.films') }}" class="uk-margin-medium-left">Films</a>
-			<a href="{{ url_for('index.distributors') }}" class="uk-margin-medium-left">Distributors</a>
-			<a href="{{ url_for('index.countries') }}" class="uk-margin-medium-left">Countries</a>
-			<a href="{{ url_for('index.time') }}" class="uk-margin-medium-left">Time</a>
+					</div>
+				</div>
+				<div class="uk-margin-auto uk-grid-margin">
+					<ul uk-margin="" class="uk-subnav uk-flex-center">
+						<li class="uk-text-small">
+							<a href="{{ url_for('api.api') }}">About</a>
+						</li>
+						<li>
+							<a href="{{ url_for('api.api') }}">Contact</a>
+						</li>
+						<li class="">
+							<a href="{{ url_for('api.api') }}">Privacy</a>
+						</li>
+						<li class="">
+							<a href="https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures" target="_blank">Data Source</a>
+						</li>
+						<li class="">
+							<a href="{{ url_for('api.api') }}">API</a>
+						</li>
+						<li class="">
+							<a href="{{ url_for('api.api') }}">Privacy</a>
+						</li>
+						<li class="">
+							<a href="{{ url_for('index.films') }}">Films</a>
+						</li>
+						<li class="">
+							<a href="{{ url_for('index.distributors') }}">Distributors</a>
+						</li>
+						<li class="">
+							<a href="{{ url_for('index.countries') }}">Countries</a>
+						</li>
+						<li class="">
+							<a href="{{ url_for('index.time') }}">Time</a>
+						</li>
+					</ul>
+				</div>
+			</div>
 		</div>
 	</div>
-</footer>
+</div>
