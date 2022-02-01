@@ -26,12 +26,12 @@ def get_country(country: str) -> List[models.Country]:
     countries = country.split("/")
     new_countries = []
     for i in countries:
-
+        i = i.strip()
         i = spellcheck_country(i)
         slug = slugify(i)
         filtered_countries = models.Country.query.filter_by(slug=slug).first()
 
-        if slug == filtered_countries.slug:
+        if filtered_countries and slug == filtered_countries.slug:
             new_countries.append(filtered_countries)
         else:
             new = models.Country(name=i)
