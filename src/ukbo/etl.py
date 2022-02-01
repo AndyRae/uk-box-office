@@ -14,106 +14,11 @@ from slugify import slugify  # type: ignore
 from ukbo import db, models
 
 
-def get_country(country: str) -> List[models.Country]:
-    """
-    Splits up the string of countries, and one by one.
-    Maps it to the full country name.
-    Checks the database if the country exists.
-    If not - creates it, adds it to the database.
-    Returns a list of the countries
-    """
-    country = country.strip()
-    countries = country.split("/")
-    new_countries = []
-    for i in countries:
-        i = i.strip()
-        i = spellcheck_country(i)
-        slug = slugify(i)
-        filtered_countries = models.Country.query.filter_by(slug=slug).first()
-
-        if filtered_countries and slug == filtered_countries.slug:
-            new_countries.append(filtered_countries)
-        else:
-            new = models.Country(name=i)
-            db.session.add(new)
-            db.session.commit()
-            new_countries.append(new)
-    return new_countries
-
-
-def get_distributor(distributor: str) -> models.Distributor:
-    """
-    Checks the database if the distributor exists - returns the class
-    If not - creates it, adds it to the database and returns it
-    """
-    distributor = distributor.strip()
-    slug = slugify(distributor)
-    filtered_distributors = models.Distributor.query.filter_by(
-        slug=slug
-    ).first()
-
-    if filtered_distributors and slug == filtered_distributors.slug:
-        return filtered_distributors
-
-    new = models.Distributor(name=distributor)
-    db.session.add(new)
-    db.session.commit()
-    return new
-
-
-def get_film(
-    film: str, distributor: models.Distributor, countries: List[models.Country]
-) -> models.Film:
-    """
-    Checks the database if the film exists - returns the class
-    If not - creates it, adds it to the database and returns it
-    """
-    film = film.strip()
-    slug = slugify(film)
-    filtered_films = models.Film.query.filter_by(slug=slug).first()
-
-    if filtered_films and slug == filtered_films.slug:
-        return filtered_films
-
-    new = models.Film(name=film, distributor=distributor)
-    for i in countries:
-        new.countries.append(i)
-
-    db.session.add(new)
-    db.session.commit()
-    return new
-
-
-def load_dataframe(archive: pd.DataFrame) -> None:
-    """
-    Loads a films dataframe into the database
-    """
-    archive["date"] = pd.to_datetime(
-        archive["date"], format="%Y%m%d", yearfirst=True
-    )
-
-    list_of_films = [
-        row.dropna().to_dict() for index, row in archive.iterrows()
-    ]
-
-    for i in list_of_films:
-        i["country"] = get_country(i["country"]) if "country" in i else ""
-        i["distributor"] = get_distributor(str(i["distributor"]))
-        i["film"] = get_film(str(i["film"]), i["distributor"], i["country"])
-
-        i.pop("country", None)
-
-        week = models.Week(**i)
-        db.session.add(week)
-        db.session.commit()
-
-
 def get_excel_file(source_url: str) -> Tuple[bool, str]:
     """
     Fetches first (latest) excel file on the source page
     Returns whether fetch has been succesful, and path to the file
     """
-    # Fetches first (latest) excel file on the source page
     soup = BeautifulSoup(
         requests.get(source_url, timeout=5).content, "html.parser"
     )
@@ -128,8 +33,8 @@ def get_excel_file(source_url: str) -> Tuple[bool, str]:
 
         # Checks whether this excel file is new against the database
         excel_date = datetime.strptime(excel_title, "%d %B %Y")
-        query = db.session.query(models.Week)
-        last_date = query.order_by(models.Week.date.desc()).first().date
+        query = db.session.query(models.Film_Week)
+        last_date = query.order_by(models.Film_Week.date.desc()).first().date
 
         if excel_date <= last_date:
             current_app.logger.warning(
@@ -144,59 +49,59 @@ def get_excel_file(source_url: str) -> Tuple[bool, str]:
     return (False, "")
 
 
-def spellcheck_country(country: str) -> str:
+def extract_box_office(filename: str) -> pd.DataFrame:
     """
-    Uses a list of the common distributor mistakes and returns the correction
+    Main extract/load function, transforming raw box office .xls to dataframe.
     """
-    country_list = pd.read_csv("./data/country_check.csv", header=None)
-    country_list.columns = ["key", "correction", "flag"]
+    df = pd.read_excel(filename)
 
-    if country in country_list["key"].values:
-        country_list = country_list[country_list["key"].str.match(country)]
-        country = country_list["correction"].iloc[0]
-    return country
+    header = df.iloc[0]
+    df = df.iloc[1:]
+    df.columns = header
 
+    df = df.dropna(subset=["Rank"])
+    df = df.dropna(how="all", axis=1, thresh=5)
 
-def spellcheck_distributor(distributor: pd.Series) -> str:
-    """
-    Uses a list of the common distributor mistakes and returns the correction
-    """
-    dist_list = pd.read_csv("./data/distributor_check.csv", header=None)
-    dist_list.columns = ["key", "correction"]
+    # TODO: This should really be from the filename
+    date = get_last_sunday()
+    df = df.drop(
+        columns=["% change on last week", "Site average"], errors="ignore"
+    )
 
-    if distributor in dist_list["key"].values:
-        dist_list = dist_list[dist_list["key"].str.match(distributor)]
-        distributor = dist_list["correction"].iloc[0].strip()
-    return distributor
+    df.columns = [
+        "rank",
+        "film",
+        "country",
+        "weekend_gross",
+        "distributor",
+        "weeks_on_release",
+        "number_of_cinemas",
+        "total_gross",
+    ]
 
+    df = df.dropna(subset=["distributor"])
+    df = df.dropna(how="all", axis=1, thresh=2)
 
-def spellcheck_film(film_title: pd.Series) -> str:
-    """
-    Uses a list of the common film mistakes and returns the actual ones
-    Alo generally cleans up the title
-    """
-    film_title = film_title.strip()
-    # if film ends with ', the', trim and add to prefix
-    if film_title.endswith(", THE"):
-        film_title = "THE " + film_title.rstrip(", THE")
+    df.insert(0, "date", date)
+    df["film"] = df["film"].map(spellcheck_film)
+    df["distributor"] = df["distributor"].map(spellcheck_distributor)
+    df["country"] = df["country"].map(spellcheck_country)
+    df["week_gross"] = df.apply(get_week_box_office, axis=1)
 
-    # checks against the list of mistakes
-    film_list = pd.read_csv("./data/film_check.csv", header=None)
-    film_list.columns = ["key", "correction"]
-
-    if film_title in film_list["key"].values:
-        film_list = film_list[
-            film_list["key"].str.contains(film_title, regex=False)
-        ]
-        film_title = film_list["correction"].iloc[0].strip()
-    return film_title
-
-
-def get_last_sunday() -> str:
-    # Returns the previous sunday date for week extract
-    today = datetime.now()
-    sunday = today - timedelta(days=today.isoweekday())
-    return sunday.strftime("%Y%m%d")
+    df = df.astype(
+        {
+            "rank": int,
+            "film": str,
+            "country": str,
+            "weekend_gross": int,
+            "distributor": str,
+            "weeks_on_release": int,
+            "number_of_cinemas": int,
+            "total_gross": int,
+            "week_gross": int,
+        }
+    )
+    return df
 
 
 def get_week_box_office(row: pd.Series) -> int:
@@ -223,13 +128,12 @@ def get_week_box_office(row: pd.Series) -> int:
     previous_period = filter_date - timedelta(days=days_to_look_back)
 
     most_recent_film_match = (
-        models.Week.query.filter(
+        models.Film_Week.query.filter(
             models.Film.name == film,
-            # models.Week.film.name == film,
-            models.Week.date >= previous_period,
-            models.Week.date <= filter_date,
+            models.Film_Week.date >= previous_period,
+            models.Film_Week.date <= filter_date,
         )
-        .order_by(models.Week.total_gross.desc())
+        .order_by(models.Film_Week.total_gross.desc())
         .first()
     )
 
@@ -246,127 +150,186 @@ def get_week_box_office(row: pd.Series) -> int:
     return week_gross
 
 
-def extract_box_office(filename: str) -> pd.DataFrame:
+def get_last_sunday() -> str:
+    # Returns the previous sunday date for week extract
+    today = datetime.now()
+    sunday = today - timedelta(days=today.isoweekday())
+    return sunday.strftime("%Y%m%d")
+
+
+def spellcheck_film(film_title: pd.Series) -> str:
     """
-    Main extract/load function, transforming raw box office .xls to dataframe.
+    Uses a list of the common film mistakes and returns the actual ones
+    Alo generally cleans up the title
     """
-    df = pd.read_excel(filename)
+    film_title = film_title.strip().upper()
+    # if film ends with ', the', trim and add to prefix
+    if film_title.endswith(", THE"):
+        film_title = "THE " + film_title.rstrip(", THE")
 
-    header = df.iloc[0]
-    df = df.iloc[1:]
-    df.columns = header
+    # checks against the list of mistakes
+    film_list = pd.read_csv("./data/film_check.csv", header=None)
+    film_list.columns = ["key", "correction"]
 
-    df = df.dropna(subset=["Rank"])
-    df = df.dropna(how="all", axis=1, thresh=5)
-
-    date = (
-        get_last_sunday()
-    )  # TODO: This should really be from the filename nowadays
-    df = df.drop(
-        columns=["% change on last week", "Site average"], errors="ignore"
-    )
-
-    df.columns = [
-        "rank",
-        "film",
-        "country",
-        "weekend_gross",
-        "distributor",
-        "weeks_on_release",
-        "number_of_cinemas",
-        "total_gross",
-    ]
-
-    df = df.dropna(subset=["distributor"])
-    df = df.dropna(how="all", axis=1, thresh=2)
-
-    df.insert(0, "date", date)
-    df["film"] = df["film"].astype(str).str.upper().str.strip()
-    df["country"] = df["country"].astype(str).str.upper().str.strip()
-    df["distributor"] = df["distributor"].astype(str).str.upper().str.strip()
-
-    df["film"] = df["film"].map(spellcheck_film)
-    df["distributor"] = df["distributor"].map(spellcheck_distributor)
-    df["country"] = df["country"].map(spellcheck_country)
-
-    df["week_gross"] = df.apply(get_week_box_office, axis=1)
-
-    df = df.astype(
-        {
-            "rank": int,
-            "film": str,
-            "country": str,
-            "weekend_gross": int,
-            "distributor": str,
-            "weeks_on_release": int,
-            "number_of_cinemas": int,
-            "total_gross": int,
-            "week_gross": int,
-        }
-    )
-
-    return df
-
-
-def build_archive() -> None:
-    """
-    Legacy function for building the archive from raw excel files.
-    Keep this function if it's needed again
-    But it is not used in the programme.
-    """
-    df = pd.DataFrame(
-        columns=[
-            "date",
-            "rank",
-            "film",
-            "country",
-            "weekend_gross",
-            "distributor",
-            "weeks_on_release",
-            "number_of_cinemas",
-            "total_gross",
+    if film_title in film_list["key"].values:
+        film_list = film_list[
+            film_list["key"].str.contains(film_title, regex=False)
         ]
-    )
-
-    df.to_csv("./data/built-archive.csv", mode="a", index=False, header=True)
-
-    archive_path = "./archive-data/"
-
-    for filename in os.listdir(archive_path):
-        if filename.endswith("xls"):
-            print(filename)
-            path = archive_path + filename
-            films = extract_box_office(path)
-            df = df.append(films)
-
-    df.to_csv("./data/built-archive.csv", mode="a", index=False, header=False)
+        film_title = film_list["correction"].iloc[0].strip()
+    return film_title
 
 
-def transform_archive(filename: str) -> None:
+def spellcheck_distributor(distributor: pd.Series) -> str:
     """
-    Legacy function for transforming the archive from raw excel files.
-    Keep this function if it's needed again.
-    But it is not used in the programme.
+    Uses a list of the common distributor mistakes and returns the correction
     """
-    df = pd.read_csv(filename)
+    distributor = distributor.strip().upper()
+    dist_list = pd.read_csv("./data/distributor_check.csv", header=None)
+    dist_list.columns = ["key", "correction"]
 
-    df.columns = [
-        "date",
-        "rank",
-        "film",
-        "country",
-        "weekend_gross",
-        "distributor",
-        "weeks_on_release",
-        "number_of_cinemas",
-        "total_gross",
-    ]
+    if distributor in dist_list["key"].values:
+        dist_list = dist_list[dist_list["key"].str.match(distributor)]
+        distributor = dist_list["correction"].iloc[0]
+    return distributor
 
-    archive = pd.read_csv("./data/archive.csv")
+
+def spellcheck_country(country: str) -> str:
+    """
+    Uses a list of the common country mistakes and returns the correction
+    """
+    country = country.strip().upper()
+    country_list = pd.read_csv("./data/country_check.csv", header=None)
+    country_list.columns = ["key", "correction", "flag"]
+
+    if country in country_list["key"].values:
+        country_list = country_list[country_list["key"].str.match(country)]
+        country = country_list["correction"].iloc[0]
+    return country
+
+
+def load_dataframe(archive: pd.DataFrame) -> None:
+    """
+    Loads a films dataframe into the database
+    """
     archive["date"] = pd.to_datetime(
         archive["date"], format="%Y%m%d", yearfirst=True
     )
 
-    df["week_gross"] = df.apply(get_week_box_office, axis=1, archive=archive)
+    list_of_films = [
+        row.dropna().to_dict() for index, row in archive.iterrows()
+    ]
 
-    return df
+    for i in list_of_films:
+        i["country"] = add_country(i["country"]) if "country" in i else ""
+        i["distributor"] = add_distributor(str(i["distributor"]))
+        i["film"] = add_film(str(i["film"]), i["distributor"], i["country"])
+        add_week(
+            i["date"],
+            i["week_gross"],
+            i["weekend_gross"],
+            i["number_of_cinemas"],
+        )
+
+        i.pop("country", None)
+
+        film_week = models.Film_Week(**i)
+        db.session.add(film_week)
+        db.session.commit()
+
+
+def add_week(
+    date: datetime, week_gross: int, weekend_gross: int, number_of_cinemas: int
+) -> None:
+    """
+    Adds a new week for each new data import.
+    """
+    week = models.Week.query.filter_by(date=date).first()
+
+    if week and date == week.date:
+        week.weekend_gross + weekend_gross
+        week.week_gross + week_gross
+        if number_of_cinemas > week.number_of_cinemas:
+            week.number_of_cinemas = number_of_cinemas
+        db.session.commit()
+        return None
+
+    new_week = {
+        "date": date,
+        "week_gross": week_gross,
+        "weekend_gross": weekend_gross,
+        "number_of_cinemas": number_of_cinemas,
+    }
+
+    new = models.Week(**new_week)
+    db.session.add(new)
+    db.session.commit()
+
+    return None
+
+
+def add_film(
+    film: str, distributor: models.Distributor, countries: List[models.Country]
+) -> models.Film:
+    """
+    Checks the database if the film exists - returns the class
+    If not - creates it, adds it to the database and returns it
+    """
+    film = film.strip()
+    slug = slugify(film)
+    db_film = models.Film.query.filter_by(slug=slug).first()
+
+    if db_film and slug == db_film.slug:
+        return db_film
+
+    new = models.Film(name=film, distributor=distributor)
+    for i in countries:
+        new.countries.append(i)
+
+    db.session.add(new)
+    db.session.commit()
+    return new
+
+
+def add_distributor(distributor: str) -> models.Distributor:
+    """
+    Checks the database if the distributor exists - returns the class
+    If not - creates it, adds it to the database and returns it
+    """
+    distributor = distributor.strip()
+    slug = slugify(distributor)
+    db_distributor = models.Distributor.query.filter_by(slug=slug).first()
+
+    if db_distributor and slug == db_distributor.slug:
+        return db_distributor
+
+    new = models.Distributor(name=distributor)
+    db.session.add(new)
+    db.session.commit()
+    return new
+
+
+def add_country(country: str) -> List[models.Country]:
+    """
+    Splits up the string of countries, and one by one.
+    Maps it to the full country name.
+    Checks the database if the country exists.
+    If not - creates it, adds it to the database.
+    Returns a list of the countries
+    """
+    country = country.strip()
+    countries = country.split("/")
+    new_countries = []
+    for i in countries:
+        i = i.strip()
+        i = spellcheck_country(i)
+        slug = slugify(i)
+        db_country = models.Country.query.filter_by(slug=slug).first()
+
+        if db_country and slug == db_country.slug:
+            new_countries.append(db_country)
+        else:
+            new = models.Country(name=i)
+            db.session.add(new)
+            db.session.commit()
+            new_countries.append(new)
+    return new_countries

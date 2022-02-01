@@ -122,7 +122,7 @@ def time() -> Response:
     url = "https://boxofficedata.co.uk"
     now = datetime.datetime.now() - datetime.timedelta(days=10)
 
-    time = db.session.query(models.Week.date)
+    time = db.session.query(models.Film_Week.date)
     for i in time:
         date = i.date.strftime("%Y/%m/%d")
         slug = f"{url}/time/{date}"

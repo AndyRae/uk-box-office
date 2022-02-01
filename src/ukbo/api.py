@@ -24,17 +24,17 @@ def api() -> Response:
     Main API endpoint - returns box office data.
     Can filter on start date, end date - format: 2020-08-31
     """
-    query = db.session.query(models.Week)
+    query = db.session.query(models.Film_Week)
 
     start_date = request.args.get("start_date")
     if start_date is not None:
-        query = query.filter(models.Week.date >= to_date(start_date))
+        query = query.filter(models.Film_Week.date >= to_date(start_date))
 
     end_date = request.args.get("end_date")
     if end_date is not None:
-        query = query.filter(models.Week.date <= to_date(end_date))
+        query = query.filter(models.Film_Week.date <= to_date(end_date))
 
-    data = query.order_by(models.Week.date.desc()).all()
+    data = query.order_by(models.Film_Week.date.desc()).all()
     if data is None:
         abort(404)
 

@@ -96,7 +96,7 @@ class Distributor(db.Model):  # type: ignore
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
     films = db.relationship("Film", back_populates="distributor")
-    weeks = db.relationship("Week", backref="distributor", lazy="dynamic")
+    weeks = db.relationship("Film_Week", backref="distributor", lazy="dynamic")
     slug = db.Column(db.String(160), nullable=False, unique=True)
 
     def __init__(self, *args: str, **kwargs: str) -> None:
@@ -119,7 +119,11 @@ class Film(SearchableMixin, db.Model):  # type: ignore
     __searchable__ = ["name"]
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(160), nullable=False)
-    weeks = db.relationship("Week", back_populates="film")
+    weeks = db.relationship(
+        "Film_Week",
+        back_populates="film",
+        order_by="Film_Week.weeks_on_release",
+    )
     countries = db.relationship(
         "Country",
         secondary=countries,
@@ -161,6 +165,35 @@ class Film(SearchableMixin, db.Model):  # type: ignore
 
 class Week(db.Model):  # type: ignore
     __tablename__ = "week"
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(
+        db.DateTime, nullable=False, default=datetime.utcnow, unique=True
+    )
+    number_of_cinemas = db.Column(db.Integer, nullable=False)
+    weekend_gross = db.Column(db.Integer, nullable=False)
+    week_gross = db.Column(db.Integer, nullable=False)
+    forecast_high = db.Column(db.Integer, nullable=True)
+    forecast_medium = db.Column(db.Integer, nullable=True)
+    forecast_low = db.Column(db.Integer, nullable=True)
+
+    def __repr__(self) -> str:
+        return f"{self.date}"
+
+    def as_dict(self) -> Dict[str, Any]:
+        return {
+            "id": self.id,
+            "date": datetime.strftime(self.date, "%Y-%m-%d"),
+            "number_of_cinemas": self.number_of_cinemas,
+            "weekend_gross": self.weekend_gross,
+            "week_gross": self.week_gross,
+        }
+
+    def as_df_film(self) -> List[Any]:
+        return [self.date, self.week_gross]
+
+
+class Film_Week(db.Model):  # type: ignore
+    __tablename__ = "film_week"
     id = db.Column(db.Integer, primary_key=True)
     film_id = db.Column(db.Integer, db.ForeignKey("film.id"), nullable=False)
     film = db.relationship(
