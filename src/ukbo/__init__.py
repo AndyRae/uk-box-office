@@ -63,9 +63,10 @@ def register_extensions(app: Flask) -> None:
 
 
 def register_blueprints(app: Flask) -> None:
-    from . import api, views
+    from . import api, sitemap, views
 
     app.register_blueprint(api.bp)
+    app.register_blueprint(sitemap.bp)
     app.register_blueprint(views.bp)
     return None
 

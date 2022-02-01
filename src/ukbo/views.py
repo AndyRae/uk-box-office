@@ -5,15 +5,7 @@ import datetime
 from typing import Any, Dict, List
 
 import pandas as pd
-from flask import (
-    Blueprint,
-    current_app,
-    g,
-    make_response,
-    render_template,
-    request,
-    url_for,
-)
+from flask import Blueprint, g, render_template, request, url_for
 from flask.wrappers import Response
 from flask_sqlalchemy import model
 from werkzeug.exceptions import abort
@@ -82,7 +74,6 @@ def search() -> str:
 
 
 @bp.route("/films/")
-@cache.cached()
 def films() -> str:
     """
     List of all films.
@@ -102,7 +93,6 @@ def films() -> str:
 
 
 @bp.route("/distributors/")
-@cache.cached()
 def distributors() -> str:
     """
     List of all distributors.
@@ -162,7 +152,6 @@ def film(slug: str) -> str:
 
 
 @bp.route("/distributors/<slug>/")
-@cache.cached()
 def distributor(slug: str) -> str:
     """
     Distributor detail.
@@ -189,7 +178,6 @@ def distributor(slug: str) -> str:
 
 
 @bp.route("/countries/<slug>/")
-@cache.cached()
 def country(slug: str) -> str:
     """
     Country detail.
@@ -374,65 +362,12 @@ def week_detail(year: int, month: int, start_day: int) -> str:
     )
 
 
-@bp.route("/sitemap.xml")
-@cache.cached()
-def sitemap() -> Response:
-    """
-    Sitemap generator - queries all models for all slugs.
-    """
-    data = []
-    url = "https://boxofficedata.co.uk"
-    now = datetime.datetime.now() - datetime.timedelta(days=10)
-    lastmod = now.strftime("%Y-%m-%d")
+@bp.route("/about")
+def about() -> str:
 
-    # Main Views
-    for rule in current_app.url_map.iter_rules():
-        if rule.methods is not None:
-            if (
-                "GET" in rule.methods
-                and len(rule.arguments) == 0
-                and not rule.rule.startswith("/api")
-                and not rule.rule.startswith("/auth")
-                and not rule.rule.startswith("/scheduler")
-                and not rule.rule.startswith("/test")
-            ):
-                data.append([url + rule.rule, lastmod])
+    copy = ""
 
-    films = db.session.query(models.Film.slug).all()
-    for i in films:
-        slug = f"{url}/films/{i.slug}/"
-        data.append([slug, lastmod])
-
-    countries = db.session.query(models.Country.slug).all()
-    for i in countries:
-        slug = f"{url}/countries/{i.slug}/"
-        data.append([slug, lastmod])
-
-    distributors = db.session.query(models.Distributor.slug).all()
-    for i in distributors:
-        slug = f"{url}/distributors/{i.slug}/"
-        data.append([slug, lastmod])
-
-    time = db.session.query(models.Week.date)
-    for i in time:
-        date = i.date.strftime("%Y/%m/%d")
-        slug = f"{url}/time/{date}"
-        data.append([slug, i.date])
-
-    # Creates time range slugs
-    for i in range(2007, now.year):
-        slug = f"{url}/time/{i}/"
-        data.append([slug, i])
-
-        for j in range(1, 13):
-            slug = f"{url}/time/{i}/{j}/"
-            data.append([slug, i])
-
-    sitemap_template = render_template("sitemap.xml", data=data)
-    response = make_response(sitemap_template)
-    response.headers["Content-Type"] = "application/xml"
-
-    return response
+    return render_template("static.html", title="About", text=copy)
 
 
 @bp.app_template_filter()
