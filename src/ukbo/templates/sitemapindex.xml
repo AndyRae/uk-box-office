@@ -6,15 +6,15 @@
 	{% endfor %}
 
 	<sitemap>
-		<loc>https://boxofficedata.co.uk/{{ url_for('sitemap.base') }}</loc>
+		<loc>https://boxofficedata.co.uk{{ url_for('sitemap.base') }}</loc>
 	</sitemap>
 	<sitemap>
-		<loc>https://boxofficedata.co.uk/{{ url_for('sitemap.countries') }}</loc>
+		<loc>https://boxofficedata.co.uk{{ url_for('sitemap.countries') }}</loc>
 	</sitemap>
 	<sitemap>
-		<loc>https://boxofficedata.co.uk/{{ url_for('sitemap.distributors') }}</loc>
+		<loc>https://boxofficedata.co.uk{{ url_for('sitemap.distributors') }}</loc>
 	</sitemap>
 	<sitemap>
-		<loc>https://boxofficedata.co.uk/{{ url_for('sitemap.time') }}</loc>
+		<loc>https://boxofficedata.co.uk{{ url_for('sitemap.time') }}</loc>
 	</sitemap>
 </sitemapindex>
