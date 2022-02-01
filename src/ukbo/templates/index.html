@@ -4,6 +4,16 @@
 Home
 {% endblock %}
 
+{% block schema %}
+	{
+		"@context": "https://schema.org/",
+		"@type": "Project",
+		"name" : "UK Box Office Data",
+		"url" : "https://boxofficedata.co.uk",
+		"logo" : "/static/icon-hires.png"
+	}
+{% endblock %}
+
 {% block content %}
 	<div id="dash" class="uk-container uk-container-xlarge">
 
