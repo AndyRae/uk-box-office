@@ -3,6 +3,16 @@
 
 {% block title%}{{distributor.name|title}}{% endblock%}
 
+{% block schema %}
+	{
+		"@context": "https://schema.org/",
+		"@type": "Project",
+		"name" : "UK Box Office Data",
+		"url" : "https://boxofficedata.co.uk",
+		"logo" : "/static/icon-hires.png"
+	}
+{% endblock %}
+
 {% block header %}
 	<div class="uk-container">
 		<ul class="uk-breadcrumb">
