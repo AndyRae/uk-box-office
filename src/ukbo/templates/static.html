@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title%}{{ title|title }}{% endblock%}
+
+{% block header %}
+	<div class="uk-container">
+		<ul class="uk-breadcrumb">
+			<li><a href="/">Home</a></li>
+			<li aria-current="page"><span>{{ title|title }}</span></li>
+		</ul>
+
+		<h1 class="">{{ title|title }}</h1>
+	</div>
+{% endblock %}
+
+<div class="uk-container uk-margin-medium-top">
+	{% block content %}
+
+		{{ text }}
+
+	{% endblock %}
+</div>

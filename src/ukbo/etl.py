@@ -31,7 +31,7 @@ def get_country(country: str) -> List[models.Country]:
         slug = slugify(i)
         filtered_countries = models.Country.query.filter_by(slug=slug).first()
 
-        if filtered_countries and slug == filtered_countries.slug:
+        if slug == filtered_countries.slug:
             new_countries.append(filtered_countries)
         else:
             new = models.Country(name=i)
@@ -92,10 +92,12 @@ def load_dataframe(archive: pd.DataFrame) -> None:
         archive["date"], format="%Y%m%d", yearfirst=True
     )
 
-    list_of_films = [row.to_dict() for index, row in archive.iterrows()]
+    list_of_films = [
+        row.dropna().to_dict() for index, row in archive.iterrows()
+    ]
 
     for i in list_of_films:
-        i["country"] = get_country(str(i["country"]))
+        i["country"] = get_country(i["country"]) if "country" in i else ""
         i["distributor"] = get_distributor(str(i["distributor"]))
         i["film"] = get_film(str(i["film"]), i["distributor"], i["country"])
 

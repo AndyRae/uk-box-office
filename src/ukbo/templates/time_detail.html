@@ -8,21 +8,21 @@
 		"@type":"Dataset",
 		"name":"{{ time }} Box Office Data",
 		"description":"Weekly UK Cinema Box Office data for {{ time }}.",
-		"url":"/",
+		"url":"https://boxofficedata.co.uk{{ url_for(request.endpoint, **request.view_args) }}",
 		"isBasedOn":"https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures",
 		"keywords":[
-		"BOX OFFICE DATA > CINEMA > {{ time }}",
+			"BOX OFFICE DATA > CINEMA > {{ time }}"
 		],
 		"isAccessibleForFree" : true,
 		"creator":{
-		"@type":"Organization",
-		"url": "https://boxofficedata.co.uk",
-		"name":"Box Office Data UK",
-		"contactPoint":{
-			"@type":"ContactPoint",
-			"contactType": "customer service",
-			"email":"hello@boxofficedata.co.uk"
-		}
+			"@type":"Organization",
+			"url": "https://boxofficedata.co.uk",
+			"name":"Box Office Data UK",
+			"contactPoint":{
+				"@type":"ContactPoint",
+				"contactType": "customer service",
+				"email":"hello@boxofficedata.co.uk"
+			}
 		},
 		"funder":{
 		"@type": "Organization",
@@ -37,10 +37,10 @@
 		{
 			"@type":"DataDownload",
 			"encodingFormat":"CSV",
-			"contentUrl":"https://boxofficedata.co.uk"
-		},
+			"contentUrl":"https://boxofficedata.co.uk{{ url_for(request.endpoint, **request.view_args) }}"
+		}
 		],
-		"temporalCoverage":"{{ time }}",
+		"temporalCoverage":"{{ time }}"
 	}
 {% endblock %}
 

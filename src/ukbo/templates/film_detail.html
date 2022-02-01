@@ -6,12 +6,12 @@
 	{
 		"@context":"https://schema.org/",
 		"@type":"Dataset",
-		"name":"{{ data.name }} Box Office Data",
-		"description":"Weekly UK Cinema Box Office data for {{ data.name }}.",
-		"url":"/",
+		"name":"{{ data.name|title }} Box Office Data",
+		"description":"Weekly UK Cinema Box Office data for {{ data.name|title }}.",
+		"url":"https://boxofficedata.co.uk{{ url_for(request.endpoint, **request.view_args) }}",
 		"isBasedOn":"https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures",
 		"keywords":[
-		   "BOX OFFICE DATA > CINEMA > {{ data.name }}",
+		   "BOX OFFICE DATA > CINEMA > {{ data.name }}"
 		],
 		"isAccessibleForFree" : true,
 		"creator":{
@@ -37,10 +37,10 @@
 		   {
 			  "@type":"DataDownload",
 			  "encodingFormat":"CSV",
-			  "contentUrl":"https://boxofficedata.co.uk"
-		   },
+			  "contentUrl":"https://boxofficedata.co.uk{{ url_for(request.endpoint, **request.view_args) }}"
+		   }
 		],
-		"temporalCoverage":"{{ data.weeks[-1].date|date_convert}}/{{ data.weeks[0].date|date_convert }}",
+		"temporalCoverage":"{{ data.weeks[-1].date|date_convert}} - {{ data.weeks[0].date|date_convert }}"
 	}
 {% endblock %}
 
@@ -64,10 +64,12 @@
 
 		<div class="uk-column-1-4@s uk-column-1-2m uk-column-divider uk-margin-small-top">
 			<div class="">
-			Country:
-			{% for i in data.countries %}
-				<a class="action" href="{{ url_for('index.country', slug=i['slug']) }}">{{ i.name }}</a>
-			{% endfor %}
+				{% if data.countries %}
+					Country:
+					{% for i in data.countries %}
+						<a class="action" href="{{ url_for('index.country', slug=i['slug']) }}">{{ i.name }}</a>
+					{% endfor %}
+				{% endif %}
 			</div>
 
 			<div class="">
