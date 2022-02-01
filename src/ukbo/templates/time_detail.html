@@ -266,33 +266,33 @@
 		}
 
 		function exportToCSV(tableEle, separator = ','){
-		const head = ["Rank", "Film", "Box Office"]
-		let csvRows = [head]
-		//only get direct children of the table in question (thead, tbody)
-		Array.from(tableEle.children).forEach(function(node){
-			//using scope to only get direct tr of node
-			node.querySelectorAll(':scope > tr').forEach(function(tr){
-				let csvLine = []
-				//again scope to only get direct children
-				tr.querySelectorAll(':scope > td').forEach(function(td){
-					//clone as to not remove anything from original
-					let copytd = td.cloneNode(true)
-					let data = copytd.textContent
+			const head = ["Rank", "Film", "Box Office"]
+			let csvRows = [head]
+			//only get direct children of the table in question (thead, tbody)
+			Array.from(tableEle.children).forEach(function(node){
+				//using scope to only get direct tr of node
+				node.querySelectorAll(':scope > tr').forEach(function(tr){
+					let csvLine = []
+					//again scope to only get direct children
+					tr.querySelectorAll(':scope > td').forEach(function(td){
+						//clone as to not remove anything from original
+						let copytd = td.cloneNode(true)
+						let data = copytd.textContent
 
-					data = data.replace(/(\s\s)/gm, ' ').replace(/"/g, '""')
-					csvLine.push('"'+data+'"')
+						data = data.replace(/(\s\s)/gm, ' ').replace(/"/g, '""')
+						csvLine.push('"'+data+'"')
+					})
+					csvRows.push(csvLine.join(separator))
 				})
-				csvRows.push(csvLine.join(separator))
 			})
-		})
-		var a = document.createElement("a")
-		a.style = "display: none; visibility: hidden" //safari needs visibility hidden
-		a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvRows.join('\n'))
-		a.download = '{{ time }}.csv'
-		document.body.appendChild(a)
-		a.click()
-		a.remove()
-	}
+			var a = document.createElement("a")
+			a.style = "display: none; visibility: hidden" //safari needs visibility hidden
+			a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvRows.join('\n'))
+			a.download = '{{ time }}.csv'
+			document.body.appendChild(a)
+			a.click()
+			a.remove()
+		}
 
 		var time_dates = []
 		var week_gross = []

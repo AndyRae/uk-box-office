@@ -22,9 +22,9 @@ def index() -> str:
     Main dashboard view - all of work is done in JS. See Template.
     """
     # list of dates card
-    query = db.session.query(models.Week)
-    query = query.order_by(models.Week.date.desc())
-    query = query.distinct(models.Week.date)
+    query = db.session.query(models.Film_Week)
+    query = query.order_by(models.Film_Week.date.desc())
+    query = query.distinct(models.Film_Week.date)
     dates = query.all()[:6]
     return render_template("index.html", dates=dates)
 
@@ -84,7 +84,7 @@ def films() -> str:
         db.joinedload(models.Film.weeks)
     )
     query = query.join(models.Distributor)
-    data = query.order_by(models.Film.name).paginate(
+    data = query.order_by(models.Film.id.desc()).paginate(
         page, per_page=20, error_out=False
     )
     if data is None:
@@ -162,7 +162,7 @@ def distributor(slug: str) -> str:
     )
     query = query.join(models.Distributor)
     query = query.filter(models.Distributor.slug == slug)
-    data = query.paginate(page, 20, False)
+    data = query.order_by(models.Film.id.desc()).paginate(page, 20, False)
 
     query = db.session.query(models.Distributor)
     query = query.filter(models.Distributor.slug == slug)
@@ -191,7 +191,7 @@ def country(slug: str) -> str:
         db.selectinload(models.Film.weeks)
     )
     query = query.filter(models.Film.countries.contains(country))
-    data = query.paginate(page, 20, False)
+    data = query.order_by(models.Film.id.desc()).paginate(page, 20, False)
 
     if data is None:
         abort(404)
@@ -230,9 +230,7 @@ def data_grouped_by_date(data: List[Any]) -> Dict[str, Any]:
         .sort_values(by=["date"])
     )
     df.columns = df.columns.get_level_values(0)
-
-    df["pct_change_weekend"] = df["week_gross"].pct_change()
-    df["pct_change_week"] = df["week_gross"].pct_change()
+    df["pct_change_week"] = df["week_gross"].pct_change() * 100
     return df.reset_index().to_dict(orient="records")
 
 
@@ -252,14 +250,37 @@ def data_grouped_by_film(data: List[Any]) -> Dict[str, Any]:
     return df.reset_index().to_dict(orient="records")
 
 
+def data_grouped_by_year(data: List[Any]) -> Dict[str, Any]:
+    df = pd.DataFrame(
+        [i.as_df_film() for i in data],
+        columns=[
+            "date",
+            "week_gross",
+        ],
+    )
+
+    df = (
+        df.groupby(pd.Grouper(key="date", freq="Y"))
+        .agg(
+            {
+                "week_gross": ["sum"],
+            }
+        )
+        .sort_values(by=["date"])
+    )
+    df.columns = df.columns.get_level_values(0)
+    df["pct_change"] = df["week_gross"].pct_change() * 100
+    return df.reset_index().to_dict(orient="records")
+
+
 def get_time_data(start_date: datetime.date, end_date: datetime.date) -> Any:
     """
     Queries the weeks database with a start and end filter
     Returns the query object
     """
-    query = db.session.query(models.Week)
-    query = query.filter(models.Week.date >= start_date)
-    query = query.filter(models.Week.date <= end_date)
+    query = db.session.query(models.Film_Week)
+    query = query.filter(models.Film_Week.date >= start_date)
+    query = query.filter(models.Film_Week.date <= end_date)
     return query.all()
 
 
@@ -267,16 +288,14 @@ def get_time_data(start_date: datetime.date, end_date: datetime.date) -> Any:
 def time() -> str:
     """
     List of all time periods.
+    End month is the month the current year should stop in.
     """
     query = db.session.query(models.Week)
-    query = query.order_by(models.Week.date.desc())
-    first = query.first()
-    end = first.date
+    data = query.all()
 
-    years = range(end.year, 2000, -1)
-    months = range(1, 13)
+    table_data = data_grouped_by_year(data)
 
-    return render_template("time.html", years=years, months=months)
+    return render_template("time.html", data=table_data)
 
 
 @bp.route("/time/<int:year>/")

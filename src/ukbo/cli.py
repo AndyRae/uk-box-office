@@ -16,10 +16,10 @@ from ukbo import db, etl, models
 @with_appcontext
 def fill_db() -> None:
     # full archive
-    path = "./data/archive.csv"
+    # path = "./data/archive.csv"
 
     # some test data
-    # path = "./data/test.csv"
+    path = "./data/test.csv"
     input_data = pd.read_csv(path)
     etl.load_dataframe(input_data)
 
@@ -93,10 +93,10 @@ def backup_etl(source_url: str) -> None:
 @with_appcontext
 def rollback_etl_command() -> None:
     """Deletes the last week of data."""
-    query = db.session.query(models.Week)
-    last_date = query.order_by(models.Week.date.desc()).first().date
+    query = db.session.query(models.Film_Week)
+    last_date = query.order_by(models.Film_Week.date.desc()).first().date
 
-    query = query.filter(models.Week.date >= last_date)
+    query = query.filter(models.Film_Week.date >= last_date)
     data = query.all()
 
     for i in data:
