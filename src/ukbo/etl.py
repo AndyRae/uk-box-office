@@ -276,10 +276,10 @@ def add_film(
     """
     film = film.strip()
     slug = slugify(film)
-    filtered_films = models.Film.query.filter_by(slug=slug).first()
+    db_film = models.Film.query.filter_by(slug=slug).first()
 
-    if filtered_films and slug == filtered_films.slug:
-        return filtered_films
+    if db_film and slug == db_film.slug:
+        return db_film
 
     new = models.Film(name=film, distributor=distributor)
     for i in countries:
@@ -297,12 +297,10 @@ def add_distributor(distributor: str) -> models.Distributor:
     """
     distributor = distributor.strip()
     slug = slugify(distributor)
-    filtered_distributors = models.Distributor.query.filter_by(
-        slug=slug
-    ).first()
+    db_distributor = models.Distributor.query.filter_by(slug=slug).first()
 
-    if filtered_distributors and slug == filtered_distributors.slug:
-        return filtered_distributors
+    if db_distributor and slug == db_distributor.slug:
+        return db_distributor
 
     new = models.Distributor(name=distributor)
     db.session.add(new)
@@ -325,10 +323,10 @@ def add_country(country: str) -> List[models.Country]:
         i = i.strip()
         i = spellcheck_country(i)
         slug = slugify(i)
-        filtered_countries = models.Country.query.filter_by(slug=slug).first()
+        db_country = models.Country.query.filter_by(slug=slug).first()
 
-        if filtered_countries and slug == filtered_countries.slug:
-            new_countries.append(filtered_countries)
+        if db_country and slug == db_country.slug:
+            new_countries.append(db_country)
         else:
             new = models.Country(name=i)
             db.session.add(new)

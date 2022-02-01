@@ -292,10 +292,20 @@ def time() -> str:
     """
     query = db.session.query(models.Week)
     data = query.all()
+    data = data_grouped_by_year(data)
 
-    table_data = data_grouped_by_year(data)
+    query = db.session.query(models.Film)
+    query = query.join(models.Film_Week)
+    query = query.order_by(models.Film_Week.total_gross.desc())
+    query = query.limit(50)
 
-    return render_template("time.html", data=table_data)
+    # query = db.session.query(models.Film_Week)
+    # query = query.order_by(models.Film_Week.total_gross.desc())
+    # query = query.limit(5)
+
+    films = query.all()
+
+    return render_template("time.html", data=data, films=films)
 
 
 @bp.route("/time/<int:year>/")
@@ -305,7 +315,6 @@ def year_detail(year: int) -> str:
     """
     start_date = datetime.date(int(year), 1, 1)
     end_date = datetime.date(int(year), 12, 31)
-
     data = get_time_data(start_date, end_date)
 
     if len(data) == 0:
@@ -332,7 +341,6 @@ def month_detail(year: int, month: int) -> str:
     """
     # Get the last day of the month
     end_day = calendar.monthrange(year, month)[1]
-
     start_date = datetime.date(year, month, 1)
     end_date = datetime.date(year, month, end_day)
 
@@ -361,7 +369,6 @@ def week_detail(year: int, month: int, start_day: int) -> str:
     Week detail.
     """
     start_date = datetime.date(year, month, start_day)
-
     data = get_time_data(start_date, start_date)
 
     if len(data) == 0:

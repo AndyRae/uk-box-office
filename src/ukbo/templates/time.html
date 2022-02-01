@@ -19,7 +19,7 @@
 		<li aria-current="page"><span>Time</span></li>
 	</ul>
 
-	<h1 class="">Time</h1>
+	<h1 class="">All Time Box Office</h1>
 </div>
 
 {% endblock %}
@@ -33,7 +33,39 @@
 		<hr>
 
 		<div class="uk-overflow-auto">
-			<table class="uk-table uk-table-small uk-table-divider uk-table-hover uk-table-striped" id="dataTable">
+			<table class="uk-table uk-table-small uk-table-divider uk-table-hover uk-table-striped" id="filmsTable">
+				<thead>
+					<tr>
+						<th class="uk-text-center">Rank</th>
+						<th>Film</th>
+						<th>Distributor</th>
+						<th class="uk-text-center">Total Box Office</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for i in films %}
+						<tr >
+							<td class="uk-text-center">{{ loop.index }}</td>
+							<td>
+								<a class="action" href="{{ url_for('index.film', slug=i['slug']) }}">
+									{{ i|title }}
+								</a>
+							</td>
+							<td><a class="action" href="{{ url_for('index.distributor', slug=i.distributor.slug) }}">{{ i.distributor|title }}</a></td>
+							<td class="uk-text-center">{{  "£ {:,}".format(i.weeks[-1].total_gross) }}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		<button type="button" onclick="exportToCSV(filmsTable)" class="uk-button uk-button-default uk-margin-medium-top">
+			Export (.csv)
+		</button>
+
+		<hr class="uk-margin-medium-top">
+
+		<div class="uk-overflow-auto uk-margin-medium-top">
+			<table class="uk-table uk-table-small uk-table-divider uk-table-hover uk-table-striped" id="yearTable">
 				<thead>
 					<tr>
 						<th>Year</th>
@@ -44,9 +76,11 @@
 					<tbody>
 							{% for i in data|reverse %}
 							<tr class="">
-								<td><a class="action" href="{{ url_for('index.year_detail', year=i.date.year) }}">
-									{{ i.date.year }}
-								</a></td>
+								<td>
+									<a class="action" href="{{ url_for('index.year_detail', year=i.date.year) }}">
+										{{ i.date.year }}
+									</a>
+								</td>
 								<td class="uk-text-center">{{ "£ {:,}".format(i['week_gross']) }}</td>
 								{% if i['pct_change'] > 0 %}
 									<td class="uk-text-success uk-text-center">{{ i['pct_change']|round(2) }}%</td>
@@ -60,7 +94,7 @@
 					</tbody>
 			</table>
 		</div>
-		<button type="button" onclick="exportToCSV(dataTable)" class="uk-button uk-button-default uk-margin-medium-top">
+		<button type="button" onclick="exportToCSV(yearTable)" class="uk-button uk-button-default uk-margin-medium-top">
 			Export (.csv)
 		</button>
 	</div>
