@@ -368,7 +368,7 @@ var vm = new Vue({
 			var start = new Date();
 			var end = new Date();
 			var min = new Date();
-			start.setDate(start.getDate() - 90 );
+			start.setDate(start.getDate() - 45 );
 			min.setDate(min.getDate() - 547); // allow to go back 1.5 years
 
 			this.date_picker_start = datepicker('.start', {

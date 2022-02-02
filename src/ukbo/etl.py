@@ -82,12 +82,6 @@ def extract_box_office(filename: str) -> pd.DataFrame:
     df = df.dropna(subset=["distributor"])
     df = df.dropna(how="all", axis=1, thresh=2)
 
-    df.insert(0, "date", date)
-    df["film"] = df["film"].map(spellcheck_film)
-    df["distributor"] = df["distributor"].map(spellcheck_distributor)
-    df["country"] = df["country"].map(spellcheck_country)
-    df["week_gross"] = df.apply(get_week_box_office, axis=1)
-
     df = df.astype(
         {
             "rank": int,
@@ -98,9 +92,15 @@ def extract_box_office(filename: str) -> pd.DataFrame:
             "weeks_on_release": int,
             "number_of_cinemas": int,
             "total_gross": int,
-            "week_gross": int,
         }
     )
+
+    df.insert(0, "date", date)
+    df["film"] = df["film"].map(spellcheck_film)
+    df["distributor"] = df["distributor"].map(spellcheck_distributor)
+    df["country"] = df["country"].map(spellcheck_country)
+    df["week_gross"] = df.apply(get_week_box_office, axis=1)
+
     return df
 
 
@@ -246,8 +246,8 @@ def add_week(
     week = models.Week.query.filter_by(date=date).first()
 
     if week and date == week.date:
-        week.weekend_gross + weekend_gross
-        week.week_gross + week_gross
+        week.weekend_gross += weekend_gross
+        week.week_gross += week_gross
         if number_of_cinemas > week.number_of_cinemas:
             week.number_of_cinemas = number_of_cinemas
         db.session.commit()

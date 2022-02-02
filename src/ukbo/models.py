@@ -122,7 +122,7 @@ class Film(SearchableMixin, db.Model):  # type: ignore
     weeks = db.relationship(
         "Film_Week",
         back_populates="film",
-        order_by="Film_Week.weeks_on_release",
+        order_by="Film_Week.total_gross",
     )
     countries = db.relationship(
         "Country",
