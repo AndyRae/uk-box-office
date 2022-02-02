@@ -142,6 +142,7 @@ def film(slug: str) -> str:
     )
     df.set_index(pd.DatetimeIndex(df["date"].values), inplace=True)
     df.drop(["date"], axis=1, inplace=True)
+    df.drop_duplicates(inplace=True)
     df = df.asfreq("W", fill_value=0)
 
     return render_template(
@@ -202,88 +203,6 @@ def country(slug: str) -> str:
     )
 
 
-def data_grouped_by_date(data: List[Any]) -> Dict[str, Any]:
-    """
-    Calculates the statistics by date given a list of weeks
-    """
-    df = pd.DataFrame(
-        [i.as_df() for i in data],
-        columns=[
-            "date",
-            "week_gross",
-            "weekend_gross",
-            "number_of_cinemas",
-            "id",
-        ],
-    )
-
-    df = (
-        df.groupby(["date"])
-        .agg(
-            {
-                "week_gross": ["sum"],
-                "weekend_gross": ["sum"],
-                "number_of_cinemas": ["max"],
-                "id": ["size"],
-            }
-        )
-        .sort_values(by=["date"])
-    )
-    df.columns = df.columns.get_level_values(0)
-    df["pct_change_week"] = df["week_gross"].pct_change() * 100
-    return df.reset_index().to_dict(orient="records")
-
-
-def data_grouped_by_film(data: List[Any]) -> Dict[str, Any]:
-    """
-    Calculates the total gross per film for this collection of weeks
-    """
-    table_size = 100
-    df = pd.DataFrame(
-        [i.as_df2() for i in data], columns=["title", "slug", "week_gross"]
-    )
-    df = (
-        df.groupby(["title", "slug"])
-        .sum()
-        .sort_values(by=["week_gross"], ascending=False)
-    ).head(table_size)
-    return df.reset_index().to_dict(orient="records")
-
-
-def data_grouped_by_year(data: List[Any]) -> Dict[str, Any]:
-    df = pd.DataFrame(
-        [i.as_df_film() for i in data],
-        columns=[
-            "date",
-            "week_gross",
-        ],
-    )
-
-    df = (
-        df.groupby(pd.Grouper(key="date", freq="Y"))
-        .agg(
-            {
-                "week_gross": ["sum"],
-            }
-        )
-        .sort_values(by=["date"])
-    )
-    df.columns = df.columns.get_level_values(0)
-    df["pct_change"] = df["week_gross"].pct_change() * 100
-    return df.reset_index().to_dict(orient="records")
-
-
-def get_time_data(start_date: datetime.date, end_date: datetime.date) -> Any:
-    """
-    Queries the weeks database with a start and end filter
-    Returns the query object
-    """
-    query = db.session.query(models.Film_Week)
-    query = query.filter(models.Film_Week.date >= start_date)
-    query = query.filter(models.Film_Week.date <= end_date)
-    return query.all()
-
-
 @bp.route("/time/")
 def time() -> str:
     """
@@ -294,10 +213,13 @@ def time() -> str:
     data = query.all()
     data = data_grouped_by_year(data)
 
-    query = db.session.query(models.Film)
-    query = query.join(models.Film_Week)
+    query = db.session.query(models.Film).options(
+        db.selectinload(models.Film.weeks)
+    )
+    # query = query.join(models.Film_Week)
     query = query.order_by(models.Film_Week.total_gross.desc())
-    query = query.limit(50)
+    # query = query.order_by(models.Film.weeks.total_gross.c())
+    query = query.limit(30)
 
     # query = db.session.query(models.Film_Week)
     # query = query.order_by(models.Film_Week.total_gross.desc())
@@ -394,6 +316,88 @@ def about() -> str:
     copy = ""
 
     return render_template("static.html", title="About", text=copy)
+
+
+def get_time_data(start_date: datetime.date, end_date: datetime.date) -> Any:
+    """
+    Queries the weeks database with a start and end filter
+    Returns the query object
+    """
+    query = db.session.query(models.Film_Week)
+    query = query.filter(models.Film_Week.date >= start_date)
+    query = query.filter(models.Film_Week.date <= end_date)
+    return query.all()
+
+
+def data_grouped_by_date(data: List[Any]) -> Dict[str, Any]:
+    """
+    Calculates the statistics by date given a list of weeks
+    """
+    df = pd.DataFrame(
+        [i.as_df() for i in data],
+        columns=[
+            "date",
+            "week_gross",
+            "weekend_gross",
+            "number_of_cinemas",
+            "id",
+        ],
+    )
+
+    df = (
+        df.groupby(["date"])
+        .agg(
+            {
+                "week_gross": ["sum"],
+                "weekend_gross": ["sum"],
+                "number_of_cinemas": ["max"],
+                "id": ["size"],
+            }
+        )
+        .sort_values(by=["date"])
+    )
+    df.columns = df.columns.get_level_values(0)
+    df["pct_change_week"] = df["week_gross"].pct_change() * 100
+    return df.reset_index().to_dict(orient="records")
+
+
+def data_grouped_by_film(data: List[Any]) -> Dict[str, Any]:
+    """
+    Calculates the total gross per film for this collection of weeks
+    """
+    table_size = 100
+    df = pd.DataFrame(
+        [i.as_df2() for i in data], columns=["title", "slug", "week_gross"]
+    )
+    df = (
+        df.groupby(["title", "slug"])
+        .sum()
+        .sort_values(by=["week_gross"], ascending=False)
+    ).head(table_size)
+    return df.reset_index().to_dict(orient="records")
+
+
+def data_grouped_by_year(data: List[Any]) -> Dict[str, Any]:
+    df = pd.DataFrame(
+        [i.as_df_film() for i in data],
+        columns=[
+            "date",
+            "week_gross",
+        ],
+    )
+
+    df = (
+        df.groupby(pd.Grouper(key="date", freq="Y"))
+        .agg(
+            {
+                "week_gross": ["sum"],
+            }
+        )
+        .sort_values(by=["date"])
+    )
+    df.columns = df.columns.get_level_values(0)
+    df["pct_change"] = df["week_gross"].pct_change() * 100
+    return df.reset_index().to_dict(orient="records")
 
 
 @bp.app_template_filter()
