@@ -2,6 +2,8 @@ from datetime import datetime
 from typing import Any, Dict, List, Tuple
 
 from slugify import slugify  # type: ignore
+from sqlalchemy import func, select
+from sqlalchemy.ext.hybrid import hybrid_property
 
 from ukbo import db
 
@@ -161,6 +163,19 @@ class Film(SearchableMixin, db.Model):  # type: ignore
 
     def serialize_weeks(self) -> List[Any]:
         return [item.as_dict() for item in self.weeks]
+
+    @hybrid_property
+    def gross(self) -> int:
+        # return self.weeks[-1]["total_gross"]
+        return max(week.total_gross for week in self.weeks)
+
+    @gross.expression  # type: ignore
+    def gross(cls) -> Any:
+        return (
+            select([func.max(Film_Week.total_gross)])
+            .where(Film_Week.film_id == cls.id)
+            .as_scalar()
+        )
 
 
 class Week(db.Model):  # type: ignore

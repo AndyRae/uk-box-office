@@ -207,7 +207,8 @@ def country(slug: str) -> str:
 def time() -> str:
     """
     List of all time periods.
-    End month is the month the current year should stop in.
+    Data per year.
+    And top films of all time.
     """
     query = db.session.query(models.Week)
     data = query.all()
@@ -216,14 +217,8 @@ def time() -> str:
     query = db.session.query(models.Film).options(
         db.selectinload(models.Film.weeks)
     )
-    # query = query.join(models.Film_Week)
-    query = query.order_by(models.Film_Week.total_gross.desc())
-    # query = query.order_by(models.Film.weeks.total_gross.c())
-    query = query.limit(30)
-
-    # query = db.session.query(models.Film_Week)
-    # query = query.order_by(models.Film_Week.total_gross.desc())
-    # query = query.limit(5)
+    query = query.order_by(models.Film.gross.desc())  # type: ignore
+    query = query.limit(20)
 
     films = query.all()
 
