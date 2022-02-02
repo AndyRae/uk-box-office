@@ -22,11 +22,11 @@
 		<h1 class="">{{ title|title }}</h1>
 	</div>
 {% endblock %}
+{% block content %}
+	<div class="uk-container uk-margin-medium-top">
+		<article class="uk-article uk-container-xsmall">
+			{{ text }}
+		</article>
 
-<div class="uk-container uk-margin-medium-top">
-	{% block content %}
-
-		{{ text }}
-
-	{% endblock %}
-</div>
+	</div>
+{% endblock %}

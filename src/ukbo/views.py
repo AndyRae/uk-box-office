@@ -10,7 +10,7 @@ from flask.wrappers import Response
 from flask_sqlalchemy import model
 from werkzeug.exceptions import abort
 
-from ukbo import cache, db, forms, models
+from ukbo import cache, db, forms, models, pages
 
 bp = Blueprint("index", __name__, template_folder="templates")
 
@@ -204,6 +204,7 @@ def country(slug: str) -> str:
 
 
 @bp.route("/time/")
+@cache.cached()
 def time() -> str:
     """
     List of all time periods.
@@ -218,7 +219,7 @@ def time() -> str:
         db.selectinload(models.Film.weeks)
     )
     query = query.order_by(models.Film.gross.desc())  # type: ignore
-    query = query.limit(20)
+    query = query.limit(10)
 
     films = query.all()
 
@@ -305,12 +306,10 @@ def week_detail(year: int, month: int, start_day: int) -> str:
     )
 
 
-@bp.route("/about")
-def about() -> str:
-
-    copy = ""
-
-    return render_template("static.html", title="About", text=copy)
+@bp.route("/<path>/")
+def flat(path: str) -> str:
+    post = pages.get_or_404(path)
+    return render_template("page.html", text=post, title=path)
 
 
 def get_time_data(start_date: datetime.date, end_date: datetime.date) -> Any:

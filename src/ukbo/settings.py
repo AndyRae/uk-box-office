@@ -23,6 +23,8 @@ class Config:
     CACHE_DEFAULT_TIMEOUT = 300
     RATELIMIT_DEFAULT = "20/minute"
     RATELIMIT_API = "200/minute"
+    FLATPAGES_ROOT = "pages"
+    FLATPAGES_EXTENSION = ".md"
 
 
 class DevelopmentConfig(Config):
@@ -30,6 +32,7 @@ class DevelopmentConfig(Config):
 
     DEBUG = True
     CACHE_TYPE = "null"
+    FLATPAGES_AUTO_RELOAD = DEBUG
 
 
 class TestConfig(Config):

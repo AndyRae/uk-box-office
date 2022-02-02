@@ -44,6 +44,7 @@ flask==2.0.1
     #   flask-apscheduler
     #   flask-caching
     #   flask-debugtoolbar
+    #   flask-flatpages
     #   flask-limiter
     #   flask-sqlalchemy
     #   flask-wtf
@@ -52,6 +53,8 @@ flask-apscheduler==1.12.2
 flask-caching==1.10.1
     # via -r src/requirements.in
 flask-debugtoolbar==0.11.0
+    # via -r src/requirements.in
+flask-flatpages==0.8.1
     # via -r src/requirements.in
 flask-limiter==2.0.4
     # via -r src/requirements.in
@@ -69,6 +72,8 @@ identify==2.4.0
     # via pre-commit
 idna==3.2
     # via requests
+importlib-metadata==4.10.1
+    # via markdown
 iniconfig==1.1.1
     # via pytest
 itsdangerous==2.0.1
@@ -77,11 +82,15 @@ itsdangerous==2.0.1
     #   flask-debugtoolbar
     #   flask-wtf
 jinja2==3.0.1
-    # via flask
+    # via
+    #   flask
+    #   flask-flatpages
 limits==2.1.0
     # via flask-limiter
 lockfile==0.12.2
     # via pip-audit
+markdown==3.3.6
+    # via flask-flatpages
 markupsafe==2.0.1
     # via
     #   jinja2
@@ -143,7 +152,9 @@ pytz==2021.1
 pytz-deprecation-shim==0.1.0.post0
     # via tzlocal
 pyyaml==6.0
-    # via pre-commit
+    # via
+    #   flask-flatpages
+    #   pre-commit
 requests==2.26.0
     # via
     #   -r src/requirements.in
@@ -153,6 +164,7 @@ resolvelib==0.8.1
 six==1.16.0
     # via
     #   apscheduler
+    #   flask-flatpages
     #   html5lib
     #   python-dateutil
     #   virtualenv
@@ -201,6 +213,8 @@ wtforms==3.0.0
     # via flask-wtf
 xlrd==2.0.1
     # via -r src/requirements.in
+zipp==3.7.0
+    # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip
