@@ -32,7 +32,7 @@
 
 		<hr>
 
-		<!-- <div class="uk-overflow-auto">
+		<div class="uk-overflow-auto">
 			<table class="uk-table uk-table-small uk-table-divider uk-table-hover uk-table-striped" id="filmsTable">
 				<thead>
 					<tr>
@@ -48,7 +48,7 @@
 							<td class="uk-text-center">{{ loop.index }}</td>
 							<td>
 								<a class="action" href="{{ url_for('index.film', slug=i['slug']) }}">
-									{{ i|title }} - {{ i.id }}
+									{{ i|title }}
 								</a>
 							</td>
 							<td><a class="action" href="{{ url_for('index.distributor', slug=i.distributor.slug) }}">{{ i.distributor|title }}</a></td>
@@ -60,7 +60,7 @@
 		</div>
 		<button type="button" onclick="exportToCSV(filmsTable)" class="uk-button uk-button-default uk-margin-medium-top">
 			Export (.csv)
-		</button> -->
+		</button>
 
 		<hr class="uk-margin-medium-top">
 
