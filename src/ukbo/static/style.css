@@ -123,6 +123,9 @@ a:hover {
 	a, h1, h2 {
 		color: #fff !important;
 	}
+	a {
+		text-decoration: underline;
+	}
 	.bg-dash {
 		background-color: #000;
 	}

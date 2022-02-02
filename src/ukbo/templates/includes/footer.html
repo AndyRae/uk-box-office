@@ -14,16 +14,16 @@
 				<div class="uk-margin-auto uk-grid-margin">
 					<ul uk-margin="" class="uk-subnav uk-flex-center">
 						<li class="uk-text-small">
-							<a href="{{ url_for('api.api') }}">About</a>
+							<a href="{{ url_for('index.flat', path='about') }}">About</a>
 						</li>
 						<li>
-							<a href="{{ url_for('api.api') }}">Contact</a>
+							<a href="{{ url_for('index.flat', path='contact') }}">Contact</a>
 						</li>
 						<li class="">
 							<a href="https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures" target="_blank">Data Source</a>
 						</li>
 						<li class="">
-							<a href="{{ url_for('api.api') }}">API</a>
+							<a href="{{ url_for('index.flat', path='interface') }}">API</a>
 						</li>
 						<li class="">
 							<a href="{{ url_for('index.films') }}">Films</a>

@@ -5,6 +5,7 @@ Flask
 Flask-APScheduler
 Flask-Caching
 Flask-DebugToolbar
+Flask-FlatPages
 Flask-Limiter
 Flask-SQLAlchemy
 Flask-WTF
