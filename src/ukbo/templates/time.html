@@ -39,7 +39,7 @@
 						<th class="uk-text-center">Rank</th>
 						<th>Film</th>
 						<th>Distributor</th>
-						<th class="uk-text-center">Total Box Office</th>
+						<th class="uk-text-center">Box Office</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -52,7 +52,7 @@
 								</a>
 							</td>
 							<td><a class="action" href="{{ url_for('index.distributor', slug=i.distributor.slug) }}">{{ i.distributor|title }}</a></td>
-							<td class="uk-text-center">{{  "£ {:,}".format(i.weeks[-1].total_gross) }}</td>
+							<td class="uk-text-center">{{  "£{:,}".format(i.weeks[-1].total_gross) }}</td>
 						</tr>
 					{% endfor %}
 				</tbody>
@@ -69,8 +69,8 @@
 				<thead>
 					<tr>
 						<th>Year</th>
-						<th class="uk-text-center">Total Box Office</th>
-						<th class="uk-text-center">Percent Change</th>
+						<th class="uk-text-center">Box Office</th>
+						<th class="uk-text-center">Change</th>
 					</tr>
 					</thead>
 					<tbody>
@@ -81,7 +81,7 @@
 										{{ i.date.year }}
 									</a>
 								</td>
-								<td class="uk-text-center">{{ "£ {:,}".format(i['week_gross']) }}</td>
+								<td class="uk-text-center">{{ "£{:,}".format(i['week_gross']) }}</td>
 								{% if i['pct_change'] > 0 %}
 									<td class="uk-text-success uk-text-center">{{ i['pct_change']|round(2) }}%</td>
 								{% elif i['pct_change'] < 0 %}

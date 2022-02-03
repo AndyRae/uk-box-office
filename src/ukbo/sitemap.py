@@ -6,7 +6,7 @@ from flask import Blueprint, current_app, make_response, render_template
 from flask.wrappers import Response
 from werkzeug.exceptions import abort
 
-from ukbo import cache, db, models
+from ukbo import cache, db, models, pages
 
 bp = Blueprint("sitemap", __name__, template_folder="templates")
 
@@ -25,9 +25,9 @@ def sitemap() -> Response:
     """
     Sitemap root.
     """
-    letters = list(string.ascii_lowercase)
+    numbers = list(range(10)) + list(string.ascii_lowercase)  # type: ignore
 
-    sitemap_template = render_template("sitemapindex.xml", data=letters)
+    sitemap_template = render_template("sitemapindex.xml", data=numbers)
     response = make_response(sitemap_template)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -54,6 +54,9 @@ def base() -> Response:
                 and not rule.rule.startswith("/sitemap")
             ):
                 data.append([url + rule.rule, lastmod])
+
+    for page in pages:
+        data.append([url + "/" + page.path, lastmod])
 
     return return_sitemap(data)
 

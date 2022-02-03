@@ -63,7 +63,7 @@
 		<hr class="">
 
 		<div class="uk-column-1-4@s uk-column-1-2m uk-column-divider uk-margin-small-top">
-			<div class="">
+			<div class="uk-margin-small-top">
 				{% if data.countries %}
 					Country:
 					{% for i in data.countries %}
@@ -72,17 +72,19 @@
 				{% endif %}
 			</div>
 
-			<div class="">
+			<div class="uk-margin-small-top">
 				<span class="uk-text-middle">
 					Distributor: <a class="action" href="{{ url_for('index.distributor', slug=data['distributor']['slug']) }}">{{ data.distributor|title }}</a>
 				</span>
 			</div>
 
-			<div class="">
-				Source: <a class="action" href="https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures" target="_blank">bfi.org.uk</a>
+			<div class="uk-margin-small-top">
+				<span>
+					Source: <a class="action" href="https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures" target="_blank">bfi.org.uk</a>
+				</span>
 			</div>
 
-			<button type="button" onclick="exportToCSV(filmsTable)" class="uk-button uk-button-default">Export (.csv)</button>
+			<button type="button" onclick="exportToCSV(filmsTable)" class="uk-button uk-button-default uk-margin-small-top">Export (.csv)</button>
 		</div>
 
 		<div class="uk-overflow-auto uk-margin-medium-top">
@@ -92,10 +94,10 @@
 						<th class="uk-text-center">Weeks</th>
 						<th>Date</th>
 						<th class="uk-text-center">Rank</th>
-						<th class="uk-text-center">Number of cinemas</th>
+						<th class="uk-text-center">Cinemas</th>
 						<th class="uk-text-center">Week Box Office</th>
 						<th class="uk-text-center">Weekend Box Office</th>
-						<th class="uk-text-center">Cumulative Box Office</th>
+						<th class="uk-text-center">Total Box Office</th>
 					</tr>
 					</thead>
 					<tbody>
@@ -107,9 +109,9 @@
 							</a></td>
 							<td class="uk-text-center">{{ i['rank']}}</td>
 							<td class="uk-text-center">{{ i['number_of_cinemas'] }}</td>
-							<td class="uk-text-center">{{ "£ {:,}".format(i['week_gross']) }}</td>
-							<td class="uk-text-center">{{ "£ {:,}".format(i['weekend_gross']) }}</td>
-							<td class="uk-text-center">{{ "£ {:,}".format(i['total_gross']) }}</td>
+							<td class="uk-text-center">{{ "£{:,}".format(i['week_gross']) }}</td>
+							<td class="uk-text-center">{{ "£{:,}".format(i['weekend_gross']) }}</td>
+							<td class="uk-text-center">{{ "£{:,}".format(i['total_gross']) }}</td>
 						</tr>
 					{% endfor %}
 					</tbody>

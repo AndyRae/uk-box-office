@@ -197,7 +197,10 @@ var vm = new Vue({
 		let start_date = this.date_picker_start.dateSelected.toISOString().split('T', 1)[0]
 		let end_date = this.date_picker_end.dateSelected.toISOString().split('T', 1)[0]
 
-		this.queryApi(start_date, end_date)
+		// replace this with a static call - load results, this.updateChart(results)
+		console.log(queryData[0])
+		// this.queryApi(start_date, end_date)
+		this.updateChart(queryData)
 	},
 
 	methods: {
@@ -233,6 +236,8 @@ var vm = new Vue({
 				}
 				// keep running until there's no next page
 			} while (lastResult.next !== "");
+
+			console.log(results)
 
 			this.updateChart(results)
 		},
@@ -368,7 +373,7 @@ var vm = new Vue({
 			var start = new Date();
 			var end = new Date();
 			var min = new Date();
-			start.setDate(start.getDate() - 45 );
+			start.setDate(start.getDate() - 60 );
 			min.setDate(min.getDate() - 547); // allow to go back 1.5 years
 
 			this.date_picker_start = datepicker('.start', {

@@ -114,6 +114,10 @@ a:hover {
 	color: #000;
 }
 
+[v-cloak] {
+	display: none;
+  }
+
 
 @media (prefers-color-scheme:dark) {
 	body {
