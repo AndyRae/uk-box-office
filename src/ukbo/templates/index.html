@@ -41,7 +41,7 @@ Home
 			<div class="uk-width-1-2@l uk-flex-first">
 				<div class="uk-card uk-card-small uk-card-body border-dash">
 					<h6 class="uk-text-meta">Total UK Box Office</h6>
-					<line-chart v-if="loaded" :chartdata="chartdata" :options="options"></line-chart>
+					<line-chart v-if="loaded" :chartdata="chartdata" :options="options" v-cloak></line-chart>
 				</div>
 			</div>
 
@@ -57,7 +57,7 @@ Home
 			<div class="uk-width-1-4@l">
 				<div class="uk-card uk-card-small bg-dash border-dash uk-text-center">
 					<div class="uk-card-body">
-						<h2>£ ${ boxOffice | Currency }</h2>
+						<h2 v-cloak>£ ${ boxOffice | Currency }</h2>
 					</div>
 					<small class="uk-text-meta">Total Box Office</small>
 				</div>
@@ -77,14 +77,14 @@ Home
 			<div class="uk-width-1-2@l">
 				<div class="uk-card uk-card-small uk-card-body border-dash">
 					<h6 class="uk-text-meta">UK Box Office per film</h6>
-					<area-chart v-if="loaded" :chartdataarea="chartdataarea" :optionsarea="optionsarea"></area-chart>
+					<area-chart v-if="loaded" :chartdataarea="chartdataarea" :optionsarea="optionsarea" v-cloak></area-chart>
 				</div>
 			</div>
 
 			<div class="uk-width-1-4@l">
 				<div class="uk-card uk-card-small bg-dash border-dash uk-text-center">
 					<div class="uk-card-body">
-						<h2>${ lastUpdated }</h2>
+						<h2 v-cloak>${ lastUpdated }</h2>
 					</div>
 					<small class="uk-text-meta">Last updated</small>
 				</div>
@@ -93,7 +93,7 @@ Home
 			<div class="uk-width-1-4@l">
 				<div class="uk-card uk-card-small bg-dash border-dash uk-text-center">
 					<div class="uk-card-body">
-						<h2>${ numberOfFilms }</h2>
+						<h2 v-cloak>${ numberOfFilms }</h2>
 					</div>
 					<small class="uk-text-meta">Number of films</small>
 				</div>
@@ -115,7 +115,7 @@ Home
 			<div class="uk-width-1-2@l">
 				<div class="uk-card uk-card-small border-dash">
 					<div class="uk-overflow-auto">
-						<table class="uk-table uk-table-small uk-table-divider uk-table-hover uk-table-striped box-table uk-card-body">
+						<table class="uk-table uk-table-small uk-table-divider uk-table-hover uk-table-striped box-table uk-card-body v-cloak">
 							<thead>
 								<tr>
 									<th></th>
@@ -129,7 +129,7 @@ Home
 									<tr class="" v-for="(item, index) in sortedfilms.slice(0, 100)">
 										<td class="text-small uk-text-center">${ index + 1 }</td>
 										<td class="text-small"><a :href="`/films/${ item.film_slug }/`">${ item.film | TitleCase }</a></td>
-										<td class="text-small" style="min-width:100px">£ ${ item.week_gross | Currency }</td>
+										<td class="text-small uk-text-center" style="min-width:100px">£${ item.week_gross | Currency }</td>
 										<td class="text-small uk-text-center">${ item.weeks }</td>
 										<td class="text-small">${ item.distributor | TitleCase }</td>
 									</tr>
@@ -142,7 +142,7 @@ Home
 			<div class="uk-width-1-4@l">
 				<div class="uk-card uk-card-small bg-dash border-dash uk-text-center">
 					<div class="uk-card-body">
-						<h2>${ numberOfCinemas }</h2>
+						<h2 v-cloak>${ numberOfCinemas }</h2>
 					</div>
 					<small class="uk-text-meta">Number of cinemas</small>
 				</div>
@@ -166,6 +166,23 @@ Home
 	<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
 	<script src="https://unpkg.com/vue-chartjs/dist/vue-chartjs.min.js"></script>
+
+	<script>
+		let queryData = [];
+
+		'{% for i in data %}'
+			queryData.push({
+				'date':'{{ i.date }}',
+				'film': '{{ i.film }}',
+				'film_slug': '{{ i.film.slug }}',
+				'distributor': '{{ i.distributor }}',
+				'week_gross': ({{ i.week_gross }}),
+				'number_of_cinemas': {{ i.number_of_cinemas }},
+				'weeks_on_release': {{ i.weeks_on_release }},
+			})
+
+		'{% endfor %}'
+	</script>
 	<script src="{{ url_for('static', filename='dashboard.js') }}"></script>
 
 {% endblock %}

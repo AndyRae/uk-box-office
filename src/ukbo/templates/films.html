@@ -33,30 +33,32 @@
 					{{ g.search_form.q(size=20, class='uk-search-input', placeholder="Search films") }}
 			</form>
 		{% endif %}
-		<table class="uk-table uk-table-small uk-table-divider uk-table-hover uk-table-striped">
-			<thead>
-				<tr>
-					<th>Title</th>
-					<th>Distributor</th>
-					<th>Last Updated</th>
-					<th class="uk-text-center">Total Box Office</th>
-				</tr>
-				</thead>
-				<tbody>
-				{% for i in data.items %}
-					<tr class="">
-						<td><a class="action" href="{{ url_for('index.film', slug=i['slug']) }}">{{ i['name']|title }}</a></td>
-						<td><a class="action" href="{{ url_for('index.distributor', slug=i['distributor']['slug']) }}">{{ i['distributor']|title }}</a></td>
-						<td>{{ i['weeks'][-1]['date']|date_convert }}</td>
-						<td class="uk-text-center">{{ "£ {:,}".format(i['weeks'][-1]['total_gross']) }}</td>
+		<div class="uk-overflow-auto">
+			<table class="uk-table uk-table-small uk-table-divider uk-table-hover uk-table-striped">
+				<thead>
+					<tr>
+						<th>Title</th>
+						<th>Distributor</th>
+						<th>Updated</th>
+						<th class="uk-text-center">Box Office</th>
 					</tr>
-				{% endfor %}
-				</tbody>
-		</table>
+					</thead>
+					<tbody>
+					{% for i in data.items %}
+						<tr class="">
+							<td><a class="action" href="{{ url_for('index.film', slug=i['slug']) }}">{{ i['name']|title }}</a></td>
+							<td><a class="action" href="{{ url_for('index.distributor', slug=i['distributor']['slug']) }}">{{ i['distributor']|title }}</a></td>
+							<td>{{ i['weeks'][-1]['date']|date_convert }}</td>
+							<td class="uk-text-center">{{ "£{:,}".format(i['weeks'][-1]['total_gross']) }}</td>
+						</tr>
+					{% endfor %}
+					</tbody>
+			</table>
 
-		{{ pagination.render_pagination(data, 'index.films') }}
-		<div class="">
-			Source: <a class="action" href="https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures" target="_blank">bfi.org.uk</a>
+			{{ pagination.render_pagination(data, 'index.films') }}
+			<div class="">
+				Source: <a class="action" href="https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures" target="_blank">bfi.org.uk</a>
+			</div>
 		</div>
 
 	</div>
