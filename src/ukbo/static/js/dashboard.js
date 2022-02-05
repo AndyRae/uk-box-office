@@ -2,7 +2,7 @@ Vue.filter("TitleCase", value => {
 	if (Number.isInteger(value)) {
 		return value
 	}
-	return value.toLowerCase().replace(/(?:^|\s|-)\S/g, x => x.toUpperCase());
+	return value.toLowerCase().replace(/(?:^|\s|-)\S/g, x => x.toUpperCase()).replace(/&#39;/g, "'");;
 });
 
 
@@ -86,6 +86,7 @@ var vm = new Vue({
 	delimiters: ['${','}'],
 	data: () => ({
 		loaded: false,
+		loading: true,
 		boxOffice: 0,
 		numberOfFilms: 0,
 		numberOfCinemas: 0,
@@ -190,16 +191,8 @@ var vm = new Vue({
 
 	async mounted () {
 		this.generateDatePickers()
-
 		this.getLastUpdated()
-
-		// get dates
-		let start_date = this.date_picker_start.dateSelected.toISOString().split('T', 1)[0]
-		let end_date = this.date_picker_end.dateSelected.toISOString().split('T', 1)[0]
-
-		// replace this with a static call - load results, this.updateChart(results)
-		console.log(queryData[0])
-		// this.queryApi(start_date, end_date)
+		// Initial queryData is from the template for speed.
 		this.updateChart(queryData)
 	},
 
@@ -236,8 +229,6 @@ var vm = new Vue({
 				}
 				// keep running until there's no next page
 			} while (lastResult.next !== "");
-
-			console.log(results)
 
 			this.updateChart(results)
 		},
@@ -287,6 +278,7 @@ var vm = new Vue({
 			this.filmTableData = this.groupForTable(results)
 
 			this.loaded = true
+			this.loading = false
 		},
 
 		groupForLineChart: function(results) {
@@ -400,6 +392,8 @@ var vm = new Vue({
 		},
 
 		filter_days: function(days) {
+			this.loaded = false
+			this.loading = true
 			var s = new Date();
 			var end = new Date();
 			s.setDate(s.getDate() - days );

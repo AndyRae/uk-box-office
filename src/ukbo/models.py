@@ -158,7 +158,7 @@ class Film(SearchableMixin, db.Model):  # type: ignore
             "name": self.name,
             "weeks": self.serialize_weeks(),
             "country": self.country_id,
-            "distributor": self.distributor_id,
+            "distributor": self.distributor.name,
         }
 
     def serialize_weeks(self) -> List[Any]:

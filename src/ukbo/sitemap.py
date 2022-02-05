@@ -8,7 +8,7 @@ from werkzeug.exceptions import abort
 
 from ukbo import cache, db, models, pages
 
-bp = Blueprint("sitemap", __name__, template_folder="templates")
+bp = Blueprint("sitemap", __name__, template_folder="templates/sitemap")
 
 
 def return_sitemap(data: Any) -> Response:
