@@ -40,11 +40,7 @@ a:hover {
 
 .date-picker {
 	border: none;
-	font-size: 0.9em;
-}
-
-.qs-datepicker-container {
-	border-radius: 0 !important;
+	font-size: 0.8em;
 }
 
 .uk-container {
@@ -63,6 +59,10 @@ a:hover {
 
 .uk-button-small {
 	padding: 0 8px;
+}
+
+.uk-form-width-small {
+	width: 140px;
 }
 
 .uk-label {
