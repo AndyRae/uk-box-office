@@ -19,13 +19,15 @@ Home
 
 		<div class="" v-bind:class="{ loading: loading }">
 			<div class="uk-inline">
-				<span class="uk-form-icon" uk-icon="icon: calendar"></span>
-				<input class="uk-input uk-form-width-small date-picker start"></input>
+				<input class="uk-input uk-form-width-small date-picker date-start"
+				type="date" id="start">
 			</div>
+
 			<div class="uk-inline">
-				<span class="uk-form-icon" uk-icon="icon: calendar"></span>
-				<input class="uk-input uk-form-width-small date-picker end"></input>
+				<input class="uk-input uk-form-width-small date-picker date-end"
+				type="date" id="end">
 			</div>
+
 			<button class="uk-button uk-button-default uk-button-small bg-red" v-on:click="filter_date">Filter</button>
 
 			<div class="uk-button-group uk-width-auto" role="group" aria-label="Filters">
@@ -161,10 +163,8 @@ Home
 		</div>
 	</div>
 
-	<link rel="stylesheet" href="https://unpkg.com/js-datepicker/dist/datepicker.min.css">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-	<script src="https://unpkg.com/js-datepicker"></script>
 	<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
 	<script src="https://unpkg.com/vue-chartjs/dist/vue-chartjs.min.js"></script>

@@ -115,7 +115,7 @@ def distributors() -> Response:
     )
 
 
-def to_date(date_string: str = "2000-01-01") -> datetime:
+def to_date(date_string: str = "2000-01-20") -> datetime:
     """
     Converts date string to a date object.
     Helper function for the main api endpoint.

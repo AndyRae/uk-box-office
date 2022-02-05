@@ -192,7 +192,7 @@ var vm = new Vue({
 	async mounted () {
 		this.generateDatePickers()
 		this.getLastUpdated()
-		// Initial queryData is from the template for speed.
+		// Initial queryData is from the template data for speed.
 		this.updateChart(queryData)
 	},
 
@@ -362,44 +362,45 @@ var vm = new Vue({
 		},
 
 		generateDatePickers: function() {
+			// Create date picker objects
 			var start = new Date();
-			var end = new Date();
-			var min = new Date();
 			start.setDate(start.getDate() - 60 );
-			min.setDate(min.getDate() - 547); // allow to go back 1.5 years
+			this.dateStart = document.querySelector('.date-start');
+			this.dateStart.valueAsDate = start
 
-			this.date_picker_start = datepicker('.start', {
-				formatter: (input, date, instance) => {
-					input.value = date.toLocaleDateString()
-			  	}, id: 1, dateSelected: new Date(start)},  )
+			var min = new Date();
+			min.setDate(min.getDate() - 365); // allow to go back 1 years
+			min = min.toISOString()
+			min = min.substring(0, min.indexOf('T'))
+			this.dateStart.min = min
 
-			this.date_picker_end = datepicker('.end', {
-				formatter: (input, date, instance) => {
-					input.value = date.toLocaleDateString()
-				}, id: 1, dateSelected: new Date(end)}, )
-
-			this.date_picker_start.setMin(min)
-
-			this.date_picker_start.calendarContainer.style.setProperty('font-size', '0.8rem')
-			this.date_picker_end.calendarContainer.style.setProperty('font-size', '0.8rem')
+			var end = new Date();
+			this.dateEnd = document.querySelector('.date-end');
+			this.dateEnd.valueAsDate = end
 		},
 
 		filter_date: function() {
-			let start_date = this.date_picker_start.dateSelected.toISOString().split('T', 1)[0]
-			let end_date = this.date_picker_end.dateSelected.toISOString().split('T', 1)[0]
+			// Get dates from datepickers
+			this.loaded = false
+			this.loading = true
+
+			let start_date = this.dateStart.valueAsDate.toISOString()
+			let end_date = this.dateEnd.valueAsDate.toISOString()
+
+			start_date = start_date.substring(0, start_date.indexOf('T'));
+			end_date = end_date.substring(0, end_date.indexOf('T'));
 
 			this.queryApi(start_date, end_date)
 		},
 
 		filter_days: function(days) {
-			this.loaded = false
-			this.loading = true
+			// Set dates from the value from button
 			var s = new Date();
 			var end = new Date();
 			s.setDate(s.getDate() - days );
 
-			this.date_picker_start.setDate(new Date(s), true)
-			this.date_picker_end.setDate(new Date(end), true)
+			this.dateStart.valueAsDate = s
+			this.dateEnd.valueAsDate = end
 
 			this.filter_date()
 		}
