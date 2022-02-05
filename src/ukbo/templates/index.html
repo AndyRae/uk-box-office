@@ -17,7 +17,7 @@ Home
 {% block content %}
 	<div id="dash" class="uk-container uk-container-xlarge">
 
-		<div class="">
+		<div class="" v-bind:class="{ loading: loading }">
 			<div class="uk-inline">
 				<span class="uk-form-icon" uk-icon="icon: calendar"></span>
 				<input class="uk-input uk-form-width-small date-picker start"></input>
@@ -34,14 +34,16 @@ Home
 				<button type="button" class="uk-button uk-button-default uk-button-small" v-on:click="filter_days(90)">3 months</button>
 				<button type="button" class="uk-button uk-button-default uk-button-small" v-on:click="filter_days(183)">6 months</button>
 			</div>
+			<span :uk-spinner="loading"></span>
+
 		</div>
 
-		<div class="uk-grid uk-grid-small uk-child-width-expand uk-margin-small-top" uk-grid="masonry: true">
+		<div class="uk-grid uk-grid-small uk-child-width-expand uk-margin-small-top" v-bind:class="{ loading: loading }" uk-grid="masonry: true">
 
 			<div class="uk-width-1-2@l uk-flex-first">
 				<div class="uk-card uk-card-small uk-card-body border-dash">
 					<h6 class="uk-text-meta">Total UK Box Office</h6>
-					<line-chart v-if="loaded" :chartdata="chartdata" :options="options" v-cloak></line-chart>
+					<line-chart :chartdata="chartdata" :options="options" v-cloak></line-chart>
 				</div>
 			</div>
 
@@ -77,7 +79,7 @@ Home
 			<div class="uk-width-1-2@l">
 				<div class="uk-card uk-card-small uk-card-body border-dash">
 					<h6 class="uk-text-meta">UK Box Office per film</h6>
-					<area-chart v-if="loaded" :chartdataarea="chartdataarea" :optionsarea="optionsarea" v-cloak></area-chart>
+					<area-chart :chartdataarea="chartdataarea" :optionsarea="optionsarea" v-cloak></area-chart>
 				</div>
 			</div>
 
@@ -113,9 +115,9 @@ Home
 			</div>
 
 			<div class="uk-width-1-2@l">
-				<div class="uk-card uk-card-small border-dash">
+				<div class="uk-card uk-card-small uk-card-body border-dash">
 					<div class="uk-overflow-auto">
-						<table class="uk-table uk-table-small uk-table-divider uk-table-hover uk-table-striped box-table uk-card-body v-cloak">
+						<table class="uk-table uk-table-small uk-table-divider uk-table-hover uk-table-striped box-table v-cloak">
 							<thead>
 								<tr>
 									<th></th>
@@ -173,7 +175,7 @@ Home
 		'{% for i in data %}'
 			queryData.push({
 				'date':'{{ i.date }}',
-				'film': '{{ i.film }}',
+				'film': '{{ i.film.name|title }}',
 				'film_slug': '{{ i.film.slug }}',
 				'distributor': '{{ i.distributor }}',
 				'week_gross': ({{ i.week_gross }}),
@@ -183,6 +185,6 @@ Home
 
 		'{% endfor %}'
 	</script>
-	<script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 
 {% endblock %}

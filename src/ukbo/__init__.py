@@ -80,7 +80,8 @@ def register_cli(app: Flask) -> None:
     app.cli.add_command(cli.init_db_command)
     app.cli.add_command(cli.fill_db_command)
     app.cli.add_command(cli.weekly_etl_command)
-    app.cli.add_command(cli.backup_etl)
+    app.cli.add_command(cli.backup_etl_command)
     app.cli.add_command(cli.rollback_etl_command)
+    app.cli.add_command(cli.build_top_command)
 
     return None

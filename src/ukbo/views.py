@@ -2,6 +2,7 @@
 
 import calendar
 import datetime
+import json
 from typing import Any, Dict, List
 
 import pandas as pd
@@ -95,7 +96,7 @@ def films() -> str:
     )
     if data is None:
         abort(404)
-    return render_template("films.html", data=data)
+    return render_template("list/films.html", data=data)
 
 
 @bp.route("/distributors/")
@@ -111,7 +112,7 @@ def distributors() -> str:
     if data is None:
         abort(404)
     return render_template(
-        "distributors.html",
+        "list/distributors.html",
         data=data,
     )
 
@@ -126,7 +127,7 @@ def countries() -> str:
     data = query.order_by(models.Country.name.asc()).all()
     if data is None:
         abort(404)
-    return render_template("countries.html", data=data)
+    return render_template("list/countries.html", data=data)
 
 
 @bp.route("/films/<slug>/")
@@ -152,7 +153,7 @@ def film(slug: str) -> str:
     df = df.asfreq("W", fill_value=0)
 
     return render_template(
-        "film_detail.html",
+        "detail/film_detail.html",
         data=data,
         chart_data=df.reset_index().to_dict(orient="records"),
     )
@@ -178,7 +179,7 @@ def distributor(slug: str) -> str:
     if data is None:
         abort(404)
     return render_template(
-        "distributor_detail.html",
+        "detail/distributor_detail.html",
         data=data,
         distributor=distributor,
     )
@@ -203,7 +204,7 @@ def country(slug: str) -> str:
     if data is None:
         abort(404)
     return render_template(
-        "country_detail.html",
+        "detail/country_detail.html",
         country=country,
         data=data,
     )
@@ -215,22 +216,17 @@ def time() -> str:
     """
     List of all time periods.
     Data per year.
-    And top films of all time.
+    Top films of all time - cached for speed.
     """
     query = db.session.query(models.Week)
     data = query.all()
     data = data_grouped_by_year(data)
 
-    # this is too slow.
-    query = db.session.query(models.Film).options(
-        db.selectinload(models.Film.weeks)
-    )
-    query = query.order_by(models.Film.gross.desc())  # type: ignore
-    query = query.limit(10)
+    path = "./data/top_films_data.json"
+    with open(path) as json_file:
+        films = json.load(json_file)
 
-    films = query.all()
-
-    return render_template("time.html", data=data, films=films)
+    return render_template("list/time.html", data=data, films=films)
 
 
 @bp.route("/time/<int:year>/")
@@ -251,7 +247,7 @@ def year_detail(year: int) -> str:
     time = start_date.strftime("%Y")
 
     return render_template(
-        "time_detail.html",
+        "detail/time_detail.html",
         table_data=table_data,
         graph_data=graph_data,
         time=time,
@@ -280,7 +276,7 @@ def month_detail(year: int, month: int) -> str:
     time = start_date.strftime("%B %Y")
 
     return render_template(
-        "time_detail.html",
+        "detail/time_detail.html",
         table_data=table_data,
         graph_data=graph_data,
         time=time,
@@ -305,7 +301,7 @@ def week_detail(year: int, month: int, start_day: int) -> str:
     time = start_date.strftime("%d %B %Y")
 
     return render_template(
-        "time_detail.html",
+        "detail/time_detail.html",
         table_data=table_data,
         graph_data=graph_data,
         time=time,
@@ -315,6 +311,9 @@ def week_detail(year: int, month: int, start_day: int) -> str:
 
 @bp.route("/<path>/")
 def flat(path: str) -> str:
+    """
+    Flat pages view.
+    """
     post = pages.get_or_404(path)
     return render_template("page.html", text=post, title=path)
 

@@ -47,6 +47,15 @@ a:hover {
 	border-radius: 0 !important;
 }
 
+.uk-container {
+	padding-left: 5px;
+    padding-right: 5px;
+}
+
+.uk-card-small.uk-card-body {
+	padding: 15px 15px;
+}
+
 
 .uk-button-default {
 	text-transform: none;
@@ -118,6 +127,9 @@ a:hover {
 	display: none;
   }
 
+.loading {
+	opacity: 0.2;
+}
 
 @media (prefers-color-scheme:dark) {
 	body {
