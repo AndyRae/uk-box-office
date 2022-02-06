@@ -143,9 +143,24 @@ def film(slug: str) -> str:
     if data is None:
         abort(404)
 
-    # Builds the missing dates if needed
+    table = pd.DataFrame(
+        [i.as_df() for i in data.weeks],
+        columns=[
+            "date",
+            "week_gross",
+            "weekend_gross",
+            "number_of_cinemas",
+            "id",
+            "total_gross",
+            "weeks_on_release",
+            "rank",
+        ],
+    )
+    table["pct_change_week"] = table["week_gross"].pct_change() * 100
+
+    # Builds the missing dates if needed for chart
     df = pd.DataFrame(
-        [i.as_df_film() for i in data.weeks], columns=["date", "week_gross"]
+        [i.as_dict() for i in data.weeks], columns=["id", "date", "week_gross"]
     )
     df.set_index(pd.DatetimeIndex(df["date"].values), inplace=True)
     df.drop(["date"], axis=1, inplace=True)
@@ -155,6 +170,7 @@ def film(slug: str) -> str:
     return render_template(
         "detail/film_detail.html",
         data=data,
+        table_data=table.reset_index().to_dict(orient="records"),
         chart_data=df.reset_index().to_dict(orient="records"),
     )
 
@@ -341,6 +357,9 @@ def data_grouped_by_date(data: List[Any]) -> Dict[str, Any]:
             "weekend_gross",
             "number_of_cinemas",
             "id",
+            "total_gross",
+            "weeks_on_release",
+            "rank",
         ],
     )
 

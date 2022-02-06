@@ -90,7 +90,10 @@ Home
 					<div class="uk-card-body">
 						<h2 v-cloak>${ lastUpdated }</h2>
 					</div>
-					<small class="uk-text-meta">Last updated</small>
+					<small class="uk-text-meta">
+						<a href="{{ url_for('index.week_detail', year=dates[0].date.year, month=dates[0].date.month, start_day=dates[0].date.day) }}">
+							Last updated
+						</a></small>
 				</div>
 			</div>
 

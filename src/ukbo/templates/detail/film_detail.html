@@ -58,38 +58,37 @@
 
 {% block content %}
 <div class="uk-container uk-margin-medium-top">
-
-		<canvas id="myChart" class="" width="100%" height="50px"></canvas>
-		<hr class="">
+		<canvas id="myChart" width="100%" height="50px"></canvas>
+		<hr>
 
 		<div class="uk-column-divider uk-margin-small-top">
 			<div class="uk-grid-match uk-grid-divider uk-child-width-1-4@m" uk-grid>
-				<div class="">
+				<div>
+					<strong><span uk-icon="credit-card"></span> Total Box Office</strong>
+					{{  "£{:,}".format(data.weeks[-1].total_gross) }}
+				</div>
+				<div>
 					{% if data.countries %}
-						Countries:
+						<strong><span uk-icon="world"></span> Countries</strong>
 						{% for i in data.countries %}
 							<a class="action" href="{{ url_for('index.country', slug=i['slug']) }}">{{ i.name }}</a>
 						{% endfor %}
 					{% endif %}
 				</div>
-				<div class="">
-					<p>
-						Distributor: <a class="action" href="{{ url_for('index.distributor', slug=data['distributor']['slug']) }}">{{ data.distributor|title }}</a>
-					</p>
+				<div>
+					<strong><span uk-icon="play"></span> Distributor</strong>
+					<a class="action" href="{{ url_for('index.distributor', slug=data['distributor']['slug']) }}">{{ data.distributor|title }}</a>
 				</div>
 				<div>
-					<span>
-					Source: <a class="action" href="https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures" target="_blank">bfi.org.uk</a>
-				</span>
+					<strong><span uk-icon="copy"></span> Source</strong>
+					 <a class="action" href="https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures" target="_blank">bfi.org.uk</a>
 				</div>
 				<div>
 					<div>
-						<button type="button" onclick="exportToCSV(filmsTable)" class="uk-button uk-button-default">Export (.csv)</button>
+						<button type="button" onclick="exportToCSV(filmsTable)" class="uk-button uk-button-default" uk-icon="download">Export (.csv)</button>
 					</div>
 				</div>
 			</div>
-
-
 		</div>
 
 		<div class="uk-overflow-auto uk-margin-medium-top">
@@ -100,30 +99,37 @@
 						<th>Date</th>
 						<th class="uk-text-center">Rank</th>
 						<th class="uk-text-center">Cinemas</th>
-						<th class="uk-text-center">Week Box Office</th>
 						<th class="uk-text-center">Weekend Box Office</th>
+						<th class="uk-text-center">Week Box Office</th>
+						<th class="uk-text-center">Change Week</th>
 						<th class="uk-text-center">Total Box Office</th>
 					</tr>
 					</thead>
 					<tbody>
-					{% for i in data.weeks %}
+					{% for i in table_data %}
 						<tr class="">
-							<td class="uk-text-center">{{ i['weeks_on_release'] }}</td>
-							<td><a class="action" href="{{ url_for('index.week_detail', year=i['date']['year'], month=i['date']['month'], start_day=i['date']['day']) }}">
-								{{ i['date']|date_convert }}
+							<td class="uk-text-center">{{ i.weeks_on_release }}</td>
+							<td><a class="action" href="{{ url_for('index.week_detail', year=i.date.year, month=i.date.month, start_day=i.date.day) }}">
+								{{ i.date|date_convert }}
 							</a></td>
 							<td class="uk-text-center">{{ i['rank']}}</td>
 							<td class="uk-text-center">{{ i['number_of_cinemas'] }}</td>
-							<td class="uk-text-center">{{ "£{:,}".format(i['week_gross']) }}</td>
-							<td class="uk-text-center">{{ "£{:,}".format(i['weekend_gross']) }}</td>
-							<td class="uk-text-center">{{ "£{:,}".format(i['total_gross']) }}</td>
+							<td class="uk-text-center">{{ "£{:,}".format(i.weekend_gross) }}</td>
+							<td class="uk-text-center">{{ "£{:,}".format(i.week_gross) }}</td>
+							{% if i.pct_change_week|round(2) > 0 %}
+								<td class="uk-text-success uk-text-center">{{ i.pct_change_week|round(2) }}%</td>
+							{% elif i.pct_change_week|round(2) < 0 %}
+								<td class="uk-text-danger uk-text-center">{{ i.pct_change_week|round(2) }}%</td>
+							{% else %}
+								<td class="uk-text-center">-</td>
+							{% endif %}
+							<td class="uk-text-center">{{ "£{:,}".format(i.total_gross) }}</td>
 						</tr>
 					{% endfor %}
 					</tbody>
 			</table>
 		</div>
 	</div>
-
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js" integrity="sha512-Wt1bJGtlnMtGP0dqNFH1xlkLBNpEodaiQ8ZN5JLA5wpc1sUlk/O5uuOMNgvzddzkpvZ9GLyYNa8w2s7rqiTk5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
@@ -133,8 +139,8 @@
 	var cum_gross = []
 	'{% for i in chart_data %}'
 
-		time_dates.push('{{ i["index"]|date_convert }}')
-		week_gross.push('{{ i["week_gross"] }}')
+		time_dates.push('{{ i.index|date_convert }}')
+		week_gross.push('{{ i.week_gross }}')
 
 	'{% endfor %}'
 </script>

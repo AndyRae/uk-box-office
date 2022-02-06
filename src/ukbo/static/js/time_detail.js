@@ -129,7 +129,7 @@ function exportToCSV(tableEle, separator = ','){
 	var a = document.createElement("a")
 	a.style = "display: none; visibility: hidden" //safari needs visibility hidden
 	a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvRows.join('\n'))
-	a.download = '{{ time }}.csv'
+	a.download = 'box_office.csv'
 	document.body.appendChild(a)
 	a.click()
 	a.remove()

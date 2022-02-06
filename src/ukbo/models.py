@@ -253,6 +253,9 @@ class Film_Week(db.Model):  # type: ignore
             self.weekend_gross,
             self.number_of_cinemas,
             self.id,
+            self.total_gross,
+            self.weeks_on_release,
+            self.rank,
         ]
 
     def as_df_film(self) -> List[Any]:
