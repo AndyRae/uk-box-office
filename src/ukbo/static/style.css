@@ -52,6 +52,9 @@ a:hover {
 	padding: 15px 15px;
 }
 
+.uk-search-default {
+	width: 340px;
+}
 
 .uk-button-default {
 	text-transform: none;
@@ -100,6 +103,7 @@ a:hover {
 .bg-dash {
 	background-color: #FEECE9;
 	border: none;
+	border-radius: 6px;
 }
 
 .border-dash {
@@ -143,7 +147,7 @@ a:hover {
 		text-decoration: underline;
 	}
 	.bg-dash {
-		background-color: #000;
+		background-color: #2A2B2E;
 	}
 	.uk-button-default,
 	.uk-button-default:hover,
@@ -153,7 +157,7 @@ a:hover {
 	}
 	.uk-table-striped tbody tr:nth-of-type(odd) {
 		color: #fff;
-		background: #000;
+		background: #2A2B2E;
 	}
 
 	.uk-input,

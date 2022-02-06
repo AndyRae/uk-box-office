@@ -107,7 +107,7 @@ function bargraph(films, week_gross) {
 }
 
 function exportToCSV(tableEle, separator = ','){
-	const head = ["Rank", "Film", "Box Office"]
+	const head = ["Week", "Date", "Rank", "Cinemas", "Week Box Office", "Weekend Box Office", "Total Box Office"]
 	let csvRows = [head]
 	//only get direct children of the table in question (thead, tbody)
 	Array.from(tableEle.children).forEach(function(node){
@@ -129,7 +129,7 @@ function exportToCSV(tableEle, separator = ','){
 	var a = document.createElement("a")
 	a.style = "display: none; visibility: hidden" //safari needs visibility hidden
 	a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvRows.join('\n'))
-	a.download = '{{ time }}.csv'
+	a.download = 'box_office.csv'
 	document.body.appendChild(a)
 	a.click()
 	a.remove()
