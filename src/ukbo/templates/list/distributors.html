@@ -6,10 +6,13 @@
 {% block schema %}
 	{
 		"@context": "https://schema.org/",
-		"@type": "Project",
+		"@type": "Organization",
 		"name" : "UK Box Office Data",
 		"url" : "https://boxofficedata.co.uk",
-		"logo" : "/static/icon-hires.png"
+				"logo": {
+			"@type": "ImageObject",
+			"url": "https://boxofficedata.co.uk/static/icons/icon-hires.png"
+		}
 	}
 {% endblock %}
 
@@ -21,7 +24,7 @@
 			<li aria-current="page"><span>Distributors</span></li>
 		</ul>
 
-		<h1 class="">Distributors</h1>
+		<h1>Distributors</h1>
 	</div>
 
 {% endblock %}
@@ -36,8 +39,8 @@
 				</thead>
 				<tbody>
 				{% for i in data.items %}
-					<tr class="">
-						<td><a class="action" href="{{ url_for('index.distributor', slug=i['slug']) }}">{{ i["name"]|title }}</a></td>
+					<tr>
+						<td><a class="action" href="{{ url_for('index.distributor', slug=i.slug) }}">{{ i["name"]|title }}</a></td>
 					</tr>
 				{% endfor %}
 				</tbody>

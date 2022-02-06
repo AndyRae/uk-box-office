@@ -4,6 +4,18 @@
 
 {% block schema %}
 	{
+	"@context": "https://schema.org/",
+	"@graph":
+		[{
+		"@type": "Organization",
+		"name" : "UK Box Office Data",
+		"url" : "https://boxofficedata.co.uk",
+		"logo": {
+			"@type": "ImageObject",
+			"url": "https://boxofficedata.co.uk/static/icons/icon-hires.png"
+			}
+		},
+		{
 		"@context":"https://schema.org/",
 		"@type":"Dataset",
 		"name":"{{ data.name|title }} Box Office Data",
@@ -11,36 +23,37 @@
 		"url":"https://boxofficedata.co.uk{{ url_for(request.endpoint, **request.view_args) }}",
 		"isBasedOn":"https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures",
 		"keywords":[
-		   "BOX OFFICE DATA > CINEMA > {{ data.name }}"
+		"BOX OFFICE DATA > CINEMA > {{ data.name }}"
 		],
 		"isAccessibleForFree" : true,
 		"creator":{
-		   "@type":"Organization",
-		   "url": "https://boxofficedata.co.uk",
-		   "name":"Box Office Data UK",
-		   "contactPoint":{
-			  "@type":"ContactPoint",
-			  "contactType": "customer service",
-			  "email":"hello@boxofficedata.co.uk"
-		   }
+		"@type":"Organization",
+		"url": "https://boxofficedata.co.uk",
+		"name":"Box Office Data UK",
+		"contactPoint":{
+			"@type":"ContactPoint",
+			"contactType": "customer service",
+			"email":"hello@boxofficedata.co.uk"
+		}
 		},
 		"funder":{
-		   "@type": "Organization",
-		   "sameAs": "https://ror.org/04qg9vz18",
-		   "name": "British Film Institute"
+		"@type": "Organization",
+		"sameAs": "https://ror.org/04qg9vz18",
+		"name": "British Film Institute"
 		},
 		"includedInDataCatalog":{
-		   "@type":"DataCatalog",
-		   "name":"Box Office Data UK"
+		"@type":"DataCatalog",
+		"name":"Box Office Data UK"
 		},
 		"distribution":[
-		   {
-			  "@type":"DataDownload",
-			  "encodingFormat":"CSV",
-			  "contentUrl":"https://boxofficedata.co.uk{{ url_for(request.endpoint, **request.view_args) }}"
-		   }
+		{
+			"@type":"DataDownload",
+			"encodingFormat":"CSV",
+			"contentUrl":"https://boxofficedata.co.uk{{ url_for(request.endpoint, **request.view_args) }}"
+		}
 		],
 		"temporalCoverage":"{{ data.weeks[-1].date|date_convert}} - {{ data.weeks[0].date|date_convert }}"
+		}]
 	}
 {% endblock %}
 
@@ -52,7 +65,7 @@
 		<li aria-current="page"><span>{{ data.name|title }}</span></li>
 	</ul>
 
-	<h1 class="">{{ data.name|title }}</h1>
+	<h1>{{ data.name|title }}</h1>
 </div>
 {% endblock %}
 
@@ -71,13 +84,13 @@
 					{% if data.countries %}
 						<strong><span uk-icon="world"></span> Countries</strong>
 						{% for i in data.countries %}
-							<a class="action" href="{{ url_for('index.country', slug=i['slug']) }}">{{ i.name }}</a>
+							<a class="action" href="{{ url_for('index.country', slug=i.slug) }}">{{ i.name }}</a>
 						{% endfor %}
 					{% endif %}
 				</div>
 				<div>
 					<strong><span uk-icon="play"></span> Distributor</strong>
-					<a class="action" href="{{ url_for('index.distributor', slug=data['distributor']['slug']) }}">{{ data.distributor|title }}</a>
+					<a class="action" href="{{ url_for('index.distributor', slug=data.distributor.slug) }}">{{ data.distributor|title }}</a>
 				</div>
 				<div>
 					<strong><span uk-icon="copy"></span> Source</strong>
@@ -107,13 +120,13 @@
 					</thead>
 					<tbody>
 					{% for i in table_data %}
-						<tr class="">
+						<tr>
 							<td class="uk-text-center">{{ i.weeks_on_release }}</td>
 							<td><a class="action" href="{{ url_for('index.week_detail', year=i.date.year, month=i.date.month, start_day=i.date.day) }}">
 								{{ i.date|date_convert }}
 							</a></td>
-							<td class="uk-text-center">{{ i['rank']}}</td>
-							<td class="uk-text-center">{{ i['number_of_cinemas'] }}</td>
+							<td class="uk-text-center">{{ i.rank}}</td>
+							<td class="uk-text-center">{{ i.number_of_cinemas }}</td>
 							<td class="uk-text-center">{{ "£{:,}".format(i.weekend_gross) }}</td>
 							<td class="uk-text-center">{{ "£{:,}".format(i.week_gross) }}</td>
 							{% if i.pct_change_week|round(2) > 0 %}

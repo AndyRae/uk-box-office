@@ -5,10 +5,13 @@
 {% block schema %}
 	{
 		"@context": "https://schema.org/",
-		"@type": "Project",
+		"@type": "Organization",
 		"name" : "UK Box Office Data",
 		"url" : "https://boxofficedata.co.uk",
-		"logo" : "/static/icon-hires.png"
+				"logo": {
+			"@type": "ImageObject",
+			"url": "https://boxofficedata.co.uk/static/icons/icon-hires.png"
+		}
 	}
 {% endblock %}
 
@@ -20,7 +23,7 @@
 		<li aria-current="page"><span>Results</span></li>
 	</ul>
 
-	<h1 class="">Results</h1>
+	<h1>Results</h1>
 </div>
 
 {% endblock %}
@@ -38,12 +41,12 @@
                     </thead>
                     <tbody>
                     {% for i in results %}
-                        <tr class="">
-                            <td><a class="action" href="{{ url_for('index.film', slug=i['slug']) }}">{{ i['name']|title }}</a></td>
-                            <td>{{ i['distributor']|title}}</td>
+                        <tr>
+                            <td><a class="action" href="{{ url_for('index.film', slug=i.slug) }}">{{ i.name|title }}</a></td>
+                            <td>{{ i.distributor|title}}</td>
                             <td>
                                 {% for j in i.countries %}
-                                    <a href="{{ url_for('index.country', slug=j['slug']) }}">{{ j }}</a>
+                                    <a href="{{ url_for('index.country', slug=j.slug) }}">{{ j }}</a>
                                 {% endfor %}
                             </td>
                         </tr>

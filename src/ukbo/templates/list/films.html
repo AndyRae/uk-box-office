@@ -6,10 +6,13 @@
 {% block schema %}
 	{
 		"@context": "https://schema.org/",
-		"@type": "Project",
+		"@type": "Organization",
 		"name" : "UK Box Office Data",
 		"url" : "https://boxofficedata.co.uk",
-		"logo" : "/static/icon-hires.png"
+				"logo": {
+			"@type": "ImageObject",
+			"url": "https://boxofficedata.co.uk/static/icons/icon-hires.png"
+		}
 	}
 {% endblock %}
 
@@ -20,7 +23,7 @@
 			<li aria-current="page"><span>Films</span></li>
 		</ul>
 
-		<h1 class="">Films</h1>
+		<h1>Films</h1>
 	</div>
 {% endblock %}
 
@@ -45,18 +48,18 @@
 					</thead>
 					<tbody>
 					{% for i in data.items %}
-						<tr class="">
-							<td><a class="action" href="{{ url_for('index.film', slug=i['slug']) }}">{{ i['name']|title }}</a></td>
-							<td><a class="action" href="{{ url_for('index.distributor', slug=i['distributor']['slug']) }}">{{ i['distributor']|title }}</a></td>
-							<td>{{ i['weeks'][-1]['date']|date_convert }}</td>
-							<td class="uk-text-center">{{ "£{:,}".format(i['weeks'][-1]['total_gross']) }}</td>
+						<tr>
+							<td><a class="action" href="{{ url_for('index.film', slug=i.slug) }}">{{ i.name|title }}</a></td>
+							<td><a class="action" href="{{ url_for('index.distributor', slug=i.distributor.slug) }}">{{ i.distributor|title }}</a></td>
+							<td>{{ i.weeks[-1].date|date_convert }}</td>
+							<td class="uk-text-center">{{ "£{:,}".format(i.weeks[-1].total_gross) }}</td>
 						</tr>
 					{% endfor %}
 					</tbody>
 			</table>
 
 			{{ pagination.render_pagination(data, 'index.films') }}
-			<div class="">
+			<div>
 				Source: <a class="action" href="https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures" target="_blank">bfi.org.uk</a>
 			</div>
 		</div>
