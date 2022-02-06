@@ -53,59 +53,6 @@ function graph(time_dates, week_gross) {
 	});
 }
 
-function bargraph(films, week_gross) {
-	var ctx = document.getElementById('barChart');
-	var myChart = new Chart(ctx, {
-		type: 'bar',
-		data: {
-			labels: films,
-			datasets: [{
-				label: 'Box Office',
-				data: week_gross,
-				backgroundColor: [
-					'#FE7E6D',
-				],
-				borderColor: [
-					'#FE7E6D',
-				],
-				yAxisID: 'y'
-			}]
-		},
-		options: {
-			scales: {
-				x: {
-					grid: {
-						display:false
-					},
-					offset: true,
-				},
-				y: {
-					beginAtZero: true,
-					ticks: {
-						autoSkip: true,
-						stepSize: 10000000,
-						callback: function(value, index, values) {
-							var ranges = [
-								{ divider: 1e6, suffix: 'M' },
-								{ divider: 1e3, suffix: 'k' }
-							];
-							function formatNumber(n) {
-								for (var i = 0; i < ranges.length; i++) {
-								if (n >= ranges[i].divider) {
-									return (n / ranges[i].divider).toString() + ranges[i].suffix;
-								}
-								}
-								return n;
-							}
-							return '£' + formatNumber(value);
-						}
-					}
-				},
-			}
-		}
-	});
-}
-
 function exportToCSV(tableEle, separator = ','){
 	const head = ["Week", "Date", "Rank", "Cinemas", "Week Box Office", "Weekend Box Office", "Total Box Office"]
 	let csvRows = [head]
@@ -136,5 +83,3 @@ function exportToCSV(tableEle, separator = ','){
 }
 
 graph(time_dates, week_gross)
-
-bargraph(films, box)

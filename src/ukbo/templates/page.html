@@ -5,10 +5,13 @@
 {% block schema %}
 	{
 		"@context": "https://schema.org/",
-		"@type": "Project",
+		"@type": "Organization",
 		"name" : "UK Box Office Data",
 		"url" : "https://boxofficedata.co.uk",
-		"logo" : "/static/icon-hires.png"
+				"logo": {
+			"@type": "ImageObject",
+			"url": "https://boxofficedata.co.uk/static/icons/icon-hires.png"
+		}
 	}
 {% endblock %}
 
@@ -19,7 +22,7 @@
 			<li aria-current="page"><span>{{ title|title }}</span></li>
 		</ul>
 
-		<h1 class="">{{ title|title }}</h1>
+		<h1>{{ title|title }}</h1>
 	</div>
 {% endblock %}
 {% block content %}

@@ -5,10 +5,56 @@
 {% block schema %}
 	{
 		"@context": "https://schema.org/",
-		"@type": "Project",
-		"name" : "UK Box Office Data",
-		"url" : "https://boxofficedata.co.uk",
-		"logo" : "/static/icon-hires.png"
+		"@graph":
+			[{
+			"@type": "Organization",
+			"name" : "UK Box Office Data",
+			"url" : "https://boxofficedata.co.uk",
+			"logo": {
+				"@type": "ImageObject",
+				"url": "https://boxofficedata.co.uk/static/icons/icon-hires.png"
+				}
+		},
+			{
+			"@context":"https://schema.org/",
+			"@type":"Dataset",
+			"name":"UK Box Office Revenue 2001 - 2022",
+			"description":"UK Box Office Revenue 2001 - 2022.",
+			"url":"https://boxofficedata.co.uk{{ url_for(request.endpoint, **request.view_args) }}",
+			"isBasedOn":"https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures",
+			"keywords":[
+				"BOX OFFICE DATA > CINEMA"
+			],
+			"isAccessibleForFree" : true,
+			"creator":{
+				"@type":"Organization",
+				"url": "https://boxofficedata.co.uk",
+				"name":"Box Office Data UK",
+				"contactPoint":{
+					"@type":"ContactPoint",
+					"contactType": "customer service",
+					"email":"hello@boxofficedata.co.uk"
+				}
+			},
+			"funder":{
+			"@type": "Organization",
+			"sameAs": "https://ror.org/04qg9vz18",
+			"name": "British Film Institute"
+			},
+			"includedInDataCatalog":{
+			"@type":"DataCatalog",
+			"name":"Box Office Data UK"
+			},
+			"distribution":[
+			{
+				"@type":"DataDownload",
+				"encodingFormat":"CSV",
+				"contentUrl":"https://boxofficedata.co.uk{{ url_for(request.endpoint, **request.view_args) }}"
+			}
+			],
+			"temporalCoverage":"2001 - 2022"
+			}
+		]
 	}
 {% endblock %}
 
@@ -19,7 +65,7 @@
 		<li aria-current="page"><span>Time</span></li>
 	</ul>
 
-	<h1 class="">All Time Box Office</h1>
+	<h1>All Time Box Office</h1>
 </div>
 
 {% endblock %}
@@ -72,17 +118,17 @@
 					</thead>
 					<tbody>
 							{% for i in data|reverse %}
-							<tr class="">
+							<tr>
 								<td>
 									<a class="action" href="{{ url_for('index.year_detail', year=i.date.year) }}">
 										{{ i.date.year }}
 									</a>
 								</td>
-								<td class="uk-text-center">{{ "£{:,}".format(i['week_gross']) }}</td>
-								{% if i['pct_change'] > 0 %}
-									<td class="uk-text-success uk-text-center">{{ i['pct_change']|round(2) }}%</td>
-								{% elif i['pct_change'] < 0 %}
-									<td class="uk-text-danger uk-text-center">{{ i['pct_change']|round(2) }}%</td>
+								<td class="uk-text-center">{{ "£{:,}".format(i.week_gross) }}</td>
+								{% if i.pct_change > 0 %}
+									<td class="uk-text-success uk-text-center">{{ i.pct_change|round(2) }}%</td>
+								{% elif i.pct_change < 0 %}
+									<td class="uk-text-danger uk-text-center">{{ i.pct_change|round(2) }}%</td>
 								{% else %}
 									<td class="uk-text-center">-</td>
 								{% endif %}
