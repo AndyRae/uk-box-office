@@ -191,9 +191,9 @@ var vm = new Vue({
 
 	async mounted () {
 		this.generateDatePickers()
-		this.getLastUpdated()
 		// Initial queryData is from the template data for speed.
 		this.updateChart(queryData)
+		this.lastUpdated = lastDate
 	},
 
 	methods: {

@@ -25,6 +25,7 @@
 			"keywords":[
 				"BOX OFFICE DATA > CINEMA"
 			],
+			"license" : "https://creativecommons.org/licenses/by-sa/4.0/",
 			"isAccessibleForFree" : true,
 			"creator":{
 				"@type":"Organization",
@@ -114,6 +115,7 @@
 						<th>Year</th>
 						<th class="uk-text-center">Box Office</th>
 						<th class="uk-text-center">Change</th>
+						<th class="uk-text-center">Releases</th>
 					</tr>
 					</thead>
 					<tbody>
@@ -132,6 +134,7 @@
 								{% else %}
 									<td class="uk-text-center">-</td>
 								{% endif %}
+								<td class="uk-text-center">{{ i.releases }}</td>
 							</tr>
 							{% endfor %}
 					</tbody>
@@ -148,10 +151,12 @@
 	<script>
 		var time_dates = []
 		var week_gross = []
+		var releases = []
 		'{% for i in data %}'
 
 			time_dates.push('{{ i.date.year }}')
 			week_gross.push('{{ i.week_gross }}')
+			releases.push('{{ i.releases }}')
 
 		'{% endfor %}'
 	</script>

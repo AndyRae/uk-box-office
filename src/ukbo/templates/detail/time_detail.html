@@ -19,12 +19,13 @@
 			"@context":"https://schema.org/",
 			"@type":"Dataset",
 			"name":"{{ time }} Box Office Data",
-			"description":"Weekly UK Cinema Box Office data for {{ time }}.",
+			"description":"Weekly UK Cinema Box Office revenue data for time period: {{ time }}.",
 			"url":"https://boxofficedata.co.uk{{ url_for(request.endpoint, **request.view_args) }}",
 			"isBasedOn":"https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures",
 			"keywords":[
 				"BOX OFFICE DATA > CINEMA > {{ time }}"
 			],
+			"license" : "https://creativecommons.org/licenses/by-sa/4.0/",
 			"isAccessibleForFree" : true,
 			"creator":{
 				"@type":"Organization",
@@ -134,10 +135,6 @@
 			<li class="uk-open">
 				<a class="uk-accordion-title" href="#">Films</a>
 				<div class="uk-accordion-content">
-					<button type="button" onclick="exportToCSV(filmsTable)" class="uk-button uk-button-default" uk-icon="download">
-						Export (.csv)
-					</button>
-
 					<div class="uk-overflow-auto">
 						<table class="uk-table uk-table-small uk-table-divider uk-table-hover uk-table-striped" id="filmsTable">
 							<thead>
@@ -158,6 +155,9 @@
 							</tbody>
 						</table>
 					</div>
+					<button type="button" onclick="exportToCSV(filmsTable)" class="uk-button uk-button-default uk-margin-small-top" uk-icon="download">
+						Export (.csv)
+					</button>
 				</div>
 			</li>
 		</ul>

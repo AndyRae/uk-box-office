@@ -1,12 +1,13 @@
 function graph(time_dates, week_gross) {
 	var ctx = document.getElementById('myChart');
 	var myChart = new Chart(ctx, {
-		type: 'line',
+		type: 'bar',
 		data: {
 			labels: time_dates,
 			datasets: [{
 				label: 'Box Office',
 				data: week_gross,
+				order: 2,
 				backgroundColor: [
 					'#FE7E6D',
 				],
@@ -16,6 +17,20 @@ function graph(time_dates, week_gross) {
 				pointStyle: 'circle',
 				tension: 0.3,
 				yAxisID: 'y'
+			}, {
+				label: 'Releases',
+				data: releases,
+				type: 'line',
+				order: 1,
+				backgroundColor: [
+					'#6dfec6',
+				],
+				borderColor: [
+					'#6dfec6',
+				],
+				pointStyle: 'circle',
+				tension: 0.3,
+				yAxisID: 'y1'
 			}]
 		},
 		options: {
@@ -24,7 +39,7 @@ function graph(time_dates, week_gross) {
 					grid: {
 						display:false
 					},
-					offset: false,
+					offset: true,
 				},
 				y: {
 					beginAtZero: true,
@@ -48,13 +63,22 @@ function graph(time_dates, week_gross) {
 						}
 					}
 				},
+				y1: {
+					type: 'linear',
+					display: true,
+					position: 'right',
+					// grid line settings
+					grid: {
+					  drawOnChartArea: false, // only want the grid lines for one axis to show up
+					},
+				}
 			}
 		}
 	});
 }
 
 function exportToCSV(tableEle, separator = ','){
-	const head = ["Year", "Box Office", "Change"]
+	const head = ["Year", "Box Office", "Change", "Releases"]
 	let csvRows = [head]
 	//only get direct children of the table in question (thead, tbody)
 	Array.from(tableEle.children).forEach(function(node){

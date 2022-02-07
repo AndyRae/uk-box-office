@@ -228,6 +228,7 @@ def load_dataframe(archive: pd.DataFrame) -> None:
             i["week_gross"],
             i["weekend_gross"],
             i["number_of_cinemas"],
+            i["weeks_on_release"],
         )
 
         i.pop("country", None)
@@ -238,7 +239,11 @@ def load_dataframe(archive: pd.DataFrame) -> None:
 
 
 def add_week(
-    date: datetime, week_gross: int, weekend_gross: int, number_of_cinemas: int
+    date: datetime,
+    week_gross: int,
+    weekend_gross: int,
+    number_of_cinemas: int,
+    weeks_on_release: int,
 ) -> None:
     """
     Adds a new week for each new data import.
@@ -250,14 +255,19 @@ def add_week(
         week.week_gross += week_gross
         if number_of_cinemas > week.number_of_cinemas:
             week.number_of_cinemas = number_of_cinemas
+        if weeks_on_release == 1:
+            week.number_of_releases += 1
         db.session.commit()
         return None
+
+    number_of_releases = 1 if weeks_on_release == 1 else 0
 
     new_week = {
         "date": date,
         "week_gross": week_gross,
         "weekend_gross": weekend_gross,
         "number_of_cinemas": number_of_cinemas,
+        "number_of_releases": number_of_releases,
     }
 
     new = models.Week(**new_week)

@@ -156,7 +156,7 @@ def film(slug: str) -> str:
             "rank",
         ],
     )
-    table["pct_change_week"] = table["week_gross"].pct_change() * 100
+    table["pct_change_weekend"] = table["weekend_gross"].pct_change() * 100
 
     # Builds the missing dates if needed for chart
     df = pd.DataFrame(
@@ -398,10 +398,11 @@ def data_grouped_by_film(data: List[Any]) -> Dict[str, Any]:
 
 def data_grouped_by_year(data: List[Any]) -> Dict[str, Any]:
     df = pd.DataFrame(
-        [i.as_df_film() for i in data],
+        [i.as_df() for i in data],
         columns=[
             "date",
             "week_gross",
+            "releases",
         ],
     )
 
@@ -410,6 +411,7 @@ def data_grouped_by_year(data: List[Any]) -> Dict[str, Any]:
         .agg(
             {
                 "week_gross": ["sum"],
+                "releases": ["sum"],
             }
         )
         .sort_values(by=["date"])
@@ -417,6 +419,31 @@ def data_grouped_by_year(data: List[Any]) -> Dict[str, Any]:
     df.columns = df.columns.get_level_values(0)
     df["pct_change"] = df["week_gross"].pct_change() * 100
     return df.reset_index().to_dict(orient="records")
+
+
+def data_grouped_by_distributor(data: List[Any]) -> Dict[str, Any]:
+    """
+    Calculates statistics per distributor for this collection of weeks
+    """
+    df = pd.DataFrame(
+        [i.as_dict() for i in data],
+        columns=["distributor", "week_gross", "film"],
+    )
+    df = (
+        df.groupby(["distributor"])
+        .agg(
+            {
+                "film": ["nunique"],
+                "week_gross": ["sum"],
+            }
+        )
+        .sort_values(by=("week_gross", "sum"), ascending=False)
+        .rename(columns={"sum": "total", "nunique": "count"})
+    )
+    df.columns = df.columns.droplevel(0)
+    df["market_share"] = df["total"] / df["total"].sum() * 100
+
+    return df.head(10).reset_index().to_dict(orient="records")
 
 
 @bp.app_template_filter()

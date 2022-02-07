@@ -26,10 +26,10 @@ def init_db() -> None:
 @with_appcontext
 def fill_db() -> None:
     # full archive
-    path = "./data/archive.csv"
+    # path = "./data/archive.csv"
 
     # some test data
-    # path = "./data/test.csv"
+    path = "./data/test.csv"
     input_data = pd.read_csv(path)
     etl.load_dataframe(input_data)
 
