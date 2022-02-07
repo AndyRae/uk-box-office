@@ -166,7 +166,6 @@ class Film(SearchableMixin, db.Model):  # type: ignore
 
     @hybrid_property
     def gross(self) -> int:
-        # return self.weeks[-1]["total_gross"]
         return max(week.total_gross for week in self.weeks)
 
     @gross.expression  # type: ignore
@@ -185,6 +184,7 @@ class Week(db.Model):  # type: ignore
         db.DateTime, nullable=False, default=datetime.utcnow, unique=True
     )
     number_of_cinemas = db.Column(db.Integer, nullable=False)
+    number_of_releases = db.Column(db.Integer, nullable=False)
     weekend_gross = db.Column(db.Integer, nullable=False)
     week_gross = db.Column(db.Integer, nullable=False)
     forecast_high = db.Column(db.Integer, nullable=True)
@@ -203,8 +203,8 @@ class Week(db.Model):  # type: ignore
             "week_gross": self.week_gross,
         }
 
-    def as_df_film(self) -> List[Any]:
-        return [self.date, self.week_gross]
+    def as_df(self) -> List[Any]:
+        return [self.date, self.week_gross, self.number_of_releases]
 
 
 class Film_Week(db.Model):  # type: ignore

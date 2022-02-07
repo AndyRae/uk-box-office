@@ -19,12 +19,13 @@
 		"@context":"https://schema.org/",
 		"@type":"Dataset",
 		"name":"{{ data.name|title }} Box Office Data",
-		"description":"Weekly UK Cinema Box Office data for {{ data.name|title }}.",
+		"description":"Weekly UK Cinema Box Office revenue data for the film {{ data.name|title }}.",
 		"url":"https://boxofficedata.co.uk{{ url_for(request.endpoint, **request.view_args) }}",
 		"isBasedOn":"https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures",
 		"keywords":[
 		"BOX OFFICE DATA > CINEMA > {{ data.name }}"
 		],
+		"license" : "https://creativecommons.org/licenses/by-sa/4.0/",
 		"isAccessibleForFree" : true,
 		"creator":{
 		"@type":"Organization",
@@ -114,7 +115,7 @@
 						<th class="uk-text-center">Cinemas</th>
 						<th class="uk-text-center">Weekend Box Office</th>
 						<th class="uk-text-center">Week Box Office</th>
-						<th class="uk-text-center">Change Week</th>
+						<th class="uk-text-center">Change Weekend</th>
 						<th class="uk-text-center">Total Box Office</th>
 					</tr>
 					</thead>
@@ -129,10 +130,10 @@
 							<td class="uk-text-center">{{ i.number_of_cinemas }}</td>
 							<td class="uk-text-center">{{ "£{:,}".format(i.weekend_gross) }}</td>
 							<td class="uk-text-center">{{ "£{:,}".format(i.week_gross) }}</td>
-							{% if i.pct_change_week|round(2) > 0 %}
-								<td class="uk-text-success uk-text-center">{{ i.pct_change_week|round(2) }}%</td>
-							{% elif i.pct_change_week|round(2) < 0 %}
-								<td class="uk-text-danger uk-text-center">{{ i.pct_change_week|round(2) }}%</td>
+							{% if i.pct_change_weekend|round(2) > 0 %}
+								<td class="uk-text-success uk-text-center">{{ i.pct_change_weekend|round(2) }}%</td>
+							{% elif i.pct_change_weekend|round(2) < 0 %}
+								<td class="uk-text-danger uk-text-center">{{ i.pct_change_weekend|round(2) }}%</td>
 							{% else %}
 								<td class="uk-text-center">-</td>
 							{% endif %}
