@@ -82,6 +82,19 @@
 					{{  "£{:,}".format(data.weeks[-1].total_gross) }}
 				</div>
 				<div>
+					<strong><span uk-icon="more"></span> Multiple</strong>
+					x{{  data.multiple|round(2) }}
+				</div>
+				<div>
+					<strong><span uk-icon="copy"></span> Source</strong>
+					 <a class="action" href="https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures" target="_blank">bfi.org.uk</a>
+				</div>
+				<div>
+					<div>
+						<button type="button" onclick="exportToCSV(filmsTable)" class="uk-button uk-button-default" uk-icon="download">Export (.csv)</button>
+					</div>
+				</div>
+				<div>
 					{% if data.countries %}
 						<strong><span uk-icon="world"></span> Countries</strong>
 						{% for i in data.countries %}
@@ -93,15 +106,7 @@
 					<strong><span uk-icon="play"></span> Distributor</strong>
 					<a class="action" href="{{ url_for('index.distributor', slug=data.distributor.slug) }}">{{ data.distributor|title }}</a>
 				</div>
-				<div>
-					<strong><span uk-icon="copy"></span> Source</strong>
-					 <a class="action" href="https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures" target="_blank">bfi.org.uk</a>
-				</div>
-				<div>
-					<div>
-						<button type="button" onclick="exportToCSV(filmsTable)" class="uk-button uk-button-default" uk-icon="download">Export (.csv)</button>
-					</div>
-				</div>
+
 			</div>
 		</div>
 
