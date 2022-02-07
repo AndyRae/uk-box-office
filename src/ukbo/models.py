@@ -165,6 +165,13 @@ class Film(SearchableMixin, db.Model):  # type: ignore
         return [item.as_dict() for item in self.weeks]
 
     @hybrid_property
+    def multiple(self) -> float:
+        # m = total / opening weekend
+        return max(week.total_gross for week in self.weeks) / max(
+            week.weekend_gross for week in self.weeks
+        )
+
+    @hybrid_property
     def gross(self) -> int:
         return max(week.total_gross for week in self.weeks)
 

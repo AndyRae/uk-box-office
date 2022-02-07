@@ -38,6 +38,7 @@
 						<th>Country</th>
 						<th>Updated</th>
 						<th class="uk-text-center">Weeks</th>
+						<th class="uk-text-center">Multiple</th>
 						<th class="uk-text-center">Box Office</th>
 					</tr>
 					</thead>
@@ -56,6 +57,9 @@
 							</td>
 							<td class="uk-text-center">
 								{{ i.weeks[-1].weeks_on_release }}
+							</td>
+							<td class="uk-text-center">
+								x{{ i.multiple|round(2) }}
 							</td>
 							<td class="uk-text-center">
 								{{ "£{:,}".format(i.weeks[-1].total_gross) }}
