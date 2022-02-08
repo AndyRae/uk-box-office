@@ -342,6 +342,7 @@ def get_time_data(start_date: datetime.date, end_date: datetime.date) -> Any:
     query = db.session.query(models.Film_Week)
     query = query.filter(models.Film_Week.date >= start_date)
     query = query.filter(models.Film_Week.date <= end_date)
+    query = query.order_by(models.Film_Week.date.desc())
     return query.all()
 
 

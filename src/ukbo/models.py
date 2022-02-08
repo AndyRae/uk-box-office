@@ -166,10 +166,13 @@ class Film(SearchableMixin, db.Model):  # type: ignore
 
     @hybrid_property
     def multiple(self) -> float:
-        # m = total / opening weekend
-        return max(week.total_gross for week in self.weeks) / max(
-            week.weekend_gross for week in self.weeks
-        )
+        for i in self.weeks:
+            if i.weeks_on_release == 1:
+                return (
+                    max(week.total_gross for week in self.weeks)
+                    / i.weekend_gross
+                )
+        return 0
 
     @hybrid_property
     def gross(self) -> int:

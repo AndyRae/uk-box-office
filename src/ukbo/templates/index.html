@@ -196,6 +196,7 @@ Home
 		let lastDate = '{{ data[0].date|date_convert }}';
 
 		'{% for i in data %}'
+		console.log('{{ i.date }}')
 			queryData.push({
 				'date':'{{ i.date }}',
 				'film': '{{ i.film.name|title }}',
