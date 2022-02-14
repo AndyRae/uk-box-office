@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Home
+UK Box Office Data - Insight and and analysis for UK film industry.
 {% endblock %}
 
 {% block schema %}
@@ -59,130 +59,136 @@ Home
 
 		</div>
 
-		<div class="uk-grid uk-grid-small uk-child-width-expand uk-margin-small-top" v-bind:class="{ loading: loading }" uk-grid="masonry: true">
+		<div class="uk-grid" uk-grid>
 
-			<div class="uk-width-1-2@l uk-flex-first">
-				<div class="uk-card uk-card-small uk-card-body border-dash">
-					<h6 class="uk-text-meta">Total UK Box Office</h6>
-					<line-chart :chartdata="chartdata" :options="options" v-cloak></line-chart>
-				</div>
-			</div>
+			<div class="uk-grid uk-grid-small uk-margin-small-top uk-width-1-2@l" v-bind:class="{ loading: loading }" uk-grid="masonry: true">
 
-			<!-- <div class="uk-width-1-4@l">
-				<div class="uk-card uk-card-small bg-dash border-dash uk-text-center">
-					<div class="uk-card-body">
-						<h2 class="uk-card-title">£ ${ boxOffice | Currency }</h2>
-						<small class="uk-text-meta">Total Box Office</small>
+				<div class="uk-width-1-1@s uk-flex-first">
+					<div class="uk-card uk-card-small uk-card-body border-dash">
+						<h6 class="uk-text-meta">Total UK Box Office</h6>
+						<line-chart :chartdata="chartdata" :options="options" v-cloak></line-chart>
 					</div>
 				</div>
-			</div> -->
 
-			<div class="uk-width-1-4@l">
-				<div class="uk-card uk-card-small bg-dash border-dash uk-text-center">
-					<div class="uk-card-body">
-						<h2 v-cloak>£ ${ boxOffice | Currency }</h2>
+				<div class="uk-width-1-1@s">
+					<div class="uk-card uk-card-small uk-card-body border-dash">
+						<h6 class="uk-text-meta">UK Box Office per film</h6>
+						<area-chart :chartdataarea="chartdataarea" :optionsarea="optionsarea" v-cloak></area-chart>
 					</div>
-					<small class="uk-text-meta">Total Box Office</small>
 				</div>
-			</div>
 
-			<div class="uk-width-1-4@l">
-				<div class="uk-card uk-card-small bg-dash border-dash uk-text-center">
-					<div class="uk-card-body">
-						<h2>UK Box Office</h2>
+				<div class="uk-width-1-2@s">
+					<div class="uk-card uk-card-small bg-dash border-dash">
+						<div class="uk-card-body">
+							<h6 class="uk-text-meta">Number of cinemas</h6>
+							<div class="dash-title uk-text-center" v-cloak>${ numberOfCinemas }</div>
+						</div>
 					</div>
-					<small class="uk-text-meta">Visualising box office data back to 2001.
-						Built by <a href="https://rae.li">rae.li</a>
-					</small>
 				</div>
-			</div>
 
-			<div class="uk-width-1-2@l">
-				<div class="uk-card uk-card-small uk-card-body border-dash">
-					<h6 class="uk-text-meta">UK Box Office per film</h6>
-					<area-chart :chartdataarea="chartdataarea" :optionsarea="optionsarea" v-cloak></area-chart>
-				</div>
-			</div>
-
-			<div class="uk-width-1-4@l">
-				<div class="uk-card uk-card-small bg-dash border-dash uk-text-center">
-					<div class="uk-card-body">
-						<h2 v-cloak>${ lastUpdated }</h2>
+				<!-- <div class="uk-width-1-2@s">
+					<div class="uk-card uk-card-small bg-dash border-dash">
+						<div class="uk-card-body">
+							<h6 class="uk-text-meta">Visualising box office data back to 2001</h6>
+							<div class="dash-title uk-text-center">UK Box Office</div>
+						</div>
 					</div>
-					<small class="uk-text-meta">
-						<a href="{{ url_for('index.week_detail', year=dates[0].date.year, month=dates[0].date.month, start_day=dates[0].date.day) }}">
-							Last updated
-						</a></small>
+				</div> -->
+
+				<div class="uk-width-1-2@s">
+					<a class="uk-card-link" href="{{ url_for('index.time') }}">
+						<div class="uk-card uk-card-small border-dash">
+							<div class="uk-card-media-top">
+								<img src="{{ url_for('static', filename='icons/2.png') }}" alt="">
+							</div>
+							<div class="uk-card-body">
+								<h4 class="uk-card-title">Annual Data</h4>
+							</div>
+						</div>
+					</a>
 				</div>
+
 			</div>
 
-			<div class="uk-width-1-4@l">
-				<div class="uk-card uk-card-small bg-dash border-dash uk-text-center">
-					<div class="uk-card-body">
-						<h2 v-cloak>${ numberOfFilms }</h2>
+			<div class="uk-grid uk-grid-small uk-margin-small-top uk-width-1-2@l" v-bind:class="{ loading: loading }" uk-grid="masonry: true">
+				<div class="uk-width-1-2@s">
+					<div class="uk-card uk-card-small bg-dash border-dash">
+						<div class="uk-card-body">
+							<h6 class="uk-text-meta">Total Box Office</h6>
+							<div class="dash-title uk-text-center" v-cloak>£ ${ boxOffice | Currency }</div>
+						</div>
 					</div>
-					<small class="uk-text-meta">Number of films</small>
 				</div>
-			</div>
 
-			<div class="uk-width-1-2@l">
-				<div class="uk-card uk-card-small bg-dash border-dash uk-text-center">
-					<div class="uk-card-body">
+				<div class="uk-width-1-2@s">
+					<div class="uk-card uk-card-small bg-dash border-dash">
+						<div class="uk-card-body">
+							<h6 class="uk-text-meta">Recent Weeks</h6>
 							{% for i in dates %}
-									<a href="{{ url_for('index.week_detail', year=i.date.year, month=i.date.month, start_day=i.date.day) }}">
-										{{ i.date|date_convert }} -
-									</a>
+								<a class="uk-label" href="{{ url_for('index.week_detail', year=i.date.year, month=i.date.month, start_day=i.date.day) }}">
+									{{ i.date|date_convert }}
+								</a>
 							{% endfor %}
-							<h6 class="uk-text-meta">Recent</h6>
+						</div>
 					</div>
 				</div>
-			</div>
 
-			<div class="uk-width-1-2@l">
-				<div class="uk-card uk-card-small uk-card-body border-dash">
-					<div class="uk-overflow-auto">
-						<table class="uk-table uk-table-small uk-table-divider uk-table-hover uk-table-striped box-table v-cloak">
-							<thead>
-								<tr>
-									<th></th>
-									<th>Title</th>
-									<th class="uk-text-center">Box Office</th>
-									<th class="uk-text-center">Week</th>
-									<th>Distributor</th>
-								</tr>
-								</thead>
-								<tbody id="results">
-									<tr v-for="(item, index) in sortedfilms.slice(0, 100)">
-										<td class="text-small uk-text-center">${ index + 1 }</td>
-										<td class="text-small"><a :href="`/films/${ item.film_slug }/`">${ item.film | TitleCase }</a></td>
-										<td class="text-small uk-text-center" style="min-width:100px">£${ item.week_gross | Currency }</td>
-										<td class="text-small uk-text-center">${ item.weeks }</td>
-										<td class="text-small">${ item.distributor | TitleCase }</td>
+				<div class="uk-width-1-2@s">
+					<div class="uk-card uk-card-small bg-dash border-dash">
+						<div class="uk-card-body">
+							<h6 class="uk-text-meta">Number of films</h6>
+							<div class="dash-title uk-text-center" v-cloak>${ numberOfFilms }</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="uk-width-1-2@s">
+					<a class="uk-card-link" href="{{ url_for('index.week_detail', year=dates[0].date.year, month=dates[0].date.month, start_day=dates[0].date.day) }}">
+						<div class="uk-card uk-card-small bg-dash border-dash">
+							<div class="uk-card-body">
+								<h6 class="uk-text-meta">
+									Last updated
+								</h6>
+								<div class="dash-title uk-text-center" v-cloak>
+
+									${ lastUpdated }
+								</div>
+							</div>
+						</div>
+					</a>
+				</div>
+
+				<div class="uk-width-1-1@s">
+					<div class="uk-card uk-card-small uk-card-body border-dash">
+						<div class="uk-overflow-auto">
+							<table class="uk-table uk-table-small uk-table-divider uk-table-hover uk-table-striped box-table v-cloak">
+								<thead>
+									<tr>
+										<th></th>
+										<th>Title</th>
+										<th class="uk-text-center">Box Office</th>
+										<th class="uk-text-center">Week</th>
+										<th>Distributor</th>
 									</tr>
-								</tbody>
-						</table>
+									</thead>
+									<tbody id="results">
+										<tr v-for="(item, index) in sortedfilms.slice(0, 100)">
+											<td class="text-small uk-text-center">${ index + 1 }</td>
+											<td class="text-small"><a :href="`/films/${ item.film_slug }/`">${ item.film | TitleCase }</a></td>
+											<td class="text-small uk-text-center" style="min-width:100px">£${ item.week_gross | Currency }</td>
+											<td class="text-small uk-text-center">${ item.weeks }</td>
+											<td class="text-small">${ item.distributor | TitleCase }</td>
+										</tr>
+									</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
+
 			</div>
 
-			<div class="uk-width-1-4@l">
-				<div class="uk-card uk-card-small bg-dash border-dash uk-text-center">
-					<div class="uk-card-body">
-						<h2 v-cloak>${ numberOfCinemas }</h2>
-					</div>
-					<small class="uk-text-meta">Number of cinemas</small>
-				</div>
-			</div>
-
-			<!-- <div class="uk-width-1-4@l">
-				<div class="uk-card uk-card-small bg-dash border-dash uk-text-center">
-					<div class="uk-card-body">
-						<h2 class="uk-card-title">${ numberOfCinemas }</h2>
-						<small class="uk-text-meta">Number of cinemas</small>
-					</div>
-				</div>
-			</div> -->
 		</div>
+
 	</div>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
@@ -196,7 +202,6 @@ Home
 		let lastDate = '{{ data[0].date|date_convert }}';
 
 		'{% for i in data %}'
-		console.log('{{ i.date }}')
 			queryData.push({
 				'date':'{{ i.date }}',
 				'film': '{{ i.film.name|title }}',
