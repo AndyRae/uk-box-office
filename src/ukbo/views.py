@@ -186,7 +186,7 @@ def distributor(slug: str) -> str:
     )
     query = query.join(models.Distributor)
     query = query.filter(models.Distributor.slug == slug)
-    data = query.order_by(models.Film.id.desc()).paginate(page, 20, False)
+    data = query.order_by(models.Film.id.asc()).paginate(page, 20, False)
 
     query = db.session.query(models.Distributor)
     query = query.filter(models.Distributor.slug == slug)
@@ -215,7 +215,7 @@ def country(slug: str) -> str:
         db.selectinload(models.Film.weeks)
     )
     query = query.filter(models.Film.countries.contains(country))
-    data = query.order_by(models.Film.id.desc()).paginate(page, 20, False)
+    data = query.order_by(models.Film.id.asc()).paginate(page, 20, False)
 
     if data is None:
         abort(404)
