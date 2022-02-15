@@ -205,7 +205,7 @@ var vm = new Vue({
 		},
 
 		async queryApi(start_date, end_date) {
-			const baseUrl = '/api?start_date='+start_date+'&end_date='+end_date+"&limit=150&start=";
+			const baseUrl = '/api?start_date='+start_date+'&end_date='+end_date+"&start=";
 			let page = 1;
 			let results = [];
 			let lastResult = [];
@@ -222,7 +222,7 @@ var vm = new Vue({
 					results.push({ date, film, film_slug, distributor, week_gross, number_of_cinemas, weeks_on_release });
 				});
 				// increment the page on each loop
-				page += 150;
+				page += 1;
 				} catch (err) {
 				console.error(`Something is wrong ${err}`);
 				break
