@@ -1,13 +1,13 @@
 """API access"""
 
 from datetime import datetime
-from typing import Any, Dict, List
+from typing import Any
 
 from flask import Blueprint, current_app, jsonify, make_response, request
 from flask.wrappers import Response
 from werkzeug.exceptions import abort
 
-from ukbo import cache, db, limiter, models
+from ukbo import db, limiter, models
 
 bp = Blueprint("api", __name__)
 
@@ -21,7 +21,7 @@ def page_not_found(e: Any) -> Response:
 @limiter.limit(current_app.config.get("RATELIMIT_API"))
 def api() -> Response:
     """
-    Main API endpoint - returns box office data.
+    Main API endpoint - returns paginated box office data.
     Can filter on start date, end date - format: 2020-08-31
     """
     query = db.session.query(models.Film_Week)
@@ -34,18 +34,21 @@ def api() -> Response:
     if end_date is not None:
         query = query.filter(models.Film_Week.date <= to_date(end_date))
 
-    data = query.order_by(models.Film_Week.date.desc()).all()
+    start = int(request.args.get("start", 1))
+
+    data = query.order_by(models.Film_Week.date.desc()).paginate(
+        page=start, per_page=150, error_out=False
+    )
     if data is None:
         abort(404)
 
-    results = [ix.as_dict() for ix in data]
+    next = f"/api?start={start + 1}" if data.has_next else ""
+    previous = f"/api?start={start - 1}" if data.has_prev else ""
     return jsonify(
-        get_paginated_list(
-            results,
-            "/api",
-            start=int(request.args.get("start", 1)),
-            limit=int(request.args.get("limit", 20)),
-        )
+        count=data.total,
+        next=next,
+        previous=previous,
+        results=[ix.as_dict() for ix in data.items],
     )
 
 
@@ -53,66 +56,72 @@ def api() -> Response:
 def films() -> Response:
     """
     Films endpoint - returns list of films data by title.
+    Deprecated
     """
-    query = db.session.query(models.Film)
-    if "title" in request.args:
-        title = str(request.args["title"])
-        query = query.filter(models.Film.name == title)
-    data = query.order_by(models.Film.name.asc()).all()
-    if data is None:
-        abort(404)
+    return jsonify(results="None")
+    # query = db.session.query(models.Film)
+    # if "title" in request.args:
+    #     title = str(request.args["title"])
+    #     query = query.filter(models.Film.name == title)
+    # data = query.order_by(models.Film.name.asc()).all()
+    # if data is None:
+    #     abort(404)
 
-    results = [ix.as_dict() for ix in data]
-    return jsonify(
-        get_paginated_list(
-            results,
-            "/api",
-            start=int(request.args.get("start", 1)),
-            limit=int(request.args.get("limit", 20)),
-        )
-    )
+    # results = [ix.as_dict() for ix in data]
+    # return jsonify(
+    #     get_paginated_list(
+    #         results,
+    #         "/api",
+    #         start=int(request.args.get("start", 1)),
+    #         limit=int(request.args.get("limit", 20)),
+    #     )
+    # )
 
 
 @bp.route("/api/film")
 def film() -> Response:
     """
     Film endpoint - returns single film data by title.
+    Deprecated
     """
-    if "title" in request.args:
-        title = str(request.args["title"])
+    return jsonify(results="None")
+    # if "title" in request.args:
+    #     title = str(request.args["title"])
 
-        query = db.session.query(models.Film)
-        query = query.filter(models.Film.name == title)
-        data = query.first()
+    #     query = db.session.query(models.Film)
+    #     query = query.filter(models.Film.name == title)
+    #     data = query.first()
 
-        if data is None:
-            abort(404)
-        return data.as_dict()
-    abort(404)
+    #     if data is None:
+    #         abort(404)
+    #     return data.as_dict()
+    # abort(404)
 
 
 @bp.route("/api/distributors")
 def distributors() -> Response:
     """
     Distributors endpoint - returns list of distributors by name
+    Deprecated
     """
-    query = db.session.query(models.Distributor)
-    if "name" in request.args:
-        name = str(request.args["name"])
-        query = query.filter(models.Distributor.name == name)
-    data = query.order_by(models.Distributor.name.asc()).all()
-    if data is None:
-        abort(404)
+    return jsonify(results="None")
+    # query = db.session.query(models.Distributor)
+    # if "name" in request.args:
+    #     name = str(request.args["name"])
+    #     query = query.filter(models.Distributor.name == name)
+    # data = query.order_by(models.Distributor.name.asc()).all()
+    # if data is None:
+    #     abort(404)
 
-    results = [ix.as_dict() for ix in data]
-    return jsonify(
-        data=get_paginated_list(
-            results,
-            "/api/distributor",
-            start=int(request.args.get("start", 1)),
-            limit=int(request.args.get("limit", 20)),
-        )
-    )
+    # results = [ix.as_dict() for ix in data]
+    # return jsonify(
+    #     data=get_paginated_list(
+    #         results,
+    #         "/api/distributor",
+    #         start=int(request.args.get("start", 1)),
+    #         limit=int(request.args.get("limit", 20)),
+    #     )
+    # )
 
 
 def to_date(date_string: str = "2000-01-20") -> datetime:
@@ -121,42 +130,3 @@ def to_date(date_string: str = "2000-01-20") -> datetime:
     Helper function for the main api endpoint.
     """
     return datetime.strptime(date_string, "%Y-%m-%d")
-
-
-def get_paginated_list(
-    results: List[Any], url: str, start: int, limit: int
-) -> Dict[str, Any]:
-    """
-    Pagination for the API.
-    Returns a dict of the results, with additions
-    """
-    # check if page exists
-    count = len(results)
-
-    if count < start:
-        abort(404)
-    # make response
-    obj = {
-        "start": start,
-        "limit": limit,
-        "count": count,
-        "previous": str,
-        "next": str,
-    }
-    # make URLs
-    # make previous url
-    if start == 1:
-        obj["previous"] = ""
-    else:
-        start_copy = max(1, start - limit)
-        limit_copy = start - 1
-        obj["previous"] = url + "?start=%d&limit=%d" % (start_copy, limit_copy)
-    # make next url
-    if start + limit > count:
-        obj["next"] = ""
-    else:
-        start_copy = start + limit
-        obj["next"] = url + "?start=%d&limit=%d" % (start_copy, limit)
-    # finally extract result according to bounds
-    obj["results"] = results[(start - 1) : (start - 1 + limit)]
-    return obj

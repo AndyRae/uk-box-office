@@ -59,7 +59,7 @@ UK Box Office Data - Insight and and analysis for UK film industry.
 
 		</div>
 
-		<div class="uk-grid" uk-grid>
+		<div class="uk-grid" uk-grid uk-scrollspy="cls: uk-animation-fade; target: .uk-card; delay: 1; repeat: true">
 
 			<div class="uk-grid uk-grid-small uk-margin-small-top uk-width-1-2@l" v-bind:class="{ loading: loading }" uk-grid="masonry: true">
 
@@ -97,7 +97,7 @@ UK Box Office Data - Insight and and analysis for UK film industry.
 
 				<div class="uk-width-1-2@s">
 					<a class="uk-card-link" href="{{ url_for('index.time') }}">
-						<div class="uk-card uk-card-small border-dash">
+						<div class="uk-card uk-card-small border-dash uk-box-shadow-hover-large">
 							<div class="uk-card-media-top">
 								<img src="{{ url_for('static', filename='icons/2.png') }}" alt="">
 							</div>
@@ -114,7 +114,7 @@ UK Box Office Data - Insight and and analysis for UK film industry.
 				<div class="uk-width-1-2@s">
 					<div class="uk-card uk-card-small bg-dash border-dash">
 						<div class="uk-card-body">
-							<h6 class="uk-text-meta">Total Box Office</h6>
+							<h6 class="uk-text-meta">Total UK Box Office</h6>
 							<div class="dash-title uk-text-center" v-cloak>£ ${ boxOffice | Currency }</div>
 						</div>
 					</div>
@@ -125,7 +125,7 @@ UK Box Office Data - Insight and and analysis for UK film industry.
 						<div class="uk-card-body">
 							<h6 class="uk-text-meta">Recent Weeks</h6>
 							{% for i in dates %}
-								<a class="uk-label" href="{{ url_for('index.week_detail', year=i.date.year, month=i.date.month, start_day=i.date.day) }}">
+								<a class="uk-label bg-red uk-text-white" href="{{ url_for('index.week_detail', year=i.date.year, month=i.date.month, start_day=i.date.day) }}">
 									{{ i.date|date_convert }}
 								</a>
 							{% endfor %}
@@ -144,7 +144,7 @@ UK Box Office Data - Insight and and analysis for UK film industry.
 
 				<div class="uk-width-1-2@s">
 					<a class="uk-card-link" href="{{ url_for('index.week_detail', year=dates[0].date.year, month=dates[0].date.month, start_day=dates[0].date.day) }}">
-						<div class="uk-card uk-card-small bg-dash border-dash">
+						<div class="uk-card uk-card-small bg-dash uk-box-shadow-hover-large border-dash">
 							<div class="uk-card-body">
 								<h6 class="uk-text-meta">
 									Last updated
@@ -161,7 +161,7 @@ UK Box Office Data - Insight and and analysis for UK film industry.
 				<div class="uk-width-1-1@s">
 					<div class="uk-card uk-card-small uk-card-body border-dash">
 						<div class="uk-overflow-auto">
-							<table class="uk-table uk-table-small uk-table-divider uk-table-hover uk-table-striped box-table v-cloak">
+							<table class="uk-table uk-table-small uk-table-divider uk-table-hover uk-table-striped box-table" v-cloak>
 								<thead>
 									<tr>
 										<th></th>
