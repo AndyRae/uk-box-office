@@ -129,7 +129,7 @@ def get_week_box_office(row: pd.Series) -> int:
 
     most_recent_film_match = (
         models.Film_Week.query.filter(
-            models.Film.name == film,
+            models.Film_Week.film.has(name=film),
             models.Film_Week.date >= previous_period,
             models.Film_Week.date <= filter_date,
         )
