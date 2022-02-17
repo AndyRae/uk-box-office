@@ -11,7 +11,7 @@ from flask.wrappers import Response
 from flask_sqlalchemy import model
 from werkzeug.exceptions import abort
 
-from ukbo import cache, db, forms, models, pages
+from ukbo import cache, db, forms, models, pages, utils
 
 bp = Blueprint("index", __name__, template_folder="templates")
 
@@ -236,7 +236,7 @@ def time() -> str:
     """
     query = db.session.query(models.Week)
     data = query.all()
-    data = data_grouped_by_year(data)
+    data = utils.group_by_year(data)
 
     path = "./data/top_films_data.json"
     with open(path) as json_file:
@@ -257,8 +257,8 @@ def year_detail(year: int) -> str:
     if len(data) == 0:
         abort(404)
 
-    table_data = data_grouped_by_film(data)
-    graph_data = data_grouped_by_date(data)
+    table_data = utils.group_by_film(data)
+    graph_data = utils.group_by_date(data)
 
     time = start_date.strftime("%Y")
 
@@ -286,8 +286,8 @@ def month_detail(year: int, month: int) -> str:
     if len(data) == 0:
         abort(404)
 
-    table_data = data_grouped_by_film(data)
-    graph_data = data_grouped_by_date(data)
+    table_data = utils.group_by_film(data)
+    graph_data = utils.group_by_date(data)
 
     time = start_date.strftime("%B %Y")
 
@@ -311,8 +311,8 @@ def week_detail(year: int, month: int, start_day: int) -> str:
     if len(data) == 0:
         abort(404)
 
-    table_data = data_grouped_by_film(data)
-    graph_data = data_grouped_by_date(data)
+    table_data = utils.group_by_film(data)
+    graph_data = utils.group_by_date(data)
 
     time = start_date.strftime("%d %B %Y")
 
@@ -323,6 +323,18 @@ def week_detail(year: int, month: int, start_day: int) -> str:
         time=time,
         year=year,
     )
+
+
+@bp.route("/reports/distributor-market-share/")
+def market_share() -> str:
+    """
+    Market share for distributors
+    """
+    query = db.session.query(models.Film_Week)
+    data = query.all()
+    data, years = utils.group_by_distributor(data)
+
+    return render_template("reports/market_share.html", data=data, years=years)
 
 
 @bp.route("/<path>/")
@@ -344,107 +356,6 @@ def get_time_data(start_date: datetime.date, end_date: datetime.date) -> Any:
     query = query.filter(models.Film_Week.date <= end_date)
     query = query.order_by(models.Film_Week.date.desc())
     return query.all()
-
-
-def data_grouped_by_date(data: List[Any]) -> Dict[str, Any]:
-    """
-    Calculates the statistics by date given a list of weeks
-    """
-    df = pd.DataFrame(
-        [i.as_df() for i in data],
-        columns=[
-            "date",
-            "week_gross",
-            "weekend_gross",
-            "number_of_cinemas",
-            "id",
-            "total_gross",
-            "weeks_on_release",
-            "rank",
-        ],
-    )
-
-    df = (
-        df.groupby(["date"])
-        .agg(
-            {
-                "week_gross": ["sum"],
-                "weekend_gross": ["sum"],
-                "number_of_cinemas": ["max"],
-                "id": ["size"],
-            }
-        )
-        .sort_values(by=["date"])
-    )
-    df.columns = df.columns.get_level_values(0)
-    df["pct_change_week"] = df["week_gross"].pct_change() * 100
-    return df.reset_index().to_dict(orient="records")
-
-
-def data_grouped_by_film(data: List[Any]) -> Dict[str, Any]:
-    """
-    Calculates the total gross per film for this collection of weeks
-    """
-    table_size = 100
-    df = pd.DataFrame(
-        [i.as_df2() for i in data], columns=["title", "slug", "week_gross"]
-    )
-    df = (
-        df.groupby(["title", "slug"])
-        .sum()
-        .sort_values(by=["week_gross"], ascending=False)
-    ).head(table_size)
-    return df.reset_index().to_dict(orient="records")
-
-
-def data_grouped_by_year(data: List[Any]) -> Dict[str, Any]:
-    df = pd.DataFrame(
-        [i.as_df() for i in data],
-        columns=[
-            "date",
-            "week_gross",
-            "releases",
-        ],
-    )
-
-    df = (
-        df.groupby(pd.Grouper(key="date", freq="Y"))
-        .agg(
-            {
-                "week_gross": ["sum"],
-                "releases": ["sum"],
-            }
-        )
-        .sort_values(by=["date"])
-    )
-    df.columns = df.columns.get_level_values(0)
-    df["pct_change"] = df["week_gross"].pct_change() * 100
-    return df.reset_index().to_dict(orient="records")
-
-
-def data_grouped_by_distributor(data: List[Any]) -> Dict[str, Any]:
-    """
-    Calculates statistics per distributor for this collection of weeks
-    """
-    df = pd.DataFrame(
-        [i.as_dict() for i in data],
-        columns=["distributor", "week_gross", "film"],
-    )
-    df = (
-        df.groupby(["distributor"])
-        .agg(
-            {
-                "film": ["nunique"],
-                "week_gross": ["sum"],
-            }
-        )
-        .sort_values(by=("week_gross", "sum"), ascending=False)
-        .rename(columns={"sum": "total", "nunique": "count"})
-    )
-    df.columns = df.columns.droplevel(0)
-    df["market_share"] = df["total"] / df["total"].sum() * 100
-
-    return df.head(10).reset_index().to_dict(orient="records")
 
 
 @bp.app_template_filter()

@@ -289,7 +289,7 @@ var vm = new Vue({
 		},
 
 		groupForTable: function(results) {
-			// TODO: Explain this.
+			// Grouping by film (and slug, distributor) - summing box office, max weeks.
 			var result = results.reduce( (acc, curr) => {
 				let item = acc.find(x => x.film == curr["film"]);
 				if(!item){

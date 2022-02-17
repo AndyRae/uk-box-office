@@ -27,15 +27,20 @@ def init_db() -> None:
 def fill_db() -> None:
     # full archive
     path = "./data/archive.csv"
-
-    # some test data
-    # path = "./data/test.csv"
     input_data = pd.read_csv(path)
     etl.load_dataframe(input_data)
 
 
 @with_appcontext
-def build_top() -> None:
+def test_db() -> None:
+    # some test data
+    path = "./data/test.csv"
+    input_data = pd.read_csv(path)
+    etl.load_dataframe(input_data)
+
+
+@with_appcontext
+def build_static() -> None:
     query = db.session.query(models.Film).options(
         db.selectinload(models.Film.weeks)
     )
@@ -83,15 +88,23 @@ def fill_db_command() -> None:
     click.echo("Filled the database.")
 
 
+@click.command("test-db")
+@with_appcontext
+def test_db_command() -> None:
+    """Fills db with some test data"""
+    test_db()
+    click.echo("Filled the database with test data.")
+
+
 @click.command("build-top")
 @with_appcontext
-def build_top_command() -> None:
+def build_static_command() -> None:
     """
-    Builds a cache of the top films.
-    For the fast load on the time view.
+    Builds a cache of the reports.
+    For the fast load on the static report views.
     """
-    build_top()
-    click.echo("Built top films cache")
+    build_static()
+    click.echo("Built static data cache")
 
 
 @click.command("weekly-etl")
