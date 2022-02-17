@@ -26,11 +26,11 @@ def index() -> str:
     query = db.session.query(models.Film_Week)
     query = query.order_by(models.Film_Week.date.desc())
     query = query.distinct(models.Film_Week.date)
-    dates = query.all()[:6]
+    dates = query.all()[:3]
 
     # initial data for dashboard
     end = datetime.datetime.now()
-    start = end - datetime.timedelta(days=60)
+    start = end - datetime.timedelta(days=90)
     data = get_time_data(start, end)
 
     return render_template("index.html", dates=dates, data=data)
