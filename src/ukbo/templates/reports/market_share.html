@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block title %}Distributor Market Share{% endblock %}
+
+{% block schema %}
+
+{% endblock %}
+
+{% block header %}
+<div class="uk-container">
+	<ul class="uk-breadcrumb">
+		<li><a href="/">Home</a></li>
+		<li aria-current="page"><span>Distributor Market Share</span></li>
+	</ul>
+
+	<h1>Distributor Market Share</h1>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="uk-container uk-margin-medium-top">
+
+	<canvas id="myChart" width="100%" height="50px"></canvas>
+
+	<ul uk-tab>
+		{% for i in years %}
+			<li><a href="#">{{ i }}</a></li>
+		{% endfor %}
+	</ul>
+
+	<ul class="uk-switcher uk-margin">
+		{% for i in years %}
+		{% set outer_loop = loop %}
+		<div class="uk-overflow-auto uk-margin-medium-top">
+			<table class="uk-table uk-table-small uk-table-divider uk-table-hover uk-table-striped" id="marketTable">
+				<thead>
+					<tr>
+						<th>Distributor</th>
+						<th class="uk-text-center">Box Office Total</th>
+						<th class="uk-text-center">Releases</th>
+						<th class="uk-text-center">Market Share</th>
+					</tr>
+					</thead>
+					<tbody>
+					{% for j in data %}
+						<tr>
+							<td>{{ j.label|title }}</td>
+							<td class="uk-text-center">{{ "£{:,}".format(j.total[outer_loop.index -1]) }}</td>
+							<td class="uk-text-center">{{ j.count[outer_loop.index -1] }}</td>
+							<td class="uk-text-center">{{ j.market_share[outer_loop.index -1]|round(2) }}%</td>
+						</tr>
+					{% endfor %}
+					</tbody>
+			</table>
+		</div>
+
+		{% endfor %}
+	</ul>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js" integrity="sha512-Wt1bJGtlnMtGP0dqNFH1xlkLBNpEodaiQ8ZN5JLA5wpc1sUlk/O5uuOMNgvzddzkpvZ9GLyYNa8w2s7rqiTk5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+	var years = []
+	var share = []
+
+	'{% for i in years %}'
+	    years.push('{{ i }}')
+	'{% endfor %}'
+
+	'{% for i in data %}'
+		var randomColor = Math.floor(Math.random()*16777215).toString(16);
+		obj = {
+			'label': '{{ i.label|title }}',
+			'data': {{ i.market_share }},
+			'total': {{ i.total }},
+			'count': {{ i.count }},
+			'borderColor': '#'+randomColor,
+			'backgroundColor': '#'+randomColor,
+			'fill': true
+		}
+		share.push(obj)
+	'{% endfor %}'
+
+</script>
+
+<script src="{{ url_for('static', filename='js/market_share.js') }}"></script>
+
+{% endblock %}

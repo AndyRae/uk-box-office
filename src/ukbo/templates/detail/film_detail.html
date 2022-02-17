@@ -87,7 +87,9 @@
 				</div>
 				<div>
 					<strong><span uk-icon="copy"></span> Source</strong>
-					 <a class="action" href="https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures" target="_blank">bfi.org.uk</a>
+					<p>
+						<a class="action" href="https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures" target="_blank">bfi.org.uk</a>
+					</p>
 				</div>
 				<div>
 					<div>
@@ -97,14 +99,18 @@
 				<div>
 					{% if data.countries %}
 						<strong><span uk-icon="world"></span> Countries</strong>
+						<p>
 						{% for i in data.countries %}
 							<a class="action" href="{{ url_for('index.country', slug=i.slug) }}">{{ i.name }}</a>
 						{% endfor %}
+						</p>
 					{% endif %}
 				</div>
 				<div>
 					<strong><span uk-icon="play"></span> Distributor</strong>
-					<a class="action" href="{{ url_for('index.distributor', slug=data.distributor.slug) }}">{{ data.distributor|title }}</a>
+					<p>
+						<a class="action" href="{{ url_for('index.distributor', slug=data.distributor.slug) }}">{{ data.distributor|title }}</a>
+					</p>
 				</div>
 
 			</div>
