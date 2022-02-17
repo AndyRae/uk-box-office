@@ -1,11 +1,12 @@
 """Scheduled tasks"""
 
 import os
+from datetime import datetime, timedelta
 
 from dotenv import load_dotenv
 from flask import current_app
 
-from ukbo import etl, scheduler
+from ukbo import db, etl, models, scheduler
 
 
 @scheduler.task(
@@ -14,8 +15,8 @@ from ukbo import etl, scheduler
     week="*",
     max_instances=1,
     day_of_week="wed",
-    hour=12,
-    minute=00,
+    hour="9-18",
+    minute="00,15,30,45",
     second=00,
     timezone="UTC",
 )
@@ -26,13 +27,24 @@ def run_etl() -> None:
     """
     print("ETL Pipeline task")
     with scheduler.app.app_context():
-        load_dotenv()
-        source_url = os.environ.get("SOURCE_URL")
-        if source_url is not None:
-            path = etl.get_excel_file(source_url)
-            if path[0] is True:
-                df = etl.extract_box_office(path[1])
-                etl.load_dataframe(df)
-                current_app.logger.info("Weekly-ETL auto run succesful.")
-            else:
-                current_app.logger.warning("Weekly-ETL auto run failed.")
+
+        # Checks against the last data load
+        query = db.session.query(models.Film_Week)
+        last_date = query.order_by(models.Film_Week.date.desc()).first().date
+        now = datetime.now() - timedelta(days=7)
+
+        if now <= last_date:
+            load_dotenv()
+            source_url = os.environ.get("SOURCE_URL")
+            if source_url is not None:
+                path = etl.get_excel_file(source_url)
+                if path[0] is True:
+                    df = etl.extract_box_office(path[1])
+                    etl.load_dataframe(df)
+                    current_app.logger.info("Weekly-ETL auto run succesful.")
+                else:
+                    current_app.logger.warning("Weekly-ETL auto run failed.")
+        else:
+            current_app.logger.warning(
+                "ETL fetch failed - website file is pending update."
+            )

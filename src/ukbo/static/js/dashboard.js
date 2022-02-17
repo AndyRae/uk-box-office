@@ -364,12 +364,12 @@ var vm = new Vue({
 		generateDatePickers: function() {
 			// Create date picker objects
 			var start = new Date();
-			start.setDate(start.getDate() - 60 );
+			start.setDate(start.getDate() - 90 );
 			this.dateStart = document.querySelector('.date-start');
 			this.dateStart.valueAsDate = start
 
 			var min = new Date();
-			min.setDate(min.getDate() - 365); // allow to go back 1 years
+			min.setDate(min.getDate() - 730); // allow to go back 2 years
 			min = min.toISOString()
 			min = min.substring(0, min.indexOf('T'))
 			this.dateStart.min = min
