@@ -1,63 +1,14 @@
 {% extends 'base.html' %}
+{% import 'includes/schema.html' as dataschema %}
 
 {% block title %}Distributor Market Share{% endblock %}
 
 {% block schema %}
-{
-	"@context": "https://schema.org/",
-	"@graph":
-		[{
-		"@type": "Organization",
-		"name" : "UK Box Office Data",
-		"url" : "https://boxofficedata.co.uk",
-		"logo": {
-			"@type": "ImageObject",
-			"url": "https://boxofficedata.co.uk/static/icons/icon-hires.png"
-			}
-	},
-		{
-		"@context":"https://schema.org/",
-		"@type":"Dataset",
-		"name":"UK Film Distributor Market Share 2001 - 2022",
-		"description":"UK Film Distributor Market Share 2001 - 2022.",
-		"url":"https://boxofficedata.co.uk{{ url_for(request.endpoint, **request.view_args) }}",
-		"isBasedOn":"https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures",
-		"keywords":[
-			"BOX OFFICE DATA > CINEMA"
-		],
-		"license" : "https://creativecommons.org/licenses/by-sa/4.0/",
-		"isAccessibleForFree" : true,
-		"creator":{
-			"@type":"Organization",
-			"url": "https://boxofficedata.co.uk",
-			"name":"Box Office Data UK",
-			"contactPoint":{
-				"@type":"ContactPoint",
-				"contactType": "customer service",
-				"email":"hello@boxofficedata.co.uk"
-			}
-		},
-		"funder":{
-		"@type": "Organization",
-		"sameAs": "https://ror.org/04qg9vz18",
-		"name": "British Film Institute"
-		},
-		"includedInDataCatalog":{
-		"@type":"DataCatalog",
-		"name":"Box Office Data UK"
-		},
-		"distribution":[
-		{
-			"@type":"DataDownload",
-			"encodingFormat":"CSV",
-			"contentUrl":"https://boxofficedata.co.uk{{ url_for(request.endpoint, **request.view_args) }}"
-		}
-		],
-		"temporalCoverage":"2001 - 2022"
-		}
-	]
-}
-
+	{{ dataschema.render_schema(
+		'UK Film Distributor Market Share 2001 - 2022',
+		url_for(request.endpoint, **request.view_args),
+		'2001 - 2022' )
+	}}
 {% endblock %}
 
 {% block header %}

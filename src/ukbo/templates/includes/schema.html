@@ -1,0 +1,56 @@
+{% macro render_schema(title, endpoint, time ) %}
+{
+	"@context": "https://schema.org/",
+	"@graph":
+		[{
+		"@type": "Organization",
+		"name" : "UK Box Office Data",
+		"url" : "https://boxofficedata.co.uk",
+		"logo": {
+			"@type": "ImageObject",
+			"url": "https://boxofficedata.co.uk/static/icons/icon-hires.png"
+			}
+	},
+		{
+		"@context":"https://schema.org/",
+		"@type":"Dataset",
+		"name":"{{ title }} Box Office Data",
+		"description":"UK Cinema Box Office revenue data for: {{ title }}.",
+		"url":"https://boxofficedata.co.uk{{ url_for(request.endpoint, **request.view_args) }}",
+		"isBasedOn":"https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures",
+		"keywords":[
+			"BOX OFFICE DATA > CINEMA > {{ title }}"
+		],
+		"license" : "https://creativecommons.org/licenses/by-sa/4.0/",
+		"isAccessibleForFree" : true,
+		"creator":{
+			"@type":"Organization",
+			"url": "https://boxofficedata.co.uk",
+			"name":"Box Office Data UK",
+			"contactPoint":{
+				"@type":"ContactPoint",
+				"contactType": "customer service",
+				"email":"hello@boxofficedata.co.uk"
+			}
+		},
+		"funder":{
+		"@type": "Organization",
+		"sameAs": "https://ror.org/04qg9vz18",
+		"name": "British Film Institute"
+		},
+		"includedInDataCatalog":{
+		"@type":"DataCatalog",
+		"name":"Box Office Data UK"
+		},
+		"distribution":[
+		{
+			"@type":"DataDownload",
+			"encodingFormat":"CSV",
+			"contentUrl":"https://boxofficedata.co.uk{{ url_for(request.endpoint, **request.view_args) }}"
+		}
+		],
+		"temporalCoverage":"{{ time }}"
+		}
+	]
+}
+{% endmacro %}
