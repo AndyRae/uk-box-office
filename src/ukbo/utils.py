@@ -69,13 +69,31 @@ def group_by_film(data: List[Any]) -> Dict[str, Any]:
     """
     table_size = 100
     df = pd.DataFrame(
-        [i.as_df2() for i in data], columns=["title", "slug", "week_gross"]
+        [i.as_df2() for i in data],
+        columns=[
+            "title",
+            "slug",
+            "weekend_gross",
+            "week_gross",
+            "number_of_cinemas",
+            "weeks_on_release",
+        ],
     )
+
     df = (
         df.groupby(["title", "slug"])
-        .sum()
-        .sort_values(by=["week_gross"], ascending=False)
+        .agg(
+            {
+                "number_of_cinemas": ["max"],
+                "week_gross": ["sum"],
+                "weekend_gross": ["sum"],
+                "weeks_on_release": ["max"],
+            }
+        )
+        .sort_values(by=("week_gross", "sum"), ascending=False)
     ).head(table_size)
+
+    df.columns = df.columns.droplevel(1)
     return df.reset_index().to_dict(orient="records")
 
 

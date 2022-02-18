@@ -76,7 +76,9 @@
 	<div class="uk-container uk-margin-medium-top">
 		<div class="p-centered">
 
-			<canvas id="myChart" class="mt-5" width="100%" height="50px"></canvas>
+			{% if graph_data|length > 1  %}
+				<canvas id="myChart" class="mt-5" width="100%" height="50px"></canvas>
+			{% endif %}
 
 			<hr>
 
@@ -141,7 +143,10 @@
 								<tr>
 									<th class="uk-text-center">Rank</th>
 									<th>Film</th>
-									<th class="uk-text-center">Box Office</th>
+									<th class="uk-text-center">Weekend Box Office</th>
+									<th class="uk-text-center">Week Box Office</th>
+									<th class="uk-text-center">Weeks</th>
+									<th class="uk-text-center">Cinemas</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -149,7 +154,10 @@
 									<tr>
 										<td class="uk-text-center">{{ loop.index }}</td>
 										<td><a class="action" href="{{ url_for('index.film', slug=i.slug) }}">{{ i.title|title }}</a></td>
+										<td class="uk-text-center">{{ "£{:,}".format(i.weekend_gross) }}</td>
 										<td class="uk-text-center">{{ "£{:,}".format(i.week_gross) }}</td>
+										<td class="uk-text-center">{{ i.weeks_on_release }}</td>
+										<td class="uk-text-center">{{ i.number_of_cinemas }}</td>
 									</tr>
 								{% endfor %}
 							</tbody>

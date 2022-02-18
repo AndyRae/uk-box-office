@@ -77,7 +77,7 @@ def films_letter(char: str) -> Response:
     films = query.all()
 
     for i in films:
-        slug = f"{url}/films/{i.slug}/"
+        slug = f"{url}/films/{i.slug}"
         data.append([slug, lastmod])
 
     return return_sitemap(data)
@@ -93,7 +93,7 @@ def countries() -> Response:
 
     countries = db.session.query(models.Country.slug).all()
     for i in countries:
-        slug = f"{url}/countries/{i.slug}/"
+        slug = f"{url}/countries/{i.slug}"
         data.append([slug, lastmod])
 
     return return_sitemap(data)
@@ -109,7 +109,7 @@ def distributors() -> Response:
 
     distributors = db.session.query(models.Distributor.slug).all()
     for i in distributors:
-        slug = f"{url}/distributors/{i.slug}/"
+        slug = f"{url}/distributors/{i.slug}"
         data.append([slug, lastmod])
 
     return return_sitemap(data)
@@ -133,11 +133,11 @@ def time() -> Response:
 
     # Creates time range slugs
     for i in range(2001, now.year):
-        slug = f"{url}/time/{i}/"
+        slug = f"{url}/time/{i}"
         data.append([slug, i])
 
         for j in range(1, 13):
-            slug = f"{url}/time/{i}/{j}/"
+            slug = f"{url}/time/{i}/{j}"
             data.append([slug, i])
 
     return return_sitemap(data)
