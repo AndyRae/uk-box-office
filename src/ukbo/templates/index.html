@@ -100,7 +100,7 @@ UK Box Office Data - Insight and and analysis for UK film industry.
 					<a class="uk-card-link" href="{{ url_for('index.time') }}">
 						<div class="uk-card uk-card-small border-dash uk-box-shadow-hover-large">
 							<div class="uk-card-media-top">
-								<img src="{{ url_for('static', filename='icons/2.png') }}" alt="">
+								<img src="{{ url_for('static', filename='images/annual.png') }}" alt="">
 							</div>
 							<div class="uk-card-body">
 								<h4 class="uk-card-title">Annual Data</h4>
@@ -175,7 +175,7 @@ UK Box Office Data - Insight and and analysis for UK film industry.
 									<tbody id="results">
 										<tr v-for="(item, index) in sortedfilms.slice(0, 100)">
 											<td class="text-small uk-text-center">${ index + 1 }</td>
-											<td class="text-small"><a :href="`/films/${ item.film_slug }/`">${ item.film | TitleCase }</a></td>
+											<td class="text-small"><a :href="`/films/${ item.film_slug }`">${ item.film | TitleCase }</a></td>
 											<td class="text-small uk-text-center" style="min-width:100px">£${ item.week_gross | Currency }</td>
 											<td class="text-small uk-text-center">${ item.weeks }</td>
 											<td class="text-small">${ item.distributor | TitleCase }</td>
