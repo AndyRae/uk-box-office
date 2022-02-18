@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}Highest Grossing Films{% endblock %}
+
+{% block schema %}
+{
+	"@context": "https://schema.org/",
+	"@graph":
+		[{
+		"@type": "Organization",
+		"name" : "UK Box Office Data",
+		"url" : "https://boxofficedata.co.uk",
+		"logo": {
+			"@type": "ImageObject",
+			"url": "https://boxofficedata.co.uk/static/icons/icon-hires.png"
+			}
+	},
+		{
+		"@context":"https://schema.org/",
+		"@type":"Dataset",
+		"name":"Highest Grossing Films UK Box Office 2001 - 2022",
+		"description":"Highest Grossing Films UK Box Office 2001 - 2022.",
+		"url":"https://boxofficedata.co.uk{{ url_for(request.endpoint, **request.view_args) }}",
+		"isBasedOn":"https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures",
+		"keywords":[
+			"BOX OFFICE DATA > CINEMA"
+		],
+		"license" : "https://creativecommons.org/licenses/by-sa/4.0/",
+		"isAccessibleForFree" : true,
+		"creator":{
+			"@type":"Organization",
+			"url": "https://boxofficedata.co.uk",
+			"name":"Box Office Data UK",
+			"contactPoint":{
+				"@type":"ContactPoint",
+				"contactType": "customer service",
+				"email":"hello@boxofficedata.co.uk"
+			}
+		},
+		"funder":{
+		"@type": "Organization",
+		"sameAs": "https://ror.org/04qg9vz18",
+		"name": "British Film Institute"
+		},
+		"includedInDataCatalog":{
+		"@type":"DataCatalog",
+		"name":"Box Office Data UK"
+		},
+		"distribution":[
+		{
+			"@type":"DataDownload",
+			"encodingFormat":"CSV",
+			"contentUrl":"https://boxofficedata.co.uk{{ url_for(request.endpoint, **request.view_args) }}"
+		}
+		],
+		"temporalCoverage":"2001 - 2022"
+		}
+	]
+}
+{% endblock %}
+
+{% block header %}
+<div class="uk-container">
+	<ul class="uk-breadcrumb">
+		<li><a href="/">Home</a></li>
+		<li><a href="{{ url_for('index.reports') }}">Reports</a></li>
+		<li aria-current="page"><span>Highest Grossing Films</span></li>
+	</ul>
+
+	<h1>Highest Grossing Films</h1>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="uk-container uk-margin-medium-top">
+
+	<div class="uk-overflow-auto">
+		<table class="uk-table uk-table-small uk-table-divider uk-table-hover uk-table-striped" id="filmsTable">
+			<thead>
+				<tr>
+					<th class="uk-text-center">Rank</th>
+					<th>Film</th>
+					<th>Distributor</th>
+					<th class="uk-text-center">Box Office</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for i in data %}
+					<tr >
+						<td class="uk-text-center">{{ loop.index }}</td>
+						<td>
+							<a class="action" href="{{ url_for('index.film', slug=i.weeks[0].film_slug) }}">
+								{{ i.name|title }}
+							</a>
+						</td>
+						<td>{{ i.distributor|title }}</td>
+						<td class="uk-text-center">{{  "£{:,}".format(i.weeks[-1].total_gross) }}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+
+</div>
+
+
+{% endblock %}

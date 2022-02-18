@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 from flask import current_app
 from flask.cli import with_appcontext
 
-from ukbo import db, etl, models
+from ukbo import db, etl, models, utils
 
 
 @with_appcontext
@@ -40,16 +40,28 @@ def test_db() -> None:
 
 
 @with_appcontext
-def build_static() -> None:
+def static_top_films() -> None:
     query = db.session.query(models.Film).options(
         db.selectinload(models.Film.weeks)
     )
     query = query.order_by(models.Film.gross.desc())  # type: ignore
-    query = query.limit(10)
+    query = query.limit(25)
     films = query.all()
 
     json_data = [ix.as_dict() for ix in films]
     path = "./data/top_films_data.json"
+    with open(path, "w") as outfile:
+        json.dump(json_data, outfile)
+
+
+@with_appcontext
+def static_distributor_market() -> None:
+    query = db.session.query(models.Film_Week)
+    data = query.all()
+    data, years = utils.group_by_distributor(data)
+
+    json_data = data
+    path = "./data/distributor_market_data.json"
     with open(path, "w") as outfile:
         json.dump(json_data, outfile)
 
@@ -96,14 +108,17 @@ def test_db_command() -> None:
     click.echo("Filled the database with test data.")
 
 
-@click.command("build-top")
+@click.command("build-static")
 @with_appcontext
 def build_static_command() -> None:
     """
     Builds a cache of the reports.
     For the fast load on the static report views.
     """
-    build_static()
+    static_top_films()
+    click.echo("Built top films cache")
+    static_distributor_market()
+    click.echo("Built distributor market cache")
     click.echo("Built static data cache")
 
 

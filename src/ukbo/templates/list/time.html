@@ -77,35 +77,6 @@
 			<canvas id="myChart" class="mt-5" width="100%" height="45px"></canvas>
 		</div>
 
-		<hr>
-
-		<div class="uk-overflow-auto">
-			<table class="uk-table uk-table-small uk-table-divider uk-table-hover uk-table-striped" id="filmsTable">
-				<thead>
-					<tr>
-						<th class="uk-text-center">Rank</th>
-						<th>Film</th>
-						<th>Distributor</th>
-						<th class="uk-text-center">Box Office</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for i in films %}
-						<tr >
-							<td class="uk-text-center">{{ loop.index }}</td>
-							<td>
-								<a class="action" href="{{ url_for('index.film', slug=i.weeks[0].film_slug) }}">
-									{{ i.name|title }}
-								</a>
-							</td>
-							<td>{{ i.distributor|title }}</td>
-							<td class="uk-text-center">{{  "£{:,}".format(i.weeks[-1].total_gross) }}</td>
-						</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-		</div>
-
 		<hr class="uk-margin-medium-top">
 
 		<div class="uk-overflow-auto uk-margin-medium-top">

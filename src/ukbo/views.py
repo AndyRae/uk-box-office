@@ -80,7 +80,7 @@ def search() -> str:
     )
 
 
-@bp.route("/films/")
+@bp.route("/films")
 def films() -> str:
     """
     List of all films.
@@ -99,7 +99,7 @@ def films() -> str:
     return render_template("list/films.html", data=data)
 
 
-@bp.route("/distributors/")
+@bp.route("/distributors")
 def distributors() -> str:
     """
     List of all distributors.
@@ -117,7 +117,7 @@ def distributors() -> str:
     )
 
 
-@bp.route("/countries/")
+@bp.route("/countries")
 @cache.cached()
 def countries() -> str:
     """
@@ -130,7 +130,7 @@ def countries() -> str:
     return render_template("list/countries.html", data=data)
 
 
-@bp.route("/films/<slug>/")
+@bp.route("/films/<slug>")
 @cache.cached()
 def film(slug: str) -> str:
     """
@@ -175,7 +175,7 @@ def film(slug: str) -> str:
     )
 
 
-@bp.route("/distributors/<slug>/")
+@bp.route("/distributors/<slug>")
 def distributor(slug: str) -> str:
     """
     Distributor detail.
@@ -201,7 +201,7 @@ def distributor(slug: str) -> str:
     )
 
 
-@bp.route("/countries/<slug>/")
+@bp.route("/countries/<slug>")
 def country(slug: str) -> str:
     """
     Country detail.
@@ -226,26 +226,21 @@ def country(slug: str) -> str:
     )
 
 
-@bp.route("/time/")
+@bp.route("/time")
 @cache.cached()
 def time() -> str:
     """
     List of all time periods.
     Data per year.
-    Top films of all time - cached for speed.
     """
     query = db.session.query(models.Week)
     data = query.all()
     data = utils.group_by_year(data)
 
-    path = "./data/top_films_data.json"
-    with open(path) as json_file:
-        films = json.load(json_file)
-
-    return render_template("list/time.html", data=data, films=films)
+    return render_template("list/time.html", data=data)
 
 
-@bp.route("/time/<int:year>/")
+@bp.route("/time/<int:year>")
 def year_detail(year: int) -> str:
     """
     Year Detail.
@@ -271,7 +266,7 @@ def year_detail(year: int) -> str:
     )
 
 
-@bp.route("/time/<int:year>/<int:month>/")
+@bp.route("/time/<int:year>/<int:month>")
 def month_detail(year: int, month: int) -> str:
     """
     Month detail.
@@ -300,7 +295,7 @@ def month_detail(year: int, month: int) -> str:
     )
 
 
-@bp.route("/time/<int:year>/<int:month>/<int:start_day>/")
+@bp.route("/time/<int:year>/<int:month>/<int:start_day>")
 def week_detail(year: int, month: int, start_day: int) -> str:
     """
     Week detail.
@@ -325,19 +320,44 @@ def week_detail(year: int, month: int, start_day: int) -> str:
     )
 
 
-@bp.route("/reports/distributor-market-share/")
+@bp.route("/reports")
+def reports() -> str:
+    """
+    Listview for reports
+    """
+    return render_template("list/reports.html")
+
+
+@bp.route("/reports/distributor-market-share")
 def market_share() -> str:
     """
     Market share for distributors
+    Data loaded from static for speed
     """
-    query = db.session.query(models.Film_Week)
-    data = query.all()
-    data, years = utils.group_by_distributor(data)
+    path = "./data/distributor_market_data.json"
+    with open(path) as json_file:
+        data = json.load(json_file)
+
+    now = datetime.datetime.now()
+    years = list(range(2001, now.year + 1))
 
     return render_template("reports/market_share.html", data=data, years=years)
 
 
-@bp.route("/<path>/")
+@bp.route("/reports/highest-grossing-films-all-time")
+def top_films() -> str:
+    """
+    Highest grossing films.
+    Data loaded from static for speed
+    """
+    path = "./data/top_films_data.json"
+    with open(path) as json_file:
+        data = json.load(json_file)
+
+    return render_template("reports/top_films.html", data=data)
+
+
+@bp.route("/<path>")
 def flat(path: str) -> str:
     """
     Flat pages view.
