@@ -50,7 +50,7 @@
 					<tbody>
 					{% for j in data %}
 						<tr>
-							<td>{{ j.label|title }}</td>
+							<td><a href="{{ url_for('index.distributor', slug=j.slug) }}">{{ j.label|title }}</a></td>
 							<td class="uk-text-center">{{ "£{:,}".format(j.total[outer_loop.index -1]) if j.total[outer_loop.index -1] }}</td>
 							<td class="uk-text-center">{{ j.count[outer_loop.index -1] if j.count[outer_loop.index -1] }}</td>
 							<td class="uk-text-center">{{ j.market_share[outer_loop.index -1]|round(2) if j.market_share[outer_loop.index -1] }}%</td>

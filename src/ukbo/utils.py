@@ -1,6 +1,7 @@
 from typing import Any, Dict, List
 
 import pandas as pd
+from slugify import slugify  # type: ignore
 
 
 def group_by_date(data: List[Any]) -> Dict[str, Any]:
@@ -18,6 +19,7 @@ def group_by_date(data: List[Any]) -> Dict[str, Any]:
             "total_gross",
             "weeks_on_release",
             "rank",
+            "site_average",
         ],
     )
 
@@ -29,6 +31,7 @@ def group_by_date(data: List[Any]) -> Dict[str, Any]:
                 "weekend_gross": ["sum"],
                 "number_of_cinemas": ["max"],
                 "id": ["size"],
+                "site_average": ["mean"],
             }
         )
         .sort_values(by=["date"])
@@ -77,6 +80,7 @@ def group_by_film(data: List[Any]) -> Dict[str, Any]:
             "week_gross",
             "number_of_cinemas",
             "weeks_on_release",
+            "site_average",
         ],
     )
 
@@ -88,6 +92,7 @@ def group_by_film(data: List[Any]) -> Dict[str, Any]:
                 "week_gross": ["sum"],
                 "weekend_gross": ["sum"],
                 "weeks_on_release": ["max"],
+                "site_average": ["mean"],
             }
         )
         .sort_values(by=("week_gross", "sum"), ascending=False)
@@ -158,6 +163,7 @@ def group_by_distributor(data: List[Any]) -> Any:
 
         distributor = {
             "label": i,
+            "slug": slugify(i),
             "market_share": market_share,
             "total": total,
             "count": count,
