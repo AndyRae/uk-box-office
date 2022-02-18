@@ -76,8 +76,8 @@
 											{% else %}
 												<td class="uk-text-center">-</td>
 											{% endif %}
-											<td class="uk-text-center">{{ i.id}}</td>
-											<td class="uk-text-center">{{ i.number_of_cinemas}}</td>
+											<td class="uk-text-center">{{ i.id }}</td>
+											<td class="uk-text-center">{{ i.number_of_cinemas }}</td>
 										</tr>
 									{% endfor %}
 								</tbody>
@@ -99,6 +99,7 @@
 									<th class="uk-text-center">Week Box Office</th>
 									<th class="uk-text-center">Weeks</th>
 									<th class="uk-text-center">Cinemas</th>
+									<th class="uk-text-center">Site Average</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -110,6 +111,7 @@
 										<td class="uk-text-center">{{ "£{:,}".format(i.week_gross) }}</td>
 										<td class="uk-text-center">{{ i.weeks_on_release }}</td>
 										<td class="uk-text-center">{{ i.number_of_cinemas }}</td>
+										<td class="uk-text-center">{{ "£{:,}".format(i.site_average|round(2)) }}</td>
 									</tr>
 								{% endfor %}
 							</tbody>

@@ -93,8 +93,9 @@ class Country(db.Model):  # type: ignore
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
-class Distributor(db.Model):  # type: ignore
+class Distributor(SearchableMixin, db.Model):  # type: ignore
     __tablename__ = "distributor"
+    __searchable__ = ["name"]
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
     films = db.relationship("Film", back_populates="distributor")
@@ -234,6 +235,7 @@ class Film_Week(db.Model):  # type: ignore
     weekend_gross = db.Column(db.Integer, nullable=False)
     week_gross = db.Column(db.Integer, nullable=False)
     total_gross = db.Column(db.Integer, nullable=False)
+    site_average = db.Column(db.Float, nullable=False)
 
     def __repr__(self) -> str:
         return f"{self.week_gross}"
@@ -266,6 +268,7 @@ class Film_Week(db.Model):  # type: ignore
             self.total_gross,
             self.weeks_on_release,
             self.rank,
+            self.site_average,
         ]
 
     def as_df_film(self) -> List[Any]:
@@ -279,4 +282,5 @@ class Film_Week(db.Model):  # type: ignore
             self.week_gross,
             self.number_of_cinemas,
             self.weeks_on_release,
+            self.site_average,
         ]

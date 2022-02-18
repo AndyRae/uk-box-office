@@ -77,6 +77,41 @@ def search() -> str:
         results=results,
         next_url=next_url,
         prev_url=prev_url,
+        type="films",
+    )
+
+
+@bp.route("/distributors-search")
+def search_distributors() -> str:
+    page = request.args.get("page", default=1, type=int)
+    results, total = models.Distributor.search(
+        g.search_form.q.data, page, 20  # type: ignore
+    )
+    next_url = (
+        url_for(
+            "index.search_distributors",
+            q=g.search_form.q.data,
+            page=page + 1,  # type: ignore
+        )
+        if total > page * 20  # type: ignore
+        else None
+    )
+    prev_url = (
+        url_for(
+            "index.search_distributors",
+            q=g.search_form.q.data,
+            page=page - 1,  # type: ignore
+        )
+        if page > 1  # type: ignore
+        else None
+    )
+    return render_template(
+        "search.html",
+        title=("Search"),
+        results=results,
+        next_url=next_url,
+        prev_url=prev_url,
+        type="distributors",
     )
 
 
@@ -84,7 +119,6 @@ def search() -> str:
 def films() -> str:
     """
     List of all films.
-    TODO: Should be ordered by last updated
     """
     page = request.args.get("page", 1, type=int)
     query = db.session.query(models.Film).options(
@@ -154,6 +188,7 @@ def film(slug: str) -> str:
             "total_gross",
             "weeks_on_release",
             "rank",
+            "site_average",
         ],
     )
     table["pct_change_weekend"] = table["weekend_gross"].pct_change() * 100

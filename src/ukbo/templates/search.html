@@ -19,7 +19,6 @@
 <div class="uk-container">
 	<ul class="uk-breadcrumb">
 		<li><a href="/">Home</a></li>
-		<li><a href="{{ url_for('index.search') }}">Search</a></li>
 		<li aria-current="page"><span>Results</span></li>
 	</ul>
 
@@ -30,30 +29,34 @@
 
 {% block content %}
     <div class="uk-container uk-margin-medium-top">
-        <div class="table-responsive uk-overflow-auto">
-            <table class="uk-table uk-table-small uk-table-divider uk-table-hover uk-table-striped">
-                <thead>
-                    <tr>
-                        <th>Film</th>
-                        <th>Distributor</th>
-                        <th>Country</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for i in results %}
-                        <tr>
-                            <td><a class="action" href="{{ url_for('index.film', slug=i.slug) }}">{{ i.name|title }}</a></td>
-                            <td>{{ i.distributor|title}}</td>
-                            <td>
-                                {% for j in i.countries %}
-                                    <a href="{{ url_for('index.country', slug=j.slug) }}">{{ j }}</a>
-                                {% endfor %}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-            </table>
-        </div>
+
+        <ul class="uk-list uk-list-large uk-list-divider">
+            {% for i in results %}
+                {% if type == 'films' %}
+                    <li>
+                        <h4>
+                            <a class="action" href="{{ url_for('index.film', slug=i.slug) }}">
+                                {{ i.name|title }}
+                            </a>
+
+                        </h4>
+                        <p>{{ i.distributor|title}}</p>
+                        <p>{% for j in i.countries %}
+                            <a href="{{ url_for('index.country', slug=j.slug) }}">{{ j }}</a>
+                        {% endfor %}
+                        </p>
+                    </li>
+                {% else %}
+                <li>
+                    <h4>
+                        <a class="action" href="{{ url_for('index.distributor', slug=i.slug) }}">
+                            {{ i.name|title }}
+                        </a>
+                    </h4>
+                </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
 
         <nav aria-label="...">
             <ul class="uk-pagination">

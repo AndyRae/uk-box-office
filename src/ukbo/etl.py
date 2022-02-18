@@ -230,6 +230,7 @@ def load_dataframe(archive: pd.DataFrame) -> None:
             i["number_of_cinemas"],
             i["weeks_on_release"],
         )
+        i["site_average"] = i["weekend_gross"] / i["number_of_cinemas"]
 
         i.pop("country", None)
 
