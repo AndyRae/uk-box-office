@@ -379,6 +379,30 @@ def market_share() -> str:
     return render_template("reports/market_share.html", data=data, years=years)
 
 
+# @bp.route("/reports/country-market-share")
+# def market_share_country() -> str:
+#     """
+#     Market share for countries
+#     Data loaded from static for speed
+#     """
+#     # path = "./data/distributor_market_data.json"
+#     # with open(path) as json_file:
+#     #     data = json.load(json_file)
+
+#     # now = datetime.datetime.now()
+#     # years = list(range(2001, now.year + 1))
+
+#     query = db.session.query(models.Film_Week)
+#     data = query.all()
+#     data, years = utils.group_by_country(data)
+
+#     # json_data = data
+#     # path = "./data/distributor_market_data.json"
+#     # with open(path, "w") as outfile:
+#     #     json.dump(json_data, outfile)
+#     # return render_template("reports/market_share.html", data=data, years=years)
+
+
 @bp.route("/reports/highest-grossing-films-all-time")
 def top_films() -> str:
     """
