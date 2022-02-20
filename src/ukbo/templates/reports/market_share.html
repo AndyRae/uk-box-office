@@ -71,19 +71,21 @@
 	var years = []
 	var share = []
 
+	var colors = ['#fe7e6d', '#fc9b89', '#f8b6a5', '#f2cfc0', '#ede7d8', '#d8d3e8', '#aeaae8', '#7f83de', '#4c61c6', '#17439b']
+
 	'{% for i in years %}'
 	    years.push('{{ i }}')
 	'{% endfor %}'
 
 	'{% for i in data %}'
-		var randomColor = Math.floor(Math.random()*16777215).toString(16);
+		var randomColor = colors.shift()
 		obj = {
 			'label': '{{ i.label|title }}',
 			'data': {{ i.market_share }},
 			'total': {{ i.total }},
 			'count': {{ i.count }},
-			'borderColor': '#'+randomColor,
-			'backgroundColor': '#'+randomColor,
+			'borderColor': randomColor,
+			'backgroundColor': randomColor,
 			'fill': true
 		}
 		share.push(obj)

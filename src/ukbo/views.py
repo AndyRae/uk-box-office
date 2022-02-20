@@ -284,13 +284,19 @@ def year_detail(year: int) -> str:
     end_date = datetime.date(int(year), 12, 31)
     data = get_time_data(start_date, end_date)
 
+    time = start_date.strftime("%Y")
+
     if len(data) == 0:
-        abort(404)
+        render_template(
+            "detail/time_detail.html",
+            table_data=[],
+            graph_data=[],
+            time=time,
+            year=year,
+        )
 
     table_data = utils.group_by_film(data)
     graph_data = utils.group_by_date(data)
-
-    time = start_date.strftime("%Y")
 
     return render_template(
         "detail/time_detail.html",
@@ -311,15 +317,21 @@ def month_detail(year: int, month: int) -> str:
     start_date = datetime.date(year, month, 1)
     end_date = datetime.date(year, month, end_day)
 
+    time = start_date.strftime("%B %Y")
+
     data = get_time_data(start_date, end_date)
 
     if len(data) == 0:
-        abort(404)
+        render_template(
+            "detail/time_detail.html",
+            table_data=[],
+            graph_data=[],
+            time=time,
+            year=year,
+        )
 
     table_data = utils.group_by_film(data)
     graph_data = utils.group_by_date(data)
-
-    time = start_date.strftime("%B %Y")
 
     return render_template(
         "detail/time_detail.html",
@@ -338,13 +350,19 @@ def week_detail(year: int, month: int, start_day: int) -> str:
     start_date = datetime.date(year, month, start_day)
     data = get_time_data(start_date, start_date)
 
+    time = start_date.strftime("%d %B %Y")
+
     if len(data) == 0:
-        abort(404)
+        render_template(
+            "detail/time_detail.html",
+            table_data=[],
+            graph_data=[],
+            time=time,
+            year=year,
+        )
 
     table_data = utils.group_by_film(data)
     graph_data = utils.group_by_date(data)
-
-    time = start_date.strftime("%d %B %Y")
 
     return render_template(
         "detail/time_detail.html",
