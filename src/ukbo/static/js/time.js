@@ -23,10 +23,10 @@ function graph(time_dates, week_gross) {
 				type: 'line',
 				order: 1,
 				backgroundColor: [
-					'#6dfec6',
+					'#d9d3e8',
 				],
 				borderColor: [
-					'#6dfec6',
+					'#d9d3e8',
 				],
 				pointStyle: 'circle',
 				tension: 0.3,

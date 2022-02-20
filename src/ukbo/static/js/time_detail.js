@@ -72,6 +72,7 @@ function bargraph(films, week_gross) {
 			}]
 		},
 		options: {
+
 			scales: {
 				x: {
 					grid: {
