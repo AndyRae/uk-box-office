@@ -12,7 +12,6 @@ Flask-WTF
 gunicorn
 mypy
 pandas
-pip-audit
 pip-tools
 pre-commit
 psycopg2-binary

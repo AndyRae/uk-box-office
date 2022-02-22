@@ -14,8 +14,6 @@ beautifulsoup4==4.10.0
     # via -r src/requirements.in
 blinker==1.4
     # via flask-debugtoolbar
-cachecontrol==0.12.10
-    # via pip-audit
 certifi==2021.5.30
     # via
     #   elasticsearch
@@ -30,8 +28,6 @@ click==7.1.2
     #   pip-tools
 coverage==5.5
     # via -r src/requirements.in
-cyclonedx-python-lib==0.12.3
-    # via pip-audit
 distlib==0.3.4
     # via virtualenv
 elasticsearch==7.13.4
@@ -66,8 +62,6 @@ greenlet==1.1.1
     # via sqlalchemy
 gunicorn==20.1.0
     # via -r src/requirements.in
-html5lib==1.1
-    # via pip-audit
 identify==2.4.0
     # via pre-commit
 idna==3.2
@@ -87,16 +81,12 @@ jinja2==3.0.1
     #   flask-flatpages
 limits==2.1.0
     # via flask-limiter
-lockfile==0.12.2
-    # via pip-audit
 markdown==3.3.6
     # via flask-flatpages
 markupsafe==2.0.1
     # via
     #   jinja2
     #   wtforms
-msgpack==1.0.3
-    # via cachecontrol
 mypy==0.931
     # via -r src/requirements.in
 mypy-extensions==0.4.3
@@ -105,20 +95,12 @@ nodeenv==1.6.0
     # via pre-commit
 numpy==1.21.2
     # via pandas
-packageurl-python==0.9.6
-    # via cyclonedx-python-lib
 packaging==21.0
-    # via
-    #   pip-audit
-    #   pytest
+    # via pytest
 pandas==1.3.3
     # via -r src/requirements.in
 pep517==0.12.0
     # via pip-tools
-pip-api==0.0.26
-    # via pip-audit
-pip-audit==1.1.1
-    # via -r src/requirements.in
 pip-tools==6.4.0
     # via -r src/requirements.in
 platformdirs==2.3.0
@@ -127,8 +109,6 @@ pluggy==1.0.0
     # via pytest
 pre-commit==2.16.0
     # via -r src/requirements.in
-progress==1.6
-    # via pip-audit
 psycopg2-binary==2.9.3
     # via -r src/requirements.in
 py==1.10.0
@@ -156,16 +136,11 @@ pyyaml==6.0
     #   flask-flatpages
     #   pre-commit
 requests==2.26.0
-    # via
-    #   -r src/requirements.in
-    #   cachecontrol
-resolvelib==0.8.1
-    # via pip-audit
+    # via -r src/requirements.in
 six==1.16.0
     # via
     #   apscheduler
     #   flask-flatpages
-    #   html5lib
     #   python-dateutil
     #   virtualenv
 soupsieve==2.2.1
@@ -176,17 +151,12 @@ text-unidecode==1.3
     # via python-slugify
 toml==0.10.2
     # via
-    #   cyclonedx-python-lib
     #   pre-commit
     #   pytest
 tomli==1.2.1
     # via
     #   mypy
     #   pep517
-types-setuptools==57.4.5
-    # via cyclonedx-python-lib
-types-toml==0.10.1
-    # via cyclonedx-python-lib
 typing-extensions==4.0.1
     # via mypy
 tzdata==2021.5
@@ -201,8 +171,6 @@ virtualenv==20.10.0
     # via
     #   -r src/requirements.in
     #   pre-commit
-webencodings==0.5.1
-    # via html5lib
 werkzeug==2.0.1
     # via
     #   flask

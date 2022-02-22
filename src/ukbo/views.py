@@ -374,6 +374,7 @@ def week_detail(year: int, month: int, start_day: int) -> str:
 
 
 @bp.route("/reports")
+@cache.cached()
 def reports() -> str:
     """
     Listview for reports
@@ -382,6 +383,7 @@ def reports() -> str:
 
 
 @bp.route("/reports/distributor-market-share")
+@cache.cached()
 def market_share() -> str:
     """
     Market share for distributors
@@ -422,6 +424,7 @@ def market_share() -> str:
 
 
 @bp.route("/reports/highest-grossing-films-all-time")
+@cache.cached()
 def top_films() -> str:
     """
     Highest grossing films.
@@ -432,6 +435,25 @@ def top_films() -> str:
         data = json.load(json_file)
 
     return render_template("reports/top_films.html", data=data)
+
+
+@bp.route("/reports/forecast")
+@cache.cached()
+def forecast() -> str:
+    """
+    Box Office Forecast view
+    """
+    now = datetime.datetime.now()
+    six_months = datetime.timedelta(days=182)
+    start = now - six_months
+    end = now + six_months
+
+    query = db.session.query(models.Week)
+    query = query.filter(models.Week.date >= start)
+    query = query.filter(models.Week.date <= end)
+    query = query.order_by(models.Week.date.asc())
+    data = query.all()
+    return render_template("reports/forecast.html", data=data)
 
 
 @bp.route("/<path>")

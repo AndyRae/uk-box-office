@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 from flask import current_app
 from flask.cli import with_appcontext
 
-from ukbo import db, etl, models, utils
+from ukbo import db, etl, models, tasks, utils
 
 
 @with_appcontext
@@ -120,6 +120,14 @@ def build_static_command() -> None:
     static_distributor_market()
     click.echo("Built distributor market cache")
     click.echo("Built static data cache")
+
+
+@click.command("forecast")
+@with_appcontext
+def forecast_command() -> None:
+    """Runs the forecast pipeline."""
+    tasks.forecast_task()
+    click.echo("Built new forecast.")
 
 
 @click.command("weekly-etl")
