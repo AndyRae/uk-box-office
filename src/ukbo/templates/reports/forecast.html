@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% import 'includes/schema.html' as dataschema %}
+
+{% block title %}Box Office Forecast{% endblock %}
+
+{% block header %}
+<div class="uk-container">
+	<ul class="uk-breadcrumb">
+		<li><a href="/">Home</a></li>
+		<li><a href="{{ url_for('index.reports') }}">Reports</a></li>
+		<li aria-current="page"><span>Forecast</span></li>
+	</ul>
+
+	<h1>Box Office Forecast</h1>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="uk-container uk-margin-medium-top">
+
+	<canvas id="myChart" width="100%" height="50px"></canvas>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js" integrity="sha512-Wt1bJGtlnMtGP0dqNFH1xlkLBNpEodaiQ8ZN5JLA5wpc1sUlk/O5uuOMNgvzddzkpvZ9GLyYNa8w2s7rqiTk5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+	var time_dates = []
+	var week_gross = []
+	var yhat = []
+	var yhat_high = []
+	var yhat_low = []
+	'{% for i in data %}'
+
+		time_dates.push('{{ i.date|date_convert }}')
+		week_gross.push('{{ i.week_gross }}')
+		yhat.push('{{ i.forecast_medium }}')
+		yhat_high.push('{{ i.forecast_high }}')
+		yhat_low.push('{{ i.forecast_low }}')
+
+	'{% endfor %}'
+
+	console.log(yhat_high)
+
+
+</script>
+
+<script src="{{ url_for('static', filename='js/forecast.js') }}"></script>
+
+{% endblock %}

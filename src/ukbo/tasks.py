@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 from dotenv import load_dotenv
 from flask import current_app
 
-from ukbo import db, etl, models, scheduler
+from ukbo import db, etl, forecast, models, scheduler
 
 
 @scheduler.task(
@@ -23,7 +23,6 @@ from ukbo import db, etl, models, scheduler
 def run_etl() -> None:
     """
     Weekly task for the ETL pipeline of box office data.
-    Added when app starts.
     """
     print("ETL Pipeline task")
     with scheduler.app.app_context():
@@ -48,3 +47,23 @@ def run_etl() -> None:
             current_app.logger.warning(
                 "ETL fetch failed - website file is pending update."
             )
+
+
+@scheduler.task(
+    "cron",
+    id="etl",
+    week="*",
+    max_instances=1,
+    day_of_week="wed",
+    hour="19",
+    minute="01",
+    second=00,
+    timezone="UTC",
+)
+def forecast_task() -> None:
+    """
+    Weekly task for the box office forecast pipeline
+    """
+    print("Running forecast 🎾")
+    f = forecast.Forecast()
+    f.run_forecast()
