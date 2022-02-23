@@ -194,13 +194,13 @@ class Week(db.Model):  # type: ignore
     date = db.Column(
         db.DateTime, nullable=False, default=datetime.utcnow, unique=True
     )
-    number_of_cinemas = db.Column(db.Integer, nullable=True)
-    number_of_releases = db.Column(db.Integer, nullable=True)
-    weekend_gross = db.Column(db.Integer, nullable=True)
-    week_gross = db.Column(db.Integer, nullable=True)
-    forecast_high = db.Column(db.Integer, nullable=True)
-    forecast_medium = db.Column(db.Integer, nullable=True)
-    forecast_low = db.Column(db.Integer, nullable=True)
+    number_of_cinemas = db.Column(db.Integer, nullable=True, default=0)
+    number_of_releases = db.Column(db.Integer, nullable=True, default=0)
+    weekend_gross = db.Column(db.Integer, nullable=True, default=0)
+    week_gross = db.Column(db.Integer, nullable=True, default=0)
+    forecast_high = db.Column(db.Integer, nullable=True, default=0)
+    forecast_medium = db.Column(db.Integer, nullable=True, default=0)
+    forecast_low = db.Column(db.Integer, nullable=True, default=0)
 
     def __repr__(self) -> str:
         return f"{self.date}"

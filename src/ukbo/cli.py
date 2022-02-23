@@ -1,94 +1,14 @@
-"""CLI for database loading"""
-
-import datetime
-import json
-import os
-import urllib.request
-
 import click
-import pandas as pd
-from dotenv import load_dotenv
-from flask import current_app
 from flask.cli import with_appcontext
 
-from ukbo import db, etl, models, tasks, utils
-
-
-@with_appcontext
-def init_db() -> None:
-    db.reflect()
-    db.drop_all()
-    db.session.commit()
-    db.create_all()
-    db.session.commit()
-
-
-@with_appcontext
-def fill_db() -> None:
-    # full archive
-    path = "./data/archive.csv"
-    input_data = pd.read_csv(path)
-    etl.load_dataframe(input_data)
-
-
-@with_appcontext
-def test_db() -> None:
-    # some test data
-    path = "./data/test.csv"
-    input_data = pd.read_csv(path)
-    etl.load_dataframe(input_data)
-
-
-@with_appcontext
-def static_top_films() -> None:
-    query = db.session.query(models.Film).options(
-        db.selectinload(models.Film.weeks)
-    )
-    query = query.order_by(models.Film.gross.desc())  # type: ignore
-    query = query.limit(25)
-    films = query.all()
-
-    json_data = [ix.as_dict() for ix in films]
-    path = "./data/top_films_data.json"
-    with open(path, "w") as outfile:
-        json.dump(json_data, outfile)
-
-
-@with_appcontext
-def static_distributor_market() -> None:
-    query = db.session.query(models.Film_Week)
-    data = query.all()
-    data, years = utils.group_by_distributor(data)
-
-    json_data = data
-    path = "./data/distributor_market_data.json"
-    with open(path, "w") as outfile:
-        json.dump(json_data, outfile)
-
-
-@with_appcontext
-def weekly_etl() -> None:
-    current_app.logger.info("Weekly-etl running manually")
-    load_dotenv()
-    source_url = os.environ.get("SOURCE_URL")
-    if source_url is not None:
-        path = etl.get_excel_file(source_url)
-
-        if path[0] is True:
-            df = etl.extract_box_office(path[1])
-            etl.load_dataframe(df)
-            current_app.logger.info("Weekly-ETL manual run succesful.")
-        else:
-            current_app.logger.error("Weekly-ETL manual run failed.")
-    else:
-        current_app.logger.error("Weekly-ETL manual run failed.")
+from ukbo import tasks
 
 
 @click.command("init-db")
 @with_appcontext
 def init_db_command() -> None:
     """Clears data and creates new tables."""
-    init_db()
+    tasks.init_db()
     click.echo("Initialised the database.")
 
 
@@ -96,7 +16,8 @@ def init_db_command() -> None:
 @with_appcontext
 def fill_db_command() -> None:
     """Fills db with archive data"""
-    fill_db()
+    path = "./data/archive.csv"
+    tasks.fill_db(path)
     click.echo("Filled the database.")
 
 
@@ -104,7 +25,8 @@ def fill_db_command() -> None:
 @with_appcontext
 def test_db_command() -> None:
     """Fills db with some test data"""
-    test_db()
+    path = "./data/test.csv"
+    tasks.fill_db(path)
     click.echo("Filled the database with test data.")
 
 
@@ -115,9 +37,9 @@ def build_static_command() -> None:
     Builds a cache of the reports.
     For the fast load on the static report views.
     """
-    static_top_films()
+    tasks.static_top_films()
     click.echo("Built top films cache")
-    static_distributor_market()
+    tasks.static_distributor_market()
     click.echo("Built distributor market cache")
     click.echo("Built static data cache")
 
@@ -134,7 +56,7 @@ def forecast_command() -> None:
 @with_appcontext
 def weekly_etl_command() -> None:
     """Runs the weekly etl for new box office data."""
-    weekly_etl()
+    tasks.weekly_etl()
     click.echo("Ran weekly etl.")
 
 
@@ -145,32 +67,14 @@ def backup_etl_command(source_url: str) -> None:
     """
     A backup CLI for the pipeline - pass the excel file link directly
     """
-    current_app.logger.info("Backup-ETL manual running.")
-    if source_url is not None:
-        now = datetime.datetime.now().strftime("ETL%Y%m%d%M%H%S")
-        file_path = f"./data/{now}.xls"
-        urllib.request.urlretrieve(source_url, file_path)
-
-        df = etl.extract_box_office(file_path)
-        etl.load_dataframe(df)
-        current_app.logger.info("Backup-ETL manual run succesful.")
-    else:
-        current_app.logger.error("Backup-ETL manual run failed.")
+    tasks.backup_etl_command(source_url)
 
 
 @click.command("rollback-etl")
 @with_appcontext
 def rollback_etl_command() -> None:
-    """Deletes the last week of data."""
-    query = db.session.query(models.Film_Week)
-    last_date = query.order_by(models.Film_Week.date.desc()).first().date
-
-    query = query.filter(models.Film_Week.date >= last_date)
-    data = query.all()
-
-    for i in data:
-        db.session.delete(i)
-    db.session.commit()
-    current_app.logger.info(
-        f"Rollback ETL finished - deleted {len(data)} entries for {last_date}."
-    )
+    """
+    Deletes the last week of data.
+    Film Weeks and Weeks
+    """
+    tasks.rollback_etl_command()
