@@ -69,7 +69,7 @@ def forecast_task() -> None:
     """
     Weekly task for the box office forecast pipeline
     """
-    print("Running forecast 🎾")
+    print("Running forecast.")
     f = forecast.Forecast()
     f.run_forecast()
 

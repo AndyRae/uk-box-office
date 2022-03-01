@@ -36,7 +36,22 @@ class Forecast:
         """
         Builds the model
         """
-        m = Prophet().fit(self.df)
+        holidays = pd.DataFrame(
+            {
+                "holiday": ["lockdown1", "interval", "lockdown2"],
+                "ds": pd.to_datetime(
+                    ["2020-03-16", "2020-07-04", "2020-11-05"]
+                ),
+                "lower_window": [0, 0, 0],
+                "upper_window": [110, 12, 193],
+            }
+        )
+        changepoint_range = 0.963
+        m = Prophet(
+            holidays=holidays,
+            changepoint_range=changepoint_range,
+            weekly_seasonality=True,
+        ).fit(self.df)
 
         future = m.make_future_dataframe(
             periods=self.prediction_weeks, freq="w"
