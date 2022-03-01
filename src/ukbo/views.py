@@ -444,9 +444,9 @@ def forecast() -> str:
     Box Office Forecast view
     """
     now = datetime.datetime.now()
-    six_months = datetime.timedelta(days=182)
-    start = now - six_months
-    end = now + six_months
+    last_year = datetime.timedelta(days=365)
+    start = now - last_year
+    end = now + last_year
 
     query = db.session.query(models.Week)
     query = query.filter(models.Week.date >= start)

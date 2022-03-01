@@ -5,7 +5,7 @@ function graph(time_dates, week_gross, yhat, yhat_high, yhat_low) {
 		data: {
 			labels: time_dates,
 			datasets: [{
-				label: 'Box Office',
+				label: 'Actual',
 				data: week_gross,
 				backgroundColor: [
 					'#FE7E6D',
@@ -13,12 +13,12 @@ function graph(time_dates, week_gross, yhat, yhat_high, yhat_low) {
 				borderColor: [
 					'#FE7E6D',
 				],
-				pointStyle: 'circle',
+				pointStyle: 'dash',
 				tension: 0.3,
 				yAxisID: 'y'
 			},
 			{
-				label: 'yhat',
+				label: 'Forecast',
 				data: yhat,
 				backgroundColor: [
 					'#ede7d8',
@@ -26,33 +26,35 @@ function graph(time_dates, week_gross, yhat, yhat_high, yhat_low) {
 				borderColor: [
 					'#ede7d8',
 				],
-				pointStyle: 'circle',
+				pointStyle: 'dash',
 				tension: 0.3,
 				yAxisID: 'y'
 			},
 			{
-				label: 'yhat_upper',
+				label: 'Upper Bound',
 				data: yhat_high,
 				backgroundColor: [
-					'#aeaae8',
+					'#17439b',
 				],
 				borderColor: [
-					'#aeaae8',
+					'#17439b',
 				],
-				pointStyle: 'circle',
+				borderDash: [10, 10],
+				pointStyle: 'dash',
 				tension: 0.3,
 				yAxisID: 'y'
 			},
 			{
-				label: 'yhat_low',
+				label: 'Lower Bound',
 				data: yhat_low,
 				backgroundColor: [
-					'#7f83de',
+					'#17439b',
 				],
 				borderColor: [
-					'#7f83de',
+					'#17439b',
 				],
-				pointStyle: 'circle',
+				borderDash: [10, 10],
+				pointStyle: 'dash',
 				tension: 0.3,
 				yAxisID: 'y'
 			}]
@@ -67,6 +69,7 @@ function graph(time_dates, week_gross, yhat, yhat_high, yhat_low) {
 				},
 				y: {
 					beginAtZero: true,
+					min: 0,
 					ticks: {
 						autoSkip: true,
 						stepSize: 10000000,
