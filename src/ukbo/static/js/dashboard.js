@@ -1,413 +1,498 @@
-Vue.filter("TitleCase", value => {
-	if (Number.isInteger(value)) {
-		return value
-	}
-	return value.toLowerCase().replace(/(?:^|\s|-)\S/g, x => x.toUpperCase()).replace(/&#39;/g, "'");;
+Vue.filter("TitleCase", (value) => {
+  if (Number.isInteger(value)) {
+    return value;
+  }
+  return value
+    .toLowerCase()
+    .replace(/(?:^|\s|-)\S/g, (x) => x.toUpperCase())
+    .replace(/&#39;/g, "'");
 });
 
-
-Vue.filter("Currency", value => {
-	return value.toLocaleString('en-US')
+Vue.filter("Currency", (value) => {
+  return value.toLocaleString("en-US");
 });
 
+// This structure is so the charts updates when chartdata changes
+Vue.component("line-chart", {
+  extends: VueChartJs.Line,
+  props: {
+    chartdata: {
+      labels: [],
+      datasets: [],
+      default: null,
+    },
+    options: {
+      type: Object,
+      default: null,
+    },
+  },
+  computed: {
+    data: function () {
+      return this.chartdata;
+    },
+  },
+  methods: {
+    renderLineChart: function () {
+      this.renderChart(this.data, this.options);
+    },
+  },
+  mounted() {
+    this.renderLineChart();
+  },
+  watch: {
+    data: function () {
+      this.$data._chart.destroy();
+      this.renderLineChart();
+    },
+  },
+});
 
 // This structure is so the charts updates when chartdata changes
-Vue.component('line-chart', {
-	extends: VueChartJs.Line,
-	props: {
-		chartdata: {
-			labels: [],
-			datasets: [],
-			default: null
-		},
-		options: {
-			type: Object,
-			default: null
-		}
-	},
-	computed: {
-		data: function() {
-		  return this.chartdata;
-		}
-	},
-	methods: {
-		renderLineChart: function() {
-			this.renderChart(this.data, this.options)
-		}
-	},
-	mounted () {
-		this.renderLineChart()
-	},
-	watch: {
-		data: function() {
-			this.$data._chart.destroy();
-			this.renderLineChart();
-		}
-	}
-})
-
-// This structure is so the charts updates when chartdata changes
-Vue.component('area-chart', {
-	extends: VueChartJs.Line,
-	props: {
-		chartdataarea: {
-			datasets: [],
-			default: null
-		},
-		optionsarea: {
-			type: Object,
-			default: null
-		}
-	},
-	computed: {
-		data: function() {
-			return this.chartdataarea;
-		}
-	},
-	methods: {
-		renderAreaChart: function() {
-			this.renderChart(this.data, this.optionsarea)
-		}
-	},
-	mounted () {
-		this.renderAreaChart()
-	},
-	watch: {
-		data: function() {
-			this.$data._chart.destroy();
-			this.renderAreaChart();
-		}
-	}
-})
-
+Vue.component("area-chart", {
+  extends: VueChartJs.Line,
+  props: {
+    chartdataarea: {
+      datasets: [],
+      default: null,
+    },
+    optionsarea: {
+      type: Object,
+      default: null,
+    },
+  },
+  computed: {
+    data: function () {
+      return this.chartdataarea;
+    },
+  },
+  methods: {
+    renderAreaChart: function () {
+      this.renderChart(this.data, this.optionsarea);
+    },
+  },
+  mounted() {
+    this.renderAreaChart();
+  },
+  watch: {
+    data: function () {
+      this.$data._chart.destroy();
+      this.renderAreaChart();
+    },
+  },
+});
 
 var vm = new Vue({
-	el: '#dash',
-	delimiters: ['${','}'],
-	data: () => ({
-		loaded: false,
-		loading: true,
-		boxOffice: 0,
-		numberOfFilms: 0,
-		numberOfCinemas: 0,
-		lastUpdated: "-",
-		filmTableData: [],
-		chartdata: {
-			labels: [],
-			datasets: [],
-			default: null
-		},
-		chartdataarea: {
-			datasets: [],
-			default: null
-		},
-		options: {
-			responsive: true,
-			maintainAspectRatio: false,
-			scales: {
-				xAxes: [{
-					type: 'time',
-					distribution: 'series',
-					ticks: {
-						maxRotation: 0,
-						minRotation: 0,
-						autoSkip: true
-					},
-					time: {
-					  unit: 'week',
-					  tooltipFormat:'DD/MM/YYYY',
-					},
-					gridLines: {
-						display:false
-					},
-				}],
-				yAxes: [{
-					ticks: {
-						beginAtZero: true,
-						autoSkip: true,
-						stepSize: 10000000,
-						callback: function(value, index, values) {
-							return '£ ' + value / 1e6 + 'M';
-						}
-					},
-				}],
-			},
-			legend: {
-				display: false,
-			},
-			tooltips: {
-				callbacks: {
-					label: function(tooltipItems, data) {
-						return "£" + tooltipItems.yLabel.toString();
-					}
-				}
-			},
-		},
-		optionsarea: {
-			responsive: true,
-			maintainAspectRatio: false,
-			scales: {
-				xAxes: [{
-					type: 'time',
-					distribution: 'series',
-					ticks: {
-						maxRotation: 0,
-						minRotation: 0,
-						autoSkip: true
-					},
-					time: {
-						unit: 'week',
-						tooltipFormat:'DD/MM/YYYY',
-					},
-					gridLines: {
-						display:false
-					},
-				}],
-				yAxes: [{
-					ticks: {
-						beginAtZero: true,
-						autoSkip: true,
-						stepSize: 10000000,
-						callback: function(value, index, values) {
-							return '£ ' + value / 1e6 + 'M';
-						}
-					},
-				}],
-			},
-			legend: {
-				display: false,
-			},
-		}
-	}),
+  el: "#dash",
+  delimiters: ["${", "}"],
+  data: () => ({
+    loaded: false,
+    loading: true,
+    boxOffice: 0,
+    numberOfFilms: 0,
+    numberOfCinemas: 0,
+    lastUpdated: "-",
+    filmTableData: [],
+    chartdata: {
+      labels: [],
+      datasets: [],
+      default: null,
+    },
+    chartdataarea: {
+      datasets: [],
+      default: null,
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        xAxes: [
+          {
+            type: "time",
+            distribution: "series",
+            ticks: {
+              maxRotation: 0,
+              minRotation: 0,
+              autoSkip: true,
+            },
+            time: {
+              unit: "week",
+              tooltipFormat: "DD/MM/YYYY",
+            },
+            gridLines: {
+              display: false,
+            },
+          },
+        ],
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: true,
+              autoSkip: true,
+              stepSize: 10000000,
+              callback: function (value, index, values) {
+                return "£ " + value / 1e6 + "M";
+              },
+            },
+          },
+        ],
+      },
+      legend: {
+        display: false,
+      },
+      tooltips: {
+        callbacks: {
+          label: function (tooltipItems, data) {
+            return "£" + tooltipItems.yLabel.toString();
+          },
+        },
+      },
+    },
+    optionsarea: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        xAxes: [
+          {
+            type: "time",
+            distribution: "series",
+            ticks: {
+              maxRotation: 0,
+              minRotation: 0,
+              autoSkip: true,
+            },
+            time: {
+              unit: "week",
+              tooltipFormat: "DD/MM/YYYY",
+            },
+            gridLines: {
+              display: false,
+            },
+          },
+        ],
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: true,
+              autoSkip: true,
+              stepSize: 10000000,
+              callback: function (value, index, values) {
+                return "£ " + value / 1e6 + "M";
+              },
+            },
+          },
+        ],
+      },
+      legend: {
+        display: false,
+      },
+    },
+  }),
 
-	computed: {
-		sortedfilms: function () {
-			return this.filmTableData.sort(function(a, b) {
-				return b.week_gross - a.week_gross;
-			})
-		}
+  computed: {
+    sortedfilms: function () {
+      return this.filmTableData.sort(function (a, b) {
+        return b.week_gross - a.week_gross;
+      });
+    },
+  },
 
-	},
+  async mounted() {
+    this.generateDatePickers();
+    // Initial queryData is from the template data for speed.
+    this.updateChart(queryData);
+    this.lastUpdated = lastDate;
+  },
 
-	async mounted () {
-		this.generateDatePickers()
-		// Initial queryData is from the template data for speed.
-		this.updateChart(queryData)
-		this.lastUpdated = lastDate
-	},
+  methods: {
+    getLastUpdated: function () {
+      fetch("/api")
+        .then((response) => response.json())
+        .then((data) => (this.lastUpdated = data.results[0].date));
+    },
 
-	methods: {
+    async queryApi(start_date, end_date) {
+      const baseUrl =
+        "/api?start_date=" + start_date + "&end_date=" + end_date + "&start=";
+      let page = 1;
+      let results = [];
+      let lastResult = [];
+      do {
+        // try catch to catch any errors in the async api call
+        try {
+          // use node-fetch to make api call
+          const resp = await fetch(`${baseUrl}${page}`);
+          const data = await resp.json();
+          lastResult = data;
+          data.results.forEach((week) => {
+            // destructure the object and add to array
+            const {
+              date,
+              film,
+              film_slug,
+              distributor,
+              week_gross,
+              number_of_cinemas,
+              weeks_on_release,
+            } = week;
+            results.push({
+              date,
+              film,
+              film_slug,
+              distributor,
+              week_gross,
+              number_of_cinemas,
+              weeks_on_release,
+            });
+          });
+          // increment the page on each loop
+          page += 1;
+        } catch (err) {
+          console.error(`Something is wrong ${err}`);
+          break;
+        }
+        // keep running until there's no next page
+      } while (lastResult.next !== "");
 
-		getLastUpdated: function() {
-			fetch('/api')
-			.then(response => response.json())
-			.then(data => this.lastUpdated = data.results[0].date);
-		},
+      this.updateChart(results);
+    },
 
-		async queryApi(start_date, end_date) {
-			const baseUrl = '/api?start_date='+start_date+'&end_date='+end_date+"&start=";
-			let page = 1;
-			let results = [];
-			let lastResult = [];
-			do {
-				// try catch to catch any errors in the async api call
-				try {
-				// use node-fetch to make api call
-				const resp = await fetch(`${baseUrl}${page}`);
-				const data = await resp.json();
-				lastResult = data;
-				data.results.forEach(week => {
-					// destructure the object and add to array
-					const { date, film, film_slug, distributor, week_gross, number_of_cinemas, weeks_on_release } = week;
-					results.push({ date, film, film_slug, distributor, week_gross, number_of_cinemas, weeks_on_release });
-				});
-				// increment the page on each loop
-				page += 1;
-				} catch (err) {
-				console.error(`Something is wrong ${err}`);
-				break
-				}
-				// keep running until there's no next page
-			} while (lastResult.next !== "");
+    updateChart: function (results) {
+      // Where to do the data logic for each graph
 
-			this.updateChart(results)
-		},
+      // Area Graph
+      const areaData = this.groupForAreaChart(results);
 
-		updateChart: function(results) {
-			// Where to do the data logic for each graph
+      this.$set(
+        (this.chartdataarea = {
+          datasets: areaData,
+        })
+      );
 
-			// Area Graph
-			const areaData = this.groupForAreaChart(results)
+      // Line Graph
+      const results_by_date = this.groupForLineChart(results);
 
-			this.$set(this.chartdataarea = {
-				datasets: areaData
-			})
+      dates = [];
+      values = [];
+      for (i in results_by_date) {
+        dates.push(results_by_date[i].date);
+        values.push(results_by_date[i].week_gross);
+      }
 
-			// Line Graph
-			const results_by_date = this.groupForLineChart(results)
+      x = [
+        {
+          label: "Box Office",
+          data: values,
+          borderColor: ["#FE7E6D"],
+          backgroundColor: ["#FE7E6D"],
+          pointStyle: "circle",
+          tension: 0.5,
+          fill: false,
+        },
+      ];
+      this.$set(
+        (this.chartdata = {
+          labels: dates,
+          datasets: x,
+        })
+      );
 
-			dates = []
-			values = []
-			for (i in results_by_date) {
-				dates.push(results_by_date[i].date)
-				values.push(results_by_date[i].week_gross)
-			}
+      // Scorecards
+      this.boxOffice = values.reduce((a, b) => a + b, 0);
+      this.numberOfFilms = this.calculateNumberOfFilms(results);
+      this.numberOfCinemas = this.calculateNumberOfCinemas(results);
 
-			x = [
-				{
-					label: "Box Office",
-					data: values,
-					borderColor: ['#FE7E6D'],
-					backgroundColor: ['#FE7E6D'],
-					pointStyle: 'circle',
-					tension: 0.5,
-					fill: false,
-				}
-			]
-			this.$set(this.chartdata = {
-				labels: dates,
-				datasets: x
-			})
+      // Film Table
+      this.filmTableData = this.groupForTable(results);
 
-			// Scorecards
-			this.boxOffice = values.reduce((a, b) => a + b, 0)
-			this.numberOfFilms = this.calculateNumberOfFilms(results)
-			this.numberOfCinemas = this.calculateNumberOfCinemas(results)
+      this.loaded = true;
+      this.loading = false;
+    },
 
-			// Film Table
-			this.filmTableData = this.groupForTable(results)
+    groupForLineChart: function (results) {
+      groupedDate = Array.from(results);
+      return Array.from(
+        groupedDate
+          .reverse()
+          .reduce(
+            (m, { date, week_gross }) =>
+              m.set(date, (m.get(date) || 0) + week_gross),
+            new Map()
+          ),
+        ([date, week_gross]) => ({ date, week_gross })
+      );
+    },
 
-			this.loaded = true
-			this.loading = false
-		},
+    groupForTable: function (results) {
+      // Grouping by film (and slug, distributor) - summing box office, max weeks.
+      var result = results
+        .reduce((acc, curr) => {
+          let item = acc.find((x) => x.film == curr["film"]);
+          if (!item) {
+            item = {
+              film: curr["film"],
+              slug: curr["film_slug"],
+              distributor: curr["distributor"],
+              weeks: {},
+            };
+            acc.push(item);
+          }
+          item.weeks[curr.weeks_on_release] =
+            (item.weeks[curr.weeks_on_release] || 0) + curr.week_gross;
+          return acc;
+        }, [])
+        .map((x) => ({
+          film: x.film,
+          film_slug: x.slug,
+          distributor: x.distributor,
+          weeks: Math.max(...Object.keys(x.weeks).map(Number)),
+          week_gross: Object.values(x.weeks).reduce((a, b) => a + b, 0),
+        }));
 
-		groupForLineChart: function(results) {
-			groupedDate = Array.from(results)
-			return Array.from(groupedDate.reverse().reduce(
-				(m, {date, week_gross}) => m.set(date, (m.get(date) || 0) + week_gross), new Map
-				), ([date, week_gross]) => ({date, week_gross}));
-		},
+      return result;
+    },
 
-		groupForTable: function(results) {
-			// Grouping by film (and slug, distributor) - summing box office, max weeks.
-			var result = results.reduce( (acc, curr) => {
-				let item = acc.find(x => x.film == curr["film"]);
-				if(!item){
-					item = {film: curr["film"], slug: curr["film_slug"], distributor: curr["distributor"], weeks:{}}
-					acc.push(item);
-				}
-				item.weeks[curr.weeks_on_release] = (item.weeks[curr.weeks_on_release] || 0) + curr.week_gross
-				return acc;
-			},[])
-				.map(x => ({
-				"film": x.film,
-				"film_slug": x.slug,
-				"distributor": x.distributor,
-				"weeks": Math.max(...Object.keys(x.weeks).map(Number)),
-				"week_gross": Object.values(x.weeks).reduce( (a,b) => a+b ,0)
-			}))
+    groupForAreaChart: function (results) {
+      // Reduce array to single films with box office
+      groupedArea = Array.from(results);
+      let groupedFilms = Array.from(
+        groupedArea.reduce(
+          (m, { film, week_gross }) =>
+            m.set(film, (m.get(film) || 0) + week_gross),
+          new Map()
+        ),
+        ([film, week_gross]) => ({ film, week_gross })
+      );
 
-			return result
-		},
+      // Filter so we only graph the top N
+      topNFilms = 30;
+      groupedFilms.sort(function (a, b) {
+        return b.week_gross - a.week_gross;
+      });
+      groupedFilms.splice(topNFilms);
 
-		groupForAreaChart: function(results) {
-			// Reduce array to single films with box office
-			groupedArea = Array.from(results)
-			let groupedFilms = Array.from(groupedArea.reduce(
-				(m, {film, week_gross}) => m.set(film, (m.get(film) || 0) + week_gross), new Map
-				), ([film, week_gross]) => ({film, week_gross}));
+      var colors = [
+        "#fe7e6d",
+        "#fc9b89",
+        "#f8b6a5",
+        "#f2cfc0",
+        "#ede7d8",
+        "#d8d3e8",
+        "#aeaae8",
+        "#7f83de",
+        "#4c61c6",
+        "#17439b",
+        "#fe7e6d",
+        "#fc9b89",
+        "#f8b6a5",
+        "#f2cfc0",
+        "#ede7d8",
+        "#d8d3e8",
+        "#aeaae8",
+        "#7f83de",
+        "#4c61c6",
+        "#17439b",
+        "#fe7e6d",
+        "#fc9b89",
+        "#f8b6a5",
+        "#f2cfc0",
+        "#ede7d8",
+        "#d8d3e8",
+        "#aeaae8",
+        "#7f83de",
+        "#4c61c6",
+        "#17439b",
+      ];
 
-			// Filter so we only graph the top N
-			topNFilms = 30
-			groupedFilms.sort(function(a, b) {
-				return b.week_gross - a.week_gross;
-			})
-			groupedFilms.splice(topNFilms)
+      // Create the dataset objects - loop through the films, and then original results for matching weeks
+      datasets = [];
+      for (i in groupedFilms) {
+        // let randomColor = Math.floor(Math.random()*16777215).toString(16);
+        let randomColor = colors.shift();
 
-			var colors = ['#fe7e6d', '#fc9b89', '#f8b6a5', '#f2cfc0', '#ede7d8', '#d8d3e8', '#aeaae8', '#7f83de', '#4c61c6', '#17439b',
-			'#fe7e6d', '#fc9b89', '#f8b6a5', '#f2cfc0', '#ede7d8', '#d8d3e8', '#aeaae8', '#7f83de', '#4c61c6', '#17439b',
-			'#fe7e6d', '#fc9b89', '#f8b6a5', '#f2cfc0', '#ede7d8', '#d8d3e8', '#aeaae8', '#7f83de', '#4c61c6', '#17439b']
+        x = {
+          label: groupedFilms[i].film,
+          borderColor: randomColor,
+          fill: false,
+        };
 
-			// Create the dataset objects - loop through the films, and then original results for matching weeks
-			datasets = []
-			for (i in groupedFilms) {
-				// let randomColor = Math.floor(Math.random()*16777215).toString(16);
-				let randomColor = colors.shift()
+        weeks = [];
+        for (j in results) {
+          if (results[j].film == groupedFilms[i].film) {
+            weeks.push({ x: results[j].date, y: results[j].week_gross });
+          }
+        }
+        x.data = weeks;
+        datasets.push(x);
+      }
+      return datasets;
+    },
 
-				x = {
-						label: groupedFilms[i].film,
-						borderColor: randomColor,
-						fill: false,
-				}
+    calculateNumberOfFilms: function (results) {
+      // Reduce array to number of unique films
+      grouped = Array.from(results);
+      let groupedNumber = Array.from(
+        groupedArea.reduce(
+          (m, { film, week_gross }) =>
+            m.set(film, (m.get(film) || 0) + week_gross),
+          new Map()
+        ),
+        ([film, week_gross]) => ({ film, week_gross })
+      );
+      return groupedNumber.length;
+    },
 
-				weeks = []
-				for (j in results) {
-					if(results[j].film == groupedFilms[i].film) {
-						weeks.push({x: results[j].date, y: results[j].week_gross })
-					}
-				}
-				x.data = weeks
-				datasets.push(x)
-			}
-			return datasets
-		},
+    calculateNumberOfCinemas: function (results) {
+      x = Math.max.apply(
+        Math,
+        results.map(function (o) {
+          return o.number_of_cinemas;
+        })
+      );
+      return x;
+    },
 
-		calculateNumberOfFilms: function(results) {
-			// Reduce array to number of unique films
-			grouped = Array.from(results)
-			let groupedNumber = Array.from(groupedArea.reduce(
-				(m, {film, week_gross}) => m.set(film, (m.get(film) || 0) + week_gross), new Map
-				), ([film, week_gross]) => ({film, week_gross}));
-			return groupedNumber.length
-		},
+    generateDatePickers: function () {
+      // Create date picker objects
+      var start = new Date();
+      start.setDate(start.getDate() - 90);
+      this.dateStart = document.querySelector(".date-start");
+      this.dateStart.valueAsDate = start;
 
-		calculateNumberOfCinemas: function(results) {
-			x = Math.max.apply(Math, results.map(function(o) { return o.number_of_cinemas; }))
-			return x
-		},
+      var min = new Date();
+      min.setDate(min.getDate() - 730); // allow to go back 2 years
+      min = min.toISOString();
+      min = min.substring(0, min.indexOf("T"));
+      this.dateStart.min = min;
 
-		generateDatePickers: function() {
-			// Create date picker objects
-			var start = new Date();
-			start.setDate(start.getDate() - 90 );
-			this.dateStart = document.querySelector('.date-start');
-			this.dateStart.valueAsDate = start
+      var end = new Date();
+      this.dateEnd = document.querySelector(".date-end");
+      this.dateEnd.valueAsDate = end;
+    },
 
-			var min = new Date();
-			min.setDate(min.getDate() - 730); // allow to go back 2 years
-			min = min.toISOString()
-			min = min.substring(0, min.indexOf('T'))
-			this.dateStart.min = min
+    filter_date: function () {
+      // Get dates from datepickers
+      this.loaded = false;
+      this.loading = true;
 
-			var end = new Date();
-			this.dateEnd = document.querySelector('.date-end');
-			this.dateEnd.valueAsDate = end
-		},
+      let start_date = this.dateStart.valueAsDate.toISOString();
+      let end_date = this.dateEnd.valueAsDate.toISOString();
 
-		filter_date: function() {
-			// Get dates from datepickers
-			this.loaded = false
-			this.loading = true
+      start_date = start_date.substring(0, start_date.indexOf("T"));
+      end_date = end_date.substring(0, end_date.indexOf("T"));
 
-			let start_date = this.dateStart.valueAsDate.toISOString()
-			let end_date = this.dateEnd.valueAsDate.toISOString()
+      this.queryApi(start_date, end_date);
+    },
 
-			start_date = start_date.substring(0, start_date.indexOf('T'));
-			end_date = end_date.substring(0, end_date.indexOf('T'));
+    filter_days: function (days) {
+      // Set dates from the value from button
+      var s = new Date();
+      var end = new Date();
+      s.setDate(s.getDate() - days);
 
-			this.queryApi(start_date, end_date)
-		},
+      this.dateStart.valueAsDate = s;
+      this.dateEnd.valueAsDate = end;
 
-		filter_days: function(days) {
-			// Set dates from the value from button
-			var s = new Date();
-			var end = new Date();
-			s.setDate(s.getDate() - days );
-
-			this.dateStart.valueAsDate = s
-			this.dateEnd.valueAsDate = end
-
-			this.filter_date()
-		}
-	}
-})
+      this.filter_date();
+    },
+  },
+});
