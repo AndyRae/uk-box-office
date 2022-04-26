@@ -32,13 +32,13 @@ services:
 #      - ./nginx/conf:/etc/nginx/conf.d/
       - certbot-etc:/etc/letsencrypt/
       - certbot-var:/var/www/certbot/
-  # certbot:
-  #   image: certbot/certbot:latest
-  #   container_name: certbot
-  #   volumes:
-  #     - certbot-etc:/etc/letsencrypt/
-  #     - certbot-var:/var/www/certbot/
-  #   command: certonly --webroot -w /var/www/certbot --force-renewal --email hello@rae.li --no-eff-email -d boxofficedata.co.uk --agree-tos
+  certbot:
+    image: certbot/certbot:latest
+    container_name: certbot
+    volumes:
+      - certbot-etc:/etc/letsencrypt/
+      - certbot-var:/var/www/certbot/
+    command: certonly --webroot -w /var/www/certbot --force-renewal --email hello@rae.li --no-eff-email -d boxofficedata.co.uk --agree-tos
   db:
     image: postgres
     restart: always
