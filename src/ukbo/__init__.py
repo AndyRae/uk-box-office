@@ -35,6 +35,7 @@ def create_app(config: str = None) -> Flask:
         app.config.from_object(settings.TestConfig)
 
     register_extensions(app)
+    scheduler.init_app(app)
 
     # Elasticsearch
     app.elasticsearch = (  # type: ignore
@@ -49,16 +50,16 @@ def create_app(config: str = None) -> Flask:
         register_blueprints(app)
         register_cli(app)
 
+        from . import tasks
         scheduler.start()
 
         return app
 
 
 def register_extensions(app: Flask) -> None:
-    from . import tasks
 
     db.init_app(app)
-    scheduler.init_app(app)
+    # scheduler.init_app(app)
     pages.init_app(app)
     cache.init_app(app)
     limiter.init_app(app)

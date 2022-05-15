@@ -23,12 +23,14 @@ def index() -> str:
     Main dashboard view - all of work is done in JS. See Template.
     """
     # list of dates card
+    dates = []
     query = db.session.query(models.Film_Week)
     query = query.order_by(models.Film_Week.date.desc())
     query = query.distinct(models.Film_Week.date)
     dates = query.all()[:3]
 
     # initial data for dashboard
+    data = []
     end = datetime.datetime.now()
     start = end - datetime.timedelta(days=90)
     data = get_time_data(start, end)

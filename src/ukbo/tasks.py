@@ -13,6 +13,13 @@ from flask.cli import with_appcontext
 from ukbo import db, etl, forecast, models, scheduler, utils
 
 
+# @scheduler.task(
+#     "interval",
+#     id='do_job_1', seconds=30, misfire_grace_time=900
+# )
+# def test_etl() -> None:
+#     print("ETL task")
+
 @scheduler.task(
     "cron",
     id="etl",

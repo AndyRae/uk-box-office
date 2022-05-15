@@ -200,7 +200,7 @@ UK Box Office Data - Insight and and analysis for UK film industry.
 
 	<script>
 		let queryData = [];
-		let lastDate = '{{ data[0].date|date_convert }}';
+		let lastDate = '{{ data[0].date|date_convert if data else "" }}';
 
 		'{% for i in data %}'
 			queryData.push({

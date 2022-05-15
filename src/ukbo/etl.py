@@ -34,13 +34,15 @@ def get_excel_file(source_url: str) -> Tuple[bool, str]:
         # Checks whether this excel file is new against the database
         excel_date = datetime.strptime(excel_title, "%d %B %Y")
         query = db.session.query(models.Film_Week)
-        last_date = query.order_by(models.Film_Week.date.desc()).first().date
+        first =  query.order_by(models.Film_Week.date.desc()).first() 
+        if first is not None:
+            last_date = first.date
 
-        if excel_date <= last_date:
-            current_app.logger.warning(
-                "ETL fetch failed - website file is pending update."
-            )
-            return (False, "")
+            if excel_date <= last_date:
+                current_app.logger.warning(
+                    "ETL fetch failed - website file is pending update."
+                )
+                return (False, "")
 
         file_path = f"./data/{excel_title}.xls"
         urllib.request.urlretrieve(excel_link, file_path)
