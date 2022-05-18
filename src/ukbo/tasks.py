@@ -13,13 +13,6 @@ from flask.cli import with_appcontext
 from ukbo import db, etl, forecast, models, scheduler, utils
 
 
-# @scheduler.task(
-#     "interval",
-#     id='do_job_1', seconds=30, misfire_grace_time=900
-# )
-# def test_etl() -> None:
-#     print("ETL task")
-
 @scheduler.task(
     "cron",
     id="etl",
@@ -27,7 +20,7 @@ from ukbo import db, etl, forecast, models, scheduler, utils
     max_instances=1,
     day_of_week="wed",
     hour="9-18",
-    minute="00,15,30,45",
+    minute="00,15,30,40,45",
     second=00,
     timezone="UTC",
 )
@@ -43,7 +36,7 @@ def run_etl() -> None:
         last_date = query.order_by(models.Film_Week.date.desc()).first().date
         now = datetime.now() - timedelta(days=7)
 
-        if now <= last_date:
+        if now >= last_date:
             load_dotenv()
             source_url = os.environ.get("SOURCE_URL")
             if source_url is not None:
@@ -62,7 +55,7 @@ def run_etl() -> None:
 
 @scheduler.task(
     "cron",
-    id="etl",
+    id="forecast",
     week="*",
     max_instances=1,
     day_of_week="wed",
