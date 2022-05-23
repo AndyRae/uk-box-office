@@ -1,9 +1,8 @@
 """ETL Pipeline for box office data"""
 
-import os
 import urllib.request
 from datetime import datetime, timedelta
-from typing import Any, List, Tuple
+from typing import Any, Dict, List, Tuple
 
 import pandas as pd
 import requests  # type: ignore
@@ -11,8 +10,8 @@ from bs4 import BeautifulSoup
 from flask import current_app
 from slugify import slugify  # type: ignore
 
-from ukbo import db, models
-
+from ukbo.extensions import db
+from ukbo import models, utils
 
 def get_excel_file(source_url: str) -> Tuple[bool, str]:
     """
@@ -98,9 +97,9 @@ def extract_box_office(filename: str) -> pd.DataFrame:
     )
 
     df.insert(0, "date", date)
-    df["film"] = df["film"].map(spellcheck_film)
-    df["distributor"] = df["distributor"].map(spellcheck_distributor)
-    df["country"] = df["country"].map(spellcheck_country)
+    df["film"] = df["film"].map(utils.spellcheck_film)
+    df["distributor"] = df["distributor"].map(utils.spellcheck_distributor)
+    df["country"] = df["country"].map(utils.spellcheck_country)
     df["week_gross"] = df.apply(get_week_box_office, axis=1)
 
     return df
@@ -159,56 +158,6 @@ def get_last_sunday() -> str:
     return sunday.strftime("%Y%m%d")
 
 
-def spellcheck_film(film_title: pd.Series) -> str:
-    """
-    Uses a list of the common film mistakes and returns the actual ones
-    Alo generally cleans up the title
-    """
-    film_title = film_title.strip().upper()
-    # if film ends with ', the', trim and add to prefix
-    if film_title.endswith(", THE"):
-        film_title = "THE " + film_title.rstrip(", THE")
-
-    # checks against the list of mistakes
-    film_list = pd.read_csv("./data/film_check.csv", header=None)
-    film_list.columns = ["key", "correction"]
-
-    if film_title in film_list["key"].values:
-        film_list = film_list[
-            film_list["key"].str.contains(film_title, regex=False)
-        ]
-        film_title = film_list["correction"].iloc[0].strip()
-    return film_title
-
-
-def spellcheck_distributor(distributor: pd.Series) -> str:
-    """
-    Uses a list of the common distributor mistakes and returns the correction
-    """
-    distributor = distributor.strip().upper()
-    dist_list = pd.read_csv("./data/distributor_check.csv", header=None)
-    dist_list.columns = ["key", "correction"]
-
-    if distributor in dist_list["key"].values:
-        dist_list = dist_list[dist_list["key"].str.match(distributor)]
-        distributor = dist_list["correction"].iloc[0]
-    return distributor
-
-
-def spellcheck_country(country: str) -> str:
-    """
-    Uses a list of the common country mistakes and returns the correction
-    """
-    country = country.strip().upper()
-    country_list = pd.read_csv("./data/country_check.csv", header=None)
-    country_list.columns = ["key", "correction", "flag"]
-
-    if country in country_list["key"].values:
-        country_list = country_list[country_list["key"].str.match(country)]
-        country = country_list["correction"].iloc[0]
-    return country
-
-
 def load_dataframe(archive: pd.DataFrame) -> None:
     """
     Loads a films dataframe into the database
@@ -217,10 +166,18 @@ def load_dataframe(archive: pd.DataFrame) -> None:
         archive["date"], format="%Y%m%d", yearfirst=True
     )
 
+    # Just the rows of the films
     list_of_films = [
         row.dropna().to_dict() for index, row in archive.iterrows()
     ]
 
+    load_films(list_of_films)
+
+
+def load_films(list_of_films: List[Dict]) -> None:
+    """
+    Loads a list of films into the database
+    """
     for i in list_of_films:
         i["country"] = add_country(i["country"]) if "country" in i else ""
         i["distributor"] = add_distributor(str(i["distributor"]))
@@ -239,9 +196,7 @@ def load_dataframe(archive: pd.DataFrame) -> None:
 
         i.pop("country", None)
 
-        film_week = models.Film_Week(**i)
-        db.session.add(film_week)
-        db.session.commit()
+        models.Film_Week.create(**i)
 
 
 def add_week(
@@ -259,8 +214,10 @@ def add_week(
     if week and date == week.date:
         week.weekend_gross += weekend_gross
         week.week_gross += week_gross
+        # Maximum number of cinemas
         if number_of_cinemas > week.number_of_cinemas:
             week.number_of_cinemas = number_of_cinemas
+        # Adding the number of films if it's the first week
         if weeks_on_release == 1:
             week.number_of_releases += 1
         db.session.commit()
@@ -276,9 +233,7 @@ def add_week(
         "number_of_releases": number_of_releases,
     }
 
-    new = models.Week(**new_week)
-    db.session.add(new)
-    db.session.commit()
+    models.Week.create(**new_week)
 
     return None
 
@@ -291,18 +246,21 @@ def add_film(
     If not - creates it, adds it to the database and returns it
     """
     film = film.strip()
-    slug = slugify(film)
-    db_film = models.Film.query.filter_by(slug=slug).first()
 
-    if db_film and slug == db_film.slug:
-        return db_film
+    instance = models.Film.query.filter_by(name=film, distributor=distributor).first()
+    if instance:
+        return instance
 
-    new = models.Film(name=film, distributor=distributor)
-    for i in countries:
-        new.countries.append(i)
-
-    db.session.add(new)
-    db.session.commit()
+    new = models.Film(name=film, distributor=distributor, countries=countries)
+    try:
+        new.save()
+    except:
+        # Film exists but with a different distributor
+        print(f"Duplicate {film}")
+        db.session.rollback()
+        slug = slugify(f"{film}-{distributor.name}")
+        new.slug = slug
+        new.save()
     return new
 
 
@@ -313,15 +271,12 @@ def add_distributor(distributor: str) -> models.Distributor:
     """
     distributor = distributor.strip()
     slug = slugify(distributor)
-    db_distributor = models.Distributor.query.filter_by(slug=slug).first()
 
-    if db_distributor and slug == db_distributor.slug:
-        return db_distributor
-
-    new = models.Distributor(name=distributor)
-    db.session.add(new)
-    db.session.commit()
-    return new
+    instance = models.Distributor.query.filter_by(slug=slug).first()
+    if instance:
+        return instance
+    
+    return models.Distributor.create(name=distributor)
 
 
 def add_country(country: str) -> List[models.Country]:
@@ -337,15 +292,13 @@ def add_country(country: str) -> List[models.Country]:
     new_countries = []
     for i in countries:
         i = i.strip()
-        i = spellcheck_country(i)
+        i = utils.spellcheck_country(i)
         slug = slugify(i)
         db_country = models.Country.query.filter_by(slug=slug).first()
 
         if db_country and slug == db_country.slug:
             new_countries.append(db_country)
         else:
-            new = models.Country(name=i)
-            db.session.add(new)
-            db.session.commit()
+            new = models.Country.create(name=i)
             new_countries.append(new)
     return new_countries

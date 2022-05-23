@@ -74,6 +74,28 @@ def forecast_task() -> None:
     f.run_forecast()
 
 
+@scheduler.task(
+    "cron",
+    id="forecast",
+    week="*",
+    max_instances=1,
+    day_of_week="wed",
+    hour="19",
+    minute="01",
+    second=00,
+    timezone="UTC",
+)
+@with_appcontext
+def forecast_task() -> None:
+    """
+    Weekly task for buiding static files
+    """
+    print("Building static files.")
+    static_top_films()
+    static_distributor_market()
+    print("Built static files.")
+
+
 @with_appcontext
 def init_db() -> None:
     """
