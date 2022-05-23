@@ -1,7 +1,18 @@
 from typing import Any, Dict, List
 
 import pandas as pd
-from slugify import slugify  # type: ignore
+from slugify import slugify
+
+from ukbo.models import PkModel  # type: ignore
+from ukbo.extensions import db
+
+
+def get_or_create(session: db.session, model: PkModel, **kwargs):
+    instance = session.query(model).filter_by(**kwargs).first()
+    if not instance:
+        instance = model(**kwargs)
+        session.add(instance)
+    return instance
 
 
 def group_by_date(data: List[Any]) -> Dict[str, Any]:
@@ -248,3 +259,53 @@ def group_by_country(data: List[Any]) -> Any:
     years = pd.to_datetime(years).year
 
     return graph_data, years
+
+
+def spellcheck_film(film_title: pd.Series) -> str:
+    """
+    Uses a list of the common film mistakes and returns the actual ones
+    Alo generally cleans up the title
+    """
+    film_title = film_title.strip().upper()
+    # if film ends with ', the', trim and add to prefix
+    if film_title.endswith(", THE"):
+        film_title = "THE " + film_title.rstrip(", THE")
+
+    # checks against the list of mistakes
+    film_list = pd.read_csv("./data/film_check.csv", header=None)
+    film_list.columns = ["key", "correction"]
+
+    if film_title in film_list["key"].values:
+        film_list = film_list[
+            film_list["key"].str.contains(film_title, regex=False)
+        ]
+        film_title = film_list["correction"].iloc[0].strip()
+    return film_title
+
+
+def spellcheck_distributor(distributor: pd.Series) -> str:
+    """
+    Uses a list of the common distributor mistakes and returns the correction
+    """
+    distributor = distributor.strip().upper()
+    dist_list = pd.read_csv("./data/distributor_check.csv", header=None)
+    dist_list.columns = ["key", "correction"]
+
+    if distributor in dist_list["key"].values:
+        dist_list = dist_list[dist_list["key"].str.match(distributor)]
+        distributor = dist_list["correction"].iloc[0]
+    return distributor
+
+
+def spellcheck_country(country: str) -> str:
+    """
+    Uses a list of the common country mistakes and returns the correction
+    """
+    country = country.strip().upper()
+    country_list = pd.read_csv("./data/country_check.csv", header=None)
+    country_list.columns = ["key", "correction", "flag"]
+
+    if country in country_list["key"].values:
+        country_list = country_list[country_list["key"].str.match(country)]
+        country = country_list["correction"].iloc[0]
+    return country

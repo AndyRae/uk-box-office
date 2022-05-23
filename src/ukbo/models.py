@@ -1,13 +1,71 @@
 from datetime import datetime
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Tuple, Type, Optional, TypeVar
 
 from slugify import slugify  # type: ignore
 from sqlalchemy import func, select
 from sqlalchemy.ext.hybrid import hybrid_property
 
-from ukbo import db
+from ukbo.extensions import db
 
 from .search import add_to_index, query_index, remove_from_index
+
+T = TypeVar("T", bound="PkModel")
+
+class CRUDMixin(object):
+    """Mixin that adds convenience methods for CRUD operations."""
+
+    @classmethod
+    def create(cls, **kwargs):
+        """Create a new record and save it the database."""
+        instance = cls(**kwargs)
+        return instance.save()
+
+    def update(self, commit=True, **kwargs):
+        """Update specific fields of a record."""
+        for attr, value in kwargs.items():
+            setattr(self, attr, value)
+        if commit:
+            return self.save()
+        return self
+
+    def save(self, commit=True):
+        """Save the record."""
+        db.session.add(self)
+        if commit:
+            db.session.commit()
+        return self
+
+    def delete(self, commit: bool = True) -> None:
+        """Remove the record from the database."""
+        db.session.delete(self)
+        if commit:
+            return db.session.commit()
+        return
+
+
+class Model(CRUDMixin, db.Model):
+    """Base model class that includes CRUD convenience methods."""
+
+    __abstract__ = True
+
+
+class PkModel(Model):
+    """Base model class that includes CRUD convenience methods, plus adds a 'primary key' column named ``id``."""
+
+    __abstract__ = True
+    id = db.Column(db.Integer, primary_key=True)
+
+    @classmethod
+    def get_by_id(cls: Type[T], record_id) -> Optional[T]:
+        """Get record by ID."""
+        if any(
+            (
+                isinstance(record_id, basestring) and record_id.isdigit(),
+                isinstance(record_id, (int, float)),
+            )
+        ):
+            return cls.query.get(int(record_id))
+        return None
 
 
 class SearchableMixin(object):
@@ -72,10 +130,10 @@ countries = db.Table(
 )
 
 
-class Country(db.Model):  # type: ignore
+class Country(PkModel):  # type: ignore
+
     __tablename__ = "country"
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), unique=True, nullable=False)
+    name = db.Column(db.String(160), unique=True, nullable=False)
     slug = db.Column(db.String(160), nullable=False, unique=True)
 
     def __init__(self, *args: str, **kwargs: str) -> None:
@@ -93,11 +151,11 @@ class Country(db.Model):  # type: ignore
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
-class Distributor(SearchableMixin, db.Model):  # type: ignore
+class Distributor(SearchableMixin, PkModel):  # type: ignore
+
     __tablename__ = "distributor"
     __searchable__ = ["name"]
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), unique=True, nullable=False)
+    name = db.Column(db.String(160), unique=True, nullable=False)
     films = db.relationship("Film", back_populates="distributor")
     weeks = db.relationship("Film_Week", backref="distributor", lazy="dynamic")
     slug = db.Column(db.String(160), nullable=False, unique=True)
@@ -117,10 +175,10 @@ class Distributor(SearchableMixin, db.Model):  # type: ignore
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
-class Film(SearchableMixin, db.Model):  # type: ignore
+class Film(SearchableMixin, PkModel):  # type: ignore
+
     __tablename__ = "film"
     __searchable__ = ["name"]
-    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(160), nullable=False)
     weeks = db.relationship(
         "Film_Week",
@@ -140,7 +198,7 @@ class Film(SearchableMixin, db.Model):  # type: ignore
     distributor = db.relationship(
         "Distributor", back_populates="films", innerjoin=True, lazy="joined"
     )
-    slug = db.Column(db.String(160), nullable=False, unique=True)
+    slug = db.Column(db.String(300), nullable=False, unique=True)
 
     def __init__(self, *args: str, **kwargs: str) -> None:
         if "slug" not in kwargs:
@@ -188,9 +246,9 @@ class Film(SearchableMixin, db.Model):  # type: ignore
         )
 
 
-class Week(db.Model):  # type: ignore
+class Week(PkModel):  # type: ignore
+
     __tablename__ = "week"
-    id = db.Column(db.Integer, primary_key=True)
     date = db.Column(
         db.DateTime, nullable=False, default=datetime.utcnow, unique=True
     )
@@ -218,9 +276,9 @@ class Week(db.Model):  # type: ignore
         return [self.date, self.week_gross, self.number_of_releases]
 
 
-class Film_Week(db.Model):  # type: ignore
+class Film_Week(PkModel):  # type: ignore
+
     __tablename__ = "film_week"
-    id = db.Column(db.Integer, primary_key=True)
     film_id = db.Column(db.Integer, db.ForeignKey("film.id"), nullable=False)
     film = db.relationship(
         "Film", back_populates="weeks", innerjoin=True, lazy="joined"
