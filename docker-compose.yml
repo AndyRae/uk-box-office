@@ -41,7 +41,7 @@ services:
     volumes:
       - elastic_data:/usr/share/elasticsearch/data
     ports:
-      - 9200:9200
+      - 127.0.0.1:9200:9200
     networks:
       - deploy-network
 
