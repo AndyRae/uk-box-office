@@ -7,7 +7,7 @@ from flask import Blueprint, current_app, jsonify, make_response, request
 from flask.wrappers import Response
 from werkzeug.exceptions import abort
 
-from ukbo import db, limiter, models
+from ukbo import db, limiter, models  # type: ignore
 
 bp = Blueprint("api", __name__)
 
@@ -42,12 +42,12 @@ def api() -> Response:
     if data is None:
         abort(404)
 
-    next = f"/api?start={start + 1}" if data.has_next else ""
-    previous = f"/api?start={start - 1}" if data.has_prev else ""
+    next_page = f"/api?start={start + 1}" if data.has_next else ""
+    previous_page = f"/api?start={start - 1}" if data.has_prev else ""
     return jsonify(
         count=data.total,
-        next=next,
-        previous=previous,
+        next=next_page,
+        previous=previous_page,
         results=[ix.as_dict() for ix in data.items],
     )
 

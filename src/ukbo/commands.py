@@ -27,7 +27,7 @@ def test_db_command() -> None:
     """Fills db with some test data"""
     path = "./data/test.csv"
     tasks.fill_db(path)
-    click.echo("Filled the database with test data. ")
+    click.echo("Filled the database with test data.")
 
 
 @click.command("seed-films")
@@ -40,7 +40,7 @@ def seed_films_command() -> None:
 
 
 @click.command("seed-box-office")
-@click.option('--year', help='Year to seed', type=int)
+@click.option("--year", help="Year to seed", type=int)
 @with_appcontext
 def seed_box_office_command(year: int) -> None:
     """Seeds db with box office data"""

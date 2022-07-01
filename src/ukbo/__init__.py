@@ -3,7 +3,8 @@ from typing import Any
 from elasticsearch import Elasticsearch
 from flask import Flask
 
-from ukbo.extensions import db, cache, limiter, pages, scheduler, toolbar
+from ukbo.extensions import cache, db, limiter, pages, scheduler, toolbar
+
 
 def create_app(config: str = None) -> Flask:
     app = Flask(__name__, instance_relative_config=True)
@@ -24,7 +25,7 @@ def create_app(config: str = None) -> Flask:
     register_extensions(app)
     scheduler.init_app(app)
 
-    # Elasticsearch 
+    # Elasticsearch
     app.elasticsearch = (  # type: ignore
         Elasticsearch(
             [{"host": app.config["ELASTICSEARCH_URL"], "port": 9200}]
@@ -38,6 +39,7 @@ def create_app(config: str = None) -> Flask:
         register_cli(app)
 
         from . import tasks
+
         scheduler.start()
 
         return app

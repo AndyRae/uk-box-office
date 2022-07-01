@@ -1,5 +1,6 @@
 from datetime import datetime
-from typing import Any, Dict, List, Tuple, Type, Optional, TypeVar
+from typing import Any, Dict, List, Optional, Tuple, Type, TypeVar
+from xmlrpc.client import Boolean
 
 from slugify import slugify  # type: ignore
 from sqlalchemy import func, select
@@ -11,16 +12,19 @@ from .search import add_to_index, query_index, remove_from_index
 
 T = TypeVar("T", bound="PkModel")
 
+
 class CRUDMixin(object):
     """Mixin that adds convenience methods for CRUD operations."""
 
     @classmethod
-    def create(cls, **kwargs):
+    def create(cls, commit: bool = True, **kwargs: Any) -> Any:
         """Create a new record and save it the database."""
         instance = cls(**kwargs)
-        return instance.save()
+        if commit:
+            return instance.save()
+        return instance.save(commit=False)
 
-    def update(self, commit=True, **kwargs):
+    def update(self, commit: bool = True, **kwargs: Any) -> Any:
         """Update specific fields of a record."""
         for attr, value in kwargs.items():
             setattr(self, attr, value)
@@ -28,7 +32,7 @@ class CRUDMixin(object):
             return self.save()
         return self
 
-    def save(self, commit=True):
+    def save(self, commit: bool = True) -> Any:
         """Save the record."""
         db.session.add(self)
         if commit:
@@ -56,11 +60,11 @@ class PkModel(Model):
     id = db.Column(db.Integer, primary_key=True)
 
     @classmethod
-    def get_by_id(cls: Type[T], record_id) -> Optional[T]:
+    def get_by_id(cls: Type[T], record_id: Any) -> Optional[T]:
         """Get record by ID."""
         if any(
             (
-                isinstance(record_id, basestring) and record_id.isdigit(),
+                isinstance(record_id) and record_id.isdigit(),  # type: ignore
                 isinstance(record_id, (int, float)),
             )
         ):
@@ -200,7 +204,7 @@ class Film(SearchableMixin, PkModel):  # type: ignore
     )
     slug = db.Column(db.String(300), nullable=False, unique=True)
 
-    def __init__(self, *args: str, **kwargs: str) -> None:
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         if "slug" not in kwargs:
             kwargs["slug"] = slugify(kwargs.get("name", ""))
         super().__init__(*args, **kwargs)

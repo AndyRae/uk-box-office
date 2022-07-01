@@ -1,17 +1,18 @@
 """Scheduled tasks"""
 
-from curses import echo
 import json
 import os
 import urllib.request
+from curses import echo
 from datetime import datetime, timedelta
+from typing import Any
 
 import pandas as pd
 from dotenv import load_dotenv
 from flask import current_app
 from flask.cli import with_appcontext
 
-from ukbo import db, etl, forecast, models, scheduler, utils
+from ukbo import db, etl, forecast, models, scheduler, utils  # type: ignore
 
 
 @scheduler.task(
@@ -27,7 +28,7 @@ from ukbo import db, etl, forecast, models, scheduler, utils
 )
 def run_etl() -> None:
     """
-    Weekly task for the ETL pipeline of box office data. 
+    Weekly task for the ETL pipeline of box office data.
     """
 
     print("ETL Pipeline task")
@@ -89,7 +90,7 @@ def forecast_task() -> None:
     timezone="UTC",
 )
 @with_appcontext
-def forecast_task() -> None:
+def static_task() -> None:
     """
     Weekly task for buiding static files
     """
@@ -139,14 +140,19 @@ def seed_films(path: str) -> None:
     etl.load_distributors(list_of_distributors)
     print("Seeded distributors.")
 
-    list_of_films = archive.groupby(["film", "distributor", "country"]).size().reset_index().rename(columns={0:'count'})
-    films = list_of_films.to_dict(orient='records')
+    list_of_films = (
+        archive.groupby(["film", "distributor", "country"])
+        .size()
+        .reset_index()
+        .rename(columns={0: "count"})
+    )
+    films = list_of_films.to_dict(orient="records")
     etl.load_films(films)
     print("Seeded films.")
 
 
 @with_appcontext
-def seed_box_office(path: str, **kwargs) -> None:
+def seed_box_office(path: str, **kwargs: Any) -> None:
     """
     Seeds box office data
     """
