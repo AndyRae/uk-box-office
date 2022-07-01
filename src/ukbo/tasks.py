@@ -1,5 +1,6 @@
 """Scheduled tasks"""
 
+from curses import echo
 import json
 import os
 import urllib.request
@@ -28,6 +29,7 @@ def run_etl() -> None:
     """
     Weekly task for the ETL pipeline of box office data.
     """
+
     print("ETL Pipeline task")
     with scheduler.app.app_context():
 
@@ -43,7 +45,7 @@ def run_etl() -> None:
                 path = etl.get_excel_file(source_url)
                 if path[0] is True:
                     df = etl.extract_box_office(path[1])
-                    etl.load_dataframe(df)
+                    etl.load_weeks(df)
                     current_app.logger.info("Weekly-ETL auto run succesful.")
                 else:
                     current_app.logger.warning("Weekly-ETL auto run failed.")
@@ -69,6 +71,7 @@ def forecast_task() -> None:
     """
     Weekly task for the box office forecast pipeline
     """
+
     print("Running forecast.")
     f = forecast.Forecast()
     f.run_forecast()
@@ -90,6 +93,7 @@ def forecast_task() -> None:
     """
     Weekly task for buiding static files
     """
+
     print("Building static files.")
     static_top_films()
     static_distributor_market()
@@ -101,6 +105,7 @@ def init_db() -> None:
     """
     Drops and creates database tables
     """
+
     db.reflect()
     db.drop_all()
     db.session.commit()
@@ -113,8 +118,41 @@ def fill_db(path: str) -> None:
     """
     Fills database with box office data.
     """
-    input_data = pd.read_csv(path)
-    etl.load_dataframe(input_data)
+
+    seed_films(path)
+    seed_box_office(path)
+
+
+@with_appcontext
+def seed_films(path: str) -> None:
+    """
+    Seeds countries / distributors / films
+    But not weeks.
+    """
+
+    archive = pd.read_csv(path)
+    list_of_countries = archive["country"].unique()
+    etl.load_countries(list_of_countries)
+    print("Seeded countries.")
+
+    list_of_distributors = archive["distributor"].unique()
+    etl.load_distributors(list_of_distributors)
+    print("Seeded distributors.")
+
+    list_of_films = archive.groupby(["film", "distributor", "country"]).size().reset_index().rename(columns={0:'count'})
+    films = list_of_films.to_dict(orient='records')
+    etl.load_films(films)
+    print("Seeded films.")
+
+
+@with_appcontext
+def seed_box_office(path: str, **kwargs) -> None:
+    """
+    Seeds box office data
+    """
+
+    archive = pd.read_csv(path)
+    etl.load_weeks(archive, **kwargs)
 
 
 @with_appcontext
@@ -157,7 +195,7 @@ def weekly_etl() -> None:
 
         if path[0] is True:
             df = etl.extract_box_office(path[1])
-            etl.load_dataframe(df)
+            etl.load_weeks(df)
             current_app.logger.info("Weekly-ETL manual run succesful.")
         else:
             current_app.logger.error("Weekly-ETL manual run failed.")
@@ -170,6 +208,7 @@ def backup_etl_command(source_url: str) -> None:
     """
     A backup CLI for the pipeline - pass the excel file link directly
     """
+
     current_app.logger.info("Backup-ETL manual running.")
     if source_url is not None:
         now = datetime.now().strftime("ETL%Y%m%d%M%H%S")
@@ -177,7 +216,7 @@ def backup_etl_command(source_url: str) -> None:
         urllib.request.urlretrieve(source_url, file_path)
 
         df = etl.extract_box_office(file_path)
-        etl.load_dataframe(df)
+        etl.load_weeks(df)
         current_app.logger.info("Backup-ETL manual run succesful.")
     else:
         current_app.logger.error("Backup-ETL manual run failed.")
@@ -189,6 +228,7 @@ def rollback_etl_command() -> None:
     Deletes the last week of data.
     Film Weeks and Weeks
     """
+
     query = db.session.query(models.Film_Week)
     last_date = query.order_by(models.Film_Week.date.desc()).first().date
     query = query.filter(models.Film_Week.date >= last_date)

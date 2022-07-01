@@ -67,6 +67,8 @@ def register_cli(app: Flask) -> None:
     app.cli.add_command(commands.init_db_command)
     app.cli.add_command(commands.fill_db_command)
     app.cli.add_command(commands.test_db_command)
+    app.cli.add_command(commands.seed_films_command)
+    app.cli.add_command(commands.seed_box_office_command)
     app.cli.add_command(commands.weekly_etl_command)
     app.cli.add_command(commands.backup_etl_command)
     app.cli.add_command(commands.rollback_etl_command)
