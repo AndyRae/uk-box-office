@@ -1,18 +1,7 @@
 from typing import Any, Dict, List
 
 import pandas as pd
-from slugify import slugify
-
-from ukbo.models import PkModel  # type: ignore
-from ukbo.extensions import db
-
-
-def get_or_create(session: db.session, model: PkModel, **kwargs):
-    instance = session.query(model).filter_by(**kwargs).first()
-    if not instance:
-        instance = model(**kwargs)
-        session.add(instance)
-    return instance
+from slugify import slugify  # type: ignore
 
 
 def group_by_date(data: List[Any]) -> Dict[str, Any]:
@@ -106,7 +95,7 @@ def group_by_film(data: List[Any]) -> Dict[str, Any]:
                 "site_average": ["mean"],
             }
         )
-        .sort_values(by=("week_gross", "sum"), ascending=False)
+        .sort_values(by=("weekend_gross", "sum"), ascending=False)
     ).head(table_size)
 
     df.columns = df.columns.droplevel(1)

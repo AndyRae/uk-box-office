@@ -30,6 +30,25 @@ def test_db_command() -> None:
     click.echo("Filled the database with test data.")
 
 
+@click.command("seed-films")
+@with_appcontext
+def seed_films_command() -> None:
+    """Seeds db with countries/distributors/films data"""
+    path = "./data/archive.csv"
+    tasks.seed_films(path)
+    click.echo("Seeded films data.")
+
+
+@click.command("seed-box-office")
+@click.option("--year", help="Year to seed", type=int)
+@with_appcontext
+def seed_box_office_command(year: int) -> None:
+    """Seeds db with box office data"""
+    path = "./data/archive.csv"
+    tasks.seed_box_office(path, year=year)
+    click.echo("Seeded box office data")
+
+
 @click.command("build-static")
 @with_appcontext
 def build_static_command() -> None:

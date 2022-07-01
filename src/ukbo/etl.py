@@ -2,6 +2,7 @@
 
 import urllib.request
 from datetime import datetime, timedelta
+from tokenize import String
 from typing import Any, Dict, List, Tuple
 
 import pandas as pd
@@ -10,21 +11,23 @@ from bs4 import BeautifulSoup
 from flask import current_app
 from slugify import slugify  # type: ignore
 
-from ukbo.extensions import db
 from ukbo import models, utils
+from ukbo.extensions import db
+
 
 def get_excel_file(source_url: str) -> Tuple[bool, str]:
     """
     Fetches first (latest) excel file on the source page
     Returns whether fetch has been succesful, and path to the file
     """
+
     soup = BeautifulSoup(
         requests.get(source_url, timeout=5).content, "html.parser"
     )
 
-    all = soup.find("article")
+    page = soup.find("article")
     # First link in the class
-    link = all.find_all("a")[0]
+    link = page.find_all("a")[0]
     if link is not None:
         excel_link = link.get("href")
         excel_title = link.find("span").get_text().split("-")[-1]
@@ -33,7 +36,7 @@ def get_excel_file(source_url: str) -> Tuple[bool, str]:
         # Checks whether this excel file is new against the database
         excel_date = datetime.strptime(excel_title, "%d %B %Y")
         query = db.session.query(models.Film_Week)
-        first =  query.order_by(models.Film_Week.date.desc()).first() 
+        first = query.order_by(models.Film_Week.date.desc()).first()
         if first is not None:
             last_date = first.date
 
@@ -54,6 +57,7 @@ def extract_box_office(filename: str) -> pd.DataFrame:
     """
     Main extract/load function, transforming raw box office .xls to dataframe.
     """
+
     df = pd.read_excel(filename)
 
     header = df.iloc[0]
@@ -114,6 +118,7 @@ def get_week_box_office(row: pd.Series) -> int:
     Returns the week box office
     Used in an apply method with pandas.
     """
+
     film = row["film"]
 
     # If it's week 1
@@ -158,45 +163,96 @@ def get_last_sunday() -> str:
     return sunday.strftime("%Y%m%d")
 
 
-def load_dataframe(archive: pd.DataFrame) -> None:
+def load_distributors(list_of_distributors: List[str]) -> None:
     """
-    Loads a films dataframe into the database
+    Loads a list of distributors into the database
     """
-    archive["date"] = pd.to_datetime(
-        archive["date"], format="%Y%m%d", yearfirst=True
-    )
 
-    # Just the rows of the films
-    list_of_films = [
-        row.dropna().to_dict() for index, row in archive.iterrows()
-    ]
-
-    load_films(list_of_films)
+    for distributor in list_of_distributors:
+        distributor = str(distributor.strip())
+        add_distributor(distributor)
+        db.session.commit()
 
 
-def load_films(list_of_films: List[Dict]) -> None:
+def load_countries(list_of_countries: List[str]) -> None:
+    """
+    Loads a list of countries into the database
+    """
+
+    for country in list_of_countries:
+        add_country(country)
+        db.session.commit()
+
+
+def load_films(list_of_films: List[Dict[str, Any]]) -> None:
     """
     Loads a list of films into the database
     """
-    for i in list_of_films:
-        i["country"] = add_country(i["country"]) if "country" in i else ""
-        i["distributor"] = add_distributor(str(i["distributor"]))
-        i["film"] = add_film(str(i["film"]), i["distributor"], i["country"])
-        add_week(
-            i["date"],
-            i["week_gross"],
-            i["weekend_gross"],
-            i["number_of_cinemas"],
-            i["weeks_on_release"],
+
+    for film in list_of_films:
+        distributor = add_distributor(film["distributor"])
+        countries = add_country(film["country"])
+        film = add_film(
+            film=film["film"], distributor=distributor, countries=countries
         )
-        if i["number_of_cinemas"] > 0:
-            i["site_average"] = i["weekend_gross"] / i["number_of_cinemas"]
-        else:
-            i["site_average"] = 0
+        db.session.commit()
 
-        i.pop("country", None)
 
-        models.Film_Week.create(**i)
+def load_weeks(df: pd.DataFrame, **kwargs: Any) -> None:
+    """
+    Loads nested lists of film weeks into the database
+    And their associated film + distributor
+    """
+
+    df["date"] = pd.to_datetime(df["date"], format="%Y%m%d", yearfirst=True)
+    if kwargs["year"]:
+        year = kwargs.get("year")
+        df = df.loc[df["date"].dt.year == year]
+
+    group_films = (
+        df.groupby(["film", "distributor", "country"])
+        .apply(
+            lambda x: x[
+                [
+                    "date",
+                    "rank",
+                    "weekend_gross",
+                    "weeks_on_release",
+                    "number_of_cinemas",
+                    "total_gross",
+                    "week_gross",
+                ]
+            ].to_dict("records")
+        )
+        .reset_index()
+        .rename(columns={0: "weeks"})
+    )
+    films_list = group_films.to_dict(orient="records")
+
+    for film in films_list:
+        countries = add_country(film["country"]) if "country" in film else ""
+        distributor = add_distributor(str(film["distributor"]))
+        title = add_film(str(film["film"]), distributor, countries)  # type: ignore
+
+        record = {
+            "film": title,
+            "distributor": distributor,
+        }
+
+        for week in film["weeks"]:
+            add_week(**week)
+
+            if week["number_of_cinemas"] > 0:
+                week["site_average"] = (
+                    week["weekend_gross"] / week["number_of_cinemas"]
+                )
+            else:
+                week["site_average"] = 0
+
+            record.update(**week)
+            models.Film_Week.create(**record, commit=False)
+
+        db.session.commit()
 
 
 def add_week(
@@ -205,6 +261,7 @@ def add_week(
     weekend_gross: int,
     number_of_cinemas: int,
     weeks_on_release: int,
+    **kwargs: Any,
 ) -> None:
     """
     Adds a new week for each new data import.
@@ -220,7 +277,6 @@ def add_week(
         # Adding the number of films if it's the first week
         if weeks_on_release == 1:
             week.number_of_releases += 1
-        db.session.commit()
         return None
 
     number_of_releases = 1 if weeks_on_release == 1 else 0
@@ -233,7 +289,7 @@ def add_week(
         "number_of_releases": number_of_releases,
     }
 
-    models.Week.create(**new_week)
+    models.Week.create(**new_week, commit=False)
 
     return None
 
@@ -247,14 +303,16 @@ def add_film(
     """
     film = film.strip()
 
-    instance = models.Film.query.filter_by(name=film, distributor=distributor).first()
+    instance = models.Film.query.filter_by(
+        name=film, distributor=distributor
+    ).first()
     if instance:
         return instance
 
     new = models.Film(name=film, distributor=distributor, countries=countries)
     try:
         new.save()
-    except:
+    except Exception:
         # Film exists but with a different distributor
         print(f"Duplicate {film}")
         db.session.rollback()
@@ -275,8 +333,8 @@ def add_distributor(distributor: str) -> models.Distributor:
     instance = models.Distributor.query.filter_by(slug=slug).first()
     if instance:
         return instance
-    
-    return models.Distributor.create(name=distributor)
+
+    return models.Distributor.create(name=distributor, commit=False)
 
 
 def add_country(country: str) -> List[models.Country]:
@@ -287,9 +345,11 @@ def add_country(country: str) -> List[models.Country]:
     If not - creates it, adds it to the database.
     Returns a list of the countries
     """
+    new_countries: List[models.Country] = []
+    if type(country) == float:
+        return new_countries
     country = country.strip()
     countries = country.split("/")
-    new_countries = []
     for i in countries:
         i = i.strip()
         i = utils.spellcheck_country(i)
@@ -299,6 +359,6 @@ def add_country(country: str) -> List[models.Country]:
         if db_country and slug == db_country.slug:
             new_countries.append(db_country)
         else:
-            new = models.Country.create(name=i)
+            new = models.Country.create(name=i, commit=False)
             new_countries.append(new)
     return new_countries

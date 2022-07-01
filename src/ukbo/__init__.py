@@ -3,7 +3,8 @@ from typing import Any
 from elasticsearch import Elasticsearch
 from flask import Flask
 
-from ukbo.extensions import db, cache, limiter, pages, scheduler, toolbar
+from ukbo.extensions import cache, db, limiter, pages, scheduler, toolbar
+
 
 def create_app(config: str = None) -> Flask:
     app = Flask(__name__, instance_relative_config=True)
@@ -38,6 +39,7 @@ def create_app(config: str = None) -> Flask:
         register_cli(app)
 
         from . import tasks
+
         scheduler.start()
 
         return app
@@ -67,6 +69,8 @@ def register_cli(app: Flask) -> None:
     app.cli.add_command(commands.init_db_command)
     app.cli.add_command(commands.fill_db_command)
     app.cli.add_command(commands.test_db_command)
+    app.cli.add_command(commands.seed_films_command)
+    app.cli.add_command(commands.seed_box_office_command)
     app.cli.add_command(commands.weekly_etl_command)
     app.cli.add_command(commands.backup_etl_command)
     app.cli.add_command(commands.rollback_etl_command)

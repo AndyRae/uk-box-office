@@ -144,19 +144,21 @@ UK Box Office Data - Insight and and analysis for UK film industry.
 				</div>
 
 				<div class="uk-width-1-2@s">
-					<a class="uk-card-link" href="{{ url_for('index.week_detail', year=dates[0].date.year, month=dates[0].date.month, start_day=dates[0].date.day) }}">
-						<div class="uk-card uk-card-small bg-dash uk-box-shadow-hover-large border-dash">
-							<div class="uk-card-body">
-								<h6 class="uk-text-meta">
-									Last updated
-								</h6>
-								<div class="dash-title uk-text-center" v-cloak>
-
-									${ lastUpdated }
+					{% if dates is defined and dates|length > 0 %}
+						<a class="uk-card-link" href="{{ url_for('index.week_detail', year=dates[0].date.year, month=dates[0].date.month, start_day=dates[0].date.day) }}">
+							<div class="uk-card uk-card-small bg-dash uk-box-shadow-hover-large border-dash">
+								<div class="uk-card-body">
+									<h6 class="uk-text-meta">
+										Last updated
+									</h6>
+									<div class="dash-title uk-text-center" v-cloak>
+										${ lastUpdated }
+									</div>
 								</div>
 							</div>
-						</div>
-					</a>
+						</a>
+					{% endif %}
+
 				</div>
 
 				<div class="uk-width-1-1@s">
