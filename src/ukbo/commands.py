@@ -27,7 +27,7 @@ def test_db_command() -> None:
     """Fills db with some test data"""
     path = "./data/test.csv"
     tasks.fill_db(path)
-    click.echo("Filled the database with test data.")
+    click.echo("Filled the database with test data. ")
 
 
 @click.command("seed-films")

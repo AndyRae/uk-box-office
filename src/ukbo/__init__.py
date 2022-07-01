@@ -24,7 +24,7 @@ def create_app(config: str = None) -> Flask:
     register_extensions(app)
     scheduler.init_app(app)
 
-    # Elasticsearch
+    # Elasticsearch 
     app.elasticsearch = (  # type: ignore
         Elasticsearch(
             [{"host": app.config["ELASTICSEARCH_URL"], "port": 9200}]

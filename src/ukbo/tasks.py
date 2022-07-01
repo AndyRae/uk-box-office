@@ -27,7 +27,7 @@ from ukbo import db, etl, forecast, models, scheduler, utils
 )
 def run_etl() -> None:
     """
-    Weekly task for the ETL pipeline of box office data.
+    Weekly task for the ETL pipeline of box office data. 
     """
 
     print("ETL Pipeline task")
