@@ -210,7 +210,7 @@ def load_weeks(df: pd.DataFrame, **kwargs: Any) -> None:
         df = df.loc[df["date"].dt.year == year]
 
     group_films = (
-        df.groupby(["film", "distributor", "country"])
+        df.groupby(["film", "distributor", "country"], dropna=False)
         .apply(
             lambda x: x[
                 [
