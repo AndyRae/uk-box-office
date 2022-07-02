@@ -7,17 +7,13 @@ def add_to_index(index: Any, model: Any) -> Any:
     if not current_app.elasticsearch:  # type: ignore
         return
     payload = {field: getattr(model, field) for field in model.__searchable__}
-    current_app.elasticsearch.index(  # type: ignore
-        index=index, doc_type=index, id=model.id, body=payload
-    )
+    current_app.elasticsearch.index(index=index, id=model.id, body=payload)
 
 
 def remove_from_index(index: Any, model: Any) -> Any:
     if not current_app.elasticsearch:  # type: ignore
         return
-    current_app.elasticsearch.delete(  # type: ignore
-        index=index, doc_type=index, id=model.id
-    )
+    current_app.elasticsearch.delete(index=index, id=model.id)  # type: ignore
 
 
 def query_index(
@@ -27,7 +23,6 @@ def query_index(
         return [], 0
     search = current_app.elasticsearch.search(  # type: ignore
         index=index,
-        doc_type=index,
         body={
             "query": {"multi_match": {"query": query, "fields": ["*"]}},
             "from": (page - 1) * per_page,

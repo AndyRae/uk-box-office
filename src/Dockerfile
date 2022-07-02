@@ -1,6 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM python:3.7-stretch
-RUN apt-get -y install libc-dev
+FROM --platform=linux/amd64 python:3.10.5-bullseye
 # Set an environment variable with the directory
 # where we'll be running the app
 ENV APP /app
@@ -13,7 +12,5 @@ ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV FLASK_APP=ukbo
 COPY requirements.txt requirements.txt
-RUN pip install pystan==2.19.1.1
-RUN pip install prophet
 RUN pip install -r requirements.txt
 COPY . $APP

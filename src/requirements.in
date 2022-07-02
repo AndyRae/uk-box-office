@@ -1,6 +1,6 @@
 beautifulsoup4
 coverage
-elasticsearch
+elasticsearch==7.13.4
 Flask
 Flask-APScheduler
 Flask-Caching
@@ -14,6 +14,7 @@ mypy
 pandas
 pip-tools
 pre-commit
+prophet
 psycopg2-binary
 pytest
 python-dotenv
