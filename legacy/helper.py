@@ -10,7 +10,6 @@ from typing import Optional
 import pandas as pd
 import requests  # type: ignore
 from bs4 import BeautifulSoup
-from settings import sheet_id
 
 
 def get_excel_file(source_url: str) -> Optional[str]:

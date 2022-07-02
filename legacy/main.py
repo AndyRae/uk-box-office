@@ -3,7 +3,6 @@
 import argparse
 
 import helper
-from settings import source_url
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -19,7 +18,8 @@ if __name__ == "__main__":
 
     if args.type.lower() == "fetch":
         archive_path = "archive.csv"
-        excel_file = helper.get_excel_file(source_url)
+        source = "https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures"
+        excel_file = helper.get_excel_file(source)
         df = helper.extract_box_office(
             f"{excel_file}.xls", "week", archive_path
         )
