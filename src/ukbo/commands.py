@@ -97,3 +97,13 @@ def rollback_etl_command() -> None:
     Film Weeks and Weeks
     """
     tasks.rollback_etl_command()
+
+
+@click.command("rollback-year")
+@click.option("--year", help="Year to rollback", type=int)
+@with_appcontext
+def rollback_year_command(year: int) -> None:
+    """Deletes year of box office data"""
+
+    tasks.rollback_year(year)
+    click.echo(f"Deleted {year}")

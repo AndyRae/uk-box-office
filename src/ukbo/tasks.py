@@ -3,7 +3,6 @@
 import json
 import os
 import urllib.request
-from curses import echo
 from datetime import datetime, timedelta
 from typing import Any
 
@@ -11,6 +10,7 @@ import pandas as pd
 from dotenv import load_dotenv
 from flask import current_app
 from flask.cli import with_appcontext
+from sqlalchemy import extract
 
 from ukbo import db, etl, forecast, models, scheduler, utils  # type: ignore
 
@@ -257,3 +257,28 @@ def rollback_etl_command() -> None:
     current_app.logger.info(
         f"Rollback ETL finished - deleted {len(data)} entries for {last_date}."
     )
+
+
+@with_appcontext
+def rollback_year(year: int) -> None:
+    """
+    Deletes the year of data
+    """
+    query = db.session.query(models.Film_Week)
+    query = query.filter(extract("year", models.Film_Week.date) == year)
+    data = query.all()
+
+    for i in data:
+        db.session.delete(i)
+
+    query = db.session.query(models.Week)
+    query = query.filter(extract("year", models.Week.date) == year)
+    weeks = query.all()
+
+    for i in weeks:
+        i.weekend_gross = 0
+        i.week_gross = 0
+        i.number_of_cinemas = 0
+        i.number_of_releases = 0
+
+    db.session.commit()
