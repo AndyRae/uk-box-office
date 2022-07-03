@@ -11,7 +11,7 @@ from flask.wrappers import Response
 from flask_sqlalchemy import model
 from werkzeug.exceptions import abort
 
-from ukbo import cache, db, forms, models, pages, utils
+from ukbo import cache, db, forms, models, pages, utils  # type: ignore
 
 bp = Blueprint("index", __name__, template_folder="templates")
 
@@ -286,14 +286,12 @@ def year_detail(year: int) -> str:
     end_date = datetime.date(int(year), 12, 31)
     data = get_time_data(start_date, end_date)
 
-    time = start_date.strftime("%Y")
-
     if len(data) == 0:
         render_template(
             "detail/time_detail.html",
             table_data=[],
             graph_data=[],
-            time=time,
+            time=year,
             year=year,
         )
 
@@ -304,12 +302,12 @@ def year_detail(year: int) -> str:
         "detail/time_detail.html",
         table_data=table_data,
         graph_data=graph_data,
-        time=time,
+        time=year,
         year=year,
     )
 
 
-@bp.route("/time/<int:year>/<int:month>")
+@bp.route("/time/<int:year>/m<int:month>")
 def month_detail(year: int, month: int) -> str:
     """
     Month detail.
@@ -344,7 +342,49 @@ def month_detail(year: int, month: int) -> str:
     )
 
 
-@bp.route("/time/<int:year>/<int:month>/<int:start_day>")
+@bp.route("/time/<int:year>/q<int:quarter>")
+@bp.route("/time/<int:year>/q<int:quarter>/q<int:quarter_end>")
+def quarter_detail(year: int, quarter: int, quarter_end: int = 0) -> str:
+    """
+    Quarter detail.
+    """
+    # Convert the quarter
+    time_string = f"{year} Q{quarter}"
+    start_month = (quarter * 3) - 2
+    if quarter_end != 0:
+        end_month = quarter_end * 3
+        time_string += f" - Q{quarter_end}"
+    else:
+        end_month = quarter * 3
+
+    end_day = calendar.monthrange(year, end_month)[1]
+    start_date = datetime.date(year, start_month, 1)
+    end_date = datetime.date(year, end_month, end_day)
+
+    data = get_time_data(start_date, end_date)
+
+    if len(data) == 0:
+        render_template(
+            "detail/time_detail.html",
+            table_data=[],
+            graph_data=[],
+            time=time_string,
+            year=year,
+        )
+
+    table_data = utils.group_by_film(data)
+    graph_data = utils.group_by_date(data)
+
+    return render_template(
+        "detail/time_detail.html",
+        table_data=table_data,
+        graph_data=graph_data,
+        time=time_string,
+        year=year,
+    )
+
+
+@bp.route("/time/<int:year>/m<int:month>/d<int:start_day>")
 def week_detail(year: int, month: int, start_day: int) -> str:
     """
     Week detail.
