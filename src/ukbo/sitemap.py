@@ -6,7 +6,7 @@ from flask import Blueprint, current_app, make_response, render_template
 from flask.wrappers import Response
 from werkzeug.exceptions import abort
 
-from ukbo import cache, db, models, pages
+from ukbo import cache, db, models, pages  # type: ignore
 
 bp = Blueprint("sitemap", __name__, template_folder="templates/sitemap")
 
@@ -127,7 +127,7 @@ def time() -> Response:
 
     time = db.session.query(models.Film_Week.date)
     for i in time:
-        date = i.date.strftime("%Y/%m/%d")
+        date = i.date.strftime("%Y/m%m/d%d")
         slug = f"{url}/time/{date}"
         data.append([slug, i.date])
 
@@ -137,7 +137,7 @@ def time() -> Response:
         data.append([slug, i])
 
         for j in range(1, 13):
-            slug = f"{url}/time/{i}/{j}"
+            slug = f"{url}/time/m{i}/d{j}"
             data.append([slug, i])
 
     return return_sitemap(data)

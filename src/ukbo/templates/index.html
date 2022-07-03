@@ -50,11 +50,11 @@ UK Box Office Data - Insight and and analysis for UK film industry.
 			<button class="uk-button uk-button-default uk-button-small bg-red" v-on:click="filter_date">Filter</button>
 
 			<div class="uk-button-group uk-width-auto" role="group" aria-label="Filters">
-				<button type="button" class="uk-button uk-button-default uk-button-small" v-on:click="filter_days(7)">7 days</button>
-				<button type="button" class="uk-button uk-button-default uk-button-small" v-on:click="filter_days(30)">30 days</button>
-				<button type="button" class="uk-button uk-button-default uk-button-small" v-on:click="filter_days(90)">3 months</button>
-				<button type="button" class="uk-button uk-button-default uk-button-small" v-on:click="filter_days(183)">6 months</button>
-				<button type="button" class="uk-button uk-button-default uk-button-small" v-on:click="filter_days(365)">1 year</button>
+				<button type="button" class="uk-button uk-button-default uk-button-small uk-width-1-3" v-on:click="filter_days(7)">1W</button>
+				<button type="button" class="uk-button uk-button-default uk-button-small uk-width-1-3" v-on:click="filter_days(30)">1M</button>
+				<button type="button" class="uk-button uk-button-default uk-button-small uk-width-1-3" v-on:click="filter_days(90)">3M</button>
+				<button type="button" class="uk-button uk-button-default uk-button-small uk-width-1-3" v-on:click="filter_days(183)">6M</button>
+				<button type="button" class="uk-button uk-button-default uk-button-small uk-width-1-3" v-on:click="filter_days(365)">1Y</button>
 			</div>
 			<span :uk-spinner="loading"></span>
 
