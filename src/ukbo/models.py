@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional, Tuple, Type, TypeVar
 from xmlrpc.client import Boolean
 
@@ -277,7 +277,13 @@ class Week(PkModel):  # type: ignore
         }
 
     def as_df(self) -> List[Any]:
-        return [self.date, self.week_gross, self.number_of_releases]
+        return [
+            self.date,
+            self.week_gross,
+            self.weekend_gross,
+            self.number_of_releases,
+            self.number_of_cinemas,
+        ]
 
 
 class Film_Week(PkModel):  # type: ignore

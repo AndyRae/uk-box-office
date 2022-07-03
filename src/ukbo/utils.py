@@ -3,10 +3,13 @@ from typing import Any, Dict, List
 import pandas as pd
 from slugify import slugify  # type: ignore
 
+from ukbo import models
+
 
 def group_by_date(data: List[Any]) -> Dict[str, Any]:
     """
     Calculates the statistics by date given a list of weeks
+    Not currently in use.
     """
     df = pd.DataFrame(
         [i.as_df() for i in data],
@@ -47,7 +50,9 @@ def group_by_year(data: List[Any]) -> Dict[str, Any]:
         columns=[
             "date",
             "week_gross",
-            "releases",
+            "weekend_gross",
+            "number_of_releases",
+            "number_of_cinemas",
         ],
     )
 
@@ -56,7 +61,9 @@ def group_by_year(data: List[Any]) -> Dict[str, Any]:
         .agg(
             {
                 "week_gross": ["sum"],
-                "releases": ["sum"],
+                "weekend_gross": ["sum"],
+                "number_of_releases": ["sum"],
+                "number_of_cinemas": ["max"],
             }
         )
         .sort_values(by=["date"])
@@ -248,6 +255,30 @@ def group_by_country(data: List[Any]) -> Any:
     years = pd.to_datetime(years).year
 
     return graph_data, years
+
+
+def get_statistics(data: List[models.Week]) -> Dict[str, int]:
+    """
+    Calculates statistics given a list of date data
+    """
+    df = pd.DataFrame(
+        [i.as_df() for i in data],
+        columns=[
+            "date",
+            "week_gross",
+            "weekend_gross",
+            "number_of_releases",
+            "number_of_cinemas",
+        ],
+    )
+
+    stats = {
+        "total_box_office": df["week_gross"].sum(),
+        "weekend_box_office": df["weekend_gross"].sum(),
+        "number_of_releases": df["number_of_releases"].sum(),
+        "number_of_cinemas": df["number_of_cinemas"].max(),
+    }
+    return stats
 
 
 def spellcheck_film(film_title: pd.Series) -> str:

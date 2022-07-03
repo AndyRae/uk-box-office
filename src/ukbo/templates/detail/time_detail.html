@@ -26,9 +26,33 @@
 {% block content %}
 
 	<div class="uk-container uk-margin-medium-top" uk-scrollspy="cls: uk-animation-fade; target: .ul; delay: 1; repeat: true">
+
+		{% if statistics %}
+			<div class="uk-column-divider uk-margin-small-top uk-margin-medium-bottom">
+				<div class="uk-grid-match uk-text-center uk-grid-divider uk-child-width-1-4@m" uk-grid>
+					<div>
+						<strong><span uk-icon="credit-card"></span> Total Box Office</strong>
+						<p>{{  "£{:,}".format(statistics.total_box_office) }}</p>
+					</div>
+					<div>
+						<strong><span uk-icon="credit-card"></span> Weekend Box Office</strong>
+						<p>{{  "£{:,}".format(statistics.weekend_box_office) }}</p>
+					</div>
+					<div>
+						<strong><span uk-icon="table"></span> Number of Releases</strong>
+						<p>{{ statistics.number_of_releases }}</p>
+					</div>
+					<div>
+						<strong><span uk-icon="video-camera"></span> Number of Cinemas</strong>
+						<p>{{  statistics.number_of_cinemas }}</p>
+					</div>
+				</div>
+			</div>
+		{% endif %}
+
 		<div class="p-centered">
 
-			{% if graph_data|length > 1  %}
+			{% if line_graph_data|length > 1  %}
 				<canvas id="myChart" class="mt-5" width="100%" height="50px"></canvas>
 				<hr>
 			{% endif %}
@@ -109,26 +133,36 @@
 								<th class="uk-text-center">Weekend Box Office</th>
 								<th class="uk-text-center">Week Box Office</th>
 								<th class="uk-text-center">Week Change</th>
-								<th class="uk-text-center">Releases</th>
+								<th class="uk-text-center">New Releases</th>
 								<th class="uk-text-center">Cinemas</th>
 							</tr>
 							</thead>
 							<tbody>
-								{% for i in graph_data|reverse %}
+								{% for i in line_graph_data %}
+									{% if loop.nextitem %}
+										{% set prev_week = loop.nextitem.week_gross %}
+										{% if prev_week %}
+											{% set pct_change_week = ((i.week_gross - prev_week) / prev_week) * 100  %}
+										{% else %}
+											{% set pct_change_week = 0%}
+										{% endif %}
+									{% else %}
+										{% set pct_change_week = 0 %}
+									{% endif %}
 									<tr>
 										<td><a class="action" href="{{ url_for('index.week_detail', year=i.date.year, month=i.date.month, start_day=i.date.day) }}">
 											{{ i.date|date_convert }}
 										</a></td>
 										<td class="uk-text-center">{{ "£{:,}".format(i.weekend_gross) }}</td>
 										<td class="uk-text-center">{{ "£{:,}".format(i.week_gross) }}</td>
-										{% if i.pct_change_week|round(2) > 0 %}
-											<td class="uk-text-success uk-text-center">{{ i.pct_change_week|round(2) }}%</td>
-										{% elif i.pct_change_week|round(2) < 0 %}
-											<td class="uk-text-danger uk-text-center">{{ i.pct_change_week|round(2) }}%</td>
+										{% if pct_change_week|round(2) > 0 %}
+											<td class="uk-text-success uk-text-center">{{ pct_change_week|round(2) }}%</td>
+										{% elif pct_change_week|round(2) < 0 %}
+											<td class="uk-text-danger uk-text-center">{{ pct_change_week|round(2) }}%</td>
 										{% else %}
 											<td class="uk-text-center">-</td>
 										{% endif %}
-										<td class="uk-text-center">{{ i.id }}</td>
+										<td class="uk-text-center">{{ i.number_of_releases }}</td>
 										<td class="uk-text-center">{{ i.number_of_cinemas }}</td>
 									</tr>
 								{% endfor %}
@@ -150,10 +184,12 @@
 	<script>
 		var time_dates = []
 		var week_gross = []
-		'{% for i in graph_data %}'
+		var releases = []
+		'{% for i in line_graph_data|reverse %}'
 
 			time_dates.push('{{ i["date"]|date_convert }}')
 			week_gross.push('{{ i["week_gross"] }}')
+			releases.push('{{ i["number_of_releases"] }}')
 
 		'{% endfor %}'
 

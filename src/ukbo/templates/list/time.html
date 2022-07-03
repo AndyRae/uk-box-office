@@ -57,7 +57,7 @@
 								{% else %}
 									<td class="uk-text-center">-</td>
 								{% endif %}
-								<td class="uk-text-center">{{ i.releases }}</td>
+								<td class="uk-text-center">{{ i.number_of_releases }}</td>
 							</tr>
 							{% endfor %}
 					</tbody>
@@ -79,7 +79,7 @@
 
 			time_dates.push('{{ i.date.year }}')
 			week_gross.push('{{ i.week_gross }}')
-			releases.push('{{ i.releases }}')
+			releases.push('{{ i.number_of_releases }}')
 
 		'{% endfor %}'
 	</script>

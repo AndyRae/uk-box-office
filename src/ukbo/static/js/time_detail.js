@@ -8,11 +8,23 @@ function graph(time_dates, week_gross) {
         {
           label: "Box Office",
           data: week_gross,
+          order: 1,
           backgroundColor: ["#FE7E6D"],
           borderColor: ["#FE7E6D"],
           pointStyle: "circle",
           tension: 0.3,
           yAxisID: "y",
+        },
+        {
+          label: "New Releases",
+          data: releases,
+          type: "bar",
+          order: 2,
+          backgroundColor: ["#d9d3e8"],
+          borderColor: ["#d9d3e8"],
+          pointStyle: "circle",
+          tension: 0.3,
+          yAxisID: "y1",
         },
       ],
     },
@@ -22,7 +34,7 @@ function graph(time_dates, week_gross) {
           grid: {
             display: false,
           },
-          offset: false,
+          offset: true,
         },
         y: {
           beginAtZero: true,
@@ -46,6 +58,15 @@ function graph(time_dates, week_gross) {
               }
               return "£" + formatNumber(value);
             },
+          },
+        },
+        y1: {
+          type: "linear",
+          display: true,
+          position: "right",
+          // grid line settings
+          grid: {
+            drawOnChartArea: false, // only want the grid lines for one axis to show up
           },
         },
       },
