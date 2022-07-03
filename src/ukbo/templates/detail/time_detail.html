@@ -39,10 +39,18 @@
 
 			<hr>
 
-			<ul class="uk-subnav">
+			<ul class="uk-subnav uk-subnav-divider uk-subnav-pill">
 				<li>
 					<a href="{{ url_for('index.year_detail', year=year) }}">{{ year }}</a>
 				</li>
+				{% for j in range(1,5) %}
+					<li>
+						<a href="{{ url_for('index.quarter_detail', year=year, quarter=j) }}">Q{{ j }}</a>
+					</li>
+				{% endfor %}
+			</ul>
+
+			<ul class="uk-subnav">
 				{% for j in range(1,13) %}
 					<li>
 						<a href="{{ url_for('index.month_detail', year=year, month=j) }}">{{ j|date_convert_to_month }}</a>
