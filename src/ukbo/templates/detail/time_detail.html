@@ -32,15 +32,51 @@
 				<div class="uk-grid-match uk-text-center uk-grid-divider uk-child-width-1-4@m" uk-grid>
 					<div>
 						<strong><span uk-icon="credit-card"></span> Total Box Office</strong>
-						<p>{{  "£{:,}".format(statistics.total_box_office) }}</p>
+						<p>
+							{{  "£{:,}".format(statistics.total_box_office) }}
+							<br>
+							<div uk-tooltip="Change from last year"
+							class="
+								{% if statistics.total_pct_change > 0 %}
+									uk-text-success
+								{% else %}
+									uk-text-danger
+								{% endif %}">
+								{{ (statistics.total_pct_change * 100)|round(2) }}%
+							</div>
+						</p>
 					</div>
 					<div>
 						<strong><span uk-icon="credit-card"></span> Weekend Box Office</strong>
-						<p>{{  "£{:,}".format(statistics.weekend_box_office) }}</p>
+						<p>
+							{{  "£{:,}".format(statistics.weekend_box_office) }}
+							<br>
+							<div uk-tooltip="Change from last year"
+							class="
+								{% if statistics.weekend_pct_change > 0 %}
+									uk-text-success
+								{% else %}
+									uk-text-danger
+								{% endif %}">
+								{{ (statistics.weekend_pct_change * 100)|round(2) }}%
+							</div>
+						</p>
 					</div>
 					<div>
 						<strong><span uk-icon="table"></span> Number of Releases</strong>
-						<p>{{ statistics.number_of_releases }}</p>
+						<p>
+							{{ statistics.number_of_releases }}
+							<br>
+							<div uk-tooltip="Change from last year"
+							class="
+							{% if statistics.releases_actual_change > 0 %}
+								uk-text-success
+							{% else %}
+								uk-text-danger
+							{% endif %}">
+							{{ statistics.releases_actual_change }}
+						</div>
+						</p>
 					</div>
 					<div>
 						<strong><span uk-icon="video-camera"></span> Number of Cinemas</strong>

@@ -257,7 +257,9 @@ def group_by_country(data: List[Any]) -> Any:
     return graph_data, years
 
 
-def get_statistics(data: List[models.Week]) -> Dict[str, int]:
+def get_statistics(
+    data: List[models.Week], previous: List[models.Week]
+) -> Dict[str, int]:
     """
     Calculates statistics given a list of date data
     """
@@ -271,13 +273,38 @@ def get_statistics(data: List[models.Week]) -> Dict[str, int]:
             "number_of_cinemas",
         ],
     )
+    total_gross = df["week_gross"].sum()
+    weekend_gross = df["weekend_gross"].sum()
+    number_of_release = df["number_of_releases"].sum()
+
+    prev_df = pd.DataFrame(
+        [i.as_df() for i in previous],
+        columns=[
+            "date",
+            "week_gross",
+            "weekend_gross",
+            "number_of_releases",
+            "number_of_cinemas",
+        ],
+    )
+    prev_total_gross = prev_df["week_gross"].sum()
+    prev_weekend_gross = prev_df["weekend_gross"].sum()
+    prev_number_of_release = prev_df["number_of_releases"].sum()
 
     stats = {
         "total_box_office": df["week_gross"].sum(),
         "weekend_box_office": df["weekend_gross"].sum(),
         "number_of_releases": df["number_of_releases"].sum(),
         "number_of_cinemas": df["number_of_cinemas"].max(),
+        "total_pct_change": (total_gross - prev_total_gross)
+        / prev_total_gross,
+        "weekend_pct_change": (weekend_gross - prev_weekend_gross)
+        / prev_weekend_gross,
+        "total_actual_change": total_gross - prev_total_gross,
+        "weekend_actual_change": weekend_gross - prev_weekend_gross,
+        "releases_actual_change": number_of_release - prev_number_of_release,
     }
+    print(stats)
     return stats
 
 

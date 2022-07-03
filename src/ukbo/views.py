@@ -3,11 +3,11 @@
 import calendar
 import datetime
 import json
+from tracemalloc import start
 from typing import Any, Dict, List
 
 import pandas as pd
 from flask import Blueprint, g, render_template, request, url_for
-from flask.wrappers import Response
 from werkzeug.exceptions import abort
 
 from ukbo import cache, db, forms, models, pages, utils  # type: ignore
@@ -343,6 +343,11 @@ def render_time(
     time_string: str,
     year: int,
 ) -> render_template:
+
+    # Forces a to-date comparison.
+    if end_date > datetime.date.today():
+        end_date = datetime.date.today()
+
     film_data = get_box_office_data(models.Film_Week, start_date, end_date)
 
     if len(film_data) == 0:
@@ -356,7 +361,14 @@ def render_time(
 
     film_graph_data = utils.group_by_film(film_data)
     week_data = get_box_office_data(models.Week, start_date, end_date)
-    statistics = utils.get_statistics(week_data)
+
+    prev_year_start = start_date - datetime.timedelta(days=365)
+    prev_year_end = end_date - datetime.timedelta(days=365)
+    previous_data = get_box_office_data(
+        models.Week, prev_year_start, prev_year_end
+    )
+
+    statistics = utils.get_statistics(week_data, previous_data)
 
     return render_template(
         "detail/time_detail.html",
