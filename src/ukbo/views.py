@@ -8,7 +8,6 @@ from typing import Any, Dict, List
 import pandas as pd
 from flask import Blueprint, g, render_template, request, url_for
 from flask.wrappers import Response
-from flask_sqlalchemy import model
 from werkzeug.exceptions import abort
 
 from ukbo import cache, db, forms, models, pages, utils  # type: ignore
@@ -31,9 +30,9 @@ def index() -> str:
 
     # initial data for dashboard
     data = []
-    end = datetime.datetime.now()
-    start = end - datetime.timedelta(days=90)
-    data = get_time_data(start, end)
+    end_date = datetime.datetime.now()
+    start_date = end_date - datetime.timedelta(days=90)
+    data = get_box_office_data(models.Film_Week, start_date, end_date)
 
     return render_template("index.html", dates=dates, data=data)
 
@@ -282,29 +281,12 @@ def year_detail(year: int) -> str:
     """
     Year Detail.
     """
-    start_date = datetime.date(int(year), 1, 1)
-    end_date = datetime.date(int(year), 12, 31)
-    data = get_time_data(start_date, end_date)
+    start_date = datetime.date(year, 1, 1)
+    end_date = datetime.date(year, 12, 31)
 
-    if len(data) == 0:
-        render_template(
-            "detail/time_detail.html",
-            table_data=[],
-            graph_data=[],
-            time=year,
-            year=year,
-        )
+    time_string = f"{year}"
 
-    table_data = utils.group_by_film(data)
-    graph_data = utils.group_by_date(data)
-
-    return render_template(
-        "detail/time_detail.html",
-        table_data=table_data,
-        graph_data=graph_data,
-        time=year,
-        year=year,
-    )
+    return render_time(start_date, end_date, time_string, year)
 
 
 @bp.route("/time/<int:year>/m<int:month>")
@@ -317,29 +299,9 @@ def month_detail(year: int, month: int) -> str:
     start_date = datetime.date(year, month, 1)
     end_date = datetime.date(year, month, end_day)
 
-    time = start_date.strftime("%B %Y")
+    time_string = start_date.strftime("%B %Y")
 
-    data = get_time_data(start_date, end_date)
-
-    if len(data) == 0:
-        render_template(
-            "detail/time_detail.html",
-            table_data=[],
-            graph_data=[],
-            time=time,
-            year=year,
-        )
-
-    table_data = utils.group_by_film(data)
-    graph_data = utils.group_by_date(data)
-
-    return render_template(
-        "detail/time_detail.html",
-        table_data=table_data,
-        graph_data=graph_data,
-        time=time,
-        year=year,
-    )
+    return render_time(start_date, end_date, time_string, year)
 
 
 @bp.route("/time/<int:year>/q<int:quarter>")
@@ -361,27 +323,7 @@ def quarter_detail(year: int, quarter: int, quarter_end: int = 0) -> str:
     start_date = datetime.date(year, start_month, 1)
     end_date = datetime.date(year, end_month, end_day)
 
-    data = get_time_data(start_date, end_date)
-
-    if len(data) == 0:
-        render_template(
-            "detail/time_detail.html",
-            table_data=[],
-            graph_data=[],
-            time=time_string,
-            year=year,
-        )
-
-    table_data = utils.group_by_film(data)
-    graph_data = utils.group_by_date(data)
-
-    return render_template(
-        "detail/time_detail.html",
-        table_data=table_data,
-        graph_data=graph_data,
-        time=time_string,
-        year=year,
-    )
+    return render_time(start_date, end_date, time_string, year)
 
 
 @bp.route("/time/<int:year>/m<int:month>/d<int:start_day>")
@@ -390,27 +332,38 @@ def week_detail(year: int, month: int, start_day: int) -> str:
     Week detail.
     """
     start_date = datetime.date(year, month, start_day)
-    data = get_time_data(start_date, start_date)
+    time_string = start_date.strftime("%d %B %Y")
 
-    time = start_date.strftime("%d %B %Y")
+    return render_time(start_date, start_date, time_string, year)
 
-    if len(data) == 0:
-        render_template(
+
+def render_time(
+    start_date: datetime.date,
+    end_date: datetime.date,
+    time_string: str,
+    year: int,
+) -> render_template:
+    film_data = get_box_office_data(models.Film_Week, start_date, end_date)
+
+    if len(film_data) == 0:
+        return render_template(
             "detail/time_detail.html",
             table_data=[],
             graph_data=[],
-            time=time,
+            time=time_string,
             year=year,
         )
 
-    table_data = utils.group_by_film(data)
-    graph_data = utils.group_by_date(data)
+    film_graph_data = utils.group_by_film(film_data)
+    week_data = get_box_office_data(models.Week, start_date, end_date)
+    statistics = utils.get_statistics(week_data)
 
     return render_template(
         "detail/time_detail.html",
-        table_data=table_data,
-        graph_data=graph_data,
-        time=time,
+        table_data=film_graph_data,
+        line_graph_data=week_data,
+        statistics=statistics,
+        time=time_string,
         year=year,
     )
 
@@ -487,14 +440,11 @@ def forecast() -> str:
     """
     now = datetime.datetime.now()
     last_year = datetime.timedelta(days=365)
-    start = now - last_year
-    end = now + last_year
+    start_date = now - last_year
+    end_date = now + last_year
 
-    query = db.session.query(models.Week)
-    query = query.filter(models.Week.date >= start)
-    query = query.filter(models.Week.date <= end)
-    query = query.order_by(models.Week.date.asc())
-    data = query.all()
+    data = get_box_office_data(models.Week, start_date, end_date)
+
     return render_template("reports/forecast.html", data=data)
 
 
@@ -507,15 +457,17 @@ def flat(path: str) -> str:
     return render_template("page.html", text=post, title=path)
 
 
-def get_time_data(start_date: datetime.date, end_date: datetime.date) -> Any:
+def get_box_office_data(
+    model: Any, start_date: datetime.date, end_date: datetime.date
+) -> Any:
     """
-    Queries the weeks database with a start and end filter
+    Queries the models database with a start and end filter
     Returns the query object
     """
-    query = db.session.query(models.Film_Week)
-    query = query.filter(models.Film_Week.date >= start_date)
-    query = query.filter(models.Film_Week.date <= end_date)
-    query = query.order_by(models.Film_Week.date.desc())
+    query = db.session.query(model)
+    query = query.filter(model.date >= start_date)
+    query = query.filter(model.date <= end_date)
+    query = query.order_by(model.date.desc())
     return query.all()
 
 

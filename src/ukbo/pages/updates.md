@@ -1,5 +1,6 @@
 List:
 
+* 03/07/2022 - Add top level statistics to time detail pages.
 * 03/07/2022 - Add quarters to time, for example [Q1 2022](/time/2022/q1). Can also be chained, as [Q2-Q4 2019](/time/2019/q2/q4)
 * 02/07/2022 - Made the [Github repository](https://github.com/AndyRae/uk-box-office) public, adding license and documentation.
 * 02/07/2022 - Updated the [forecast](/reports/forecast) algorithm.
