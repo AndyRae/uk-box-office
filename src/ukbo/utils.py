@@ -291,7 +291,7 @@ def get_statistics(
     prev_weekend_gross = prev_df["weekend_gross"].sum()
     prev_number_of_release = prev_df["number_of_releases"].sum()
 
-    stats = {
+    return {
         "total_box_office": df["week_gross"].sum(),
         "weekend_box_office": df["weekend_gross"].sum(),
         "number_of_releases": df["number_of_releases"].sum(),
@@ -304,8 +304,6 @@ def get_statistics(
         "weekend_actual_change": weekend_gross - prev_weekend_gross,
         "releases_actual_change": number_of_release - prev_number_of_release,
     }
-    print(stats)
-    return stats
 
 
 def spellcheck_film(film_title: pd.Series) -> str:
