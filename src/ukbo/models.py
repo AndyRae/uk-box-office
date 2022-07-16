@@ -230,7 +230,7 @@ class Film(SearchableMixin, PkModel):  # type: ignore
     @hybrid_property
     def multiple(self) -> float:
         for i in self.weeks:
-            if i.weeks_on_release == 1:
+            if i.weeks_on_release == 1 & i.weekend_gross > 0:
                 return (
                     max(week.total_gross for week in self.weeks)
                     / i.weekend_gross
