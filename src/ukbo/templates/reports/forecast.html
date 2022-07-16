@@ -40,7 +40,7 @@ block title %}Box Office Forecast{% endblock %} {% block header %}
   var yhat = [];
   var yhat_high = [];
   var yhat_low = [];
-  ("{% for i in data %}");
+  ("{% for i in data|reverse %}");
 
   time_dates.push("{{ i.date|date_convert }}");
   week_gross.push("{{ i.week_gross }}");
