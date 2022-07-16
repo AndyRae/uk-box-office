@@ -1,7 +1,7 @@
 import pandas as pd
 from prophet import Prophet
 
-from ukbo import db, models
+from ukbo import db, models  # type: ignore
 
 
 class Forecast:
@@ -26,9 +26,10 @@ class Forecast:
         data = query.all()
 
         df = pd.DataFrame(
-            [i.as_df() for i in data], columns=["ds", "y", "releases"]
+            [i.as_df() for i in data],
+            columns=["ds", "y", "weekend_gross", "releases", "cinemas"],
         )
-        df.drop(columns=["releases"], inplace=True)
+        df.drop(columns=["weekend_gross", "releases", "cinemas"], inplace=True)
 
         self.df = df
 
