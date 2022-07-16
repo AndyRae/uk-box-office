@@ -137,7 +137,7 @@ def time() -> Response:
         data.append([slug, i])
 
         for j in range(1, 13):
-            slug = f"{url}/time/m{i}/d{j}"
+            slug = f"{url}/time/{i}/m{j}"
             data.append([slug, i])
 
     return return_sitemap(data)
