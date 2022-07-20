@@ -205,7 +205,7 @@ def load_weeks(df: pd.DataFrame, **kwargs: Any) -> None:
     """
 
     df["date"] = pd.to_datetime(df["date"], format="%Y%m%d", yearfirst=True)
-    if kwargs["year"]:
+    if "year" in kwargs:
         year = kwargs.get("year")
         df = df.loc[df["date"].dt.year == year]
 
