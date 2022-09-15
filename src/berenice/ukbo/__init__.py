@@ -1,5 +1,3 @@
-from typing import Any
-
 from elasticsearch import Elasticsearch
 from flask import Flask
 from ukbo.extensions import cache, db, limiter, pages, scheduler, toolbar
@@ -34,7 +32,7 @@ def create_app(config: str = None) -> Flask:
         register_blueprints(app)
         register_cli(app)
 
-        from . import tasks
+        from .etl import tasks
 
         scheduler.start()
 
@@ -60,7 +58,7 @@ def register_blueprints(app: Flask) -> None:
 
 
 def register_cli(app: Flask) -> None:
-    from . import commands
+    from .etl import commands
 
     app.cli.add_command(commands.init_db_command)
     app.cli.add_command(commands.fill_db_command)

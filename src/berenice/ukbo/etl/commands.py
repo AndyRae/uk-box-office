@@ -1,6 +1,7 @@
 import click
 from flask.cli import with_appcontext
-from ukbo import tasks
+
+from . import tasks
 
 
 @click.command("init-db")

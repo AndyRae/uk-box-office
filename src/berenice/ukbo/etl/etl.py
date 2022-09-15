@@ -117,7 +117,6 @@ def get_week_box_office(row: pd.Series) -> int:
     Returns the week box office
     Used in an apply method with pandas.
     """
-
     film = row["film"]
 
     # If it's week 1
@@ -149,10 +148,7 @@ def get_week_box_office(row: pd.Series) -> int:
     week_gross = row["total_gross"] - most_recent_film_match.total_gross
 
     # There are errors in the data week numbers
-    if week_gross < 0:
-        return row["weekend_gross"]
-
-    return week_gross
+    return row["weekend_gross"] if week_gross < 0 else week_gross
 
 
 def get_last_sunday() -> str:
@@ -295,7 +291,7 @@ def add_week(
 
 def add_film(
     film: str, distributor: models.Distributor, countries: List[models.Country]
-) -> models.Film:
+) -> models.Film:  # sourcery skip: use-named-expression
     """
     Checks the database if the film exists - returns the class
     If not - creates it, adds it to the database and returns it
@@ -329,10 +325,8 @@ def add_distributor(distributor: str) -> models.Distributor:
     distributor = distributor.strip()
     slug = slugify(distributor)
 
-    instance = models.Distributor.query.filter_by(slug=slug).first()
-    if instance:
+    if instance := models.Distributor.query.filter_by(slug=slug).first():
         return instance
-
     return models.Distributor.create(name=distributor, commit=False)
 
 
