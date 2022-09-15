@@ -8,9 +8,8 @@ from typing import Any, Dict, List
 
 import pandas as pd
 from flask import Blueprint, g, render_template, request, url_for
-from werkzeug.exceptions import abort
-
 from ukbo import cache, db, forms, models, pages, utils  # type: ignore
+from werkzeug.exceptions import abort
 
 bp = Blueprint("index", __name__, template_folder="templates")
 

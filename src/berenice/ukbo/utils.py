@@ -2,7 +2,6 @@ from typing import Any, Dict, List
 
 import pandas as pd
 from slugify import slugify  # type: ignore
-
 from ukbo import models
 
 

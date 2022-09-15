@@ -7,6 +7,7 @@ Flask-Caching
 Flask-DebugToolbar
 Flask-FlatPages
 Flask-Limiter
+flask-restful
 Flask-SQLAlchemy
 Flask-WTF
 gunicorn

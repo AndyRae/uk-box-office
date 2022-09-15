@@ -4,6 +4,8 @@
 #
 #    pip-compile src/requirements.in
 #
+aniso8601==9.0.1
+    # via flask-restful
 apscheduler==3.9.1
     # via flask-apscheduler
 attrs==21.4.0
@@ -60,6 +62,7 @@ flask==2.1.2
     #   flask-debugtoolbar
     #   flask-flatpages
     #   flask-limiter
+    #   flask-restful
     #   flask-sqlalchemy
     #   flask-wtf
 flask-apscheduler==1.12.4
@@ -71,6 +74,8 @@ flask-debugtoolbar==0.13.1
 flask-flatpages==0.8.1
     # via -r src/requirements.in
 flask-limiter==2.4.6
+    # via -r src/requirements.in
+flask-restful==0.3.9
     # via -r src/requirements.in
 flask-sqlalchemy==2.5.1
     # via -r src/requirements.in
@@ -181,6 +186,7 @@ python-slugify==6.1.2
 pytz==2022.1
     # via
     #   apscheduler
+    #   flask-restful
     #   lunarcalendar
     #   pandas
 pytz-deprecation-shim==0.1.0.post0
@@ -199,6 +205,7 @@ six==1.16.0
     # via
     #   apscheduler
     #   flask-flatpages
+    #   flask-restful
     #   python-dateutil
     #   virtualenv
 soupsieve==2.3.2.post1

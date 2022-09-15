@@ -10,7 +10,6 @@ import requests  # type: ignore
 from bs4 import BeautifulSoup
 from flask import current_app
 from slugify import slugify  # type: ignore
-
 from ukbo import models, utils
 from ukbo.extensions import db
 

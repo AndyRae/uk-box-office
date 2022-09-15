@@ -5,9 +5,8 @@ from typing import Any
 
 from flask import Blueprint, current_app, jsonify, make_response, request
 from flask.wrappers import Response
-from werkzeug.exceptions import abort
-
 from ukbo import db, limiter, models  # type: ignore
+from werkzeug.exceptions import abort
 
 bp = Blueprint("api", __name__)
 

@@ -2,7 +2,6 @@ from typing import Any
 
 from elasticsearch import Elasticsearch
 from flask import Flask
-
 from ukbo.extensions import cache, db, limiter, pages, scheduler, toolbar
 
 

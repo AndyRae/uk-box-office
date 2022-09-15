@@ -5,7 +5,6 @@ from xmlrpc.client import Boolean
 from slugify import slugify  # type: ignore
 from sqlalchemy import func, select
 from sqlalchemy.ext.hybrid import hybrid_property
-
 from ukbo.extensions import db
 
 from .search import add_to_index, query_index, remove_from_index

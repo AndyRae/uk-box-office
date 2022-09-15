@@ -11,7 +11,6 @@ from dotenv import load_dotenv
 from flask import current_app
 from flask.cli import with_appcontext
 from sqlalchemy import extract
-
 from ukbo import db, etl, forecast, models, scheduler, utils  # type: ignore
 
 

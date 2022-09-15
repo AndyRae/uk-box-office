@@ -1,6 +1,5 @@
 import pandas as pd
 from prophet import Prophet
-
 from ukbo import db, models  # type: ignore
 
 
