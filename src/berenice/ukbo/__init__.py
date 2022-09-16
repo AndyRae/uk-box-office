@@ -6,7 +6,7 @@ from ukbo.extensions import cache, db, limiter, pages, scheduler, toolbar
 def create_app(config: str = None) -> Flask:
     app = Flask(__name__, instance_relative_config=True)
 
-    from . import settings
+    from ukbo import settings
 
     if config == "production":
         app.config.from_object(settings.Config)
@@ -32,7 +32,7 @@ def create_app(config: str = None) -> Flask:
         register_blueprints(app)
         register_cli(app)
 
-        from .etl import tasks
+        from ukbo.etl import tasks
 
         scheduler.start()
 
@@ -58,18 +58,18 @@ def register_blueprints(app: Flask) -> None:
 
 
 def register_cli(app: Flask) -> None:
-    from .etl import commands
+    from ukbo import etl
 
-    app.cli.add_command(commands.init_db_command)
-    app.cli.add_command(commands.fill_db_command)
-    app.cli.add_command(commands.test_db_command)
-    app.cli.add_command(commands.seed_films_command)
-    app.cli.add_command(commands.seed_box_office_command)
-    app.cli.add_command(commands.weekly_etl_command)
-    app.cli.add_command(commands.backup_etl_command)
-    app.cli.add_command(commands.rollback_etl_command)
-    app.cli.add_command(commands.rollback_year_command)
-    app.cli.add_command(commands.build_static_command)
-    app.cli.add_command(commands.forecast_command)
+    app.cli.add_command(etl.commands.init_db_command)
+    app.cli.add_command(etl.commands.fill_db_command)
+    app.cli.add_command(etl.commands.test_db_command)
+    app.cli.add_command(etl.commands.seed_films_command)
+    app.cli.add_command(etl.commands.seed_box_office_command)
+    app.cli.add_command(etl.commands.weekly_etl_command)
+    app.cli.add_command(etl.commands.backup_etl_command)
+    app.cli.add_command(etl.commands.rollback_etl_command)
+    app.cli.add_command(etl.commands.rollback_year_command)
+    app.cli.add_command(etl.commands.build_static_command)
+    app.cli.add_command(etl.commands.forecast_command)
 
     return None

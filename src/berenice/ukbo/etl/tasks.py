@@ -10,10 +10,10 @@ import pandas as pd
 from dotenv import load_dotenv
 from flask import current_app
 from flask.cli import with_appcontext
-from sqlalchemy import extract
-from ukbo import db, forecast, models, scheduler, utils  # type: ignore
+from sqlalchemy import extract as sqlextract
+from ukbo import db, models, scheduler, services, utils  # type: ignore
 
-from . import etl
+from . import extract, load, transform
 
 
 @scheduler.task(
@@ -44,10 +44,10 @@ def run_etl() -> None:
             load_dotenv()
             source_url = os.environ.get("SOURCE_URL")
             if source_url is not None:
-                path = etl.get_excel_file(source_url)
+                path = extract.get_excel_file(source_url)
                 if path[0] is True:
-                    df = etl.extract_box_office(path[1])
-                    etl.load_weeks(df)
+                    df = extract.extract_box_office(path[1])
+                    load.load_weeks(df)
                     current_app.logger.info("Weekly-ETL auto run succesful.")
                 else:
                     current_app.logger.warning("Weekly-ETL auto run failed.")
@@ -75,7 +75,7 @@ def forecast_task() -> None:
     """
 
     print("Running forecast.")
-    f = forecast.Forecast()
+    f = services.forecast.Forecast()
     f.run_forecast()
 
 
@@ -116,9 +116,9 @@ def init_db() -> None:
 
 
 @with_appcontext
-def fill_db(path: str) -> None:
+def seed_db(path: str) -> None:
     """
-    Fills database with box office data.
+    Seeds database with box office data.
     """
 
     seed_films(path)
@@ -134,11 +134,11 @@ def seed_films(path: str) -> None:
 
     archive = pd.read_csv(path)
     list_of_countries = archive["country"].unique()
-    etl.load_countries(list_of_countries)
+    load.load_countries(list_of_countries)
     print("Seeded countries.")
 
     list_of_distributors = archive["distributor"].unique()
-    etl.load_distributors(list_of_distributors)
+    load.load_distributors(list_of_distributors)
     print("Seeded distributors.")
 
     list_of_films = (
@@ -148,7 +148,7 @@ def seed_films(path: str) -> None:
         .rename(columns={0: "count"})
     )
     films = list_of_films.to_dict(orient="records")
-    etl.load_films(films)
+    load.load_films(films)
     print("Seeded films.")
 
 
@@ -159,7 +159,7 @@ def seed_box_office(path: str, **kwargs: Any) -> None:
     """
 
     archive = pd.read_csv(path)
-    etl.load_weeks(archive, **kwargs)
+    load.load_weeks(archive, **kwargs)
 
 
 @with_appcontext
@@ -198,11 +198,11 @@ def weekly_etl() -> None:
     load_dotenv()
     source_url = os.environ.get("SOURCE_URL")
     if source_url is not None:
-        path = etl.get_excel_file(source_url)
+        path = extract.get_excel_file(source_url)
 
         if path[0] is True:
-            df = etl.extract_box_office(path[1])
-            etl.load_weeks(df)
+            df = extract.extract_box_office(path[1])
+            load.load_weeks(df)
             current_app.logger.info("Weekly-ETL manual run succesful.")
         else:
             current_app.logger.error("Weekly-ETL manual run failed.")
@@ -222,8 +222,8 @@ def backup_etl_command(source_url: str) -> None:
         file_path = f"./data/{now}.xls"
         urllib.request.urlretrieve(source_url, file_path)
 
-        df = etl.extract_box_office(file_path)
-        etl.load_weeks(df)
+        df = extract.extract_box_office(file_path)
+        load.load_weeks(df)
         current_app.logger.info("Backup-ETL manual run succesful.")
     else:
         current_app.logger.error("Backup-ETL manual run failed.")
@@ -266,14 +266,14 @@ def rollback_year(year: int) -> None:
     Deletes the year of data
     """
     query = db.session.query(models.Film_Week)
-    query = query.filter(extract("year", models.Film_Week.date) == year)
+    query = query.filter(sqlextract("year", models.Film_Week.date) == year)
     data = query.all()
 
     for i in data:
         db.session.delete(i)
 
     query = db.session.query(models.Week)
-    query = query.filter(extract("year", models.Week.date) == year)
+    query = query.filter(sqlextract("year", models.Week.date) == year)
     weeks = query.all()
 
     for i in weeks:

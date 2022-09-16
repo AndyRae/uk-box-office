@@ -17,7 +17,7 @@ def init_db_command() -> None:
 def fill_db_command() -> None:
     """Fills db with archive data"""
     path = "./data/archive.csv"
-    tasks.fill_db(path)
+    tasks.seed_db(path)
     click.echo("Filled the database.")
 
 
@@ -26,7 +26,7 @@ def fill_db_command() -> None:
 def test_db_command() -> None:
     """Fills db with some test data"""
     path = "./data/test.csv"
-    tasks.fill_db(path)
+    tasks.seed_db(path)
     click.echo("Filled the database with test data.")
 
 
