@@ -159,3 +159,4 @@ src/data
 .DS_store
 .vscode
 .python-version
+src/berenice/data
