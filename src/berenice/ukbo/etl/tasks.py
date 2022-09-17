@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 from flask import current_app
 from flask.cli import with_appcontext
 from sqlalchemy import extract as sqlextract
-from ukbo import db, models, scheduler, services, utils  # type: ignore
+from ukbo import db, models, scheduler, services  # type: ignore
 
 from . import extract, load, transform
 
@@ -184,7 +184,7 @@ def static_top_films() -> None:
 def static_distributor_market() -> None:
     query = db.session.query(models.Film_Week)
     data = query.all()
-    data, years = utils.group_by_distributor(data)
+    data, years = services.utils.group_by_distributor(data)
 
     json_data = data
     path = "./data/distributor_market_data.json"

@@ -1,7 +1,9 @@
 from typing import List
 
 from slugify import slugify  # type: ignore
-from ukbo import models, utils
+from ukbo import models
+
+from . import utils
 
 
 def add_country(country: str) -> List[models.Country]:

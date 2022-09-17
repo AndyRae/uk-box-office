@@ -6,7 +6,7 @@ import pandas as pd
 import requests  # type: ignore
 from bs4 import BeautifulSoup
 from flask import current_app
-from ukbo import models, utils
+from ukbo import models, services
 from ukbo.extensions import db
 
 from . import transform
@@ -98,9 +98,11 @@ def extract_box_office(filename: str) -> pd.DataFrame:
     )
 
     df.insert(0, "date", date)
-    df["film"] = df["film"].map(utils.spellcheck_film)
-    df["distributor"] = df["distributor"].map(utils.spellcheck_distributor)
-    df["country"] = df["country"].map(utils.spellcheck_country)
+    df["film"] = df["film"].map(services.utils.spellcheck_film)
+    df["distributor"] = df["distributor"].map(
+        services.utils.spellcheck_distributor
+    )
+    df["country"] = df["country"].map(services.utils.spellcheck_country)
     df["week_gross"] = df.apply(transform.get_week_box_office, axis=1)
 
     return df

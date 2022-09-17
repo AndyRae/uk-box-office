@@ -6,7 +6,9 @@ from ukbo.extensions import db
 
 
 def add_film(
-    film: str, distributor: models.Distributor, countries: List[models.Country]
+    film: str,
+    distributor: models.Distributor,
+    countries: List[models.Country],
 ) -> models.Film:
     """
     Checks the database if the film exists - returns the class

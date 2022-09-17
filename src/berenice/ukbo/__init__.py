@@ -49,11 +49,11 @@ def register_extensions(app: Flask) -> None:
 
 
 def register_blueprints(app: Flask) -> None:
-    from ukbo import api, sitemap, views
+    from ukbo import api, views
 
     app.register_blueprint(api.api.bp)
-    app.register_blueprint(sitemap.bp)
-    app.register_blueprint(views.bp)
+    app.register_blueprint(views.sitemap.bp)
+    app.register_blueprint(views.views.bp)
     return None
 
 

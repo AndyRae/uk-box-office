@@ -3,13 +3,14 @@
 import calendar
 import datetime
 import json
-from tracemalloc import start
-from typing import Any, Dict, List
+from typing import Any
 
 import pandas as pd
 from flask import Blueprint, g, render_template, request, url_for
-from ukbo import cache, db, forms, models, pages, utils  # type: ignore
+from ukbo import cache, db, models, pages, services  # type: ignore
 from werkzeug.exceptions import abort
+
+from . import forms
 
 bp = Blueprint("index", __name__, template_folder="templates")
 
@@ -270,7 +271,7 @@ def time() -> str:
     """
     query = db.session.query(models.Week)
     data = query.all()
-    data = utils.group_by_year(data)
+    data = services.utils.group_by_year(data)
 
     return render_template("list/time.html", data=data)
 
@@ -358,7 +359,7 @@ def render_time(
             year=year,
         )
 
-    film_graph_data = utils.group_by_film(film_data)
+    film_graph_data = services.utils.group_by_film(film_data)
     week_data = get_box_office_data(models.Week, start_date, end_date)
 
     prev_year_start = start_date - datetime.timedelta(days=365)
@@ -367,7 +368,7 @@ def render_time(
         models.Week, prev_year_start, prev_year_end
     )
 
-    statistics = utils.get_statistics(week_data, previous_data)
+    statistics = services.utils.get_statistics(week_data, previous_data)
 
     return render_template(
         "detail/time_detail.html",

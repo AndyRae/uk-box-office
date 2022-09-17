@@ -1,14 +1,8 @@
-import urllib.request
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Tuple
+from statistics import mode
 
 import pandas as pd
-import requests  # type: ignore
-from bs4 import BeautifulSoup
-from flask import current_app
-from slugify import slugify  # type: ignore
-from ukbo import models, services, utils
-from ukbo.extensions import db
+from ukbo import models
 
 
 def get_week_box_office(row: pd.Series) -> int:
