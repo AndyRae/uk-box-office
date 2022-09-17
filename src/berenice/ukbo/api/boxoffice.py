@@ -12,3 +12,8 @@ class All(Resource):
         start: int = 1,
     ) -> Response:
         return services.boxoffice.all(start_date, end_date, start)
+
+
+class Top(Resource):
+    def get(self: Resource) -> Response:
+        return services.boxoffice.top()

@@ -1,3 +1,5 @@
+import json
+
 from flask import jsonify
 from flask.wrappers import Response
 from ukbo import models
@@ -38,3 +40,13 @@ def all(
         previous=previous_page,
         results=[ix.as_dict() for ix in data.items],
     )
+
+
+def top() -> Response:
+    """
+    Top films all time
+    """
+    path = "./data/top_films_data.json"
+    with open(path) as json_file:
+        data = json.load(json_file)
+    return data

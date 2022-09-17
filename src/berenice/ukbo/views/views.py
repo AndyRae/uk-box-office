@@ -437,11 +437,7 @@ def top_films() -> str:
     Highest grossing films.
     Data loaded from static for speed
     """
-    path = "./data/top_films_data.json"
-    with open(path) as json_file:
-        data = json.load(json_file)
-
-    return render_template("reports/top_films.html", data=data)
+    return services.boxoffice.top()
 
 
 @bp.route("/reports/forecast")
