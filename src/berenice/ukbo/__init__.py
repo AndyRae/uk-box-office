@@ -52,6 +52,7 @@ def register_blueprints(app: Flask) -> None:
     from ukbo import api, views
 
     app.register_blueprint(api.api.bp)
+    app.register_blueprint(api.api_bp, url_prefix="/api2")
     app.register_blueprint(views.sitemap.bp)
     app.register_blueprint(views.views.bp)
     return None

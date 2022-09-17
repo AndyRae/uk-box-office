@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Any, Dict, List
 
 import pandas as pd
@@ -353,3 +354,11 @@ def spellcheck_country(country: str) -> str:
         country_list = country_list[country_list["key"].str.match(country)]
         country = country_list["correction"].iloc[0]
     return country
+
+
+def to_date(date_string: str = "2000-01-20") -> datetime:
+    """
+    Converts date string to a date object.
+    Helper function for the main api endpoint.
+    """
+    return datetime.strptime(date_string, "%Y-%m-%d")
