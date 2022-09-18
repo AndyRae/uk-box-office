@@ -49,4 +49,4 @@ def top() -> Response:
     path = "./data/top_films_data.json"
     with open(path) as json_file:
         data = json.load(json_file)
-    return data
+    return jsonify(data)

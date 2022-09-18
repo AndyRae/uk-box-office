@@ -1,19 +1,24 @@
-from flask import Blueprint, Flask
+from flask import Blueprint, request
 from flask.wrappers import Response
-from flask_restful import Api, Resource, url_for
 from ukbo import services
 
-
-class All(Resource):
-    def get(
-        self: Resource,
-        start_date: str = None,
-        end_date: str = None,
-        start: int = 1,
-    ) -> Response:
-        return services.boxoffice.all(start_date, end_date, start)
+boxoffice = Blueprint("boxoffice", __name__)
 
 
-class Top(Resource):
-    def get(self: Resource) -> Response:
-        return services.boxoffice.top()
+@boxoffice.route("/all")
+def all() -> Response:
+    """
+    Main endpoint for box office data
+    """
+    start_date = request.args.get("start_date", None)
+    end_date = request.args.get("end_date", None)
+    start = int(request.args.get("start", 1))
+    return services.boxoffice.all(start_date, end_date, start)
+
+
+@boxoffice.route("/top")
+def get() -> Response:
+    """
+    Top films all time endpoint
+    """
+    return services.boxoffice.top()
