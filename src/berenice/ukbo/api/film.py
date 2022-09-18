@@ -18,6 +18,6 @@ def all() -> Response:
 @film.route("/<slug>")
 def get(slug: str) -> Response:
     """
-    Top films all time endpoint
+    Film detailview
     """
-    return services.boxoffice.top()
+    return services.film.get(slug)

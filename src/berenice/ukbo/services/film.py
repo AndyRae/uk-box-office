@@ -3,12 +3,24 @@ from typing import List
 from flask import Response, abort, jsonify
 from slugify import slugify  # type: ignore
 from ukbo import models
-from ukbo.extensions import db
+from ukbo.extensions import db, ma
+
+
+class FilmSchema(ma.SQLAlchemyAutoSchema):
+    """
+    Schema to dump - currently unused.
+    """
+
+    class Meta:
+        model = models.Film
+        include_fk = True
+
+    distributor_name = ma.Function(lambda obj: obj.distributor.name)
 
 
 def list(start: int, limit: int = 100) -> Response:
     """
-    List of all films.
+    Paginated list of all films.
     """
     query = db.session.query(models.Film)
     data = query.order_by(models.Film.name.asc()).paginate(
@@ -27,6 +39,20 @@ def list(start: int, limit: int = 100) -> Response:
         previous=previous_page,
         results=[ix.as_dict() for ix in data.items],
     )
+
+
+def get(slug: str) -> Response:
+    """
+    Get one film based on its slug.
+    """
+    query = db.session.query(models.Film)
+    query = query.filter(models.Film.slug == slug)
+    data = query.first()
+
+    if data is None:
+        abort(404)
+
+    return data.as_dict()
 
 
 def add_film(
