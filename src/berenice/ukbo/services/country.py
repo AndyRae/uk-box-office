@@ -1,9 +1,73 @@
 from typing import List
 
+from flask import Response, abort, jsonify
 from slugify import slugify  # type: ignore
 from ukbo import models
+from ukbo.extensions import db
 
 from . import utils
+
+
+def list(start: int, limit: int = 100) -> Response:
+    """
+    Paginated list of all countries.
+    """
+    query = db.session.query(models.Country)
+    data = query.order_by(models.Country.name.asc()).paginate(
+        page=start, per_page=limit, error_out=False
+    )
+
+    if data is None:
+        abort(404)
+
+    next_page = f"/api?start={start + 1}" if data.has_next else ""
+    previous_page = f"/api?start={start - 1}" if data.has_prev else ""
+
+    return jsonify(
+        count=data.total,
+        next=next_page,
+        previous=previous_page,
+        results=[ix.as_dict() for ix in data.items],
+    )
+
+
+def get(slug: str) -> Response:
+    """
+    Get one country based on its slug.
+    """
+    query = db.session.query(models.Country)
+    query = query.filter(models.Country.slug == slug)
+    data = query.first()
+
+    if data is None:
+        abort(404)
+
+    return data.as_dict()
+
+
+def get_films(slug: str, start: int = 1, limit: int = 100) -> Response:
+    """
+    Get a countries list of films from slug.
+    """
+    query = db.session.query(models.Country)
+    query = query.filter(models.Country.slug == slug)
+    country = query.first()
+
+    query = db.session.query(models.Film).options(
+        db.selectinload(models.Film.weeks)
+    )
+    query = query.filter(models.Film.countries.contains(country))
+    data = query.order_by(models.Film.id.asc()).paginate(start, limit, False)
+
+    next_page = f"/api?start={start + 1}" if data.has_next else ""
+    previous_page = f"/api?start={start - 1}" if data.has_prev else ""
+
+    return jsonify(
+        count=data.total,
+        next=next_page,
+        previous=previous_page,
+        results=[ix.as_dict() for ix in data.items],
+    )
 
 
 def add_country(country: str) -> List[models.Country]:
