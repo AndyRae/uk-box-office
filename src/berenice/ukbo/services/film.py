@@ -1,8 +1,32 @@
 from typing import List
 
+from flask import Response, abort, jsonify
 from slugify import slugify  # type: ignore
 from ukbo import models
 from ukbo.extensions import db
+
+
+def list(start: int, limit: int = 100) -> Response:
+    """
+    List of all films.
+    """
+    query = db.session.query(models.Film)
+    data = query.order_by(models.Film.name.asc()).paginate(
+        page=start, per_page=limit, error_out=False
+    )
+
+    if data is None:
+        abort(404)
+
+    next_page = f"/api?start={start + 1}" if data.has_next else ""
+    previous_page = f"/api?start={start - 1}" if data.has_prev else ""
+
+    return jsonify(
+        count=data.total,
+        next=next_page,
+        previous=previous_page,
+        results=[ix.as_dict() for ix in data.items],
+    )
 
 
 def add_film(
