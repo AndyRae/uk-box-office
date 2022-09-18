@@ -1,6 +1,18 @@
 version: "3.9"
 
 services:
+  sophronia:
+    container_name: sophronia
+    build: src/sophronia
+    env_file:
+      - ./.env
+    command: npm start
+    volumes:
+      - ./src/sophronia/:/app
+    ports:
+      - 3000:3000
+    depends_on:
+      - berenice
   berenice:
     container_name: berenice
     build: src/berenice
@@ -16,8 +28,6 @@ services:
     depends_on:
       - db
       - elastic
-    networks:
-      - deploy-network
   db:
     container_name: postgres
     image: postgres
@@ -25,8 +35,6 @@ services:
       - ./.env
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-    networks:
-      - deploy-network
   elastic:
     container_name: elastic
     image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
@@ -42,15 +50,8 @@ services:
       - elastic_data:/usr/share/elasticsearch/data
     ports:
       - 127.0.0.1:9200:9200
-    networks:
-      - deploy-network
 
 
 volumes:
   elastic_data:
   postgres_data:
-
-
-networks:
-  deploy-network:
-    driver: bridge
