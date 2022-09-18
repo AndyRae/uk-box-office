@@ -1,9 +1,10 @@
-from datetime import datetime
+import datetime
 from typing import Any, Dict, List
 
 import pandas as pd
 from slugify import slugify  # type: ignore
 from ukbo import models
+from ukbo.extensions import db
 
 
 def group_by_date(data: List[Any]) -> Dict[str, Any]:
@@ -356,9 +357,23 @@ def spellcheck_country(country: str) -> str:
     return country
 
 
-def to_date(date_string: str = "2000-01-20") -> datetime:
+def to_date(date_string: str = "2000-01-20") -> datetime.datetime:
     """
     Converts date string to a date object.
     Helper function for the main api endpoint.
     """
-    return datetime.strptime(date_string, "%Y-%m-%d")
+    return datetime.datetime.strptime(date_string, "%Y-%m-%d")
+
+
+def get_box_office_data(
+    model: Any, start_date: datetime.date, end_date: datetime.date
+) -> Any:
+    """
+    Queries the models database with a start and end filter
+    Returns the query object
+    """
+    query = db.session.query(model)
+    query = query.filter(model.date >= start_date)
+    query = query.filter(model.date <= end_date)
+    query = query.order_by(model.date.desc())
+    return query.all()

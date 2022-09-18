@@ -1,6 +1,11 @@
+import datetime
+
 import pandas as pd
+from flask import Response, jsonify
 from prophet import Prophet
 from ukbo import db, models  # type: ignore
+
+from . import utils
 
 
 class Forecast:
@@ -8,6 +13,18 @@ class Forecast:
         self.df: pd.DataFrame = None
         self.prediction: pd.DataFrame = None
         self.prediction_weeks = 26
+
+    def get(self) -> Response:
+        """
+        Get forecasted data
+        """
+        now = datetime.datetime.now()
+        last_year = datetime.timedelta(days=365)
+        start_date = now - last_year
+        end_date = now + last_year
+
+        data = utils.get_box_office_data(models.Week, start_date, end_date)
+        return jsonify(data=[ix.as_dict() for ix in data])
 
     def run_forecast(self) -> None:
         """
