@@ -59,13 +59,17 @@ class Film(SearchableMixin, PkModel):  # type: ignore
         return {
             "id": self.id,
             "name": self.name,
+            "slug": self.slug,
             "weeks": self.serialize_weeks(),
-            "country": self.country_id,
+            "country": self.serialize_countries(),
             "distributor": self.distributor.name,
         }
 
     def serialize_weeks(self) -> List[Any]:
         return [item.as_dict() for item in self.weeks]
+
+    def serialize_countries(self) -> List[Any]:
+        return [item.as_dict() for item in self.countries]
 
     @hybrid_property
     def multiple(self) -> float:

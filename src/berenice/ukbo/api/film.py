@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, jsonify, request
 from flask.wrappers import Response
 from ukbo import services
 
@@ -12,7 +12,9 @@ def all() -> Response:
     """
     start = int(request.args.get("start", 1))
     limit = int(request.args.get("limit", 100))
-    return services.film.list(start, limit)
+    response = services.film.list(start, limit)
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
 
 
 @film.route("/<slug>")
@@ -20,4 +22,6 @@ def get(slug: str) -> Response:
     """
     Film detailview
     """
-    return services.film.get(slug)
+    response = jsonify(services.film.get(slug))
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response

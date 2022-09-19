@@ -10,15 +10,14 @@ export const Root = () => {
       <Route path="/" >
         <Route element={<Layout />}>
           <Route index element={<Dashboard />} />
-          <Route path="home">
-              <Route index element={<Dashboard />} />
-          </Route>
-          <Route path="films">
+
+          <Route path="film">
               <Route index element={<Films />} />
               <Route path=":filmId">
                   <Route index element={<Film />} />
               </Route>
           </Route>
+
         </Route>
 
           {/* <Route path="*" element={<NotFound />} /> */}
