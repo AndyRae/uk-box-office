@@ -13,7 +13,9 @@ def all() -> Response:
     start_date = request.args.get("start_date", None)
     end_date = request.args.get("end_date", None)
     start = int(request.args.get("start", 1))
-    return services.boxoffice.all(start_date, end_date, start)
+    response = services.boxoffice.all(start_date, end_date, start)
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
 
 
 @boxoffice.route("/top")
