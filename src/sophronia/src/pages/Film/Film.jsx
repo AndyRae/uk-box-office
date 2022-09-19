@@ -1,9 +1,9 @@
-import { useFilm } from "../api/films"
+import { useFilm } from "../../api/films"
 import { useParams } from "react-router-dom";
 
 export const Film = () => {
-  const { filmId } = useParams();
-  const { data, error } = useFilm(filmId);
+  const { slug } = useParams();
+  const { data, error } = useFilm(slug);
 
   return(
     <div>
