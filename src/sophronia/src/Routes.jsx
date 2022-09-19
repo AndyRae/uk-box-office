@@ -1,12 +1,12 @@
-import { Route, Routes, useNavigate } from "react-router-dom";
-import { Layout } from '@Components';
-import { Dashboard } from '@Pages';
+import { Route, Routes } from "react-router-dom";
+import { Layout } from './components/Layout';
+import { Dashboard } from './pages/Dashboard';
 
 export const Root = () => {
   return (
     <Routes>
-      <Route path="/" element={<DefaultLayout />}>
-        <Route path="home" element={<ProtectedRoutes />}>
+      <Route path="/" element={<Layout />}>
+        <Route path="home">
             <Route index element={<Dashboard />} />
           </Route>
 
