@@ -1,0 +1,18 @@
+{
+  "name": "uk-box-office",
+  "workspaces": [
+    "src/sophronia"
+  ],
+  "version": "1.0.0",
+  "description": "Box Office Data",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AndyRae/uk-box-office.git"
+  },
+  "author": "Andy Rae",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AndyRae/uk-box-office/issues"
+  },
+  "homepage": "https://github.com/AndyRae/uk-box-office#readme"
+}
