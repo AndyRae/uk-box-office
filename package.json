@@ -14,5 +14,11 @@
   "bugs": {
     "url": "https://github.com/AndyRae/uk-box-office/issues"
   },
-  "homepage": "https://github.com/AndyRae/uk-box-office#readme"
+  "homepage": "https://github.com/AndyRae/uk-box-office#readme",
+  "devDependencies": {
+    "autoprefixer": "^10.4.11",
+    "eslint": "^8.23.1",
+    "husky": "^8.0.1",
+    "prettier": "^2.7.1"
+  }
 }
