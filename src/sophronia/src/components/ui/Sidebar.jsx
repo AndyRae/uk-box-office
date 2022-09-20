@@ -1,7 +1,9 @@
 import { FaGlobeEurope } from 'react-icons/fa';
 import { BiFilm, BiNetworkChart } from 'react-icons/bi';
 import { MdOutlineSpaceDashboard, MdOutlineAutoGraph } from "react-icons/md";
+import  {HiOutlineTicket } from 'react-icons/hi';
 import { useLocation } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 const links = [
   {
@@ -13,6 +15,11 @@ const links = [
     name: 'Last Week',
     path: '/week',
     icon: < MdOutlineAutoGraph />,
+  },
+  {
+    name: 'All Time',
+    path: '/time',
+    icon: < HiOutlineTicket />,
   },
   {
     name: 'Films',
@@ -41,22 +48,22 @@ const SideBarElement = ({ name, path, icon, children }) => {
   const { pathname } = useLocation()
   const isActive = pathname === path
   return (
-    <a
-      href={path}
-      class={`flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 ${isActive ? 'bg-gray-200': ''}`}
+    <Link
+      to={path} as={Link}
+      class={`flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 ${isActive ? 'bg-gray-200 dark:bg-blue-900': ''}`}
     >
         {icon}
         <span class="ml-3">{name}</span>
         { children }
-    </a>
+    </Link>
   )
 }
 
 export const Sidebar = ({ elements }) => {
   return (
 
-    <aside class="w-64 h-screen" aria-label="Sidebar">
-      <div class="overflow-y-auto h-screen py-4 px-3 bg-gray-50 rounded dark:bg-gray-800">
+    <aside class="w-64 h-screen sticky" aria-label="Sidebar">
+      <div class="overflow-y-auto h-full py-4 px-3 bg-gray-50 dark:bg-slate-900">
           <a href="/" class="flex items-center pl-2.5 mb-5">
             <img src="https://flowbite.com/docs/images/logo.svg" class="mr-3 h-6 sm:h-7" alt="Logo"/>
             <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Box Office Data</span>

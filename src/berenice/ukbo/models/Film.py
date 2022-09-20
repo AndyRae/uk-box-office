@@ -63,6 +63,7 @@ class Film(SearchableMixin, PkModel):  # type: ignore
             "weeks": self.serialize_weeks(),
             "country": self.serialize_countries(),
             "distributor": self.distributor.name,
+            "gross": self.gross,
         }
 
     def serialize_weeks(self) -> List[Any]:

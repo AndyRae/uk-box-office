@@ -1,10 +1,11 @@
 import { useFilmList } from "../../api/films";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { FilmList } from "../../components/Film/FilmList";
+import { Pagination } from "../../components/ui/Pagination";
 
 export const Films = () => {
   const [pageIndex, setPageIndex] = useState(1);
-  const pageLimit = 10;
+  const pageLimit = 15;
   const { data, error } = useFilmList(pageIndex, pageLimit);
 
   // Build the pagination.
@@ -14,26 +15,13 @@ export const Films = () => {
   for (let i = pageIndex; i <= pages; i++) {
     pageNumbers.push(i);
   }
+  console.log(pageNumbers)
 
 
   return(
-    <div>
-      <h1 className="text-3xl font-bold underline" >Films</h1>
-
-      { data &&
-      data.results.map((film) => {
-        return(
-        <div key={film.id}>
-          <h2>{film.name}</h2>
-          <p>{film.description}</p>
-          <Link to={film.slug}>Link</Link>
-
-        </div>
-        )} )}
-
-      <button onClick={() => setPageIndex(pageIndex - 1)}>Previous</button>
-      <button onClick={() => setPageIndex(pageIndex + 1)}>Next</button>
-
-    </div>
+    <>
+      <FilmList films={data} pageIndex={pageIndex}/>
+      <Pagination pages={pageNumbers} setPageIndex={setPageIndex} pageIndex={pageIndex}/>
+    </>
   )
 }
