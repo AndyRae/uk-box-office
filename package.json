@@ -1,8 +1,5 @@
 {
 	"name": "uk-box-office",
-	"workspaces": [
-		"src/sophronia"
-	],
 	"version": "1.0.0",
 	"description": "Box Office Data",
 	"repository": {
