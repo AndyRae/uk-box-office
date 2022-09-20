@@ -1,31 +1,86 @@
+import { FaGlobeEurope } from 'react-icons/fa';
+import { BiFilm, BiNetworkChart } from 'react-icons/bi';
+import { MdOutlineSpaceDashboard, MdOutlineAutoGraph } from "react-icons/md";
+import { useLocation } from 'react-router-dom';
+
 const links = [
   {
     name: 'Dashboard',
     path: '/',
-    icon: 'home',
+    icon: < MdOutlineSpaceDashboard />,
+  },
+  {
+    name: 'Last Week',
+    path: '/week',
+    icon: < MdOutlineAutoGraph />,
   },
   {
     name: 'Films',
     path: '/film',
-    icon: 'info',
+    icon: < BiFilm />,
   },
   {
     name: 'Distributors',
     path: '/distributor',
-    icon: 'info',
+    icon: < BiNetworkChart />,
   },
   {
     name: 'Countries',
     path: '/country',
-    icon: 'info',
+    icon: < FaGlobeEurope />,
+  },
+  {
+    name: 'Forecast',
+    path: '/forecast',
+    icon: < MdOutlineAutoGraph />,
   },
 
 ]
 
-export const Sidebar = () => {
+const SideBarElement = ({ name, path, icon, children }) => {
+  const { pathname } = useLocation()
+  const isActive = pathname === path
   return (
-    <div>
-      <h1>Sidebar</h1>
-    </div>
+    <a
+      href={path}
+      class={`flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 ${isActive ? 'bg-gray-200': ''}`}
+    >
+        {icon}
+        <span class="ml-3">{name}</span>
+        { children }
+    </a>
+  )
+}
+
+export const Sidebar = ({ elements }) => {
+  return (
+
+    <aside class="w-64 h-screen" aria-label="Sidebar">
+      <div class="overflow-y-auto h-screen py-4 px-3 bg-gray-50 rounded dark:bg-gray-800">
+          <a href="/" class="flex items-center pl-2.5 mb-5">
+            <img src="https://flowbite.com/docs/images/logo.svg" class="mr-3 h-6 sm:h-7" alt="Logo"/>
+            <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Box Office Data</span>
+          </a>
+          <ul class="space-y-2">
+            {links.map((element) => {
+              return (
+                <SideBarElement name={element.name} path={element.path} icon={element.icon} />
+              )
+            })}
+          </ul>
+          <div id="dropdown-cta" class="p-4 mt-6 bg-blue-50 rounded-lg dark:bg-blue-900" role="alert">
+         <div class="flex items-center mb-3">
+            <span class="bg-orange-100 text-orange-800 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-orange-200 dark:text-orange-900">Beta</span>
+            <button type="button" class="ml-auto -mx-1.5 -my-1.5 bg-blue-50 text-blue-900 rounded-lg focus:ring-2 focus:ring-blue-400 p-1 hover:bg-blue-200 inline-flex h-6 w-6 dark:bg-blue-900 dark:text-blue-400 dark:hover:bg-blue-800" data-collapse-toggle="dropdown-cta" aria-label="Close">
+                  <span class="sr-only">Close</span>
+                  <svg aria-hidden="true" class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+            </button>
+         </div>
+         <p class="mb-3 text-sm text-blue-900 dark:text-blue-400">
+            This is a beta version of the Box Office Data dashboard. We are still working on it and would love to hear your feedback.
+         </p>
+      </div>
+      </div>
+    </aside>
   );
 }
