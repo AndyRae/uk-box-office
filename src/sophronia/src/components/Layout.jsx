@@ -8,7 +8,7 @@ export const Layout = () => {
 			<Sidebar />
 
 			<div className='flex-1 p-10 overflow-auto bg-gray-50 dark:bg-gray-900 dark:text-white'>
-				<div className='h-max'>
+				<div className='h-max py-5'>
 					<Outlet />
 				</div>
 				<Footer />
