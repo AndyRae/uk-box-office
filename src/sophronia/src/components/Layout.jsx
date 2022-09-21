@@ -4,11 +4,11 @@ import { Footer } from './ui/Footer';
 
 export const Layout = () => {
 	return (
-		<div class='fixed flex w-full h-full'>
+		<div className='fixed flex w-full h-full'>
 			<Sidebar />
 
-			<div class='flex-1 p-10 overflow-auto bg-gray-50 dark:bg-gray-900 dark:text-white'>
-				<div class='h-max'>
+			<div className='flex-1 p-10 overflow-auto bg-gray-50 dark:bg-gray-900 dark:text-white'>
+				<div className='h-max'>
 					<Outlet />
 				</div>
 				<Footer />

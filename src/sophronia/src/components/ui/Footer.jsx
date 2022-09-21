@@ -58,7 +58,7 @@ export const Footer = () => {
 			</span>
 			<ul class='flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0'>
 				{Links.map((link) => (
-					<li class='mr-4 hover:underline md:mr-6'>
+					<li key={link.name} class='mr-4 hover:underline md:mr-6'>
 						<Link to={link.path} class='mr-4 hover:underline md:mr-6'>
 							{link.name}
 						</Link>

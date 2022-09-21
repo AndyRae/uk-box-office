@@ -47,6 +47,7 @@ class Film_Week(PkModel):  # type: ignore
             "weekend_gross": self.weekend_gross,
             "week_gross": self.week_gross,
             "total_gross": self.total_gross,
+            "site_average": self.site_average,
         }
 
     def as_df(self) -> List[Any]:
