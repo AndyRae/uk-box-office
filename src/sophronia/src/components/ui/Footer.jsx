@@ -33,17 +33,17 @@ const Links = [
 	},
 	{
 		name: 'Films',
-		path: '/films',
+		path: '/film',
 		icon: <FaFilm />,
 	},
 	{
 		name: 'Distributors',
-		path: '/distributors',
+		path: '/distributor',
 		icon: <FaNetworkWired />,
 	},
 	{
 		name: 'Countries',
-		path: '/countries',
+		path: '/country',
 		icon: <FaGlobeEurope />,
 	},
 ];

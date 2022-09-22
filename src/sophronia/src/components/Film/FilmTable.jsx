@@ -36,7 +36,9 @@ export const FilmTable = ({ films }) => {
 									</th>
 									<td className='py-4 px-6'>{film.distributor}</td>
 									<td className='py-4 px-6'>{film.weeks[-1]}</td>
-									<td className='py-4 px-6'>£ {film.gross}</td>
+									<td className='py-4 px-6'>
+										£ {film.gross.toLocaleString('en-GB')}
+									</td>
 								</tr>
 							);
 						})}

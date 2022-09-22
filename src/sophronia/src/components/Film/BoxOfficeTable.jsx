@@ -6,7 +6,7 @@ export const BoxOfficeTable = ({ data }) => {
 	const alternatingDarkColor = ['dark:bg-gray-800', 'dark:bg-gray-900'];
 
 	return (
-		<table className='w-full text-sm text-left text-gray-500 dark:text-gray-400'>
+		<table className='w-full my-8 text-sm text-left text-gray-500 dark:text-gray-400'>
 			<thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
 				<tr>
 					<th scope='col' className='py-3 px-3 text-center'>
@@ -71,8 +71,12 @@ export const BoxOfficeTable = ({ data }) => {
 							<td className='py-4 px-3 text-center'>
 								{week.number_of_cinemas}
 							</td>
-							<td className='py-4 px-3 text-center'>£ {week.weekend_gross}</td>
-							<td className='py-4 px-3 text-center'>£ {week.week_gross}</td>
+							<td className='py-4 px-3 text-center'>
+								£ {week.weekend_gross.toLocaleString('en-GB')}
+							</td>
+							<td className='py-4 px-3 text-center'>
+								£ {week.week_gross.toLocaleString('en-GB')}
+							</td>
 							<td
 								className={`py-4 px-3 text-center ${
 									changeWeekend < 0 ? 'text-red-600' : 'text-green-600'
@@ -81,9 +85,11 @@ export const BoxOfficeTable = ({ data }) => {
 								{changeWeekend}%
 							</td>
 							<td className='py-4 px-3 text-center'>
-								£ {Math.ceil(week.site_average)}
+								£ {Math.ceil(week.site_average).toLocaleString('en-GB')}
 							</td>
-							<td className='py-4 px-3 text-center'>£ {week.total_gross}</td>
+							<td className='py-4 px-3 text-center'>
+								£ {week.total_gross.toLocaleString('en-GB')}
+							</td>
 						</tr>
 					);
 				})}
