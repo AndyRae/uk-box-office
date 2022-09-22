@@ -1,39 +1,26 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useCountryList } from '../../api/countries';
 import { Suspense } from 'react';
 import { Spinner } from '../../components/ui/Spinner';
+import { Pagination } from '../../components/ui/Pagination';
+import { paginate } from '../../utils/pagination';
+import { CountryList } from '../../components/Country/CountryList';
 
 export const CountriesPage = () => {
 	const [pageIndex, setPageIndex] = useState(1);
-	const pageLimit = 10;
+	const pageLimit = 15;
 	const { data, error } = useCountryList(pageIndex, pageLimit);
-
-	// Build the pagination.
-	const count = data?.count || 0;
-	const pages = Math.ceil(count / pageLimit);
-	const pageNumbers = [];
-	for (let i = pageIndex; i <= pages; i++) {
-		pageNumbers.push(i);
-	}
+	const pageNumbers = paginate(data?.count, pageIndex, pageLimit);
 
 	return (
-		<div>
-			<h1 className='text-3xl font-bold underline'>Countries</h1>
-
-			{data &&
-				data.results.map((country) => {
-					return (
-						<div key={country.id}>
-							<h2>{country.name}</h2>
-							<Link to={country.slug}>Link</Link>
-						</div>
-					);
-				})}
-
-			<button onClick={() => setPageIndex(pageIndex - 1)}>Previous</button>
-			<button onClick={() => setPageIndex(pageIndex + 1)}>Next</button>
-		</div>
+		<>
+			<CountryList countries={data} pageIndex={pageIndex} />
+			<Pagination
+				pages={pageNumbers}
+				setPageIndex={setPageIndex}
+				pageIndex={pageIndex}
+			/>
+		</>
 	);
 };
 
