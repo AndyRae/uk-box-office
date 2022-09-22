@@ -61,7 +61,7 @@ const SideBarElement = ({ name, path, icon, children }) => {
 	);
 };
 
-export const Sidebar = ({ elements }) => {
+export const Sidebar = () => {
 	return (
 		<aside className='w-64 h-screen sticky' aria-label='Sidebar'>
 			<div className='overflow-y-auto h-full py-4 px-3 bg-gray-50 dark:bg-slate-900'>

@@ -11,7 +11,7 @@ root.render(
 	<StrictMode>
 		<ErrorBoundary>
 			<BrowserRouter>
-				<Suspense fallback={<div>Loading...</div>}>
+				<Suspense fallback={<div background='#999999'>Loading...</div>}>
 					<Root />
 				</Suspense>
 			</BrowserRouter>
