@@ -8,7 +8,7 @@ import { Spinner } from '../../components/ui/Spinner';
 
 export const FilmsPage = () => {
 	const [pageIndex, setPageIndex] = useState(1);
-	const pageLimit = 16;
+	const pageLimit = 15;
 	const { data, error } = useFilmList(pageIndex, pageLimit);
 
 	const pageNumbers = paginate(data?.count, pageIndex, pageLimit);

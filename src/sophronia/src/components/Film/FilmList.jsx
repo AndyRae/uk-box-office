@@ -1,5 +1,3 @@
-import { Pagination } from '../ui/Pagination';
-import { Link } from 'react-router-dom';
 import { FilmTable } from './FilmTable';
 
 export const FilmList = ({ films, pageIndex }) => {
