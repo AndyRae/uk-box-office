@@ -42,7 +42,7 @@ export const FilmPage = () => {
 					<ul className='flex flex-wrap justify-center'>
 						{data.country.map((country) => {
 							return (
-								<li className='mr-2'>
+								<li key={country.id} className='mr-2'>
 									<Link
 										key={country.name}
 										to={`/country/${country.slug}`}
@@ -63,7 +63,7 @@ export const FilmPage = () => {
 				/>
 			</div>
 
-			{data.weeks.length >= 2 && <div class='chart' />}
+			{data.weeks.length >= 2 && <div className='chart' />}
 
 			<BoxOfficeTable data={data} />
 		</div>

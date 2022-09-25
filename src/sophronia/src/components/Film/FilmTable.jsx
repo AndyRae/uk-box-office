@@ -13,9 +13,6 @@ export const FilmTable = ({ films }) => {
 							Distributor
 						</th>
 						<th scope='col' className='py-3 px-6'>
-							Updated
-						</th>
-						<th scope='col' className='py-3 px-6'>
 							Box Office
 						</th>
 					</tr>
@@ -32,10 +29,10 @@ export const FilmTable = ({ films }) => {
 										scope='row'
 										className='py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white'
 									>
-										<Link to={film.slug}>{film.name}</Link>
+										<Link to={`/film/${film.slug}`}>{film.name}</Link>
 									</th>
 									<td className='py-4 px-6'>{film.distributor}</td>
-									<td className='py-4 px-6'>{film.weeks[-1]}</td>
+
 									<td className='py-4 px-6'>
 										£ {film.gross.toLocaleString('en-GB')}
 									</td>

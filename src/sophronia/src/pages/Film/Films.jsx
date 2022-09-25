@@ -14,6 +14,7 @@ export const FilmsPage = () => {
 
 	return (
 		<>
+			<h1 className='text-4xl font-bold'>Films</h1>
 			<FilmList films={data} pageIndex={pageIndex} />
 			<Pagination
 				pages={pageNumbers}

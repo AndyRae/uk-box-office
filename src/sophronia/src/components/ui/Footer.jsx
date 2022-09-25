@@ -50,16 +50,16 @@ const Links = [
 
 export const Footer = () => {
 	return (
-		<footer class='p-4 bg-white rounded-lg shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800'>
-			<span class='text-sm text-gray-500 sm:text-center dark:text-gray-400'>
-				<a href='/' class='hover:underline'>
+		<footer className='p-4 bg-white rounded-lg shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800'>
+			<span className='text-sm text-gray-500 sm:text-center dark:text-gray-400'>
+				<a href='/' className='hover:underline'>
 					UK Box Office
 				</a>
 			</span>
-			<ul class='flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0'>
+			<ul className='flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0'>
 				{Links.map((link) => (
-					<li key={link.name} class='mr-4 hover:underline md:mr-6'>
-						<Link to={link.path} class='mr-4 hover:underline md:mr-6'>
+					<li key={link.name} className='mr-4 hover:underline md:mr-6'>
+						<Link to={link.path} className='mr-4 hover:underline md:mr-6'>
 							{link.name}
 						</Link>
 					</li>

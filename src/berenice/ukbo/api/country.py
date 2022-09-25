@@ -34,4 +34,6 @@ def get_films(slug: str) -> Response:
     """
     start = int(request.args.get("start", 1))
     limit = int(request.args.get("limit", 100))
-    return services.country.get_films(slug, start, limit)
+    response = services.country.get_films(slug, start, limit)
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
