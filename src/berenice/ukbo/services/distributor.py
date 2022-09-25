@@ -45,10 +45,15 @@ def get_films(slug: str, start: int = 1, limit: int = 100) -> Response:
     """
     Get a distributor list of films from slug.
     """
+    query = db.session.query(models.Distributor)
+    query = query.filter(models.Distributor.slug == slug)
+    distributor = query.first()
+
     query = db.session.query(models.Film).options(
         db.joinedload(models.Film.weeks)
     )
     query = query.join(models.Distributor)
+
     query = query.filter(models.Distributor.slug == slug)
     data = query.order_by(models.Film.id.asc()).paginate(start, limit, False)
 
@@ -56,6 +61,7 @@ def get_films(slug: str, start: int = 1, limit: int = 100) -> Response:
     previous_page = f"/api?start={start - 1}" if data.has_prev else ""
 
     return jsonify(
+        distributor=distributor.as_dict(),
         count=data.total,
         next=next_page,
         previous=previous_page,

@@ -1,7 +1,6 @@
-import { useCountry, useCountryFilms } from '../../api/countries';
+import { useCountryFilms } from '../../api/countries';
 import { useParams } from 'react-router-dom';
-import { Suspense } from 'react';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { Spinner } from '../../components/ui/Spinner';
 import { FilmList } from '../../components/Film/FilmList';
 import { Pagination } from '../../components/ui/Pagination';
