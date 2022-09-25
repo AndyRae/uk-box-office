@@ -63,10 +63,11 @@ def get_films(slug: str, start: int = 1, limit: int = 100) -> Response:
     previous_page = f"/api?start={start - 1}" if data.has_prev else ""
 
     return jsonify(
+        country=country.as_dict(),
         count=data.total,
         next=next_page,
         previous=previous_page,
-        results=[ix.as_dict() for ix in data.items],
+        results=[ix.as_dict(weeks=False) for ix in data.items],
     )
 
 

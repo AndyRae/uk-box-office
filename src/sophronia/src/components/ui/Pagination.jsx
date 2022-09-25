@@ -27,7 +27,7 @@ export const Pagination = ({ pages, setPageIndex, pageIndex }) => {
 						</li>
 					);
 				})}
-				{pageIndex < pages.length && (
+				{pageIndex < pages[pages.length - 1] && (
 					<li>
 						<button
 							onClick={() => setPageIndex(pageIndex + 1)}

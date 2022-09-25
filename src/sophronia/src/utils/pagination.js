@@ -5,8 +5,6 @@ export const paginate = (count, pageIndex, pageLimit) => {
 	const maxPages = Math.ceil(count / pageLimit);
 	const pageNumbers = [];
 
-	console.log('pages', maxPages);
-
 	let startPage = pageIndex - 2;
 	let endPage = pageIndex + 3;
 
@@ -18,7 +16,7 @@ export const paginate = (count, pageIndex, pageLimit) => {
 	if (endPage > maxPages) {
 		endPage = maxPages;
 	}
-	for (let i = startPage; i <= maxPages; i++) {
+	for (let i = startPage; i <= endPage; i++) {
 		pageNumbers.push(i);
 	}
 	let l = Array.from([startPage, endPage]);

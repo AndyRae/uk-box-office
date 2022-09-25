@@ -55,16 +55,18 @@ class Film(SearchableMixin, PkModel):  # type: ignore
     def __eq__(self, o: object) -> bool:
         return self.name == o
 
-    def as_dict(self) -> Dict[str, Any]:
-        return {
+    def as_dict(self, weeks=True) -> Dict[str, Any]:
+        obj = {
             "id": self.id,
             "name": self.name,
             "slug": self.slug,
-            "weeks": self.serialize_weeks(),
             "country": self.serialize_countries(),
             "distributor": self.distributor.name,
             "gross": self.gross,
         }
+        if weeks:
+            obj["weeks"] = self.serialize_weeks()
+        return obj
 
     def serialize_weeks(self) -> List[Any]:
         return [item.as_dict() for item in self.weeks]

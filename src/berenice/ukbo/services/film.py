@@ -37,7 +37,7 @@ def list(start: int, limit: int = 100) -> Response:
         count=data.total,
         next=next_page,
         previous=previous_page,
-        results=[ix.as_dict() for ix in data.items],
+        results=[ix.as_dict(weeks=False) for ix in data.items],
     )
 
 
