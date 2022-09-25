@@ -58,7 +58,7 @@ export const FilmPage = () => {
 
 				<Card
 					title='Distributor'
-					subtitle={data.distributor}
+					subtitle={data.distributor.name}
 					link={`/distributor/${data.distributor.slug}`}
 				/>
 			</div>

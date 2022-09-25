@@ -61,7 +61,10 @@ class Film(SearchableMixin, PkModel):  # type: ignore
             "name": self.name,
             "slug": self.slug,
             "country": self.serialize_countries(),
-            "distributor": self.distributor.name,
+            "distributor": {
+                "name": self.distributor.name,
+                "slug": self.distributor.slug,
+            },
             "gross": self.gross,
         }
         if weeks:

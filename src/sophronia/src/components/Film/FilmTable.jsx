@@ -31,7 +31,7 @@ export const FilmTable = ({ films }) => {
 									>
 										<Link to={`/film/${film.slug}`}>{film.name}</Link>
 									</th>
-									<td className='py-4 px-6'>{film.distributor}</td>
+									<td className='py-4 px-6'>{film.distributor.name}</td>
 
 									<td className='py-4 px-6'>
 										£ {film.gross.toLocaleString('en-GB')}

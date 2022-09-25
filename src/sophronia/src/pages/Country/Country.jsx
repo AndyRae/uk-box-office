@@ -16,7 +16,7 @@ export const CountryPage = () => {
 	const pageNumbers = paginate(data?.count, pageIndex, pageLimit);
 	return (
 		<>
-			<h1 className='text-4xl font-bold'>{data.name}</h1>
+			<h1 className='text-4xl font-bold'>{data.country.name}</h1>
 			<FilmList films={data} pageIndex={pageIndex} />
 			<Pagination
 				pages={pageNumbers}
