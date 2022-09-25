@@ -23,4 +23,7 @@ def get() -> Response:
     """
     Top films all time endpoint
     """
-    return services.boxoffice.top()
+    response = services.boxoffice.top()
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
+
