@@ -31,7 +31,7 @@ def all(
     if data is None:
         return {"none"}
 
-    next_page = f"/api?start={start + 1}" if data.has_next else ""
+    next_page = (start + 1) if data.has_next else ""
     previous_page = f"/api?start={start - 1}" if data.has_prev else ""
 
     return jsonify(

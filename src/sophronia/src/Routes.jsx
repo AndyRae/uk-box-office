@@ -51,6 +51,14 @@ export const Root = () => {
 						<Route path=':year/m:month/d:day'>
 							<Route index element={<Time />} />
 						</Route>
+
+						<Route path=':year/q:quarter'>
+							<Route index element={<Time />} />
+						</Route>
+
+						<Route path=':year/q:quarter/q:quarterend'>
+							<Route index element={<Time />} />
+						</Route>
 					</Route>
 				</Route>
 
