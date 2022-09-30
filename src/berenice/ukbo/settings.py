@@ -21,7 +21,7 @@ class Config:
     SCHEDULER_TIMEZONE = "UTC"
     CACHE_TYPE = "SimpleCache"
     CACHE_DEFAULT_TIMEOUT = 300
-    RATELIMIT_DEFAULT = "20/minute"
+    RATELIMIT_DEFAULT = "200/minute"
     RATELIMIT_API = "200/minute"
     FLATPAGES_ROOT = "pages"
     FLATPAGES_EXTENSION = ".md"
