@@ -6,6 +6,8 @@ import { Spinner } from '../../components/ui/Spinner';
 import { Suspense } from 'react';
 import { Date } from '../../components/Date';
 import { useBoxOfficeInfinite } from '../../api/boxoffice';
+import { groupForTable } from '../../utils/groupData';
+import { FilmTable } from '../../components/Time/FilmTable';
 
 export const TimePage = () => {
 	// Unpack dates to be flexible for Year, Month, Day being null.
@@ -23,10 +25,14 @@ export const TimePage = () => {
 	// need to actually turn results into useable data - graphs and charts.
 	const { results } = useBoxOfficeInfinite(startDate, endDate);
 
+	const { tableData } = groupForTable(results);
+
 	return (
 		<div>
-			<h1 className='text-4xl font-bold py-5 capitalize'>{year}</h1>
-			<>hello {results && results.length}</>
+			<h1 className='text-4xl font-bold py-5 capitalize'>
+				UK Box Office {day} {month} {year}
+			</h1>
+			<div>{results && <FilmTable films={tableData} />}</div>
 		</div>
 	);
 };
