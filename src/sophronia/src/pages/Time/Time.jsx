@@ -27,6 +27,8 @@ export const TimePage = () => {
 
 	const { tableData } = groupForTable(results);
 
+	console.log(tableData);
+
 	return (
 		<div>
 			<h1 className='text-4xl font-bold py-5 capitalize'>

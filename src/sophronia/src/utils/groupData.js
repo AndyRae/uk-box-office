@@ -83,6 +83,7 @@ export const groupForAreaChart = (data) => {
 
 /**
  * Groups box office data for tables.
+ *
  * @param {*} data array of box office data.
  * @returns
  */
@@ -97,11 +98,18 @@ export const groupForTable = (data) => {
 					slug: curr['film_slug'],
 					distributor: curr['distributor'],
 					weeks: {},
+					weekend: {},
+					cinemas: {},
 				};
 				acc.push(item);
 			}
+			// Prepare for statistic grouping
 			item.weeks[curr.weeks_on_release] =
 				(item.weeks[curr.weeks_on_release] || 0) + curr.week_gross;
+			item.weekend[curr.weeks_on_release] =
+				(item.weekend[curr.weeks_on_release] || 0) + curr.weekend_gross;
+			item.cinemas[curr.number_of_cinemas] =
+				(item.weekend[curr.number_of_cinemas] || 0) + curr.number_of_cinemas;
 			return acc;
 		}, [])
 		.map((x) => ({
@@ -110,6 +118,11 @@ export const groupForTable = (data) => {
 			distributor: x.distributor,
 			weeks: Math.max(...Object.keys(x.weeks).map(Number)),
 			weekGross: Object.values(x.weeks).reduce((a, b) => a + b, 0),
+			weekendGross: Object.values(x.weekend).reduce((a, b) => a + b, 0),
+			numberOfCinemas: Math.max(...Object.keys(x.cinemas).map(Number)),
+			siteAverage:
+				Object.values(x.weeks).reduce((a, b) => a + b, 0) /
+				Math.max(...Object.keys(x.cinemas).map(Number)),
 		}));
 
 	// Sort by box office

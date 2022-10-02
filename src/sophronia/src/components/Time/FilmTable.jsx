@@ -6,28 +6,28 @@ export const FilmTable = ({ films }) => {
 			<table className='w-full text-sm text-left text-gray-500 dark:text-gray-400'>
 				<thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
 					<tr>
-						<th scope='col' className='py-3 px-6'>
+						<th scope='col' className='py-3 px-3 text-center'>
 							Rank
 						</th>
-						<th scope='col' className='py-3 px-6'>
+						<th scope='col' className='py-3 px-3'>
 							Title
 						</th>
-						<th scope='col' className='py-3 px-6'>
+						<th scope='col' className='py-3 px-3'>
 							Distributor
 						</th>
-						<th scope='col' className='py-3 px-6'>
+						<th scope='col' className='py-3 px-3 text-center'>
 							Weekend Box Office
 						</th>
-						<th scope='col' className='py-3 px-6'>
+						<th scope='col' className='py-3 px-3 text-center'>
 							Week Box Office
 						</th>
-						<th scope='col' className='py-3 px-6'>
+						<th scope='col' className='py-3 px-3 text-center'>
 							Weeks
 						</th>
-						<th scope='col' className='py-3 px-6'>
+						<th scope='col' className='py-3 px-3 text-center'>
 							Cinemas
 						</th>
-						<th scope='col' className='py-3 px-6'>
+						<th scope='col' className='py-3 px-3 text-center'>
 							Site Average
 						</th>
 					</tr>
@@ -46,19 +46,23 @@ export const FilmTable = ({ films }) => {
 									>
 										{index + 1}
 									</th>
-									<th scope='row' className='py-4 px-6'>
+									<th scope='row' className='py-4 px-3'>
 										<Link to={`/film/${film.filmSlug}`}>{film.title}</Link>
 									</th>
-									<td className='py-4 px-6'>{film.distributor}</td>
+									<td className='py-4 px-3'>{film.distributor}</td>
 
-									<td className='py-4 px-6'>£ 0</td>
-									<td className='py-4 px-6'>
+									<td className='py-4 px-3 text-center'>
+										£ {film.weekendGross.toLocaleString('en-GB')}
+									</td>
+									<td className='py-4 px-3 text-center'>
 										£ {film.weekGross.toLocaleString('en-GB')}
 									</td>
-									<td className='py-4 px-6'>{film.weeks}</td>
-									<td className='py-4 px-6'>{film.numberOfCinemas}</td>
-									<td className='py-4 px-6'>
-										{/* £ {film.siteAverage.toLocaleString('en-GB')} */}
+									<td className='py-4 px-3 text-center'>{film.weeks}</td>
+									<td className='py-4 px-3 text-center'>
+										{film.numberOfCinemas}
+									</td>
+									<td className='py-4 px-3 text-center'>
+										£ {film.siteAverage.toLocaleString('en-GB')}
 									</td>
 								</tr>
 							);
