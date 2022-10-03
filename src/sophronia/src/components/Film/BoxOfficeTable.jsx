@@ -47,6 +47,8 @@ export const BoxOfficeTable = ({ data }) => {
 						  )
 						: 0;
 
+					let [year, month, day] = week.date.split('-');
+
 					return (
 						<tr
 							key={week.weeks_on_release}
@@ -63,7 +65,7 @@ export const BoxOfficeTable = ({ data }) => {
 								{week.weeks_on_release}
 							</th>
 							<td className='py-4 px-3 text-center'>
-								<Link to={'/'}>
+								<Link to={`/time/${year}/m${month}/d${day}`}>
 									<Date dateString={week.date} />
 								</Link>
 							</td>
