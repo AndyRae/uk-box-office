@@ -1,46 +1,23 @@
 import { Link } from 'react-router-dom';
+import { BaseTable, Td, Tr } from '../charts/BaseTable';
 
 export const FilmTable = ({ films }) => {
+	const columns = [
+		{ label: 'title' },
+		{ label: 'distributor' },
+		{ label: 'box office', isNumeric: true },
+	];
 	return (
-		<div className='overflow-x-auto my-8 relative'>
-			<table className='w-full text-sm text-left text-gray-500 dark:text-gray-400'>
-				<thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
-					<tr>
-						<th scope='col' className='py-3 px-6'>
-							Title
-						</th>
-						<th scope='col' className='py-3 px-6'>
-							Distributor
-						</th>
-						<th scope='col' className='py-3 px-6'>
-							Box Office
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					{films &&
-						films.results.map((film) => {
-							return (
-								<tr
-									key={film.id}
-									className='bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600'
-								>
-									<th
-										scope='row'
-										className='py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white'
-									>
-										<Link to={`/film/${film.slug}`}>{film.name}</Link>
-									</th>
-									<td className='py-4 px-6'>{film.distributor.name}</td>
-
-									<td className='py-4 px-6'>
-										£ {film.gross.toLocaleString('en-GB')}
-									</td>
-								</tr>
-							);
-						})}
-				</tbody>
-			</table>
-		</div>
+		<BaseTable columns={columns}>
+			{films.results.map((film, index) => (
+				<Tr key={film.id} index={index}>
+					<Td isHighlight>
+						<Link to={`/film/${film.slug}`}>{film.name}</Link>
+					</Td>
+					<Td>{film.distributor.name}</Td>
+					<Td isNumeric>£ {film.gross.toLocaleString('en-GB')}</Td>
+				</Tr>
+			))}
+		</BaseTable>
 	);
 };
