@@ -14,26 +14,26 @@ const Th = ({ isNumeric, children }) => {
 	);
 };
 
-export const Tr = ({ isNumeric, index, children }) => {
+export const Tr = ({ index, children }) => {
 	const alternatingColor = ['bg-white', 'bg-gray-100'];
 	const alternatingDarkColor = ['dark:bg-gray-800', 'dark:bg-gray-900'];
 	return (
 		<tr
 			className={`${alternatingColor[index % alternatingColor.length]} ${
 				alternatingDarkColor[index % alternatingDarkColor.length]
-			} py-4 px-3 ${
-				isNumeric ? 'text-center' : ''
-			}  hover:bg-gray-50 dark:hover:bg-gray-600`}
+			} py-4 px-3 hover:bg-gray-50 dark:hover:bg-gray-600`}
 		>
 			{children}
 		</tr>
 	);
 };
 
-export const Td = ({ isNumeric, children, ...rest }) => {
+export const Td = ({ isNumeric, isHighlight, children, ...rest }) => {
 	return (
 		<td
-			className={`py-4 px-3 ${isNumeric ? 'text-center' : ''} ${
+			className={`py-4 px-3 ${
+				isNumeric ? 'text-center whitespace-nowrap' : ''
+			} ${isHighlight ? 'font-medium text-gray-900 dark:text-white' : ''} ${
 				rest.className
 			}`}
 		>

@@ -17,7 +17,7 @@ export const FilmTable = ({ data }) => {
 			{data.map((film, index) => (
 				<Tr key={film.filmSlug} index={index}>
 					<Td isNumeric>{index + 1}</Td>
-					<Td>
+					<Td isHighlight>
 						<Link to={`/film/${film.filmSlug}`}>{film.title}</Link>
 					</Td>
 					<Td>{film.distributor}</Td>

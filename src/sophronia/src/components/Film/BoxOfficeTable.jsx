@@ -31,7 +31,7 @@ export const BoxOfficeTable = ({ data }) => {
 				return (
 					<Tr key={week.id} index={index}>
 						<Td isNumeric>{week.weeks_on_release}</Td>
-						<Td>
+						<Td isHighlight>
 							<Link to={`/time/${year}/m${month}/d${day}`}>
 								<Date dateString={week.date} />
 							</Link>
