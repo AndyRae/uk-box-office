@@ -23,7 +23,7 @@ export const FilmPage = () => {
 			<h1 className='text-4xl font-bold py-5 capitalize'>
 				{data.name} {isFirstWeek && '(2020)'}
 			</h1>
-			<div className='grid md:grid-cols-2 lg:grid-cols-4 gap-4  '>
+			<div className='grid md:grid-cols-2 lg:grid-cols-4 gap-4'>
 				<Card
 					title='Total Box Office'
 					subtitle={`£ ${data.gross.toLocaleString('en-GB')}`}

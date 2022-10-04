@@ -151,3 +151,35 @@ export const groupForLineChart = (data) => {
 		([date, week_gross]) => ({ date, week_gross })
 	);
 };
+
+/**
+ *
+ * @param {*} data
+ * @returns
+ */
+export const calculateNumberOfFilms = (data) => {
+	// Reduce array to number of unique films
+	const grouped = Array.from(data);
+	const groupedNumber = Array.from(
+		grouped.reduce(
+			(m, { film, week_gross }) => m.set(film, (m.get(film) || 0) + week_gross),
+			new Map()
+		),
+		([film, week_gross]) => ({ film, week_gross })
+	);
+	return groupedNumber.length;
+};
+
+/**
+ *
+ * @param {*} data
+ * @returns
+ */
+export const calculateNumberOfCinemas = (data) => {
+	return Math.max.apply(
+		Math,
+		data.map(function (o) {
+			return o.number_of_cinemas;
+		})
+	);
+};

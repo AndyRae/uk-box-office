@@ -5,7 +5,11 @@ import { Card } from '../../components/Dashboard/Card';
 import { Spinner } from '../../components/ui/Spinner';
 import { Suspense } from 'react';
 import { useBoxOfficeInfinite } from '../../api/boxoffice';
-import { groupForTable } from '../../utils/groupData';
+import {
+	groupForTable,
+	calculateNumberOfCinemas,
+	calculateNumberOfFilms,
+} from '../../utils/groupData';
 import { FilmTable } from '../../components/Time/FilmTable';
 
 const PillLink = ({ to, children }) => (
@@ -60,12 +64,39 @@ export const TimePage = () => {
 
 	const { tableData } = groupForTable(results);
 
+	const numberOfCinemas = calculateNumberOfCinemas(results);
+	const numberOfFilms = calculateNumberOfFilms(results);
+	const boxOffice = tableData.reduce((acc, curr) => acc + curr.weekGross, 0);
+	const weekendBoxOffice = tableData.reduce(
+		(acc, curr) => acc + curr.weekendGross,
+		0
+	);
+
 	return (
 		<div>
 			<h1 className='text-4xl font-bold py-5 capitalize'>
 				UK Box Office {day} {months[month]} {year}
 			</h1>
-			<div>
+
+			<div className='grid md:grid-cols-2 lg:grid-cols-4 gap-4'>
+				<Card
+					title='Total Box Office'
+					subtitle={`£${boxOffice.toLocaleString()}`}
+				/>
+
+				<Card
+					title='Weekend Box Office'
+					subtitle={`£${weekendBoxOffice.toLocaleString()}`}
+				/>
+
+				<Card title='Number of Films' subtitle={`${numberOfFilms}`} />
+
+				<Card title='Number of Cinemas' subtitle={`${numberOfCinemas}`} />
+			</div>
+
+			{/* // Chart */}
+
+			<div className='py-3'>
 				<ul className='flex flex-wrap text-sm font-medium text-center text-gray-500 dark:text-gray-400'>
 					<PillLink to={`/time/${year}`}>{year}</PillLink>
 					<PillLink to={`/time/${year}/q1`}>Q1</PillLink>
@@ -74,6 +105,7 @@ export const TimePage = () => {
 					<PillLink to={`/time/${year}/q4`}>Q4</PillLink>
 				</ul>
 
+				{/* Months */}
 				<ul className='flex flex-wrap text-sm font-medium text-center text-gray-500 dark:text-gray-400'>
 					{Object.keys(months).map((month) => (
 						<PillLink key={month} to={`/time/${year}/m${month}`}>
