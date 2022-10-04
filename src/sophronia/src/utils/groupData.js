@@ -153,12 +153,21 @@ export const groupForLineChart = (data) => {
 };
 
 /**
- *
- * @param {*} data
- * @returns
+ * Calculates the number of week 1 releases.
+ * @param {*} data array of box office data.
+ * @returns number of week 1 releases.
+ */
+export const calculateWeek1Releases = (data) => {
+	const week1 = data.filter((x) => x.weeks_on_release == 1);
+	return week1.length;
+};
+
+/**
+ * Calculates the number of unique films in the data.
+ * @param {*} data - array of box office data.
+ * @returns number of unique films.
  */
 export const calculateNumberOfFilms = (data) => {
-	// Reduce array to number of unique films
 	const grouped = Array.from(data);
 	const groupedNumber = Array.from(
 		grouped.reduce(
@@ -171,9 +180,9 @@ export const calculateNumberOfFilms = (data) => {
 };
 
 /**
- *
- * @param {*} data
- * @returns
+ * Calculates the total box office for the data.
+ * @param {*} data - array of box office data.
+ * @returns total box office.
  */
 export const calculateNumberOfCinemas = (data) => {
 	return Math.max.apply(

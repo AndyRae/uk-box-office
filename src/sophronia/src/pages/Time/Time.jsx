@@ -8,7 +8,7 @@ import { useBoxOfficeInfinite } from '../../api/boxoffice';
 import {
 	groupForTable,
 	calculateNumberOfCinemas,
-	calculateNumberOfFilms,
+	calculateWeek1Releases,
 } from '../../utils/groupData';
 import { FilmTable } from '../../components/Time/FilmTable';
 
@@ -64,13 +64,13 @@ export const TimePage = () => {
 
 	const { tableData } = groupForTable(results);
 
-	const numberOfCinemas = calculateNumberOfCinemas(results);
-	const numberOfFilms = calculateNumberOfFilms(results);
 	const boxOffice = tableData.reduce((acc, curr) => acc + curr.weekGross, 0);
 	const weekendBoxOffice = tableData.reduce(
 		(acc, curr) => acc + curr.weekendGross,
 		0
 	);
+	const numberOfNewFilms = calculateWeek1Releases(results);
+	const numberOfCinemas = calculateNumberOfCinemas(results);
 
 	return (
 		<div>
@@ -89,7 +89,7 @@ export const TimePage = () => {
 					subtitle={`£${weekendBoxOffice.toLocaleString()}`}
 				/>
 
-				<Card title='Number of Films' subtitle={`${numberOfFilms}`} />
+				<Card title='Number of New Films' subtitle={`${numberOfNewFilms}`} />
 
 				<Card title='Number of Cinemas' subtitle={`${numberOfCinemas}`} />
 			</div>
