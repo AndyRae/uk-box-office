@@ -1,101 +1,60 @@
 import { Date } from '../Date';
 import { Link } from 'react-router-dom';
+import { BaseTable, Td, Tr } from '../charts/BaseTable';
 
 export const BoxOfficeTable = ({ data }) => {
-	const alternatingColor = ['bg-white', 'bg-gray-100'];
-	const alternatingDarkColor = ['dark:bg-gray-800', 'dark:bg-gray-900'];
-
+	const columns = [
+		{ label: 'week', isNumeric: true },
+		{ label: 'date' },
+		{ label: 'rank', isNumeric: true },
+		{ label: 'cinemas', isNumeric: true },
+		{ label: 'weekend box office', isNumeric: true },
+		{ label: 'week box office', isNumeric: true },
+		{ label: 'change weekend', isNumeric: true },
+		{ label: 'site average', isNumeric: true },
+		{ label: 'total box office', isNumeric: true },
+	];
 	return (
-		<table className='w-full my-8 text-sm text-left text-gray-500 dark:text-gray-400'>
-			<thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
-				<tr>
-					<th scope='col' className='py-3 px-3 text-center'>
-						Week
-					</th>
-					<th scope='col' className='py-3 px-3 text-center'>
-						Date
-					</th>
-					<th scope='col' className='py-3 px-3 text-center'>
-						Rank
-					</th>
-					<th scope='col' className='py-3 px-3 text-center'>
-						Cinemas
-					</th>
-					<th scope='col' className='py-3 px-3 text-center'>
-						Weekend Box Office
-					</th>
-					<th scope='col' className='py-3 px-3 text-center'>
-						Week Box Office
-					</th>
-					<th scope='col' className='py-3 px-3 text-center'>
-						Change Weekend
-					</th>
-					<th scope='col' className='py-3 px-3 text-center'>
-						Site Average
-					</th>
-					<th scope='col' className='py-3 px-3 text-center'>
-						Total Box Office
-					</th>
-				</tr>
-				{data.weeks.map((week, index) => {
-					const previousWeek = data.weeks[index - 1];
-					const changeWeekend = previousWeek
-						? Math.ceil(
-								((week.weekend_gross - previousWeek.weekend_gross) /
-									previousWeek.weekend_gross) *
-									100
-						  )
-						: 0;
+		<BaseTable columns={columns}>
+			{data.weeks.map((week, index) => {
+				const previousWeek = data.weeks[index - 1];
+				const changeWeekend = previousWeek
+					? Math.ceil(
+							((week.weekend_gross - previousWeek.weekend_gross) /
+								previousWeek.weekend_gross) *
+								100
+					  )
+					: 0;
 
-					let [year, month, day] = week.date.split('-');
+				let [year, month, day] = week.date.split('-');
 
-					return (
-						<tr
-							key={week.weeks_on_release}
+				return (
+					<Tr key={week.id} index={index}>
+						<Td isNumeric>{week.weeks_on_release}</Td>
+						<Td>
+							<Link to={`/time/${year}/m${month}/d${day}`}>
+								<Date dateString={week.date} />
+							</Link>
+						</Td>
+						<Td isNumeric>{week.rank}</Td>
+						<Td isNumeric>{week.number_of_cinemas}</Td>
+						<Td isNumeric>£ {week.weekend_gross.toLocaleString('en-GB')}</Td>
+						<Td isNumeric>£ {week.week_gross.toLocaleString('en-GB')}</Td>
+						<Td
 							className={`${
-								alternatingColor[index % alternatingColor.length]
-							} ${
-								alternatingDarkColor[index % alternatingDarkColor.length]
-							} border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600`}
+								changeWeekend < 0 ? 'text-red-600' : 'text-green-600'
+							}`}
+							isNumeric
 						>
-							<th
-								scope='row'
-								className='py-4 px-3 font-medium text-center text-gray-900 whitespace-nowrap dark:text-white'
-							>
-								{week.weeks_on_release}
-							</th>
-							<td className='py-4 px-3 text-center'>
-								<Link to={`/time/${year}/m${month}/d${day}`}>
-									<Date dateString={week.date} />
-								</Link>
-							</td>
-							<td className='py-4 px-3 text-center'>{week.rank}</td>
-							<td className='py-4 px-3 text-center'>
-								{week.number_of_cinemas}
-							</td>
-							<td className='py-4 px-3 text-center'>
-								£ {week.weekend_gross.toLocaleString('en-GB')}
-							</td>
-							<td className='py-4 px-3 text-center'>
-								£ {week.week_gross.toLocaleString('en-GB')}
-							</td>
-							<td
-								className={`py-4 px-3 text-center ${
-									changeWeekend < 0 ? 'text-red-600' : 'text-green-600'
-								}`}
-							>
-								{changeWeekend}%
-							</td>
-							<td className='py-4 px-3 text-center'>
-								£ {Math.ceil(week.site_average).toLocaleString('en-GB')}
-							</td>
-							<td className='py-4 px-3 text-center'>
-								£ {week.total_gross.toLocaleString('en-GB')}
-							</td>
-						</tr>
-					);
-				})}
-			</thead>
-		</table>
+							{changeWeekend}%
+						</Td>
+						<Td isNumeric>
+							£ {Math.ceil(week.site_average).toLocaleString('en-GB')}
+						</Td>
+						<Td isNumeric>£ {week.total_gross.toLocaleString('en-GB')}</Td>
+					</Tr>
+				);
+			})}
+		</BaseTable>
 	);
 };

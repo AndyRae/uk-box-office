@@ -14,7 +14,7 @@ const Th = ({ isNumeric, children }) => {
 	);
 };
 
-export const Tr = ({ isNumeric, index, children, rest }) => {
+export const Tr = ({ isNumeric, index, children }) => {
 	const alternatingColor = ['bg-white', 'bg-gray-100'];
 	const alternatingDarkColor = ['dark:bg-gray-800', 'dark:bg-gray-900'];
 	return (
@@ -32,7 +32,11 @@ export const Tr = ({ isNumeric, index, children, rest }) => {
 
 export const Td = ({ isNumeric, children, ...rest }) => {
 	return (
-		<td className={`py-4 px-3 ${isNumeric ? 'text-center' : ''}`} {...rest}>
+		<td
+			className={`py-4 px-3 ${isNumeric ? 'text-center' : ''} ${
+				rest.className
+			}`}
+		>
 			{children}
 		</td>
 	);

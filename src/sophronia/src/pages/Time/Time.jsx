@@ -27,17 +27,6 @@ export const TimePage = () => {
 
 	const { tableData } = groupForTable(results);
 
-	const columns = [
-		{ label: 'rank', isNumeric: true, key: 'rank' },
-		{ label: 'title', isNumeric: false, key: 'title' },
-		{ label: 'distributor', isNumeric: false, key: 'distributor' },
-		{ label: 'weekend box office', isNumeric: true, key: 'weekendGross' },
-		{ label: 'week box office', isNumeric: true, key: 'weekGross' },
-		{ label: 'weeks', isNumeric: true, key: 'weeks' },
-		{ label: 'cinemas', isNumeric: true, key: 'numberOfCinemas' },
-		{ label: 'site average', isNumeric: true, key: 'siteAverage' },
-	];
-
 	return (
 		<div>
 			<h1 className='text-4xl font-bold py-5 capitalize'>
