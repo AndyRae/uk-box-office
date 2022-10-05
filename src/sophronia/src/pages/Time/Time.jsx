@@ -11,6 +11,8 @@ import {
 	calculateWeek1Releases,
 } from '../../utils/groupData';
 import { FilmTable } from '../../components/Time/FilmTable';
+import { useState } from 'react';
+import { Tab, Tabs, TabContent, TabTitle } from '../../components/ui/Tabs';
 
 const PillLink = ({ to, children }) => (
 	<li className='mr-2'>
@@ -72,6 +74,12 @@ export const TimePage = () => {
 	const numberOfNewFilms = calculateWeek1Releases(results);
 	const numberOfCinemas = calculateNumberOfCinemas(results);
 
+	// Tabs
+	const [currentTab, setCurrentTab] = useState('1');
+	const handleTabClick = (e) => {
+		setCurrentTab(e.target.id);
+	};
+
 	return (
 		<div>
 			<h1 className='text-4xl font-bold py-5 capitalize'>
@@ -114,7 +122,22 @@ export const TimePage = () => {
 					))}
 				</ul>
 			</div>
-			<div>{results && <FilmTable data={tableData} />}</div>
+
+			<Tabs>
+				<TabTitle id={1} label={'films'} onClick={handleTabClick}>
+					Films
+				</TabTitle>
+				<TabTitle id={2} label={'weeks'} onClick={handleTabClick}>
+					Weeks
+				</TabTitle>
+			</Tabs>
+
+			<TabContent>
+				{currentTab === '1' && (
+					<Tab>{results && <FilmTable data={tableData} />}</Tab>
+				)}
+				{currentTab === '2' && <Tab>Weeks</Tab>}
+			</TabContent>
 		</div>
 	);
 };
