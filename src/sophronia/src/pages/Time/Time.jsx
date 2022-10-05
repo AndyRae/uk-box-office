@@ -124,10 +124,20 @@ export const TimePage = () => {
 			</div>
 
 			<Tabs>
-				<TabTitle id={1} label={'films'} onClick={handleTabClick}>
+				<TabTitle
+					id={1}
+					label={'films'}
+					isActive={currentTab === 1 ? true : false}
+					onClick={handleTabClick}
+				>
 					Films
 				</TabTitle>
-				<TabTitle id={2} label={'weeks'} onClick={handleTabClick}>
+				<TabTitle
+					id={2}
+					label={'weeks'}
+					isActive={currentTab === 2 ? true : false}
+					onClick={handleTabClick}
+				>
 					Weeks
 				</TabTitle>
 			</Tabs>

@@ -28,10 +28,14 @@ export const Tabs = ({ children }) => {
 	);
 };
 
-export const TabTitle = ({ children, id, onClick }) => {
+export const TabTitle = ({ children, id, onClick, isActive }) => {
 	return (
 		<button
-			className='inline-block p-4 rounded-t-lg border-b-2'
+			className={`inline-block p-4 rounded-t-lg border-b-2 ${
+				isActive
+					? ''
+					: 'border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'
+			}`}
 			id={id}
 			onClick={onClick}
 			data-tabs-target={`#${id}`}
