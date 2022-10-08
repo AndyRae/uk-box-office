@@ -13,6 +13,8 @@ class Week(PkModel):  # type: ignore
         db.DateTime, nullable=False, default=datetime.utcnow, unique=True
     )
     number_of_cinemas = db.Column(db.Integer, nullable=True, default=0)
+
+    # The number of new releases that week where weeks_on_release == 1
     number_of_releases = db.Column(db.Integer, nullable=True, default=0)
     weekend_gross = db.Column(db.Integer, nullable=True, default=0)
     week_gross = db.Column(db.Integer, nullable=True, default=0)
