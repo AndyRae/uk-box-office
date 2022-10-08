@@ -1,6 +1,7 @@
 /**
  * Utility functions to group data for charts and tables.
  */
+import _ from 'lodash';
 
 /**
  * Groups data for the area chart.
@@ -134,22 +135,24 @@ export const groupForTable = (data) => {
 };
 
 /**
- * Groups box office data for line charts.
+ * Groups box office data by date.
  * @param {*} data array of box office data.
  * @returns
  */
-export const groupForLineChart = (data) => {
-	const groupedDate = Array.from(data);
-	return Array.from(
-		groupedDate
-			.reverse()
-			.reduce(
-				(m, { date, week_gross }) =>
-					m.set(date, (m.get(date) || 0) + week_gross),
-				new Map()
-			),
-		([date, week_gross]) => ({ date, week_gross })
-	);
+export const groupbyDate = (data) => {
+	const welp = _.groupBy(data, 'date');
+	console.log(welp);
+
+	const results = _(data)
+		.groupBy('date')
+		.map((value, key) => ({
+			date: key,
+			weekGross: _.sumBy(value, 'week_gross'),
+			weekendGross: _.sumBy(value, 'weekend_gross'),
+			newReleases: _.countBy(value, (o) => o.weeks_on_release == 1).true,
+		}))
+		.value();
+	return { results };
 };
 
 /**

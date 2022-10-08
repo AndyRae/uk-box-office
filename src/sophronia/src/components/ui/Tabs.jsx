@@ -1,7 +1,7 @@
 export const Tab = ({ children, id }) => {
 	return (
 		<div
-			className='p-4 bg-gray-50 rounded-lg dark:bg-gray-800'
+			className='rounded-lg'
 			id={id}
 			role='tabpanel'
 			aria-labelledby='dashboard-tab'
@@ -13,7 +13,7 @@ export const Tab = ({ children, id }) => {
 
 export const Tabs = ({ children }) => {
 	return (
-		<div className='mb-4 border-b border-gray-200 dark:border-gray-700'>
+		<div className='mb-2 border-b'>
 			<ul
 				className='flex flex-wrap -mb-px text-sm font-medium text-center'
 				id='myTab'
@@ -52,7 +52,7 @@ export const TabTitle = ({ children, id, onClick, isActive }) => {
 export const TabContent = ({ children, id }) => {
 	return (
 		<div
-			className='p-4 bg-gray-50 rounded-lg dark:bg-gray-800'
+			className='py-1 rounded-lg'
 			id={id}
 			role='tabpanel'
 			aria-labelledby={`${id}-tab`}

@@ -1,6 +1,5 @@
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { BoxOfficeTable } from '../../components/Film/BoxOfficeTable';
 import { Card } from '../../components/Dashboard/Card';
 import { Spinner } from '../../components/ui/Spinner';
 import { Suspense } from 'react';
@@ -9,8 +8,10 @@ import {
 	groupForTable,
 	calculateNumberOfCinemas,
 	calculateWeek1Releases,
+	groupbyDate,
 } from '../../utils/groupData';
 import { FilmTable } from '../../components/Time/FilmTable';
+import { WeeksTable } from '../../components/Time/WeeksTable';
 import { useState } from 'react';
 import { Tab, Tabs, TabContent, TabTitle } from '../../components/ui/Tabs';
 
@@ -28,10 +29,13 @@ const PillLink = ({ to, children }) => (
 export const TimePage = () => {
 	// Unpack dates to be flexible for Year, Month, Day being null.
 	const { year } = useParams();
-	const { month } = useParams();
+	let { month } = useParams();
 	const { day } = useParams();
+	const { quarter } = useParams();
+	const { quarterend } = useParams();
 
 	// TODO: Quarters, Weeks, etc. - see the Python code for algorithm.
+	// Quarters
 
 	function getLastDayofMonth(month = 12) {
 		const d = new Date(year, month, 0);
@@ -65,6 +69,7 @@ export const TimePage = () => {
 	const { results } = useBoxOfficeInfinite(startDate, endDate);
 
 	const { tableData } = groupForTable(results);
+	const { results: weekData } = groupbyDate(results);
 
 	const boxOffice = tableData.reduce((acc, curr) => acc + curr.weekGross, 0);
 	const weekendBoxOffice = tableData.reduce(
@@ -79,6 +84,8 @@ export const TimePage = () => {
 	const handleTabClick = (e) => {
 		setCurrentTab(e.target.id);
 	};
+
+	console.log(weekData);
 
 	return (
 		<div>
@@ -97,7 +104,7 @@ export const TimePage = () => {
 					subtitle={`£${weekendBoxOffice.toLocaleString()}`}
 				/>
 
-				<Card title='Number of New Films' subtitle={`${numberOfNewFilms}`} />
+				<Card title='New Releases' subtitle={`${numberOfNewFilms}`} />
 
 				<Card title='Number of Cinemas' subtitle={`${numberOfCinemas}`} />
 			</div>
@@ -146,7 +153,9 @@ export const TimePage = () => {
 				{currentTab === '1' && (
 					<Tab>{results && <FilmTable data={tableData} />}</Tab>
 				)}
-				{currentTab === '2' && <Tab>Weeks</Tab>}
+				{currentTab === '2' && (
+					<Tab>{weekData && <WeeksTable data={weekData} />}</Tab>
+				)}
 			</TabContent>
 		</div>
 	);

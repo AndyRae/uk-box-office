@@ -26,7 +26,7 @@ export const BoxOfficeTable = ({ data }) => {
 					  )
 					: 0;
 
-				let [year, month, day] = week.date.split('-');
+				const [year, month, day] = week.date.split('-');
 
 				return (
 					<Tr key={week.id} index={index}>
