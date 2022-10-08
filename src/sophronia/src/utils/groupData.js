@@ -5,6 +5,7 @@ import _ from 'lodash';
 
 /**
  * Groups data for the area chart.
+ * TODO: This is ancient - refactor with lodash.
  * @param {*} data array of box office data.
  * @returns
  */
@@ -84,6 +85,7 @@ export const groupForAreaChart = (data) => {
 
 /**
  * Groups box office data for tables.
+ * TODO: This is ancient - refactor with lodash.
  *
  * @param {*} data array of box office data.
  * @returns
@@ -140,9 +142,6 @@ export const groupForTable = (data) => {
  * @returns
  */
 export const groupbyDate = (data) => {
-	const welp = _.groupBy(data, 'date');
-	console.log(welp);
-
 	const results = _(data)
 		.groupBy('date')
 		.map((value, key) => ({
@@ -167,6 +166,7 @@ export const calculateWeek1Releases = (data) => {
 
 /**
  * Calculates the number of unique films in the data.
+ * TODO: This is ancient - refactor with lodash.
  * @param {*} data - array of box office data.
  * @returns number of unique films.
  */

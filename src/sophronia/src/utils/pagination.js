@@ -20,7 +20,5 @@ export const paginate = (count, pageIndex, pageLimit) => {
 		pageNumbers.push(i);
 	}
 	let l = Array.from([startPage, endPage]);
-	console.log(l);
-
 	return pageNumbers;
 };

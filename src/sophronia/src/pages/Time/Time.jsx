@@ -30,23 +30,31 @@ export const TimePage = () => {
 	// Unpack dates to be flexible for Year, Month, Day being null.
 	const { year } = useParams();
 	let { month } = useParams();
+	let endMonth = month;
 	const { day } = useParams();
 	const { quarter } = useParams();
-	const { quarterend } = useParams();
+	const { quarterend = 0 } = useParams();
 
-	// TODO: Quarters, Weeks, etc. - see the Python code for algorithm.
-	// Quarters
+	// Quarters unpack
+	if (quarter) {
+		month = quarter * 3 - 2;
+		if (quarterend != 0) {
+			endMonth = quarterend * 3;
+		} else {
+			endMonth = quarter * 3;
+		}
+	}
 
 	function getLastDayofMonth(month = 12) {
 		const d = new Date(year, month, 0);
 		return d.getDate();
 	}
-	const lastDay = getLastDayofMonth(month);
+	const lastDay = getLastDayofMonth(endMonth);
 
 	const startDate = `${year ? year : 2022}-${month ? month : 1}-${
 		day ? day : 1
 	}`;
-	const endDate = `${year ? year : 2022}-${month ? month : 12}-${
+	const endDate = `${year ? year : 2022}-${endMonth ? endMonth : 12}-${
 		day ? day : lastDay
 	}`;
 
@@ -65,7 +73,6 @@ export const TimePage = () => {
 		12: 'December',
 	};
 
-	// need to actually turn results into useable data - graphs and charts.
 	const { results } = useBoxOfficeInfinite(startDate, endDate);
 
 	const { tableData } = groupForTable(results);
@@ -85,12 +92,11 @@ export const TimePage = () => {
 		setCurrentTab(e.target.id);
 	};
 
-	console.log(weekData);
-
 	return (
 		<div>
 			<h1 className='text-4xl font-bold py-5 capitalize'>
-				UK Box Office {day} {months[month]} {year}
+				UK Box Office {day} {quarter ? `Q${quarter}` : months[month]}{' '}
+				{quarterend ? `- Q${quarterend}` : null} {year}
 			</h1>
 
 			<div className='grid md:grid-cols-2 lg:grid-cols-4 gap-4'>
