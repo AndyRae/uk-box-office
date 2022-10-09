@@ -1,30 +1,26 @@
-import { useBoxOfficeTop } from '../../api/boxoffice';
-import { useParams } from 'react-router-dom';
+import { useBoxOfficeSummary } from '../../api/boxoffice';
 import { Link } from 'react-router-dom';
-import { BoxOfficeTable } from '../../components/Film/BoxOfficeTable';
 import { Card } from '../../components/Dashboard/Card';
 import { Spinner } from '../../components/ui/Spinner';
 import { Suspense } from 'react';
-import { Date } from '../../components/Date';
+import { YearsTable } from '../../components/Time/YearsTable';
 
 export const AllTimePage = () => {
-	const { data, error } = useBoxOfficeTop();
+	const today = new Date().getFullYear();
+
+	const startDate = `${today}-${1}-${1}`;
+	const endDate = `${today}-${12}-${31}`;
+
+	const { data, error } = useBoxOfficeSummary(startDate, endDate, 25);
+	const results = [...data.results].reverse();
 
 	return (
 		<div>
-			<h1 className='text-4xl font-bold py-5 capitalize'>All Time.</h1>
+			<h1 className='text-4xl font-bold py-5 capitalize'>
+				All Time Box Office
+			</h1>
 
-			<Link to={`/time/2022`}>2022</Link>
-			<br />
-
-			<Link to={`/time/2021`}>2021</Link>
-			<br />
-
-			<Link to={`/time/2020`}>2020</Link>
-			<br />
-
-			<Link to={`/time/2019`}>2019</Link>
-			<br />
+			<YearsTable data={results} />
 		</div>
 	);
 };
