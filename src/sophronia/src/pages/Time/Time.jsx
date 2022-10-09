@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Card } from '../../components/Dashboard/Card';
 import { Spinner } from '../../components/ui/Spinner';
 import { Suspense } from 'react';
-import { useBoxOfficeInfinite } from '../../api/boxoffice';
+import { useBoxOfficeInfinite, useBoxOfficeSummary } from '../../api/boxoffice';
 import {
 	groupForTable,
 	calculateNumberOfCinemas,
@@ -28,12 +28,9 @@ const PillLink = ({ to, children }) => (
 
 export const TimePage = () => {
 	// Unpack dates to be flexible for Year, Month, Day being null.
-	const { year } = useParams();
+	const { year, day, quarter, quarterend = 0 } = useParams();
 	let { month } = useParams();
 	let endMonth = month;
-	const { day } = useParams();
-	const { quarter } = useParams();
-	const { quarterend = 0 } = useParams();
 
 	// Quarters unpack
 	if (quarter) {
@@ -58,6 +55,13 @@ export const TimePage = () => {
 		day ? day : lastDay
 	}`;
 
+	const startDateComparison = `${year ? year - 1 : 2022}-${month ? month : 1}-${
+		day ? day : 1
+	}`;
+	const endDateComparison = `${year ? year - 1 : 2022}-${
+		endMonth ? endMonth : 12
+	}-${day ? day : lastDay}`;
+
 	const months = {
 		1: 'January',
 		2: 'February',
@@ -73,8 +77,11 @@ export const TimePage = () => {
 		12: 'December',
 	};
 
+	// Fetch Data
 	const { results } = useBoxOfficeInfinite(startDate, endDate);
+	// const { data: previousYearData } = useBoxOfficeSummary(startDateComparison, endDateComparison, 3);
 
+	// Group Data
 	const { tableData } = groupForTable(results);
 	const { results: weekData } = groupbyDate(results);
 
@@ -84,6 +91,11 @@ export const TimePage = () => {
 		0
 	);
 	const numberOfNewFilms = calculateWeek1Releases(results);
+	// const changeNewFilms =  Math.ceil(
+	// 	((numberOfNewFilms - previousYearData.number_of_releases) /
+	// 	previousYearData.number_of_releases) *
+	// 		100
+	// )
 	const numberOfCinemas = calculateNumberOfCinemas(results);
 
 	// Tabs
@@ -92,6 +104,7 @@ export const TimePage = () => {
 		setCurrentTab(e.target.id);
 	};
 
+	// console.log(previousYearData)
 	return (
 		<div>
 			<h1 className='text-4xl font-bold py-5 capitalize'>
@@ -110,7 +123,7 @@ export const TimePage = () => {
 					subtitle={`£${weekendBoxOffice.toLocaleString()}`}
 				/>
 
-				<Card title='New Releases' subtitle={`${numberOfNewFilms}`} />
+				{/* <Card title='New Releases' subtitle={`${numberOfNewFilms}`} >{changeNewFilms} %</Card> */}
 
 				<Card title='Number of Cinemas' subtitle={`${numberOfCinemas}`} />
 			</div>

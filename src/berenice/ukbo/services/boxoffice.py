@@ -53,28 +53,63 @@ def top() -> Response:
     return jsonify(data)
 
 
-def summary(start_date: str = None, end_date: str = None) -> Response:
+def summary(start_date: str = None, end_date: str = None, limit: int = 1) -> Response:
     """
-    Return summarised box office statistics for a time range.
+    Return summarised box office statistics for a time range, grouped by year.
+
+            Parameters:
+                    start_date (int): Start of time range.
+                    end_date (int): End of time range.
+                    limit (int): The number of years to go backwards.
+
+            Returns:
+                    JSON response of the list of years.
+    TODO: Add dict output to the returned object.
     """
     query = db.session.query(
+        func.extract('year', models.Week.date),
         func.sum(models.Week.week_gross), 
         func.sum(models.Week.weekend_gross), 
         func.sum(models.Week.number_of_releases), 
-        func.max(models.Week.number_of_cinemas)
-        )
+        func.max(models.Week.number_of_cinemas),
+        ).group_by(func.extract('year', models.Week.date))
 
     if start_date is not None:
         query = query.filter(
-            models.Week.date >= utils.to_date(start_date)
+            func.extract('month', models.Week.date) >= utils.to_date(start_date).month
+        )
+        query = query.filter(
+            func.extract('day', models.Week.date) >= utils.to_date(start_date).day
+        )
+        query = query.filter(
+            func.extract('year', models.Week.date) >= (utils.to_date(start_date).year - limit)
         )
 
     if end_date is not None:
-        query = query.filter(models.Week.date <= utils.to_date(end_date))
+        query = query.filter(func.extract('month', models.Week.date) <= utils.to_date(end_date).month)
+        query = query.filter(func.extract('day', models.Week.date) <= utils.to_date(end_date).day)
+        query = query.filter(
+            func.extract('year', models.Week.date) <= (utils.to_date(end_date).year - 1)
+        )
 
     data = query.all()
 
-    return jsonify(results=[tuple(row) for row in data])
+    return {
+        "results": [tuple(row) for row in data]
+    }
+
+    # return jsonify(
+    #     results=[
+    #         # dict(row) for row in data
+    #         # ({
+    #     year=row[0],
+    #     week_gross=row[1],
+    #     weekend_gross=row[2],
+    #     number_of_releases=row[3],
+    #     number_of_cinemas=row[4]
+    #     }) for row in data
+    #     ]
+    # )
 
 
 def topline(start_date: str = None, end_date: str = None, start: int = 1) -> Response:

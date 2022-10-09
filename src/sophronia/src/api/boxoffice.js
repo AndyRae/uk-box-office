@@ -8,6 +8,8 @@ export const fetchKeys = {
 	boxOffice: (start_date, end_date, start, limit) =>
 		`boxoffice/all?start_date=${start_date}&end_date=${end_date}&=${start}&limit=${limit}`,
 	boxOfficeAll: (start, limit) => `boxoffice/all?start=${start}&limit=${limit}`,
+	boxOfficeSummary: (startDate, endDate, limit) =>
+		`boxoffice/summary?start_date=${startDate}&end_date=${endDate}&limit=${limit}`,
 	boxOfficeTop: () => `boxoffice/top`,
 	boxOfficeInfinite: (startDate, end_date, limit, index, previousPageData) => {
 		index += 1; // index is 0 by default
@@ -35,6 +37,55 @@ export const useBoxOfficeTop = () => {
 		suspense: true,
 	});
 };
+
+/**
+ * Uses the box office summary endpoint
+ * @param {*} startDate
+ * @param {*} endDate
+ * @returns
+ */
+export const useBoxOfficeSummary = (startDate, endDate, limit) => {
+	const apiFetcher = useBackendApi();
+	return useSWR(
+		fetchKeys.boxOfficeSummary(startDate, endDate, limit),
+		apiFetcher,
+		{
+			suspense: true,
+		}
+	);
+};
+
+/**
+ * Loops through the box office api infinitely and returns the data
+ * @param startDate date to query from
+ * @param endDate date to query to
+ * @returns boxoffice data
+ */
+export function useBoxOfficeInfinite(startDate, endDate) {
+	const { data, error, size, setSize } = useProtectedSWRInfinite(
+		startDate,
+		endDate
+	);
+
+	useEffect(() => {
+		if (data?.[data?.length - 1]?.next) {
+			setSize((size) => size + 1);
+		}
+	}, [data, setSize]);
+
+	// Concatenate all pages into one array.
+	const results = useMemo(
+		() => [].concat(...data.map((page) => page.results)),
+		[data]
+	);
+
+	return {
+		results,
+		error,
+		size,
+		setSize,
+	};
+}
 
 /**
  * Paging with useSWRInfinite
@@ -75,35 +126,3 @@ const useProtectedSWRInfinite = (startDate, endDate) => {
 	};
 	return useSWRInfinite(getNextKey, useAxiosFetcher, revalidationOptions);
 };
-
-/**
- * Loops through the box office api infinitely and returns the data
- * @param startDate date to query from
- * @param endDate date to query to
- * @returns boxoffice data
- */
-export function useBoxOfficeInfinite(startDate, endDate) {
-	const { data, error, size, setSize } = useProtectedSWRInfinite(
-		startDate,
-		endDate
-	);
-
-	useEffect(() => {
-		if (data?.[data?.length - 1]?.next) {
-			setSize((size) => size + 1);
-		}
-	}, [data, setSize]);
-
-	// Concatenate all pages into one array.
-	const results = useMemo(
-		() => [].concat(...data.map((page) => page.results)),
-		[data]
-	);
-
-	return {
-		results,
-		error,
-		size,
-		setSize,
-	};
-}
