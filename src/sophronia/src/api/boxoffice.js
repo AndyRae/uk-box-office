@@ -5,8 +5,9 @@ import { useMemo } from 'react';
 import { useEffect } from 'react';
 
 export const fetchKeys = {
-	boxOffice: (start_date, end_date, start, limit) =>
-		`boxoffice/all?start_date=${start_date}&end_date=${end_date}&=${start}&limit=${limit}`,
+	boxOffice: 'boxoffice/all',
+	boxOfficeFiltered: (start_date, end_date, start, limit) =>
+		`boxoffice/all?{start_date=${start_date}}&end_date=${end_date}&=${start}&limit=${limit}`,
 	boxOfficeAll: (start, limit) => `boxoffice/all?start=${start}&limit=${limit}`,
 	boxOfficeSummary: (startDate, endDate, limit) =>
 		`boxoffice/summary?start_date=${startDate}&end_date=${endDate}&limit=${limit}`,
@@ -20,10 +21,25 @@ export const fetchKeys = {
 /**
  * Get boxoffice.
  */
-export const useBoxOffice = (start_date, end_date, start = 1, limit = 150) => {
+export const useBoxOffice = () => {
+	const apiFetcher = useBackendApi();
+	return useSWR(fetchKeys.boxOffice, apiFetcher, {
+		suspense: true,
+	});
+};
+
+/**
+ * Get boxoffice.
+ */
+export const useBoxOfficeFiltered = (
+	start_date,
+	end_date,
+	start = 1,
+	limit = 150
+) => {
 	const apiFetcher = useBackendApi();
 	return useSWR(
-		fetchKeys.boxOffice(start_date, end_date, start, limit),
+		fetchKeys.boxOfficeFiltered(start_date, end_date, start, limit),
 		apiFetcher,
 		{
 			suspense: true,

@@ -9,6 +9,7 @@ import { Countries } from './pages/Country/Countries';
 import { Country } from './pages/Country/Country';
 import { Time } from './pages/Time/Time';
 import { All } from './pages/Time/All';
+import { LastWeek } from './pages/Time/LastWeek';
 
 export const Root = () => {
 	return (
@@ -36,6 +37,10 @@ export const Root = () => {
 						<Route path=':slug'>
 							<Route index element={<Country />} />
 						</Route>
+					</Route>
+
+					<Route path='week'>
+						<Route index element={<LastWeek />} />
 					</Route>
 
 					<Route path='time'>

@@ -1,11 +1,11 @@
-import { useBoxOffice } from '../api/boxoffice';
+import { useBoxOfficeFiltered } from '../api/boxoffice';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Suspense } from 'react';
 import { Spinner } from '../components/ui/Spinner';
 
 export const DashboardPage = () => {
-	const { data, error } = useBoxOffice();
+	const { data, error } = useBoxOfficeFiltered();
 
 	console.log(data);
 

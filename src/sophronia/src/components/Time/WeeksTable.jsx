@@ -24,7 +24,9 @@ export const WeeksTable = ({ data }) => {
 				return (
 					<Tr key={week.date} index={index}>
 						<Td isHighlight>
-							<Link to={`/time/${year}/m${month}/d${day}`}>{week.date}</Link>
+							<Link to={`/time/${year}/m${parseInt(month, 10)}/d${day}`}>
+								{week.date}
+							</Link>
 						</Td>
 						<Td isNumeric>£ {week.weekendGross.toLocaleString('en-GB')}</Td>
 						<Td isNumeric>£ {week.weekGross.toLocaleString('en-GB')}</Td>

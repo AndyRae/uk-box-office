@@ -170,12 +170,14 @@ export const TimePage = () => {
 							return (
 								<div key={index} className='text-center'>
 									<Link
-										to={`/time/${year.year}`}
+										to={`/time/${year.year}${
+											quarter ? '/q' + quarter : month ? '/m' + month : ''
+										}${quarterend ? '/q' + quarterend : ''}`}
 										className='font-bold text-left'
 									>
 										{year.year}
 									</Link>
-									: {`£${year.weekend_gross.toLocaleString()}`}
+									: {`£${year.week_gross.toLocaleString()}`}
 								</div>
 							);
 						})}
