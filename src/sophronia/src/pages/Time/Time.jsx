@@ -26,6 +26,18 @@ const PillLink = ({ to, children }) => (
 	</li>
 );
 
+const MetricChange = ({ value }) => {
+	const isNegative = value < 0;
+	return (
+		<span
+			className={`${isNegative ? 'text-red-600' : 'text-green-600'} font-bold`}
+		>
+			{isNegative ? '' : '+'}
+			{value}%
+		</span>
+	);
+};
+
 export const TimePage = () => {
 	// Unpack dates to be flexible for Year, Month, Day being null.
 	const { year, day, quarter, quarterend = 0 } = useParams();
@@ -79,7 +91,11 @@ export const TimePage = () => {
 
 	// Fetch Data
 	const { results } = useBoxOfficeInfinite(startDate, endDate);
-	// const { data: previousYearData } = useBoxOfficeSummary(startDateComparison, endDateComparison, 3);
+	const { data: comparisonData } = useBoxOfficeSummary(
+		startDateComparison,
+		endDateComparison,
+		3
+	);
 
 	// Group Data
 	const { tableData } = groupForTable(results);
@@ -91,12 +107,30 @@ export const TimePage = () => {
 		0
 	);
 	const numberOfNewFilms = calculateWeek1Releases(results);
-	// const changeNewFilms =  Math.ceil(
-	// 	((numberOfNewFilms - previousYearData.number_of_releases) /
-	// 	previousYearData.number_of_releases) *
-	// 		100
-	// )
 	const numberOfCinemas = calculateNumberOfCinemas(results);
+
+	// Comparison Data
+	let changeNewFilms = 0;
+	let changeWeekend = 0;
+	let changeWeek = 0;
+
+	if (comparisonData.results.length > 0) {
+		console.log(comparisonData.results);
+		const lastYear = comparisonData.results[comparisonData.results.length - 1];
+
+		changeNewFilms = Math.ceil(
+			((numberOfNewFilms - lastYear.number_of_releases) /
+				lastYear.number_of_releases) *
+				100
+		);
+		changeWeek = Math.ceil(
+			((boxOffice - lastYear.week_gross) / lastYear.week_gross) * 100
+		);
+		changeWeekend = Math.ceil(
+			((weekendBoxOffice - lastYear.weekend_gross) / lastYear.weekend_gross) *
+				100
+		);
+	}
 
 	// Tabs
 	const [currentTab, setCurrentTab] = useState('1');
@@ -104,7 +138,6 @@ export const TimePage = () => {
 		setCurrentTab(e.target.id);
 	};
 
-	// console.log(previousYearData)
 	return (
 		<div>
 			<h1 className='text-4xl font-bold py-5 capitalize'>
@@ -116,16 +149,37 @@ export const TimePage = () => {
 				<Card
 					title='Total Box Office'
 					subtitle={`£${boxOffice.toLocaleString()}`}
-				/>
+				>
+					{comparisonData && <MetricChange value={changeWeek} />}
+				</Card>
 
 				<Card
 					title='Weekend Box Office'
 					subtitle={`£${weekendBoxOffice.toLocaleString()}`}
-				/>
+				>
+					{comparisonData && <MetricChange value={changeWeekend} />}
+				</Card>
 
-				{/* <Card title='New Releases' subtitle={`${numberOfNewFilms}`} >{changeNewFilms} %</Card> */}
+				<Card title='New Releases' subtitle={`${numberOfNewFilms}`}>
+					{comparisonData && <MetricChange value={changeNewFilms} />}
+				</Card>
 
-				<Card title='Number of Cinemas' subtitle={`${numberOfCinemas}`} />
+				<Card title='Box Office Previous Years'>
+					{comparisonData &&
+						comparisonData.results.map((year, index) => {
+							return (
+								<div key={index} className='text-center'>
+									<Link
+										to={`/time/${year.year}`}
+										className='font-bold text-left'
+									>
+										{year.year}
+									</Link>
+									: {`£${year.weekend_gross.toLocaleString()}`}
+								</div>
+							);
+						})}
+				</Card>
 			</div>
 
 			{/* // Chart */}

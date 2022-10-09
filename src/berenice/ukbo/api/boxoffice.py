@@ -37,7 +37,7 @@ def summary() -> Response:
     end_date = request.args.get("end_date", None)
     limit = int(request.args.get("limit", None))
     response = services.boxoffice.summary(start_date, end_date, limit)
-    # response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add("Access-Control-Allow-Origin", "*")
     return response
 
 

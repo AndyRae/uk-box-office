@@ -53,7 +53,7 @@ def top() -> Response:
     return jsonify(data)
 
 
-def summary(start_date: str = None, end_date: str = None, limit: int = 1) -> Response:
+def summary(start_date: str = None, end_date: str = None, limit: int = 0) -> Response:
     """
     Return summarised box office statistics for a time range, grouped by year.
 
@@ -64,7 +64,6 @@ def summary(start_date: str = None, end_date: str = None, limit: int = 1) -> Res
 
             Returns:
                     JSON response of the list of years.
-    TODO: Add dict output to the returned object.
     """
     query = db.session.query(
         func.extract('year', models.Week.date),
@@ -89,27 +88,22 @@ def summary(start_date: str = None, end_date: str = None, limit: int = 1) -> Res
         query = query.filter(func.extract('month', models.Week.date) <= utils.to_date(end_date).month)
         query = query.filter(func.extract('day', models.Week.date) <= utils.to_date(end_date).day)
         query = query.filter(
-            func.extract('year', models.Week.date) <= (utils.to_date(end_date).year - 1)
+            func.extract('year', models.Week.date) <= (utils.to_date(end_date).year)
         )
 
     data = query.all()
 
-    return {
-        "results": [tuple(row) for row in data]
-    }
-
-    # return jsonify(
-    #     results=[
-    #         # dict(row) for row in data
-    #         # ({
-    #     year=row[0],
-    #     week_gross=row[1],
-    #     weekend_gross=row[2],
-    #     number_of_releases=row[3],
-    #     number_of_cinemas=row[4]
-    #     }) for row in data
-    #     ]
-    # )
+    return jsonify(
+        results=[
+            dict(
+                year=row[0],
+                week_gross=row[1],
+                weekend_gross=row[2],
+                number_of_releases=row[3],
+                number_of_cinemas=row[4]
+            ) for row in data
+        ]
+    )
 
 
 def topline(start_date: str = None, end_date: str = None, start: int = 1) -> Response:
