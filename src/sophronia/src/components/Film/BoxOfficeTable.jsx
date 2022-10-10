@@ -1,6 +1,7 @@
 import { Date } from '../Date';
 import { Link } from 'react-router-dom';
 import { BaseTable, Td, Tr } from '../charts/BaseTable';
+import { MetricChange } from '../charts/MetricChange';
 
 export const BoxOfficeTable = ({ data }) => {
 	const columns = [
@@ -40,13 +41,8 @@ export const BoxOfficeTable = ({ data }) => {
 						<Td isNumeric>{week.number_of_cinemas}</Td>
 						<Td isNumeric>£ {week.weekend_gross.toLocaleString('en-GB')}</Td>
 						<Td isNumeric>£ {week.week_gross.toLocaleString('en-GB')}</Td>
-						<Td
-							className={`${
-								changeWeekend < 0 ? 'text-red-600' : 'text-green-600'
-							}`}
-							isNumeric
-						>
-							{changeWeekend}%
+						<Td isNumeric>
+							<MetricChange value={changeWeekend} />
 						</Td>
 						<Td isNumeric>
 							£ {Math.ceil(week.site_average).toLocaleString('en-GB')}

@@ -73,22 +73,33 @@ def summary(start_date: str = None, end_date: str = None, limit: int = 0) -> Res
         func.max(models.Week.number_of_cinemas),
         ).group_by(func.extract('year', models.Week.date))
 
-    if start_date is not None:
-        query = query.filter(
-            func.extract('month', models.Week.date) >= utils.to_date(start_date).month
-        )
-        query = query.filter(
-            func.extract('day', models.Week.date) >= utils.to_date(start_date).day
-        )
-        query = query.filter(
-            func.extract('year', models.Week.date) >= (utils.to_date(start_date).year - limit)
-        )
+    if start_date != end_date:
+        if start_date is not None:
+            query = query.filter(
+                func.extract('month', models.Week.date) >= utils.to_date(start_date).month
+            )
+            query = query.filter(
+                func.extract('day', models.Week.date) >= utils.to_date(start_date).day
+            )
+            query = query.filter(
+                func.extract('year', models.Week.date) >= (utils.to_date(start_date).year - limit)
+            )
 
-    if end_date is not None:
-        query = query.filter(func.extract('month', models.Week.date) <= utils.to_date(end_date).month)
-        query = query.filter(func.extract('day', models.Week.date) <= utils.to_date(end_date).day)
+        if end_date is not None:
+            query = query.filter(func.extract('month', models.Week.date) <= utils.to_date(end_date).month)
+            query = query.filter(func.extract('day', models.Week.date) <= utils.to_date(end_date).day)
+            query = query.filter(
+                func.extract('year', models.Week.date) <= (utils.to_date(end_date).year)
+            )
+    else: 
+        # Query for 1 week - so use the week number to filter.
+        week_number = utils.to_date(start_date).isocalendar()[1]
+        query = query.filter(func.extract('week', models.Week.date)  == week_number)
         query = query.filter(
-            func.extract('year', models.Week.date) <= (utils.to_date(end_date).year)
+                func.extract('year', models.Week.date) >= (utils.to_date(start_date).year - limit)
+        )
+        query = query.filter(
+                func.extract('year', models.Week.date) <= (utils.to_date(end_date).year)
         )
 
     data = query.all()

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { BaseTable, Td, Tr } from '../charts/BaseTable';
+import { MetricChange } from '../charts/MetricChange';
 
 export const YearsTable = ({ data }) => {
 	const columns = [
@@ -27,13 +28,8 @@ export const YearsTable = ({ data }) => {
 						</Td>
 						<Td isNumeric>£ {year.weekend_gross.toLocaleString('en-GB')}</Td>
 						<Td isNumeric>£ {year.week_gross.toLocaleString('en-GB')}</Td>
-						<Td
-							isNumeric
-							className={`${
-								changeWeekend < 0 ? 'text-red-600' : 'text-green-600'
-							}`}
-						>
-							{changeWeekend}%
+						<Td isNumeric>
+							<MetricChange value={changeWeekend} />
 						</Td>
 						<Td isNumeric>{year.number_of_releases}</Td>
 					</Tr>
