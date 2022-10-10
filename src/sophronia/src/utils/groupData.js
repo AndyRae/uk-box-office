@@ -73,7 +73,7 @@ export const groupForAreaChart = (data) => {
 
 		let weeks = [];
 		for (let j in data) {
-			if (data[j].film == groupedFilms[i].film) {
+			if (data[j].film === groupedFilms[i].film) {
 				weeks.push({ x: data[j].date, y: data[j].week_gross });
 			}
 		}
@@ -94,7 +94,7 @@ export const groupForTable = (data) => {
 	// Grouping by film (and slug, distributor) - summing box office, max weeks.
 	var table = data
 		.reduce((acc, curr) => {
-			let item = acc.find((x) => x.film == curr['film']);
+			let item = acc.find((x) => x.film === curr['film']);
 			if (!item) {
 				item = {
 					film: curr['film'],
@@ -148,7 +148,7 @@ export const groupbyDate = (data) => {
 			date: key,
 			weekGross: _.sumBy(value, 'week_gross'),
 			weekendGross: _.sumBy(value, 'weekend_gross'),
-			newReleases: _.countBy(value, (o) => o.weeks_on_release == 1).true,
+			newReleases: _.countBy(value, (o) => o.weeks_on_release === 1).true,
 		}))
 		.value();
 	return { results };
@@ -160,7 +160,7 @@ export const groupbyDate = (data) => {
  * @returns number of week 1 releases.
  */
 export const calculateWeek1Releases = (data) => {
-	const week1 = data.filter((x) => x.weeks_on_release == 1);
+	const week1 = data.filter((x) => x.weeks_on_release === 1);
 	return week1.length;
 };
 

@@ -14,6 +14,7 @@ import { FilmTable } from '../../components/Time/FilmTable';
 import { WeeksTable } from '../../components/Time/WeeksTable';
 import { useState } from 'react';
 import { Tab, Tabs, TabContent, TabTitle } from '../../components/ui/Tabs';
+import { MetricChange } from '../../components/charts/MetricChange';
 
 const PillLink = ({ to, children }) => (
 	<li className='mr-2'>
@@ -26,18 +27,6 @@ const PillLink = ({ to, children }) => (
 	</li>
 );
 
-const MetricChange = ({ value }) => {
-	const isNegative = value < 0;
-	return (
-		<span
-			className={`${isNegative ? 'text-red-600' : 'text-green-600'} font-bold`}
-		>
-			{isNegative ? '' : '+'}
-			{value}%
-		</span>
-	);
-};
-
 export const TimePage = () => {
 	// Unpack dates to be flexible for Year, Month, Day being null.
 	const { year, day, quarter, quarterend = 0 } = useParams();
@@ -47,12 +36,24 @@ export const TimePage = () => {
 	// Quarters unpack
 	if (quarter) {
 		month = quarter * 3 - 2;
-		if (quarterend != 0) {
+		if (quarterend !== 0) {
 			endMonth = quarterend * 3;
 		} else {
 			endMonth = quarter * 3;
 		}
 	}
+
+	Date.prototype.addDays = function (days) {
+		var date = new Date(this.valueOf());
+		date.setDate(date.getDate() + days);
+		return date;
+	};
+
+	Date.prototype.addYears = function (years) {
+		var date = new Date(this.valueOf());
+		date.setFullYear(date.getFullYear() + years);
+		return date;
+	};
 
 	function getLastDayofMonth(month = 12) {
 		const d = new Date(year, month, 0);
@@ -60,19 +61,42 @@ export const TimePage = () => {
 	}
 	const lastDay = getLastDayofMonth(endMonth);
 
-	const startDate = `${year ? year : 2022}-${month ? month : 1}-${
+	const start = new Date(
+		year ? year : 2022,
+		month ? month - 1 : 0,
 		day ? day : 1
-	}`;
-	const endDate = `${year ? year : 2022}-${endMonth ? endMonth : 12}-${
+	);
+	const end = new Date(
+		year ? year : 2022,
+		endMonth ? endMonth - 1 : 11,
 		day ? day : lastDay
-	}`;
+	);
 
-	const startDateComparison = `${year ? year - 1 : 2022}-${month ? month : 1}-${
-		day ? day : 1
-	}`;
-	const endDateComparison = `${year ? year - 1 : 2022}-${
-		endMonth ? endMonth : 12
-	}-${day ? day : lastDay}`;
+	const startDate = `${start.getFullYear()}-${
+		start.getMonth() + 1
+	}-${start.getDate()}`;
+	const endDate = `${end.getFullYear()}-${end.getMonth() + 1}-${end.getDate()}`;
+
+	const sComparison = start.addYears(-1);
+	const eComparison = end.addYears(-1);
+	const startComparison = `${sComparison.getFullYear()}-${
+		sComparison.getMonth() + 1
+	}-${sComparison.getDate()}`;
+	const endComparison = `${eComparison.getFullYear()}-${
+		eComparison.getMonth() + 1
+	}-${eComparison.getDate()}`;
+
+	const sLastWeek = start.addDays(-7);
+	const eLastWeek = end.addDays(-7);
+	const startLastWeek = `${sLastWeek.getFullYear()}-${
+		sLastWeek.getMonth() + 1
+	}-${sLastWeek.getDate()}`;
+	const endLastWeek = `${eLastWeek.getFullYear()}-${
+		eLastWeek.getMonth() + 1
+	}-${eLastWeek.getDate()}`;
+
+	// To check if we're on a week page.
+	const isWeekView = startDate === endDate;
 
 	const months = {
 		1: 'January',
@@ -91,9 +115,13 @@ export const TimePage = () => {
 
 	// Fetch Data
 	const { results } = useBoxOfficeInfinite(startDate, endDate);
-	const { data: comparisonData } = useBoxOfficeSummary(
-		startDateComparison,
-		endDateComparison,
+	const { results: lastWeekResults } = useBoxOfficeInfinite(
+		startLastWeek,
+		endLastWeek
+	);
+	const { data: timeComparisonData } = useBoxOfficeSummary(
+		startComparison,
+		endComparison,
 		3
 	);
 
@@ -109,14 +137,14 @@ export const TimePage = () => {
 	const numberOfNewFilms = calculateWeek1Releases(results);
 	const numberOfCinemas = calculateNumberOfCinemas(results);
 
-	// Comparison Data
+	// Time Comparison Data
 	let changeNewFilms = 0;
 	let changeWeekend = 0;
 	let changeWeek = 0;
 
-	if (comparisonData.results.length > 0) {
-		console.log(comparisonData.results);
-		const lastYear = comparisonData.results[comparisonData.results.length - 1];
+	if (timeComparisonData.results.length > 0) {
+		const lastYear =
+			timeComparisonData.results[timeComparisonData.results.length - 1];
 
 		changeNewFilms = Math.ceil(
 			((numberOfNewFilms - lastYear.number_of_releases) /
@@ -150,23 +178,23 @@ export const TimePage = () => {
 					title='Total Box Office'
 					subtitle={`£${boxOffice.toLocaleString()}`}
 				>
-					{comparisonData && <MetricChange value={changeWeek} />}
+					{timeComparisonData && <MetricChange value={changeWeek} />}
 				</Card>
 
 				<Card
 					title='Weekend Box Office'
 					subtitle={`£${weekendBoxOffice.toLocaleString()}`}
 				>
-					{comparisonData && <MetricChange value={changeWeekend} />}
+					{timeComparisonData && <MetricChange value={changeWeekend} />}
 				</Card>
 
 				<Card title='New Releases' subtitle={`${numberOfNewFilms}`}>
-					{comparisonData && <MetricChange value={changeNewFilms} />}
+					{timeComparisonData && <MetricChange value={changeNewFilms} />}
 				</Card>
 
 				<Card title='Box Office Previous Years'>
-					{comparisonData &&
-						comparisonData.results.map((year, index) => {
+					{timeComparisonData &&
+						timeComparisonData.results.map((year, index) => {
 							return (
 								<div key={index} className='text-center'>
 									<Link
@@ -226,7 +254,14 @@ export const TimePage = () => {
 
 			<TabContent>
 				{currentTab === '1' && (
-					<Tab>{results && <FilmTable data={tableData} />}</Tab>
+					<Tab>
+						{results && (
+							<FilmTable
+								data={tableData}
+								comparisonData={isWeekView && lastWeekResults}
+							/>
+						)}
+					</Tab>
 				)}
 				{currentTab === '2' && (
 					<Tab>{weekData && <WeeksTable data={weekData} />}</Tab>

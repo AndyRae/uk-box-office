@@ -1,6 +1,4 @@
 import { useBoxOfficeSummary } from '../../api/boxoffice';
-import { Link } from 'react-router-dom';
-import { Card } from '../../components/Dashboard/Card';
 import { Spinner } from '../../components/ui/Spinner';
 import { Suspense } from 'react';
 import { YearsTable } from '../../components/Time/YearsTable';
