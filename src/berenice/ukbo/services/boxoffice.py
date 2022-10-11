@@ -102,7 +102,7 @@ def summary(start_date: str = None, end_date: str = None, limit: int = 0) -> Res
                 func.extract('year', models.Week.date) <= (utils.to_date(end_date).year)
         )
 
-    data = query.all()
+    data = query.order_by(func.extract('year', models.Week.date).desc()).all()
 
     return jsonify(
         results=[

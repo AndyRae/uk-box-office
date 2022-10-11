@@ -15,6 +15,7 @@ import { WeeksTable } from '../../components/Time/WeeksTable';
 import { useState } from 'react';
 import { Tab, Tabs, TabContent, TabTitle } from '../../components/ui/Tabs';
 import { MetricChange } from '../../components/charts/MetricChange';
+import { PreviousTable } from '../../components/Time/PreviousTable';
 
 const PillLink = ({ to, children }) => (
 	<li className='mr-2'>
@@ -49,12 +50,6 @@ export const TimePage = () => {
 		return date;
 	};
 
-	Date.prototype.addYears = function (years) {
-		var date = new Date(this.valueOf());
-		date.setFullYear(date.getFullYear() + years);
-		return date;
-	};
-
 	function getLastDayofMonth(month = 12) {
 		const d = new Date(year, month, 0);
 		return d.getDate();
@@ -76,15 +71,6 @@ export const TimePage = () => {
 		start.getMonth() + 1
 	}-${start.getDate()}`;
 	const endDate = `${end.getFullYear()}-${end.getMonth() + 1}-${end.getDate()}`;
-
-	const sComparison = start.addYears(-1);
-	const eComparison = end.addYears(-1);
-	const startComparison = `${sComparison.getFullYear()}-${
-		sComparison.getMonth() + 1
-	}-${sComparison.getDate()}`;
-	const endComparison = `${eComparison.getFullYear()}-${
-		eComparison.getMonth() + 1
-	}-${eComparison.getDate()}`;
 
 	const sLastWeek = start.addDays(-7);
 	const eLastWeek = end.addDays(-7);
@@ -120,9 +106,9 @@ export const TimePage = () => {
 		endLastWeek
 	);
 	const { data: timeComparisonData } = useBoxOfficeSummary(
-		startComparison,
-		endComparison,
-		3
+		startDate,
+		endDate,
+		25 // Years to go back.
 	);
 
 	// Group Data
@@ -143,8 +129,7 @@ export const TimePage = () => {
 	let changeWeek = 0;
 
 	if (timeComparisonData.results.length > 0) {
-		const lastYear =
-			timeComparisonData.results[timeComparisonData.results.length - 1];
+		const lastYear = timeComparisonData.results[1];
 
 		changeNewFilms = Math.ceil(
 			((numberOfNewFilms - lastYear.number_of_releases) /
@@ -194,7 +179,7 @@ export const TimePage = () => {
 
 				<Card title='Box Office Previous Years'>
 					{timeComparisonData &&
-						timeComparisonData.results.map((year, index) => {
+						timeComparisonData.results.slice(1, 4).map((year, index) => {
 							return (
 								<div key={index} className='text-center'>
 									<Link
@@ -250,6 +235,14 @@ export const TimePage = () => {
 				>
 					Weeks
 				</TabTitle>
+				<TabTitle
+					id={3}
+					label={'previous'}
+					isActive={currentTab === 3 ? true : false}
+					onClick={handleTabClick}
+				>
+					Previous Years
+				</TabTitle>
 			</Tabs>
 
 			<TabContent>
@@ -263,8 +256,15 @@ export const TimePage = () => {
 						)}
 					</Tab>
 				)}
+
 				{currentTab === '2' && (
 					<Tab>{weekData && <WeeksTable data={weekData} />}</Tab>
+				)}
+
+				{currentTab === '3' && (
+					<Tab>
+						{timeComparisonData && <PreviousTable data={timeComparisonData} />}
+					</Tab>
 				)}
 			</TabContent>
 		</div>
