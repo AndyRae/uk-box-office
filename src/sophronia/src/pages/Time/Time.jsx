@@ -132,7 +132,7 @@ export const TimePage = () => {
 	let changeWeekend = 0;
 	let changeWeek = 0;
 
-	if (timeComparisonData.results.length > 0) {
+	if (timeComparisonData.results.length > 1) {
 		const lastYear = timeComparisonData.results[1];
 
 		changeNewFilms = Math.ceil(

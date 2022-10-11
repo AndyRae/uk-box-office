@@ -33,7 +33,7 @@ export const TabTitle = ({ children, id, onClick, isActive }) => {
 		<button
 			className={`inline-block p-4 rounded-t-lg border-b-2 ${
 				isActive
-					? ''
+					? 'bg-gray-100 dark:bg-gray-800'
 					: 'border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'
 			}`}
 			id={id}
