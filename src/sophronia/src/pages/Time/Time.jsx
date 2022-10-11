@@ -17,11 +17,15 @@ import { Tab, Tabs, TabContent, TabTitle } from '../../components/ui/Tabs';
 import { MetricChange } from '../../components/charts/MetricChange';
 import { PreviousTable } from '../../components/Time/PreviousTable';
 
-const PillLink = ({ to, children }) => (
+const PillLink = ({ to, children, isActive }) => (
 	<li className='mr-2'>
 		<Link
 			to={to}
-			className='inline-block py-3 px-4 rounded-lg hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white'
+			className={`inline-block py-3 px-4 rounded-lg hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white ${
+				isActive
+					? 'text-gray-900 bg-gray-100 dark:bg-gray-800 dark:text-white'
+					: ''
+			}`}
 		>
 			{children}
 		</Link>
@@ -151,6 +155,8 @@ export const TimePage = () => {
 		setCurrentTab(e.target.id);
 	};
 
+	console.log(quarter);
+
 	return (
 		<div>
 			<h1 className='text-4xl font-bold py-5 capitalize'>
@@ -201,18 +207,28 @@ export const TimePage = () => {
 
 			<div className='py-3'>
 				<ul className='flex flex-wrap text-sm font-medium text-center text-gray-500 dark:text-gray-400'>
-					<PillLink to={`/time/${year}`}>{year}</PillLink>
-					<PillLink to={`/time/${year}/q1`}>Q1</PillLink>
-					<PillLink to={`/time/${year}/q2`}>Q2</PillLink>
-					<PillLink to={`/time/${year}/q3`}>Q3</PillLink>
-					<PillLink to={`/time/${year}/q4`}>Q4</PillLink>
+					<PillLink to={`/time/${year}`} isActive={true}>
+						{year}
+					</PillLink>
+					<PillLink to={`/time/${year}/q1`} isActive={quarter === '1'}>
+						Q1
+					</PillLink>
+					<PillLink to={`/time/${year}/q2`} isActive={quarter === '2'}>
+						Q2
+					</PillLink>
+					<PillLink to={`/time/${year}/q3`} isActive={quarter === '3'}>
+						Q3
+					</PillLink>
+					<PillLink to={`/time/${year}/q4`} isActive={quarter === '4'}>
+						Q4
+					</PillLink>
 				</ul>
 
 				{/* Months */}
 				<ul className='flex flex-wrap text-sm font-medium text-center text-gray-500 dark:text-gray-400'>
-					{Object.keys(months).map((month) => (
-						<PillLink key={month} to={`/time/${year}/m${month}`}>
-							{months[month]}
+					{Object.keys(months).map((m) => (
+						<PillLink key={m} to={`/time/${year}/m${m}`} isActive={m === month}>
+							{months[m]}
 						</PillLink>
 					))}
 				</ul>
@@ -222,7 +238,7 @@ export const TimePage = () => {
 				<TabTitle
 					id={1}
 					label={'films'}
-					isActive={currentTab === 1 ? true : false}
+					isActive={currentTab === '1'}
 					onClick={handleTabClick}
 				>
 					Films
@@ -230,7 +246,7 @@ export const TimePage = () => {
 				<TabTitle
 					id={2}
 					label={'weeks'}
-					isActive={currentTab === 2 ? true : false}
+					isActive={currentTab === '2'}
 					onClick={handleTabClick}
 				>
 					Weeks
@@ -238,7 +254,7 @@ export const TimePage = () => {
 				<TabTitle
 					id={3}
 					label={'previous'}
-					isActive={currentTab === 3 ? true : false}
+					isActive={currentTab === '3'}
 					onClick={handleTabClick}
 				>
 					Previous Years

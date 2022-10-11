@@ -3,7 +3,7 @@ import { BiFilm, BiNetworkChart } from 'react-icons/bi';
 import { MdOutlineSpaceDashboard, MdOutlineAutoGraph } from 'react-icons/md';
 import { HiOutlineTicket } from 'react-icons/hi';
 import { useLocation } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 
 const links = [
 	{
@@ -47,7 +47,7 @@ const SideBarElement = ({ name, path, icon, children }) => {
 	const { pathname } = useLocation();
 	const isActive = pathname === path;
 	return (
-		<Link
+		<NavLink
 			to={path}
 			as={Link}
 			className={`flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 ${
@@ -57,11 +57,13 @@ const SideBarElement = ({ name, path, icon, children }) => {
 			{icon}
 			<span className='ml-3'>{name}</span>
 			{children}
-		</Link>
+		</NavLink>
 	);
 };
 
 export const Sidebar = () => {
+	const { pathname } = useLocation();
+	console.log(pathname);
 	return (
 		<aside className='w-64 h-screen sticky' aria-label='Sidebar'>
 			<div className='overflow-y-auto h-full py-4 px-3 bg-gray-50 dark:bg-slate-900'>
@@ -83,6 +85,7 @@ export const Sidebar = () => {
 								name={element.name}
 								path={element.path}
 								icon={element.icon}
+								isActive={pathname === element.path}
 							/>
 						);
 					})}

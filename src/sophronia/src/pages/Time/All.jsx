@@ -10,7 +10,6 @@ export const AllTimePage = () => {
 	const endDate = `${today}-${12}-${31}`;
 
 	const { data, error } = useBoxOfficeSummary(startDate, endDate, 25);
-	const results = [...data.results].reverse();
 
 	return (
 		<div>
@@ -18,7 +17,7 @@ export const AllTimePage = () => {
 				All Time Box Office
 			</h1>
 
-			<YearsTable data={results} />
+			<YearsTable data={data.results} />
 		</div>
 	);
 };
