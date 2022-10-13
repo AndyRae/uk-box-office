@@ -13,22 +13,34 @@ import {
 import { MetricChange } from '../components/charts/MetricChange';
 import DatePicker from 'react-datepicker';
 
+import 'react-datepicker/dist/react-datepicker.css';
+
 export const DashboardPage = () => {
-	const end = new Date();
-	const start = new Date();
-	start.setMonth(start.getMonth() - 6);
+	Date.prototype.addDays = function (days) {
+		var date = new Date(this.valueOf());
+		date.setDate(date.getDate() + days);
+		return date;
+	};
 
-	const startDate = `${start.getFullYear()}-${
-		start.getMonth() + 1
-	}-${start.getDate()}`;
-	const endDate = `${end.getFullYear()}-${end.getMonth() + 1}-${end.getDate()}`;
+	const parseDate = (input) => {
+		return `${input.getFullYear()}-${input.getMonth() + 1}-${input.getDate()}`;
+	};
 
-	const { results, error } = useBoxOfficeInfinite(startDate, endDate);
-	const { data: timeComparisonData } = useBoxOfficeSummary(
-		startDate,
-		endDate,
-		1 // Years to go back.
-	);
+	const s = new Date();
+	const [start, setStart] = useState(s.addDays(-180));
+	const [end, setEnd] = useState(new Date());
+
+	// Parse dates to YYYY-MM-DD for the API
+	const [startDate, setStartDate] = useState(parseDate(start));
+	const [endDate, setEndDate] = useState(parseDate(end));
+
+	const { results, mutate, error } = useBoxOfficeInfinite(startDate, endDate);
+	const { data: timeComparisonData, mutate: mutateSummary } =
+		useBoxOfficeSummary(
+			startDate,
+			endDate,
+			1 // Years to go back.
+		);
 
 	// Group Data
 	const { tableData } = groupForTable(results);
@@ -64,16 +76,47 @@ export const DashboardPage = () => {
 		);
 	}
 
-	const [startDate1, setStartDate] = useState(new Date());
+	// Date Picker
+	const loadData = () => {
+		setStartDate(parseDate(start));
+		setEndDate(parseDate(end));
+	};
 
 	return (
 		<div>
 			{/* Datepickers */}
 
-			<DatePicker
-				selected={startDate1}
-				onChange={(date) => setStartDate(date)}
-			/>
+			<div className='flex items-center'>
+				<div className='relative text-black'>
+					<DatePicker
+						dateFormat='dd/MM/yyyy'
+						selected={start}
+						onChange={(date) => setStart(date)}
+						selectsStart
+						startDate={start}
+						endDate={end}
+						filterDate={(d) => {
+							return new Date() > d;
+						}}
+					/>
+				</div>
+				<span className='mx-4 text-gray-500'>to</span>
+				<div className='relative text-black '>
+					<DatePicker
+						dateFormat='dd/MM/yyyy'
+						selected={end}
+						onChange={(date) => setEnd(date)}
+						selectsEnd
+						startDate={start}
+						endDate={end}
+						minDate={start}
+						filterDate={(d) => {
+							return new Date() > d;
+						}}
+					/>
+				</div>
+				<Button onClick={loadData}>Filter</Button>
+			</div>
 
 			<div className='grid md:grid-cols-2 lg:grid-cols-4 gap-4'>
 				<Card
@@ -104,16 +147,6 @@ export const DashboardPage = () => {
 			{/* Charts */}
 
 			{/* Table */}
-
-			{/* {data &&
-				data.results.map((result) => {
-					return (
-						<div key={result.id}>
-							<h2>{result.film}</h2>
-							<Link to={`film/${result.film_slug}`}>Link</Link>
-						</div>
-					);
-				})} */}
 		</div>
 	);
 };
@@ -123,5 +156,17 @@ export const Dashboard = () => {
 		<Suspense fallback={<Spinner />}>
 			<DashboardPage />
 		</Suspense>
+	);
+};
+
+const Button = ({ children, onClick, ...props }) => {
+	return (
+		<button
+			className='px-4 py-2 text-white text-sm transition-colors duration-150 bg-gray-800 rounded-lg focus:shadow-outline hover:bg-gray-700'
+			{...props}
+			onClick={onClick}
+		>
+			{children}
+		</button>
 	);
 };

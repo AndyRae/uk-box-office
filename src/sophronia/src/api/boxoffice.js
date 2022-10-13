@@ -78,7 +78,7 @@ export const useBoxOfficeSummary = (startDate, endDate, limit) => {
  * @returns boxoffice data
  */
 export function useBoxOfficeInfinite(startDate, endDate) {
-	const { data, error, size, setSize } = useProtectedSWRInfinite(
+	const { data, mutate, error, size, setSize } = useProtectedSWRInfinite(
 		startDate,
 		endDate
 	);
@@ -97,6 +97,7 @@ export function useBoxOfficeInfinite(startDate, endDate) {
 
 	return {
 		results,
+		mutate,
 		error,
 		size,
 		setSize,
