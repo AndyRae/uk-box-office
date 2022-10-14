@@ -24,7 +24,7 @@ export const FilmTable = ({ data, comparisonData }) => {
 		<BaseTable columns={columns}>
 			{data.map((film, index) => {
 				let change;
-				if (comparisonData.length > 0) {
+				if (comparisonData?.length > 0) {
 					const previousFilm = comparisonData.find(
 						(object) => object.film === film.title
 					);

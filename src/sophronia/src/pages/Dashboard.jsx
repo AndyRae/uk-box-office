@@ -11,9 +11,8 @@ import {
 	groupbyDate,
 } from '../utils/groupData';
 import { MetricChange } from '../components/charts/MetricChange';
-import DatePicker from 'react-datepicker';
-
-import 'react-datepicker/dist/react-datepicker.css';
+import { Datepickers } from '../components/Dashboard/Datepickers';
+import { FilmTable } from '../components/Time/FilmTable';
 
 export const DashboardPage = () => {
 	Date.prototype.addDays = function (days) {
@@ -84,37 +83,15 @@ export const DashboardPage = () => {
 
 	return (
 		<div>
-			{/* Datepickers */}
-
+			{/* Controls */}
 			<div className='flex items-center'>
-				<div className='relative text-black'>
-					<DatePicker
-						dateFormat='dd/MM/yyyy'
-						selected={start}
-						onChange={(date) => setStart(date)}
-						selectsStart
-						startDate={start}
-						endDate={end}
-						filterDate={(d) => {
-							return new Date() > d;
-						}}
-					/>
-				</div>
-				<span className='mx-4 text-gray-500'>to</span>
-				<div className='relative text-black '>
-					<DatePicker
-						dateFormat='dd/MM/yyyy'
-						selected={end}
-						onChange={(date) => setEnd(date)}
-						selectsEnd
-						startDate={start}
-						endDate={end}
-						minDate={start}
-						filterDate={(d) => {
-							return new Date() > d;
-						}}
-					/>
-				</div>
+				<Datepickers
+					start={start}
+					end={end}
+					setStart={setStart}
+					setEnd={setEnd}
+				/>
+
 				<Button onClick={loadData}>Filter</Button>
 			</div>
 
@@ -147,6 +124,11 @@ export const DashboardPage = () => {
 			{/* Charts */}
 
 			{/* Table */}
+			<div className='mt-4'>
+				<Suspense fallback={<Spinner />}>
+					<FilmTable data={tableData} />
+				</Suspense>
+			</div>
 		</div>
 	);
 };
