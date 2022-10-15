@@ -1,4 +1,4 @@
-import { useBoxOfficeInfinite, useBoxOfficeSummary } from '../api/boxoffice';
+import { useBoxOfficeInfinite, useBoxOfficePrevious } from '../api/boxoffice';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Suspense } from 'react';
@@ -34,12 +34,7 @@ export const DashboardPage = () => {
 	const [endDate, setEndDate] = useState(parseDate(end));
 
 	const { results, mutate, error } = useBoxOfficeInfinite(startDate, endDate);
-	const { data: timeComparisonData, mutate: mutateSummary } =
-		useBoxOfficeSummary(
-			startDate,
-			endDate,
-			1 // Years to go back.
-		);
+	const { data: timeComparisonData } = useBoxOfficePrevious(startDate, endDate);
 
 	// Group Data
 	const { tableData } = groupForTable(results);
@@ -58,8 +53,8 @@ export const DashboardPage = () => {
 	let changeWeekend = 0;
 	let changeWeek = 0;
 
-	if (timeComparisonData.results.length > 1) {
-		const lastYear = timeComparisonData.results[1];
+	if (timeComparisonData.results.length >= 1) {
+		const lastYear = timeComparisonData.results[0];
 
 		changeNewFilms = Math.ceil(
 			((numberOfNewFilms - lastYear.number_of_releases) /

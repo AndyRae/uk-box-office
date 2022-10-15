@@ -41,6 +41,18 @@ def summary() -> Response:
     return response
 
 
+@boxoffice.route("/previous")
+def previous() -> Response:
+    """
+    Get previous year box office statistics for a time period.
+    """
+    start = request.args.get("start", None)
+    end = request.args.get("end", None)
+    response = services.boxoffice.previous(start, end)
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
+
+
 @boxoffice.route("/topline")
 def topline() -> Response:
     """
