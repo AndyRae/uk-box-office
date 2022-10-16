@@ -32,6 +32,9 @@ class Week(PkModel):  # type: ignore
             "number_of_cinemas": self.number_of_cinemas,
             "weekend_gross": self.weekend_gross,
             "week_gross": self.week_gross,
+            "forecast_high": self.forecast_high,
+            "forecast_medium": self.forecast_medium,
+            "forecast_low": self.forecast_low,
         }
 
     def as_df(self) -> List[Any]:

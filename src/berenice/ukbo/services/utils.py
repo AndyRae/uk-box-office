@@ -366,7 +366,7 @@ def to_date(date_string: str = "2000-01-20") -> datetime.datetime:
 
 
 def get_box_office_data(
-    model: Any, start: datetime.date, end_: datetime.date
+    model: Any, start: datetime.date, end: datetime.date
 ) -> Any:
     """
     Queries the models database with a start and end filter

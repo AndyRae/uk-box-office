@@ -14,6 +14,8 @@ export const fetchKeys = {
 	boxOfficePrevious: (start, end) =>
 		`boxoffice/previous?start=${start}&end=${end}`,
 	boxOfficeTop: () => `boxoffice/top`,
+	boxOfficeTopline: (start, end, limit) =>
+		`boxoffice/topline?start=${start}&end=${end}&limit=${limit}`,
 };
 
 /**
@@ -80,6 +82,23 @@ export const useBoxOfficePrevious = (start, end) => {
 	return useSWR(fetchKeys.boxOfficePrevious(start, end), apiFetcher, {
 		suspense: true,
 	});
+};
+
+/**
+ * Uses the box office summary endpoint
+ * @param {*} startDate
+ * @param {*} endDate
+ * @returns
+ */
+export const useBoxOfficeTopline = (startDate, endDate, limit) => {
+	const apiFetcher = useBackendApi();
+	return useSWR(
+		fetchKeys.boxOfficeTopline(startDate, endDate, limit),
+		apiFetcher,
+		{
+			suspense: true,
+		}
+	);
 };
 
 /**

@@ -14,18 +14,6 @@ class Forecast:
         self.prediction: pd.DataFrame = None
         self.prediction_weeks = 26
 
-    def get(self) -> Response:
-        """
-        Get forecasted data
-        """
-        now = datetime.datetime.now()
-        last_year = datetime.timedelta(days=365)
-        start = now - last_year
-        end = now + last_year
-
-        data = utils.get_box_office_data(models.Week, start, end)
-        return jsonify(data=[ix.as_dict() for ix in data])
-
     def run_forecast(self) -> None:
         """
         Wrapper for model

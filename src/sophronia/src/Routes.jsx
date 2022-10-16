@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { Dashboard } from './pages/Dashboard';
+import { Forecast } from './pages/Forecast';
 import { Films } from './pages/Film/Films';
 import { Film } from './pages/Film/Film';
 import { Distributor } from './pages/Distributor/Distributor';
@@ -17,6 +18,10 @@ export const Root = () => {
 			<Route path='/'>
 				<Route element={<Layout />}>
 					<Route index element={<Dashboard />} />
+
+					<Route path='forecast'>
+						<Route index element={<Forecast />} />
+					</Route>
 
 					<Route path='film'>
 						<Route index element={<Films />} />
