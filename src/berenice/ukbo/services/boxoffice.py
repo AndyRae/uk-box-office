@@ -10,7 +10,7 @@ from . import utils
 
 
 def all(
-    start_date: str = None, end_date: str = None, start: int = 1
+    start: str = None, end: str = None, page: int = 1
 ) -> Response:
     """
     Main API endpoint - returns paginated box office data.
@@ -18,22 +18,22 @@ def all(
     """
     query = db.session.query(models.Film_Week)
 
-    if start_date is not None:
+    if start is not None:
         query = query.filter(
-            models.Film_Week.date >= utils.to_date(start_date)
+            models.Film_Week.date >= utils.to_date(start)
         )
 
-    if end_date is not None:
-        query = query.filter(models.Film_Week.date <= utils.to_date(end_date))
+    if end is not None:
+        query = query.filter(models.Film_Week.date <= utils.to_date(end))
 
     data = query.order_by(models.Film_Week.date.desc()).paginate(
-        page=start, per_page=150, error_out=False
+        page=page, per_page=150, error_out=False
     )
     if data is None:
         return {"none"}
 
-    next_page = (start + 1) if data.has_next else ""
-    previous_page = f"/api?start={start - 1}" if data.has_prev else ""
+    next_page = (page + 1) if data.has_next else ""
+    previous_page = (page - 1) if data.has_prev else ""
 
     return jsonify(
         count=data.total,
@@ -53,7 +53,7 @@ def top() -> Response:
     return jsonify(data)
 
 
-def summary(start_date: str = None, end_date: str = None, limit: int = 0) -> Response:
+def summary(start: str = None, end: str = None, limit: int = 0) -> Response:
     """
     Return summarised box office statistics for a time range, grouped by year.
     The range has to be a standard amount of time inside one year.
@@ -62,8 +62,8 @@ def summary(start_date: str = None, end_date: str = None, limit: int = 0) -> Res
     For getting time comparison data, see 'previous' method. 
 
             Parameters:
-                    start_date (int): Start of time range.
-                    end_date (int): End of time range.
+                    start (int): Start of time range.
+                    end (int): End of time range.
                     limit (int): The number of years to go backwards.
 
             Returns:
@@ -77,35 +77,35 @@ def summary(start_date: str = None, end_date: str = None, limit: int = 0) -> Res
         func.max(models.Week.number_of_cinemas),
         ).group_by(func.extract('year', models.Week.date))
 
-    if start_date != end_date:
-        if start_date is not None:
-            start = utils.to_date(start_date)
+    if start != end:
+        if start is not None:
+            s = utils.to_date(start)
             query = query.filter(
-                func.extract('day', models.Week.date) >= start.day
+                func.extract('day', models.Week.date) >= s.day
             )
             query = query.filter(
-                func.extract('month', models.Week.date) >= start.month
+                func.extract('month', models.Week.date) >= s.month
             )
             query = query.filter(
-                func.extract('year', models.Week.date) >= (start.year - limit)
+                func.extract('year', models.Week.date) >= (s.year - limit)
             )
 
-        if end_date is not None:
-            end = utils.to_date(end_date)
-            query = query.filter(func.extract('day', models.Week.date) <= end.day)
-            query = query.filter(func.extract('month', models.Week.date) <= end.month)
+        if end is not None:
+            e = utils.to_date(end)
+            query = query.filter(func.extract('day', models.Week.date) <= e.day)
+            query = query.filter(func.extract('month', models.Week.date) <= e.month)
             query = query.filter(
-                func.extract('year', models.Week.date) <= (end.year)
+                func.extract('year', models.Week.date) <= (e.year)
             )
     else: 
         # Query for 1 week - so use the week number to filter.
-        week_number = utils.to_date(start_date).isocalendar()[1]
+        week_number = utils.to_date(start).isocalendar()[1]
         query = query.filter(func.extract('week', models.Week.date)  == week_number)
         query = query.filter(
-                func.extract('year', models.Week.date) >= (utils.to_date(start_date).year - limit)
+                func.extract('year', models.Week.date) >= (utils.to_date(start).year - limit)
         )
         query = query.filter(
-                func.extract('year', models.Week.date) <= (utils.to_date(end_date).year)
+                func.extract('year', models.Week.date) <= (utils.to_date(end).year)
         )
 
     data = query.order_by(func.extract('year', models.Week.date).desc()).all()
@@ -172,22 +172,22 @@ def previous(start: str = None, end: str = None) -> Response:
     )
 
 
-def topline(start_date: str = None, end_date: str = None, start: int = 1) -> Response:
+def topline(start: str = None, end: str = None, page: int = 1) -> Response:
     """
     Return topline box office data for a time range.
     """
     query = db.session.query(models.Week)
 
-    if start_date is not None:
+    if start is not None:
         query = query.filter(
-            models.Week.date >= utils.to_date(start_date)
+            models.Week.date >= utils.to_date(start)
         )
 
-    if end_date is not None:
-        query = query.filter(models.Week.date <= utils.to_date(end_date))
+    if end is not None:
+        query = query.filter(models.Week.date <= utils.to_date(end))
 
     data = query.order_by(models.Week.date.desc()).paginate(
-        page=start, per_page=150, error_out=False
+        page=page, per_page=150, error_out=False
     )
     if data is None:
         return {"none"}

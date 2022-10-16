@@ -366,14 +366,14 @@ def to_date(date_string: str = "2000-01-20") -> datetime.datetime:
 
 
 def get_box_office_data(
-    model: Any, start_date: datetime.date, end_date: datetime.date
+    model: Any, start: datetime.date, end_: datetime.date
 ) -> Any:
     """
     Queries the models database with a start and end filter
     Returns the query object
     """
     query = db.session.query(model)
-    query = query.filter(model.date >= start_date)
-    query = query.filter(model.date <= end_date)
+    query = query.filter(model.date >= start)
+    query = query.filter(model.date <= end)
     query = query.order_by(model.date.desc())
     return query.all()

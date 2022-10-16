@@ -3,9 +3,9 @@ import useSWR from 'swr';
 
 export const fetchKeys = {
 	countryList: (pageIndex, limit) =>
-		`country/?start=${pageIndex}&limit=${limit}`,
+		`country/?page=${pageIndex}&limit=${limit}`,
 	countryFilms: (slug, pageIndex, pageLimit) =>
-		`country/${slug}/films?start=${pageIndex}&limit=${pageLimit}`,
+		`country/${slug}/films?page=${pageIndex}&limit=${pageLimit}`,
 	country: (slug) => `country/${slug}`,
 };
 

@@ -6,7 +6,7 @@ export const Datepickers = ({ start, end, setStart, setEnd }) => {
 	return (
 		<div>
 			<div className='flex items-center'>
-				<div className='relative text-black'>
+				<div className='relative px-4 py-2 text-black'>
 					<DatePicker
 						dateFormat='dd/MM/yyyy'
 						selected={start}
@@ -20,7 +20,7 @@ export const Datepickers = ({ start, end, setStart, setEnd }) => {
 					/>
 				</div>
 				<span className='mx-4 text-gray-500'>to</span>
-				<div className='relative text-black '>
+				<div className='relative px-4 py-2 text-black '>
 					<DatePicker
 						dateFormat='dd/MM/yyyy'
 						selected={end}

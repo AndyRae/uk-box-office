@@ -3,9 +3,9 @@ import useSWR from 'swr';
 
 export const fetchKeys = {
 	distributorList: (pageIndex, pageLimit) =>
-		`distributor/?start=${pageIndex}&limit=${pageLimit}`,
+		`distributor/?page=${pageIndex}&limit=${pageLimit}`,
 	distributorFilms: (slug, pageIndex, pageLimit) =>
-		`distributor/${slug}/films?start=${pageIndex}&limit=${pageLimit}`,
+		`distributor/${slug}/films?page=${pageIndex}&limit=${pageLimit}`,
 	distributor: (slug) => `distributor/${slug}`,
 };
 

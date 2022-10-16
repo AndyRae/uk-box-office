@@ -14,7 +14,7 @@ const links = [
 	{
 		name: 'Last Week',
 		path: '/week',
-		icon: <MdOutlineAutoGraph />,
+		icon: <BiFilm />,
 	},
 	{
 		name: 'All Time',
@@ -22,24 +22,19 @@ const links = [
 		icon: <HiOutlineTicket />,
 	},
 	{
-		name: 'Films',
-		path: '/film',
-		icon: <BiFilm />,
-	},
-	{
-		name: 'Distributors',
-		path: '/distributor',
-		icon: <BiNetworkChart />,
-	},
-	{
-		name: 'Countries',
-		path: '/country',
-		icon: <FaGlobeEurope />,
-	},
-	{
 		name: 'Forecast',
 		path: '/forecast',
 		icon: <MdOutlineAutoGraph />,
+	},
+	{
+		name: 'Market Share',
+		path: '/marketshare',
+		icon: <BiNetworkChart />,
+	},
+	{
+		name: 'About',
+		path: '/about',
+		icon: <FaGlobeEurope />,
 	},
 ];
 
@@ -92,7 +87,7 @@ export const Sidebar = () => {
 				</ul>
 				<div
 					id='dropdown-cta'
-					className='p-4 mt-6 bg-blue-50 rounded-lg dark:bg-blue-900'
+					className='p-4 mt-6 absolute inset-x-3 bottom-10 bg-blue-50 rounded-lg dark:bg-blue-900'
 					role='alert'
 				>
 					<div className='flex items-center mb-3'>

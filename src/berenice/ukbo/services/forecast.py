@@ -20,10 +20,10 @@ class Forecast:
         """
         now = datetime.datetime.now()
         last_year = datetime.timedelta(days=365)
-        start_date = now - last_year
-        end_date = now + last_year
+        start = now - last_year
+        end = now + last_year
 
-        data = utils.get_box_office_data(models.Week, start_date, end_date)
+        data = utils.get_box_office_data(models.Week, start, end)
         return jsonify(data=[ix.as_dict() for ix in data])
 
     def run_forecast(self) -> None:

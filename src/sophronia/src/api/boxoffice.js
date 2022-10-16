@@ -6,18 +6,14 @@ import { useEffect } from 'react';
 
 export const fetchKeys = {
 	boxOffice: 'boxoffice/all',
-	boxOfficeFiltered: (start_date, end_date, start, limit) =>
-		`boxoffice/all?{start_date=${start_date}}&end_date=${end_date}&=${start}&limit=${limit}`,
+	boxOfficeFiltered: (start, end, page, limit) =>
+		`boxoffice/all?{start=${start}}&end=${end}&page=${page}&limit=${limit}`,
 	boxOfficeAll: (start, limit) => `boxoffice/all?start=${start}&limit=${limit}`,
-	boxOfficeSummary: (startDate, endDate, limit) =>
-		`boxoffice/summary?start_date=${startDate}&end_date=${endDate}&limit=${limit}`,
+	boxOfficeSummary: (start, end, limit) =>
+		`boxoffice/summary?start=${start}&end=${end}&limit=${limit}`,
 	boxOfficePrevious: (start, end) =>
 		`boxoffice/previous?start=${start}&end=${end}`,
 	boxOfficeTop: () => `boxoffice/top`,
-	boxOfficeInfinite: (startDate, end_date, limit, index, previousPageData) => {
-		index += 1; // index is 0 by default
-		return `boxoffice/all?start_date=${startDate}&end_date=${end_date}&start=${index}&limit=${limit}`;
-	},
 };
 
 /**
@@ -144,7 +140,7 @@ const useProtectedSWRInfinite = (startDate, endDate) => {
 
 		// Add nextPage token to API endpoint
 		return [
-			`${url}?start_date=${startDate}&end_date=${endDate}&start=${previousPageData.next}`,
+			`${url}?start=${startDate}&end=${endDate}&page=${previousPageData.next}`,
 		];
 	}
 

@@ -18,20 +18,20 @@ class FilmSchema(ma.SQLAlchemyAutoSchema):
     distributor_name = ma.Function(lambda obj: obj.distributor.name)
 
 
-def list(start: int, limit: int = 100) -> Response:
+def list(page: int, limit: int = 100) -> Response:
     """
     Paginated list of all films.
     """
     query = db.session.query(models.Film)
     data = query.order_by(models.Film.name.asc()).paginate(
-        page=start, per_page=limit, error_out=False
+        page=page, per_page=limit, error_out=False
     )
 
     if data is None:
         abort(404)
 
-    next_page = f"/api?start={start + 1}" if data.has_next else ""
-    previous_page = f"/api?start={start - 1}" if data.has_prev else ""
+    next_page = (page + 1) if data.has_next else ""
+    previous_page = (page - 1) if data.has_prev else ""
 
     return jsonify(
         count=data.total,

@@ -10,9 +10,9 @@ def all() -> Response:
     """
     Main endpoint for box office data
     """
-    start = int(request.args.get("start", 1))
+    page = int(request.args.get("page", 1))
     limit = int(request.args.get("limit", 100))
-    response = services.distributor.list(start, limit)
+    response = services.distributor.list(page, limit)
     response.headers.add("Access-Control-Allow-Origin", "*")
     return response
 
@@ -32,8 +32,8 @@ def get_films(slug: str) -> Response:
     """
     Distributor detailview with films
     """
-    start = int(request.args.get("start", 1))
+    page = int(request.args.get("page", 1))
     limit = int(request.args.get("limit", 100))
-    response = services.distributor.get_films(slug, start, limit)
+    response = services.distributor.get_films(slug, page, limit)
     response.headers.add("Access-Control-Allow-Origin", "*")
     return response
