@@ -42,9 +42,12 @@ export const Td = ({ isNumeric, isHighlight, children, ...rest }) => {
 	);
 };
 
-export const BaseTable = ({ columns, children }) => {
+export const BaseTable = ({ columns, id, children }) => {
 	return (
-		<table className='w-full my-8 text-sm text-left text-gray-500 dark:text-gray-400'>
+		<table
+			className='w-full my-8 text-sm text-left text-gray-500 dark:text-gray-400'
+			id={id}
+		>
 			<Thead>
 				<Tr>
 					{columns.map((column, index) => {

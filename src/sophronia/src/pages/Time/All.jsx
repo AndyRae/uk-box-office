@@ -2,6 +2,7 @@ import { useBoxOfficeSummary } from '../../api/boxoffice';
 import { Spinner } from '../../components/ui/Spinner';
 import { Suspense } from 'react';
 import { YearsTable } from '../../components/Time/YearsTable';
+import { ExportCSV } from '../../components/ui/ExportCSV';
 
 export const AllTimePage = () => {
 	const today = new Date().getFullYear();
@@ -17,7 +18,8 @@ export const AllTimePage = () => {
 				All Time Box Office
 			</h1>
 
-			<YearsTable data={data.results} />
+			<YearsTable data={data.results} id={'yearstable'} />
+			<ExportCSV data={data.results} filename={'alltime.csv'} />
 		</div>
 	);
 };

@@ -14,8 +14,8 @@ export const PreviousTable = ({ data }) => {
 	];
 	return (
 		<BaseTable columns={columns}>
-			{data.results.map((year, index) => {
-				const previousYear = data.results[index + 1];
+			{data.map((year, index) => {
+				const previousYear = data[index + 1];
 				const changeYOY = previousYear
 					? Math.ceil(
 							((year.week_gross - previousYear.week_gross) /

@@ -1,6 +1,6 @@
 import { useBoxOfficeInfinite, useBoxOfficePrevious } from '../api/boxoffice';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Button } from '../components/ui/Button';
 import { Suspense } from 'react';
 import { Spinner } from '../components/ui/Spinner';
 import { Card } from '../components/Dashboard/Card';
@@ -133,17 +133,5 @@ export const Dashboard = () => {
 		<Suspense fallback={<Spinner />}>
 			<DashboardPage />
 		</Suspense>
-	);
-};
-
-const Button = ({ children, onClick, ...props }) => {
-	return (
-		<button
-			className='px-4 py-2 text-white text-sm transition-colors duration-150 bg-gray-800 rounded-lg focus:shadow-outline hover:bg-gray-700'
-			{...props}
-			onClick={onClick}
-		>
-			{children}
-		</button>
 	);
 };

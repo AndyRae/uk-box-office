@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { BaseTable, Td, Tr } from '../charts/BaseTable';
 import { MetricChange } from '../charts/MetricChange';
 
-export const YearsTable = ({ data }) => {
+export const YearsTable = ({ data, id }) => {
 	const columns = [
 		{ label: 'year' },
 		{ label: 'weekend box office', isNumeric: true },
@@ -11,7 +11,7 @@ export const YearsTable = ({ data }) => {
 		{ label: 'new releases', isNumeric: true },
 	];
 	return (
-		<BaseTable columns={columns}>
+		<BaseTable columns={columns} id={id}>
 			{data.map((year, index) => {
 				const previousYear = data[index + 1];
 				const changeWeekend = previousYear

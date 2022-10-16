@@ -16,6 +16,7 @@ import { useState } from 'react';
 import { Tab, Tabs, TabContent, TabTitle } from '../../components/ui/Tabs';
 import { MetricChange } from '../../components/charts/MetricChange';
 import { PreviousTable } from '../../components/Time/PreviousTable';
+import { ExportCSV } from '../../components/ui/ExportCSV';
 
 const PillLink = ({ to, children, isActive }) => (
 	<li className='mr-2'>
@@ -155,8 +156,6 @@ export const TimePage = () => {
 		setCurrentTab(e.target.id);
 	};
 
-	console.log(quarter);
-
 	return (
 		<div>
 			<h1 className='text-4xl font-bold py-5 capitalize'>
@@ -265,21 +264,45 @@ export const TimePage = () => {
 				{currentTab === '1' && (
 					<Tab>
 						{results && (
-							<FilmTable
-								data={tableData}
-								comparisonData={isWeekView && lastWeekResults}
-							/>
+							<>
+								<div className='flex flex-row-reverse mt-3'>
+									<ExportCSV data={tableData} filename={'filmdata.csv'} />
+								</div>
+								<FilmTable
+									data={tableData}
+									comparisonData={isWeekView && lastWeekResults}
+								/>
+							</>
 						)}
 					</Tab>
 				)}
 
 				{currentTab === '2' && (
-					<Tab>{weekData && <WeeksTable data={weekData} />}</Tab>
+					<Tab>
+						{weekData && (
+							<>
+								<div className='flex flex-row-reverse mt-3'>
+									<ExportCSV data={weekData} filename={'timedata.csv'} />
+								</div>
+								<WeeksTable data={weekData} />
+							</>
+						)}
+					</Tab>
 				)}
 
 				{currentTab === '3' && (
 					<Tab>
-						{timeComparisonData && <PreviousTable data={timeComparisonData} />}
+						{timeComparisonData && (
+							<>
+								<div className='flex flex-row-reverse mt-3'>
+									<ExportCSV
+										data={timeComparisonData.results}
+										filename={'historic.csv'}
+									/>
+								</div>
+								<PreviousTable data={timeComparisonData.results} />
+							</>
+						)}
 					</Tab>
 				)}
 			</TabContent>
