@@ -17,7 +17,7 @@ import { Tab, Tabs, TabContent, TabTitle } from '../../components/ui/Tabs';
 import { MetricChange } from '../../components/charts/MetricChange';
 import { PreviousTable } from '../../components/Time/PreviousTable';
 import { ExportCSV } from '../../components/ui/ExportCSV';
-import { TimeChart } from '../../components/Time/TimeChart';
+import { TimeLineChart } from '../../components/Time/TimeLineChart';
 
 const PillLink = ({ to, children, isActive }) => (
 	<li className='mr-2'>
@@ -204,7 +204,7 @@ export const TimePage = () => {
 			</div>
 
 			{/* // Chart */}
-			{weekData && <TimeChart data={weekData.reverse()} />}
+			{weekData && <TimeLineChart data={weekData.reverse()} />}
 
 			<div className='py-3'>
 				<ul className='flex flex-wrap text-sm font-medium text-center text-gray-500 dark:text-gray-400'>

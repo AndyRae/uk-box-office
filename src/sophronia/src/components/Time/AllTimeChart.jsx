@@ -1,13 +1,12 @@
-import { Timeseries } from '../charts/Timeseries';
+import { BarChart } from '../charts/BarChart';
 
-export const TimeChart = ({ data }) => {
-	console.log(data);
+export const AllTimeChart = ({ data }) => {
 	const d = {
-		labels: data.map((d) => d.date),
+		labels: data.reverse().map((d) => d.year),
 		datasets: [
 			{
 				label: 'Box Office',
-				data: data.map((d) => d.weekGross),
+				data: data.reverse().map((d) => d.week_gross),
 				fill: false,
 				backgroundColor: ['#FE7E6D'],
 				borderColor: ['#FE7E6D'],
@@ -55,7 +54,7 @@ export const TimeChart = ({ data }) => {
 
 	return (
 		<>
-			<Timeseries data={d} options={options} />
+			<BarChart data={d} options={options} />
 		</>
 	);
 };

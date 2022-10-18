@@ -3,6 +3,7 @@ import { Spinner } from '../../components/ui/Spinner';
 import { Suspense } from 'react';
 import { YearsTable } from '../../components/Time/YearsTable';
 import { ExportCSV } from '../../components/ui/ExportCSV';
+import { AllTimeChart } from '../../components/Time/AllTimeChart';
 
 export const AllTimePage = () => {
 	const today = new Date().getFullYear();
@@ -12,11 +13,15 @@ export const AllTimePage = () => {
 
 	const { data, error } = useBoxOfficeSummary(startDate, endDate, 25);
 
+	console.log(data);
+
 	return (
 		<div>
 			<h1 className='text-4xl font-bold py-5 capitalize'>
 				All Time Box Office
 			</h1>
+
+			<AllTimeChart data={data.results} />
 
 			<YearsTable data={data.results} id={'yearstable'} />
 			<ExportCSV data={data.results} filename={'alltime.csv'} />
