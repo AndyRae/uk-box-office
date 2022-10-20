@@ -154,8 +154,7 @@ const useProtectedSWRInfinite = (startDate, endDate) => {
 		if (previousPageData && !previousPageData.next) return null;
 
 		// First page with no prevPageData
-		if (pageIndex === 0)
-			return `${url}?start_date=${startDate}&end_date=${endDate}`;
+		if (pageIndex === 0) return `${url}?start=${startDate}&end=${endDate}`;
 
 		// Add nextPage token to API endpoint
 		return [

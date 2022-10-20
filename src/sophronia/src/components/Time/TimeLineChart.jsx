@@ -54,7 +54,7 @@ export const TimeLineChart = ({ data }) => {
 
 	return (
 		<>
-			<Timeseries data={d} options={options} />
+			<Timeseries id={'gradientid'} data={d} options={options} />
 		</>
 	);
 };

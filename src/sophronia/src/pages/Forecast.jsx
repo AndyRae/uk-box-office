@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import { Spinner } from '../components/ui/Spinner';
 import { useBoxOfficeTopline } from '../api/boxoffice';
+import { ForecastChart } from '../components/charts/ForecastChart';
 
 const ForecastPage = () => {
 	Date.prototype.addDays = function (days) {
@@ -19,12 +20,12 @@ const ForecastPage = () => {
 
 	const { data, isLoading, isError } = useBoxOfficeTopline(startDate, endDate);
 
-	console.log(data);
-
 	return (
 		<div>
 			<h1 className='text-4xl font-bold py-5 capitalize'>Forecast</h1>
 			<div className='grid md:grid-cols-2 lg:grid-cols-4 gap-4'></div>
+
+			{data && <ForecastChart data={data.results} />}
 		</div>
 	);
 };

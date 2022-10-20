@@ -31,7 +31,7 @@ export const AllTimeChart = ({ data }) => {
 				beginAtZero: true,
 				ticks: {
 					autoSkip: true,
-					stepSize: 10000000,
+					stepSize: 200000000,
 					callback: function (value, index, values) {
 						var ranges = [
 							{ divider: 1e6, suffix: 'M' },
