@@ -53,11 +53,12 @@ export const ForecastChart = ({ data }) => {
 				grid: {
 					display: false,
 				},
-				offset: true,
+				offset: false,
 			},
 			y: {
 				beginAtZero: true,
 				min: 0,
+				offset: false,
 				ticks: {
 					autoSkip: true,
 					stepSize: 10000000,

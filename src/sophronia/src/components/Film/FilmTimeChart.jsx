@@ -1,12 +1,12 @@
 import { Timeseries } from '../charts/Timeseries';
 
-export const TimeLineChart = ({ data }) => {
+export const FilmTimeChart = ({ data }) => {
 	const d = {
 		labels: data.map((d) => d.date),
 		datasets: [
 			{
-				label: 'Box Office',
-				data: data.map((d) => d.weekGross),
+				label: 'Actual',
+				data: data.map((d) => d.week_gross),
 				fill: true,
 				backgroundColor: ['#FE7E6D4D'],
 				borderColor: ['#FE7E6D'],
@@ -29,6 +29,10 @@ export const TimeLineChart = ({ data }) => {
 			},
 			y: {
 				beginAtZero: true,
+				min: 0,
+				grid: {
+					display: false,
+				},
 				offset: false,
 				ticks: {
 					autoSkip: true,
@@ -51,11 +55,15 @@ export const TimeLineChart = ({ data }) => {
 				},
 			},
 		},
+		plugins: {
+			legend: {
+				display: false,
+			},
+		},
 	};
-
 	return (
-		<>
-			<Timeseries id={'gradientid'} data={d} options={options} />
-		</>
+		<div className='my-10 h-80'>
+			<Timeseries options={options} data={d} />
+		</div>
 	);
 };

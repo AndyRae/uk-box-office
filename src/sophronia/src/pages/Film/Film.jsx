@@ -7,6 +7,7 @@ import { Spinner } from '../../components/ui/Spinner';
 import { Suspense } from 'react';
 import { Date } from '../../components/Date';
 import { ExportCSV } from '../../components/ui/ExportCSV';
+import { FilmTimeChart } from '../../components/Film/FilmTimeChart';
 
 export const FilmPage = () => {
 	const { slug } = useParams();
@@ -64,7 +65,7 @@ export const FilmPage = () => {
 				/>
 			</div>
 
-			{data.weeks.length >= 2 && <div className='chart' />}
+			{data.weeks.length >= 2 && <FilmTimeChart data={data.weeks} />}
 
 			<div className='flex flex-row-reverse mt-3'>
 				<ExportCSV data={data.weeks} filename={`${data.name}_data.csv`} />
