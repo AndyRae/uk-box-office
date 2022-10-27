@@ -2,6 +2,7 @@ from flask import Response, abort, jsonify
 from slugify import slugify  # type: ignore
 from ukbo import models
 from ukbo.extensions import db
+from sqlalchemy.sql import func
 
 
 def list(page: int = 1, limit: int = 100) -> Response:
@@ -80,3 +81,36 @@ def add_distributor(distributor: str) -> models.Distributor:
     if instance := models.Distributor.query.filter_by(slug=slug).first():
         return instance
     return models.Distributor.create(name=distributor, commit=False)
+
+
+def market_share(year: str=None) -> Response:
+    """
+    Gets the distributor market share for a year
+    """
+    query = db.session.query(
+        func.extract('year', models.Film_Week.date),
+        models.Distributor,
+        func.sum(models.Film_Week.week_gross),
+        )
+    
+    query = query.join(models.Distributor)
+    query = query.group_by(models.Distributor)
+    query = query.group_by(func.extract('year', models.Film_Week.date))
+    query = query.order_by(func.extract('year', models.Film_Week.date).desc())
+
+    if year is not None:
+        query = query.filter(func.extract('year', models.Film_Week.date) == year)
+    
+    data = query.all()
+
+    if data is None:
+        abort(404)
+
+    return jsonify(results=[
+            dict(
+                year=row[0],
+                distributor=row[1].as_dict(),
+                gross=row[2]
+            ) for row in data
+        ])
+    

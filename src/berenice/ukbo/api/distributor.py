@@ -17,6 +17,26 @@ def all() -> Response:
     return response
 
 
+@distributor.route("/marketshare")
+def market_share() -> Response:
+    """
+    Get distributor market share overall.
+    """
+    response = services.distributor.market_share()
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
+
+
+@distributor.route("/marketshare/<year>")
+def market_share_year(year: str) -> Response:
+    """
+    Get distributor market share for a year.
+    """
+    response = services.distributor.market_share(year)
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
+
+
 @distributor.route("/<slug>")
 def get(slug: str) -> Response:
     """
@@ -37,3 +57,4 @@ def get_films(slug: str) -> Response:
     response = services.distributor.get_films(slug, page, limit)
     response.headers.add("Access-Control-Allow-Origin", "*")
     return response
+
