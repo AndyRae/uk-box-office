@@ -7,6 +7,8 @@ export const fetchKeys = {
 	distributorFilms: (slug, pageIndex, pageLimit) =>
 		`distributor/${slug}/films?page=${pageIndex}&limit=${pageLimit}`,
 	distributor: (slug) => `distributor/${slug}`,
+	marketShareYear: (year) => `distributor/marketshare/${year}`,
+	marketShare: `distributor/marketshare`,
 };
 
 /**
@@ -46,4 +48,26 @@ export const useDistributorFilms = (id, pageIndex = 1, pageLimit = 10) => {
 			suspense: true,
 		}
 	);
+};
+
+/**
+ * Get market share data for distributors.
+ * @returns Market share data for distributors.
+ */
+export const useDistributorMarketShare = () => {
+	const apiFetcher = useBackendApi();
+	return useSWR(fetchKeys.marketShare, apiFetcher, {
+		suspense: true,
+	});
+};
+
+/**
+ * Get market share data for distributors for a year.
+ * @returns Market share data for distributors.
+ */
+export const useDistributorMarketShareYear = (year) => {
+	const apiFetcher = useBackendApi();
+	return useSWR(fetchKeys.marketShareYear(year), apiFetcher, {
+		suspense: true,
+	});
 };

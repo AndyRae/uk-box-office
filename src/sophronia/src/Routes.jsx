@@ -11,6 +11,7 @@ import { Country } from './pages/Country/Country';
 import { Time } from './pages/Time/Time';
 import { All } from './pages/Time/All';
 import { LastWeek } from './pages/Time/LastWeek';
+import { MarketShareDistributor } from './pages/MarketShare/Distributor';
 
 export const Root = () => {
 	return (
@@ -68,6 +69,14 @@ export const Root = () => {
 
 						<Route path=':year/q:quarter/q:quarterend'>
 							<Route index element={<Time />} />
+						</Route>
+					</Route>
+
+					<Route path='marketshare'>
+						<Route index element={<MarketShareDistributor />} />
+
+						<Route path='distributor'>
+							<Route index element={<MarketShareDistributor />} />
 						</Route>
 					</Route>
 				</Route>
