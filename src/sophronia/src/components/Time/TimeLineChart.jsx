@@ -22,6 +22,17 @@ export const TimeLineChart = ({ data }) => {
 		maintainAspectRatio: false,
 		scales: {
 			x: {
+				// type: "time",
+				distribution: 'series',
+				ticks: {
+					maxRotation: 0,
+					minRotation: 0,
+					autoSkip: true,
+				},
+				time: {
+					unit: 'week',
+					tooltipFormat: 'DD/MM/YYYY',
+				},
 				grid: {
 					display: false,
 				},

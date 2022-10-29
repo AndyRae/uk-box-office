@@ -13,6 +13,7 @@ import {
 import { MetricChange } from '../components/charts/MetricChange';
 import { Datepickers } from '../components/Dashboard/Datepickers';
 import { FilmTable } from '../components/Time/FilmTable';
+import { TimeLineChart } from '../components/Time/TimeLineChart';
 
 export const DashboardPage = () => {
 	Date.prototype.addDays = function (days) {
@@ -86,8 +87,12 @@ export const DashboardPage = () => {
 					setStart={setStart}
 					setEnd={setEnd}
 				/>
-
 				<Button onClick={loadData}>Filter</Button>
+				<Button onClick={loadData}>1W</Button>
+				<Button onClick={loadData}>1M</Button>
+				<Button onClick={loadData}>3M</Button>
+				<Button onClick={loadData}>1Y</Button>
+				Last Updated: {new Date().toLocaleString()}
 			</div>
 
 			<div className='grid md:grid-cols-2 lg:grid-cols-4 gap-4'>
@@ -117,6 +122,11 @@ export const DashboardPage = () => {
 			{/* Scorecards grid. */}
 
 			{/* Charts */}
+
+			<div className='grid md:grid-cols-2 lg:grid-cols-2 gap-4'>
+				<div>{weekData && <TimeLineChart data={weekData.reverse()} />}</div>
+				<div>{weekData && <TimeLineChart data={weekData.reverse()} />}</div>
+			</div>
 
 			{/* Table */}
 			<div className='mt-4'>

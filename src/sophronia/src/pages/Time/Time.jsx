@@ -204,7 +204,9 @@ export const TimePage = () => {
 			</div>
 
 			{/* // Chart */}
-			{weekData && <TimeLineChart data={weekData.reverse()} />}
+			{weekData && weekData.length > 1 && (
+				<TimeLineChart data={weekData.reverse()} />
+			)}
 
 			<div className='py-3'>
 				<ul className='flex flex-wrap text-sm font-medium text-center text-gray-500 dark:text-gray-400'>
