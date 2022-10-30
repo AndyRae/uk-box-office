@@ -1,6 +1,7 @@
 import { useBoxOfficeInfinite, useBoxOfficePrevious } from '../api/boxoffice';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '../components/ui/Button';
+import { ButtonGroup } from '../components/ui/ButtonGroup';
 import { Suspense } from 'react';
 import { Spinner } from '../components/ui/Spinner';
 import { Card } from '../components/Dashboard/Card';
@@ -33,6 +34,11 @@ export const DashboardPage = () => {
 	// Parse dates to YYYY-MM-DD for the API
 	const [startDate, setStartDate] = useState(parseDate(start));
 	const [endDate, setEndDate] = useState(parseDate(end));
+
+	useEffect(() => {
+		setStartDate(parseDate(start));
+		setEndDate(parseDate(end));
+	}, [start, end]);
 
 	const { results, mutate, error } = useBoxOfficeInfinite(startDate, endDate);
 	const { data: timeComparisonData } = useBoxOfficePrevious(startDate, endDate);
@@ -72,27 +78,37 @@ export const DashboardPage = () => {
 	}
 
 	// Date Picker
-	const loadData = () => {
+	const loadData = async () => {
 		setStartDate(parseDate(start));
 		setEndDate(parseDate(end));
+	};
+
+	// Buttons for the date picker
+	const changeDate = async (days) => {
+		const today = new Date();
+		setStart(today.addDays(-days));
 	};
 
 	return (
 		<div>
 			{/* Controls */}
-			<div className='flex items-center'>
+			<div className='flex flex-wrap items-center'>
 				<Datepickers
 					start={start}
 					end={end}
 					setStart={setStart}
 					setEnd={setEnd}
 				/>
-				<Button onClick={loadData}>Filter</Button>
-				<Button onClick={loadData}>1W</Button>
-				<Button onClick={loadData}>1M</Button>
-				<Button onClick={loadData}>3M</Button>
-				<Button onClick={loadData}>1Y</Button>
-				Last Updated: {new Date().toLocaleString()}
+				{/* <Button onClick={loadData}>Filter</Button> */}
+				<ButtonGroup>
+					<Button onClick={() => changeDate(7)}>1W</Button>
+					<Button onClick={() => changeDate(30)}>1M</Button>
+					<Button onClick={() => changeDate(90)}>3M</Button>
+					<Button onClick={() => changeDate(365)}>1y</Button>
+				</ButtonGroup>
+				<div className='text-sm text-right'>
+					Last Updated: {new Date().toLocaleString()}
+				</div>
 			</div>
 
 			<div className='grid md:grid-cols-2 lg:grid-cols-4 gap-4'>
@@ -123,13 +139,13 @@ export const DashboardPage = () => {
 
 			{/* Charts */}
 
-			<div className='grid md:grid-cols-2 lg:grid-cols-2 gap-4'>
+			<div className='grid md:grid-cols-1 lg:grid-cols-2 gap-4'>
 				<div>{weekData && <TimeLineChart data={weekData.reverse()} />}</div>
 				<div>{weekData && <TimeLineChart data={weekData.reverse()} />}</div>
 			</div>
 
 			{/* Table */}
-			<div className='mt-4'>
+			<div className=''>
 				<Suspense fallback={<Spinner />}>
 					<FilmTable data={tableData} />
 				</Suspense>

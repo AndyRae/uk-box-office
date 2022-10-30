@@ -35,7 +35,7 @@ export const useBoxOfficeFiltered = (
 	start_date,
 	end_date,
 	start = 1,
-	limit = 150
+	limit = 300
 ) => {
 	const apiFetcher = useBackendApi();
 	return useSWR(
