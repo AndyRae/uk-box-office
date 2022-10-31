@@ -1,15 +1,15 @@
 import { Timeseries } from '../charts/Timeseries';
 
-export const FilmTimeChart = ({ data }) => {
+export const FilmCumulativeChart = ({ data }) => {
 	const d = {
 		labels: data.map((d) => d.date),
 		datasets: [
 			{
-				label: 'Weekly Box Office',
-				data: data.map((d) => d.week_gross),
+				label: 'Cumulative Box Office',
+				data: data.map((d) => d.total_gross),
 				fill: true,
-				backgroundColor: ['#FE7E6D4D'],
-				borderColor: ['#FE7E6D'],
+				backgroundColor: ['#1E3A8A4D'],
+				borderColor: ['#1E3A8A'],
 				pointStyle: 'circle',
 				tension: 0.3,
 				yAxisID: 'y',
@@ -33,7 +33,7 @@ export const FilmTimeChart = ({ data }) => {
 				grid: {
 					display: false,
 				},
-				position: 'left',
+				position: 'right',
 				offset: false,
 				ticks: {
 					autoSkip: true,

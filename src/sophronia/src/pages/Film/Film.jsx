@@ -8,6 +8,7 @@ import { Suspense } from 'react';
 import { Date } from '../../components/Date';
 import { ExportCSV } from '../../components/ui/ExportCSV';
 import { FilmTimeChart } from '../../components/Film/FilmTimeChart';
+import { FilmCumulativeChart } from '../../components/Film/FilmCumulativeChart';
 
 export const FilmPage = () => {
 	const { slug } = useParams();
@@ -65,7 +66,10 @@ export const FilmPage = () => {
 				/>
 			</div>
 
-			{data.weeks.length >= 2 && <FilmTimeChart data={data.weeks} />}
+			<div className='grid md:grid-cols-1 lg:grid-cols-2 gap-4'>
+				{data.weeks.length >= 2 && <FilmTimeChart data={data.weeks} />}
+				{data.weeks.length >= 2 && <FilmCumulativeChart data={data.weeks} />}
+			</div>
 
 			<div className='flex flex-row-reverse mt-3'>
 				<ExportCSV data={data.weeks} filename={`${data.name}_data.csv`} />
