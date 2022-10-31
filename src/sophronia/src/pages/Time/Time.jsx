@@ -18,6 +18,7 @@ import { MetricChange } from '../../components/charts/MetricChange';
 import { PreviousTable } from '../../components/Time/PreviousTable';
 import { ExportCSV } from '../../components/ui/ExportCSV';
 import { TimeLineChart } from '../../components/Time/TimeLineChart';
+import { Tooltip } from '../../components/ui/Tooltip';
 
 const PillLink = ({ to, children, isActive }) => (
 	<li className='mr-2'>
@@ -169,18 +170,32 @@ export const TimePage = () => {
 					title='Total Box Office'
 					subtitle={`£${boxOffice.toLocaleString()}`}
 				>
-					{timeComparisonData && <MetricChange value={changeWeek} />}
+					{timeComparisonData && (
+						<Tooltip text='Change from last year'>
+							<MetricChange value={changeWeek} />{' '}
+						</Tooltip>
+					)}
 				</Card>
 
 				<Card
 					title='Weekend Box Office'
 					subtitle={`£${weekendBoxOffice.toLocaleString()}`}
 				>
-					{timeComparisonData && <MetricChange value={changeWeekend} />}
+					{timeComparisonData && (
+						<Tooltip text='Change from last year'>
+							{' '}
+							<MetricChange value={changeWeekend} />{' '}
+						</Tooltip>
+					)}
 				</Card>
 
 				<Card title='New Releases' subtitle={`${numberOfNewFilms}`}>
-					{timeComparisonData && <MetricChange value={changeNewFilms} />}
+					{timeComparisonData && (
+						<Tooltip text='Change from last year'>
+							{' '}
+							<MetricChange value={changeNewFilms} />{' '}
+						</Tooltip>
+					)}
 				</Card>
 
 				<Card title='Box Office Previous Years'>
