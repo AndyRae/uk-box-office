@@ -55,6 +55,7 @@ export const DashboardPage = () => {
 	);
 	const numberOfNewFilms = calculateWeek1Releases(results);
 	const numberOfCinemas = calculateNumberOfCinemas(results);
+	const lastUpdated = results[0]?.date;
 
 	// Time Comparison Data
 	let changeNewFilms = 0;
@@ -78,12 +79,6 @@ export const DashboardPage = () => {
 		);
 	}
 
-	// Date Picker
-	const loadData = async () => {
-		setStartDate(parseDate(start));
-		setEndDate(parseDate(end));
-	};
-
 	// Buttons for the date picker
 	const changeDate = async (days) => {
 		const today = new Date();
@@ -100,16 +95,13 @@ export const DashboardPage = () => {
 					setStart={setStart}
 					setEnd={setEnd}
 				/>
-				{/* <Button onClick={loadData}>Filter</Button> */}
 				<ButtonGroup>
 					<Button onClick={() => changeDate(7)}>1W</Button>
 					<Button onClick={() => changeDate(30)}>1M</Button>
 					<Button onClick={() => changeDate(90)}>3M</Button>
 					<Button onClick={() => changeDate(365)}>1y</Button>
 				</ButtonGroup>
-				<div className='text-sm text-right'>
-					Last Updated: {new Date().toLocaleString()}
-				</div>
+				<div className='text-sm ml-auto'>Last Updated: {lastUpdated}</div>
 			</div>
 
 			<div className='grid md:grid-cols-2 lg:grid-cols-4 gap-4'>
