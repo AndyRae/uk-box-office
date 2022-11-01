@@ -16,6 +16,12 @@ import { Datepickers } from '../components/Dashboard/Datepickers';
 import { FilmTable } from '../components/Time/FilmTable';
 import { TimeLineChart } from '../components/Time/TimeLineChart';
 import { Tooltip } from '../components/ui/Tooltip';
+import {
+	Skeleton,
+	SkeletonCards,
+	SkeletonCharts,
+	SkeletonTable,
+} from '../components/Dashboard/Skeleton';
 
 export const DashboardPage = () => {
 	Date.prototype.addDays = function (days) {
@@ -28,8 +34,9 @@ export const DashboardPage = () => {
 		return `${input.getFullYear()}-${input.getMonth() + 1}-${input.getDate()}`;
 	};
 
+	const daysToShow = 180;
 	const s = new Date();
-	const [start, setStart] = useState(s.addDays(-180));
+	const [start, setStart] = useState(s.addDays(-daysToShow));
 	const [end, setEnd] = useState(new Date());
 
 	// Parse dates to YYYY-MM-DD for the API
@@ -41,7 +48,10 @@ export const DashboardPage = () => {
 		setEndDate(parseDate(end));
 	}, [start, end]);
 
-	const { results, mutate, error } = useBoxOfficeInfinite(startDate, endDate);
+	const { results, mutate, error, isReachedEnd } = useBoxOfficeInfinite(
+		startDate,
+		endDate
+	);
 	const { data: timeComparisonData } = useBoxOfficePrevious(startDate, endDate);
 
 	// Group Data
@@ -104,71 +114,77 @@ export const DashboardPage = () => {
 				<div className='text-sm ml-auto'>Last Updated: {lastUpdated}</div>
 			</div>
 
-			<div className='grid md:grid-cols-2 lg:grid-cols-4 gap-4'>
-				<Card
-					title='Total Box Office'
-					subtitle={`£${boxOffice.toLocaleString()}`}
-				>
-					{timeComparisonData && (
-						<Tooltip text='Change from last year'>
-							<MetricChange value={changeWeek} />{' '}
-						</Tooltip>
-					)}
-				</Card>
-
-				<Card
-					title='Weekend Box Office'
-					subtitle={`£${weekendBoxOffice.toLocaleString()}`}
-				>
-					{timeComparisonData && (
-						<Tooltip text='Change from last year'>
-							{' '}
-							<MetricChange value={changeWeekend} />{' '}
-						</Tooltip>
-					)}
-				</Card>
-
-				<Card title='New Releases' subtitle={numberOfNewFilms}>
-					{timeComparisonData && (
-						<Tooltip text='Change from last year'>
-							{' '}
-							<MetricChange value={changeNewFilms} />{' '}
-						</Tooltip>
-					)}
-				</Card>
-
-				<Card title='New Releases' subtitle={numberOfNewFilms}>
-					{timeComparisonData && (
-						<Tooltip text='Change from last year'>
-							{' '}
-							<MetricChange value={changeNewFilms} />{' '}
-						</Tooltip>
-					)}
-				</Card>
-			</div>
-
 			{/* Scorecards grid. */}
+			{isReachedEnd ? (
+				<div className='grid md:grid-cols-2 lg:grid-cols-4 gap-4'>
+					<Card
+						title='Total Box Office'
+						subtitle={`£${boxOffice.toLocaleString()}`}
+					>
+						{timeComparisonData && (
+							<Tooltip text='Change from last year'>
+								<MetricChange value={changeWeek} />{' '}
+							</Tooltip>
+						)}
+					</Card>
+
+					<Card
+						title='Weekend Box Office'
+						subtitle={`£${weekendBoxOffice.toLocaleString()}`}
+					>
+						{timeComparisonData && (
+							<Tooltip text='Change from last year'>
+								{' '}
+								<MetricChange value={changeWeekend} />{' '}
+							</Tooltip>
+						)}
+					</Card>
+
+					<Card title='New Releases' subtitle={numberOfNewFilms}>
+						{timeComparisonData && (
+							<Tooltip text='Change from last year'>
+								{' '}
+								<MetricChange value={changeNewFilms} />{' '}
+							</Tooltip>
+						)}
+					</Card>
+
+					<Card title='New Releases' subtitle={numberOfNewFilms}>
+						{timeComparisonData && (
+							<Tooltip text='Change from last year'>
+								{' '}
+								<MetricChange value={changeNewFilms} />{' '}
+							</Tooltip>
+						)}
+					</Card>
+				</div>
+			) : (
+				<SkeletonCards />
+			)}
 
 			{/* Charts */}
-
-			<div className='grid md:grid-cols-1 lg:grid-cols-2 gap-4'>
-				<div>{weekData && <TimeLineChart data={weekData.reverse()} />}</div>
-				<div>{weekData && <TimeLineChart data={weekData.reverse()} />}</div>
-			</div>
+			{isReachedEnd ? (
+				<div className='grid md:grid-cols-1 lg:grid-cols-2 gap-4'>
+					<div>
+						{isReachedEnd && <TimeLineChart data={weekData.reverse()} />}
+					</div>
+					<div>
+						{isReachedEnd && <TimeLineChart data={weekData.reverse()} />}
+					</div>
+				</div>
+			) : (
+				<SkeletonCharts />
+			)}
 
 			{/* Table */}
-			<div className=''>
-				<Suspense fallback={<Spinner />}>
-					<FilmTable data={tableData} />
-				</Suspense>
-			</div>
+			{isReachedEnd ? <FilmTable data={tableData} /> : <SkeletonTable />}
 		</div>
 	);
 };
 
 export const Dashboard = () => {
 	return (
-		<Suspense fallback={<Spinner />}>
+		<Suspense fallback={<Skeleton />}>
 			<DashboardPage />
 		</Suspense>
 	);

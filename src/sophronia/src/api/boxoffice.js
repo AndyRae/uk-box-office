@@ -125,12 +125,15 @@ export function useBoxOfficeInfinite(startDate, endDate) {
 		[data]
 	);
 
+	const isReachedEnd = results.length === data[0].count;
+
 	return {
 		results,
 		mutate,
 		error,
 		size,
 		setSize,
+		isReachedEnd,
 	};
 }
 
@@ -167,6 +170,7 @@ const useProtectedSWRInfinite = (startDate, endDate) => {
 	const revalidationOptions = {
 		revalidateIfStale: false,
 		revalidateOnFocus: false,
+		revalidateFirstPage: false,
 		revalidateOnReconnect: true,
 		suspense: true,
 	};
