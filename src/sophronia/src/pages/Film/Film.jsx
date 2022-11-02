@@ -59,11 +59,13 @@ export const FilmPage = () => {
 					</ul>
 				</Card>
 
-				<Card
-					title='Distributor'
-					subtitle={data.distributor.name}
-					link={`/distributor/${data.distributor.slug}`}
-				/>
+				<Card title='Distributor'>
+					<Link to={`/distributor/${data.distributor.slug}`}>
+						<h5 className='mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white'>
+							{data.distributor.name}
+						</h5>
+					</Link>
+				</Card>
 			</div>
 
 			<div className='grid md:grid-cols-1 lg:grid-cols-2 gap-4'>

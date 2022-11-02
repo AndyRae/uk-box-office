@@ -19,6 +19,7 @@ import { PreviousTable } from '../../components/Time/PreviousTable';
 import { ExportCSV } from '../../components/ui/ExportCSV';
 import { TimeLineChart } from '../../components/Time/TimeLineChart';
 import { Tooltip } from '../../components/ui/Tooltip';
+import { SkeletonCharts } from '../../components/Dashboard/Skeleton';
 
 const PillLink = ({ to, children, isActive }) => (
 	<li className='mr-2'>
@@ -219,9 +220,13 @@ export const TimePage = () => {
 			</div>
 
 			{/* // Chart */}
-			{weekData && weekData.length > 1 && (
-				<TimeLineChart data={weekData.reverse()} />
-			)}
+			{weekData &&
+				weekData.length > 1 &&
+				(isReachedEnd ? (
+					<TimeLineChart data={weekData.reverse()} />
+				) : (
+					<TimeLineChart data={[]} />
+				))}
 
 			<div className='py-3'>
 				<ul className='flex flex-wrap text-sm font-medium text-center text-gray-500 dark:text-gray-400'>
