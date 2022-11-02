@@ -12,7 +12,7 @@ export const ButtonGroup = ({ children }) => {
 					<Button
 						onClick={child.props.onClick}
 						key={index}
-						className={`relative inline-flex items-center justify-center p-0.5 mb-2 overflow-hidden text-sm font-medium text-gray-900 
+						className={`relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-gray-900 
               ${index === 0 ? 'rounded-l-lg' : ''} ${
 							index === childrenArray.length - 1 ? 'rounded-r-lg' : ''
 						} 

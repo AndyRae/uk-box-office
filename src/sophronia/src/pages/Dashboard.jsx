@@ -96,9 +96,9 @@ export const DashboardPage = () => {
 	};
 
 	return (
-		<div>
+		<div className='transition ease-in-out'>
 			{/* Controls */}
-			<div className='flex flex-wrap items-center'>
+			<div className='flex flex-wrap mb-2 items-center'>
 				<Datepickers
 					start={start}
 					end={end}
@@ -177,7 +177,7 @@ export const DashboardPage = () => {
 			)}
 
 			{/* Table */}
-			{isReachedEnd ? <FilmTable data={tableData} /> : <SkeletonTable />}
+			{isReachedEnd ? <FilmTable data={tableData} /> : <FilmTable data={[]} />}
 		</div>
 	);
 };

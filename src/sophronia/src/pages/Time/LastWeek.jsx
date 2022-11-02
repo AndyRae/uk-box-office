@@ -2,12 +2,14 @@ import { Navigate } from 'react-router-dom';
 import { TimePage } from './Time';
 import { Dashboard } from '../Dashboard';
 import { useBoxOffice } from '../../api/boxoffice';
+import { Suspense } from 'react';
+import { Spinner } from '../../components/ui/Spinner';
 
 /**
  * Redirects to the last available box office data week.
  * @returns
  */
-export const LastWeek = () => {
+export const LastWeekPage = () => {
 	const { data, error } = useBoxOffice();
 
 	if (data.results) {
@@ -18,4 +20,12 @@ export const LastWeek = () => {
 	}
 
 	return <Navigate to={<Dashboard />} />;
+};
+
+export const LastWeek = () => {
+	return (
+		<Suspense fallback={<Spinner />}>
+			<LastWeekPage />
+		</Suspense>
+	);
 };

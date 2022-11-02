@@ -107,7 +107,7 @@ export const TimePage = () => {
 	};
 
 	// Fetch Data
-	const { results } = useBoxOfficeInfinite(startDate, endDate);
+	const { results, isReachedEnd } = useBoxOfficeInfinite(startDate, endDate);
 	const { results: lastWeekResults } = useBoxOfficeInfinite(
 		startLastWeek,
 		endLastWeek
