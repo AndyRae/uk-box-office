@@ -165,12 +165,8 @@ export const DashboardPage = () => {
 			{/* Charts */}
 			{isReachedEnd ? (
 				<div className='grid md:grid-cols-1 lg:grid-cols-2 gap-4'>
-					<div>
-						{isReachedEnd && <TimeLineChart data={weekData.reverse()} />}
-					</div>
-					<div>
-						{isReachedEnd && <TimeLineChart data={weekData.reverse()} />}
-					</div>
+					<div>{isReachedEnd && <TimeLineChart data={weekData} />}</div>
+					<div>{isReachedEnd && <TimeLineChart data={weekData} />}</div>
 				</div>
 			) : (
 				<SkeletonCharts />

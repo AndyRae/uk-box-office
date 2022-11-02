@@ -150,7 +150,9 @@ export const groupbyDate = (data) => {
 			weekendGross: _.sumBy(value, 'weekend_gross'),
 			newReleases: _.countBy(value, (o) => o.weeks_on_release === 1).true,
 		}))
-		.value();
+		.value()
+		.reverse();
+
 	return { results };
 };
 
