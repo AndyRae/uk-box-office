@@ -10,6 +10,7 @@ import {
 	calculateNumberOfCinemas,
 	calculateWeek1Releases,
 	groupbyDate,
+	groupForAreaChart,
 } from '../utils/groupData';
 import { MetricChange } from '../components/charts/MetricChange';
 import { Datepickers } from '../components/Dashboard/Datepickers';
@@ -22,6 +23,7 @@ import {
 	SkeletonCharts,
 	SkeletonTable,
 } from '../components/Dashboard/Skeleton';
+import { MultipleFilmsChart } from '../components/Dashboard/MultipleFilmsChart';
 
 export const DashboardPage = () => {
 	Date.prototype.addDays = function (days) {
@@ -56,7 +58,10 @@ export const DashboardPage = () => {
 
 	// Group Data
 	const { tableData } = groupForTable(results);
+	const { areaData } = groupForAreaChart(results);
 	const { results: weekData } = groupbyDate(results);
+
+	const uniqueDates = [...new Set(results.map((d) => d.date))];
 
 	const boxOffice = tableData.reduce((acc, curr) => acc + curr.weekGross, 0);
 	const weekendBoxOffice = tableData.reduce(
@@ -166,7 +171,11 @@ export const DashboardPage = () => {
 			{isReachedEnd ? (
 				<div className='grid md:grid-cols-1 lg:grid-cols-2 gap-4'>
 					<div>{isReachedEnd && <TimeLineChart data={weekData} />}</div>
-					<div>{isReachedEnd && <TimeLineChart data={weekData} />}</div>
+					<div>
+						{isReachedEnd && (
+							<MultipleFilmsChart data={areaData} labels={uniqueDates} />
+						)}
+					</div>
 				</div>
 			) : (
 				<SkeletonCharts />

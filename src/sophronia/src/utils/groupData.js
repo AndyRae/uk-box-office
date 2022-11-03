@@ -11,7 +11,8 @@ import _ from 'lodash';
  */
 export const groupForAreaChart = (data) => {
 	// Reduce array to single films with box office
-	const groupedArea = Array.from(data);
+
+	const groupedArea = data;
 	let groupedFilms = Array.from(
 		groupedArea.reduce(
 			(m, { film, week_gross }) => m.set(film, (m.get(film) || 0) + week_gross),
@@ -61,7 +62,7 @@ export const groupForAreaChart = (data) => {
 	];
 
 	// Create the dataset objects - loop through the films, and then original results for matching weeks
-	let datasets = [];
+	let areaData = [];
 	for (let i in groupedFilms) {
 		let randomColor = colors.shift();
 
@@ -78,9 +79,9 @@ export const groupForAreaChart = (data) => {
 			}
 		}
 		x.data = weeks;
-		datasets.push(x);
+		areaData.push(x);
 	}
-	return datasets;
+	return { areaData };
 };
 
 /**

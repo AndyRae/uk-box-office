@@ -1,25 +1,19 @@
 import { Timeseries } from '../charts/Timeseries';
 
-export const TimeLineChart = ({ data }) => {
+export const MultipleFilmsChart = ({ data, labels }) => {
 	const d = {
-		labels: data.map((d) => d.date),
-		datasets: [
-			{
-				label: 'Box Office',
-				data: data.map((d) => d.weekGross),
-				fill: true,
-				backgroundColor: ['#FE7E6D4D'],
-				borderColor: ['#FE7E6D'],
-				pointStyle: 'circle',
-				tension: 0.3,
-				yAxisID: 'y',
-			},
-		],
+		labels: labels,
+		datasets: data,
 	};
 
 	const options = {
 		responsive: true,
 		maintainAspectRatio: false,
+		plugins: {
+			legend: {
+				display: false,
+			},
+		},
 		scales: {
 			x: {
 				type: 'time',
@@ -64,5 +58,9 @@ export const TimeLineChart = ({ data }) => {
 		},
 	};
 
-	return <Timeseries id={'gradientid'} data={d} options={options} />;
+	return (
+		<div className='h-96'>
+			<Timeseries id={'gradientid'} data={d} options={options} />
+		</div>
+	);
 };
