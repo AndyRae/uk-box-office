@@ -13,8 +13,6 @@ export const AllTimePage = () => {
 
 	const { data, error } = useBoxOfficeSummary(startDate, endDate, 25);
 
-	console.log(data);
-
 	return (
 		<div>
 			<h1 className='text-4xl font-bold py-5 capitalize'>

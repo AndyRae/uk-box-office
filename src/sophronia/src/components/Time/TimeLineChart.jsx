@@ -22,7 +22,7 @@ export const TimeLineChart = ({ data }) => {
 		maintainAspectRatio: false,
 		scales: {
 			x: {
-				// type: "time",
+				type: 'time',
 				distribution: 'series',
 				ticks: {
 					maxRotation: 0,

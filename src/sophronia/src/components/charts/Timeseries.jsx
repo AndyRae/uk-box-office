@@ -1,4 +1,5 @@
 import { Line } from 'react-chartjs-2';
+import 'chartjs-adapter-date-fns';
 import {
 	Chart as ChartJS,
 	CategoryScale,
@@ -7,6 +8,7 @@ import {
 	PointElement,
 	LinearScale,
 	Title,
+	TimeScale,
 } from 'chart.js';
 
 ChartJS.register(
@@ -15,7 +17,8 @@ ChartJS.register(
 	Filler,
 	PointElement,
 	LinearScale,
-	Title
+	Title,
+	TimeScale
 );
 
 export const Timeseries = ({ data, options, id }) => {
