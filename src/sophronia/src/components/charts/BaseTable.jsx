@@ -44,22 +44,24 @@ export const Td = ({ isNumeric, isHighlight, children, ...rest }) => {
 
 export const BaseTable = ({ columns, id, children }) => {
 	return (
-		<table
-			className='w-full my-8 text-sm text-left text-gray-500 dark:text-gray-400'
-			id={id}
-		>
-			<Thead>
-				<Tr>
-					{columns.map((column, index) => {
-						return (
-							<Th key={index} isNumeric={column.isNumeric}>
-								{column.label}
-							</Th>
-						);
-					})}
-				</Tr>
-			</Thead>
-			<tbody>{children}</tbody>
-		</table>
+		<div className='overflow-x-auto relative'>
+			<table
+				className='table-auto w-full my-8 text-sm text-left text-gray-500 dark:text-gray-400'
+				id={id}
+			>
+				<Thead>
+					<Tr>
+						{columns.map((column, index) => {
+							return (
+								<Th key={index} isNumeric={column.isNumeric}>
+									{column.label}
+								</Th>
+							);
+						})}
+					</Tr>
+				</Thead>
+				<tbody>{children}</tbody>
+			</table>
+		</div>
 	);
 };
