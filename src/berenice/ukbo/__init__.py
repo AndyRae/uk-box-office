@@ -1,6 +1,6 @@
 from elasticsearch import Elasticsearch
 from flask import Flask
-from ukbo.extensions import cache, db, limiter, ma, pages, scheduler, toolbar
+from ukbo.extensions import cache, db, limiter, ma, pages, scheduler, toolbar, cors
 
 
 def create_app(config: str = None) -> Flask:
@@ -46,6 +46,7 @@ def register_extensions(app: Flask) -> None:
     pages.init_app(app)
     cache.init_app(app)
     limiter.init_app(app)
+    cors.init_app(app)
     return None
 
 
