@@ -24,6 +24,7 @@ import {
 	SkeletonTable,
 } from '../components/Dashboard/Skeleton';
 import { MultipleFilmsChart } from '../components/Dashboard/MultipleFilmsChart';
+import { StructuredTimeData } from '../components/StructuredData';
 
 export const DashboardPage = () => {
 	Date.prototype.addDays = function (days) {
@@ -102,6 +103,12 @@ export const DashboardPage = () => {
 
 	return (
 		<div className='transition ease-in-out'>
+			<StructuredTimeData
+				title='Box Office Data'
+				endpoint='/'
+				time={lastUpdated}
+			/>
+
 			{/* Controls */}
 			<div className='flex flex-wrap mb-2 items-center'>
 				<Datepickers
