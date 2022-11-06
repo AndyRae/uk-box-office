@@ -12,9 +12,7 @@ def all() -> Response:
     """
     page = int(request.args.get("page", 1))
     limit = int(request.args.get("limit", 100))
-    response = services.country.list(page, limit)
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    return response
+    return services.country.list(page, limit)
 
 
 @country.route("/<slug>")
@@ -22,9 +20,7 @@ def get(slug: str) -> Response:
     """
     Country detailview
     """
-    response = jsonify(services.country.get(slug))
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    return response
+    return jsonify(services.country.get(slug))
 
 
 @country.route("/<slug>/films")
@@ -34,6 +30,4 @@ def get_films(slug: str) -> Response:
     """
     page = int(request.args.get("page", 1))
     limit = int(request.args.get("limit", 100))
-    response = services.country.get_films(slug, page, limit)
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    return response
+    return services.country.get_films(slug, page, limit)

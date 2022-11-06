@@ -12,9 +12,7 @@ def all() -> Response:
     """
     page = int(request.args.get("page", 1))
     limit = int(request.args.get("limit", 100))
-    response = services.distributor.list(page, limit)
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    return response
+    return services.distributor.list(page, limit)
 
 
 @distributor.route("/marketshare")
@@ -22,9 +20,7 @@ def market_share() -> Response:
     """
     Get distributor market share overall.
     """
-    response = services.distributor.market_share()
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    return response
+    return services.distributor.market_share()
 
 
 @distributor.route("/marketshare/<year>")
@@ -32,9 +28,7 @@ def market_share_year(year: str) -> Response:
     """
     Get distributor market share for a year.
     """
-    response = services.distributor.market_share(year)
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    return response
+    return services.distributor.market_share(year)
 
 
 @distributor.route("/<slug>")
@@ -42,9 +36,7 @@ def get(slug: str) -> Response:
     """
     Distributor detailview
     """
-    response = jsonify(services.distributor.get(slug))
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    return response
+    return jsonify(services.distributor.get(slug))
 
 
 @distributor.route("/<slug>/films")
@@ -54,7 +46,4 @@ def get_films(slug: str) -> Response:
     """
     page = int(request.args.get("page", 1))
     limit = int(request.args.get("limit", 100))
-    response = services.distributor.get_films(slug, page, limit)
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    return response
-
+    return services.distributor.get_films(slug, page, limit)

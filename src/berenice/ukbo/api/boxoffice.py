@@ -13,9 +13,7 @@ def all() -> Response:
     start = request.args.get("start", None)
     end = request.args.get("end", None)
     page = int(request.args.get("page", 1))
-    response = services.boxoffice.all(start, end, page)
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    return response
+    return services.boxoffice.all(start, end, page)
 
 
 @boxoffice.route("/top")
@@ -23,9 +21,7 @@ def get() -> Response:
     """
     Top films all time endpoint
     """
-    response = services.boxoffice.top()
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    return response
+    return services.boxoffice.top()
 
 
 @boxoffice.route("/summary")
@@ -36,9 +32,7 @@ def summary() -> Response:
     start = request.args.get("start", None)
     end = request.args.get("end", None)
     limit = int(request.args.get("limit", None))
-    response = services.boxoffice.summary(start, end, limit)
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    return response
+    return services.boxoffice.summary(start, end, limit)
 
 
 @boxoffice.route("/previous")
@@ -48,9 +42,7 @@ def previous() -> Response:
     """
     start = request.args.get("start", None)
     end = request.args.get("end", None)
-    response = services.boxoffice.previous(start, end)
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    return response
+    return services.boxoffice.previous(start, end)
 
 
 @boxoffice.route("/topline")
@@ -61,6 +53,4 @@ def topline() -> Response:
     start = request.args.get("start", None)
     end = request.args.get("end", None)
     page = int(request.args.get("page", 1))
-    response = services.boxoffice.topline(start, end, page)
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    return response
+    return services.boxoffice.topline(start, end, page)
