@@ -9,7 +9,7 @@ import { FilmTable } from '../Time/FilmTable';
 
 export const SkeletonCards = () => {
 	return (
-		<div className='grid animate-pulse md:grid-cols-2 lg:grid-cols-4 gap-4'>
+		<div className='grid animate-pulse md:grid-cols-2 mt-10 lg:grid-cols-4 gap-4'>
 			<Card title='Total Box Office' subtitle='-'>
 				<Tooltip text='Change from last year'>
 					<MetricChange value='' />{' '}
@@ -42,7 +42,7 @@ export const SkeletonCards = () => {
 
 export const SkeletonCharts = () => {
 	return (
-		<div className='grid md:grid-cols-1 lg:grid-cols-2 gap-4'>
+		<div className='grid md:grid-cols-1 lg:grid-cols-2 mt-10 gap-4'>
 			<div className='animate-pulse shadow'>
 				<TimeLineChart data={[]} />
 			</div>

@@ -121,7 +121,7 @@ export const DashboardPage = () => {
 
 			{/* Scorecards grid. */}
 			{isReachedEnd ? (
-				<div className='grid md:grid-cols-2 lg:grid-cols-4 gap-4'>
+				<div className='grid md:grid-cols-2 mt-10 lg:grid-cols-4 gap-4'>
 					<Card
 						title='Total Box Office'
 						subtitle={`£${boxOffice.toLocaleString()}`}
@@ -169,7 +169,7 @@ export const DashboardPage = () => {
 
 			{/* Charts */}
 			{isReachedEnd ? (
-				<div className='grid md:grid-cols-1 lg:grid-cols-2 gap-4'>
+				<div className='grid md:grid-cols-1 mt-10 lg:grid-cols-2 gap-4'>
 					<div>{isReachedEnd && <TimeLineChart data={weekData} />}</div>
 					<div>
 						{isReachedEnd && (
