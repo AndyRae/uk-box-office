@@ -9,6 +9,7 @@ import { Date } from '../../components/Date';
 import { ExportCSV } from '../../components/ui/ExportCSV';
 import { FilmTimeChart } from '../../components/Film/FilmTimeChart';
 import { FilmCumulativeChart } from '../../components/Film/FilmCumulativeChart';
+import { StructuredTimeData } from '../../components/StructuredData';
 
 export const FilmPage = () => {
 	const { slug } = useParams();
@@ -23,6 +24,11 @@ export const FilmPage = () => {
 
 	return (
 		<div>
+			<StructuredTimeData
+				title={`${data.name}`}
+				endpoint={`/film/${slug}`}
+				time={releaseDate}
+			/>
 			<h1 className='text-4xl font-bold py-5 capitalize'>
 				{data.name} {isFirstWeek && '(2020)'}
 			</h1>

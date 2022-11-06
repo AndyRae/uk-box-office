@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { Card } from '../../components/Dashboard/Card';
 import { Spinner } from '../../components/ui/Spinner';
@@ -19,6 +19,7 @@ import { PreviousTable } from '../../components/Time/PreviousTable';
 import { ExportCSV } from '../../components/ui/ExportCSV';
 import { TimeLineChart } from '../../components/Time/TimeLineChart';
 import { Tooltip } from '../../components/ui/Tooltip';
+import { StructuredTimeData } from '../../components/StructuredData';
 
 const PillLink = ({ to, children, isActive }) => (
 	<li className='mr-2'>
@@ -36,6 +37,8 @@ const PillLink = ({ to, children, isActive }) => (
 );
 
 export const TimePage = () => {
+	const location = useLocation();
+
 	// Unpack dates to be flexible for Year, Month, Day being null.
 	const { year, day, quarter, quarterend = 0 } = useParams();
 	let { month } = useParams();
@@ -158,11 +161,19 @@ export const TimePage = () => {
 		setCurrentTab(e.target.id);
 	};
 
+	const pageTitle = `${day} ${quarter ? `Q${quarter}` : months[month]}${
+		quarterend ? `- Q${quarterend}` : ''
+	} ${year}`;
+
 	return (
 		<div>
+			<StructuredTimeData
+				title={`UK Box Office ${pageTitle}`}
+				endpoint={location.pathname}
+				time={pageTitle}
+			/>
 			<h1 className='text-4xl font-bold py-5 capitalize'>
-				UK Box Office {day} {quarter ? `Q${quarter}` : months[month]}{' '}
-				{quarterend ? `- Q${quarterend}` : null} {year}
+				UK Box Office {pageTitle}
 			</h1>
 
 			<div className='grid md:grid-cols-2 lg:grid-cols-4 gap-4'>

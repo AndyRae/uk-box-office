@@ -4,6 +4,7 @@ import { Suspense } from 'react';
 import { YearsTable } from '../../components/Time/YearsTable';
 import { ExportCSV } from '../../components/ui/ExportCSV';
 import { AllTimeChart } from '../../components/Time/AllTimeChart';
+import { StructuredTimeData } from '../../components/StructuredData';
 
 export const AllTimePage = () => {
 	const today = new Date().getFullYear();
@@ -15,6 +16,11 @@ export const AllTimePage = () => {
 
 	return (
 		<div>
+			<StructuredTimeData
+				title='All Time Box Office'
+				endpoint='/time'
+				time={`2001 - ${today}`}
+			/>
 			<h1 className='text-4xl font-bold py-5 capitalize'>
 				All Time Box Office
 			</h1>
