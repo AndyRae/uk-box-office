@@ -22,11 +22,6 @@ const Links = [
 		icon: <FaEnvelope />,
 	},
 	{
-		name: 'Privacy',
-		path: '/privacy',
-		icon: <FaLock />,
-	},
-	{
 		name: 'API',
 		path: '/api',
 		icon: <FaCode />,

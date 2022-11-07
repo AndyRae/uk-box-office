@@ -12,6 +12,9 @@ import { Time } from './pages/Time/Time';
 import { All } from './pages/Time/All';
 import { LastWeek } from './pages/Time/LastWeek';
 import { MarketShareDistributor } from './pages/MarketShare/Distributor';
+import { About } from './pages/Flat/About';
+import { Api } from './pages/Flat/Api';
+import { Contact } from './pages/Flat/Contact';
 
 export const Root = () => {
 	return (
@@ -19,6 +22,11 @@ export const Root = () => {
 			<Route path='/'>
 				<Route element={<Layout />}>
 					<Route index element={<Dashboard />} />
+
+					{/* Flat pages */}
+					<Route path='about' element={<About />} />
+					<Route path='api' element={<Api />} />
+					<Route path='contact' element={<Contact />} />
 
 					<Route path='forecast'>
 						<Route index element={<Forecast />} />
