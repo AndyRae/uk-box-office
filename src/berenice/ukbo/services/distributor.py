@@ -83,6 +83,17 @@ def add_distributor(distributor: str) -> models.Distributor:
     return models.Distributor.create(name=distributor, commit=False)
 
 
+def search(search_query: str) -> Response:
+    """
+    Search distributors by name.
+    """
+    query = db.session.query(models.Distributor)
+    query = query.filter(models.Distributor.name.ilike(f"%{search_query}%"))
+    data = query.limit(10).all()
+
+    return [] if data is None else [ix.as_dict() for ix in data]
+
+
 def market_share(year: str=None) -> Response:
     """
     Gets the distributor market share for a year

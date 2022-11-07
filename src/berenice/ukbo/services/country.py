@@ -96,3 +96,14 @@ def add_country(country: str) -> List[models.Country]:
             new = models.Country.create(name=i, commit=False)
             new_countries.append(new)
     return new_countries
+
+
+def search(search_query: str) -> Response:
+    """
+    Search countries by name.
+    """
+    query = db.session.query(models.Country)
+    query = query.filter(models.Country.name.ilike(f"%{search_query}%"))
+    data = query.limit(10).all()
+
+    return [] if data is None else [ix.as_dict() for ix in data]

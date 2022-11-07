@@ -82,3 +82,14 @@ def add_film(
         new.slug = slug
         new.save()
     return new
+
+
+def search(search_query: str) -> Response:
+    """
+    Search films by name.
+    """
+    query = db.session.query(models.Film)
+    query = query.filter(models.Film.name.ilike(f"%{search_query}%"))
+    data = query.limit(15).all()
+
+    return [] if data is None else [ix.as_dict(weeks=False) for ix in data]
