@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { BoxOfficeTable } from '../../components/Film/BoxOfficeTable';
 import { Card } from '../../components/Dashboard/Card';
 import { Spinner } from '../../components/ui/Spinner';
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import { Date } from '../../components/Date';
 import { ExportCSV } from '../../components/ui/ExportCSV';
 import { FilmTimeChart } from '../../components/Film/FilmTimeChart';
@@ -21,6 +21,10 @@ export const FilmPage = () => {
 	const releaseDate = weekOne.date;
 
 	const multiple = (data.gross / weekOne.weekend_gross).toFixed(2);
+
+	useEffect(() => {
+		document.title = `${data?.name} - UK Box Office Data`;
+	}, []);
 
 	return (
 		<div>

@@ -2,8 +2,13 @@ import { Outlet } from 'react-router-dom';
 import { Sidebar } from './ui/Sidebar';
 import { Footer } from './ui/Footer';
 import { StructuredSiteData } from './StructuredData';
+import { useEffect } from 'react';
 
 export const Layout = () => {
+	useEffect(() => {
+		document.title = `UK Box Office Data`;
+	}, []);
+
 	return (
 		<div className='fixed flex w-full h-full'>
 			<StructuredSiteData />

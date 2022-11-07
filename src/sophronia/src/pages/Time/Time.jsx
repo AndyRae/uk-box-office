@@ -161,9 +161,9 @@ export const TimePage = () => {
 		setCurrentTab(e.target.id);
 	};
 
-	const pageTitle = `${day} ${quarter ? `Q${quarter}` : months[month]}${
-		quarterend ? `- Q${quarterend}` : ''
-	} ${year}`;
+	const pageTitle = `${day ? day : ''} ${
+		quarter ? `Q${quarter}` : month ? months[month] : ''
+	}${quarterend ? ` - Q${quarterend}` : ''} ${year}`;
 
 	return (
 		<div>
@@ -230,16 +230,18 @@ export const TimePage = () => {
 			</div>
 
 			{/* // Chart */}
-			{weekData &&
-				weekData.length > 1 &&
-				(isReachedEnd ? (
-					<TimeLineChart data={weekData} />
-				) : (
-					<TimeLineChart data={[]} />
-				))}
+			<div className='my-10'>
+				{weekData &&
+					weekData.length > 1 &&
+					(isReachedEnd ? (
+						<TimeLineChart data={weekData} />
+					) : (
+						<TimeLineChart data={[]} />
+					))}
+			</div>
 
 			<div className='py-3'>
-				<ul className='flex flex-wrap text-sm font-medium text-center text-gray-500 dark:text-gray-400'>
+				<ul className='flex flex-wrap my-2 text-sm font-medium text-center text-gray-500 dark:text-gray-400'>
 					<PillLink to={`/time/${year}`} isActive={true}>
 						{year}
 					</PillLink>

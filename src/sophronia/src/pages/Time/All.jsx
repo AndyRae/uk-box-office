@@ -1,6 +1,6 @@
 import { useBoxOfficeSummary } from '../../api/boxoffice';
 import { Spinner } from '../../components/ui/Spinner';
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import { YearsTable } from '../../components/Time/YearsTable';
 import { ExportCSV } from '../../components/ui/ExportCSV';
 import { AllTimeChart } from '../../components/Time/AllTimeChart';
@@ -13,6 +13,10 @@ export const AllTimePage = () => {
 	const endDate = `${today}-${12}-${31}`;
 
 	const { data, error } = useBoxOfficeSummary(startDate, endDate, 25);
+
+	useEffect(() => {
+		document.title = `All time box office - UK Box Office Data`;
+	}, []);
 
 	return (
 		<div>
