@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask.wrappers import Response
-from ukbo import services
+from ukbo import services, cache
 
 country = Blueprint("country", __name__)
 
@@ -15,6 +15,7 @@ def all() -> Response:
     return services.country.list(page, limit)
 
 
+@cache.cached()
 @country.route("/<slug>")
 def get(slug: str) -> Response:
     """

@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask.wrappers import Response
-from ukbo import services
+from ukbo import services, cache
 
 distributor = Blueprint("distributor", __name__)
 
@@ -15,6 +15,7 @@ def all() -> Response:
     return services.distributor.list(page, limit)
 
 
+@cache.cached()
 @distributor.route("/marketshare")
 def market_share() -> Response:
     """
@@ -31,6 +32,7 @@ def market_share_year(year: str) -> Response:
     return services.distributor.market_share(year)
 
 
+@cache.cached()
 @distributor.route("/<slug>")
 def get(slug: str) -> Response:
     """
