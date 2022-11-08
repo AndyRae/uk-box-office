@@ -15,6 +15,7 @@ import { MarketShareDistributor } from './pages/MarketShare/Distributor';
 import { About } from './pages/Flat/About';
 import { Api } from './pages/Flat/Api';
 import { Contact } from './pages/Flat/Contact';
+import { MainSearch } from './pages/Search';
 
 export const Root = () => {
 	return (
@@ -28,9 +29,9 @@ export const Root = () => {
 					<Route path='api' element={<Api />} />
 					<Route path='contact' element={<Contact />} />
 
-					<Route path='forecast'>
-						<Route index element={<Forecast />} />
-					</Route>
+					<Route path='search' element={<MainSearch />} />
+
+					<Route path='forecast' element={<Forecast />} />
 
 					<Route path='film'>
 						<Route index element={<Films />} />

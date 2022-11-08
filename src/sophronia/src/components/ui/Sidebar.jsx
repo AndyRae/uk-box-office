@@ -4,6 +4,7 @@ import { MdOutlineSpaceDashboard, MdOutlineAutoGraph } from 'react-icons/md';
 import { HiOutlineTicket } from 'react-icons/hi';
 import { useLocation } from 'react-router-dom';
 import { NavLink, Link } from 'react-router-dom';
+import { Searchbar } from '../Search/Searchbar';
 
 const links = [
 	{
@@ -85,6 +86,9 @@ export const Sidebar = () => {
 						);
 					})}
 				</ul>
+
+				<Searchbar />
+
 				<div
 					id='dropdown-cta'
 					className='p-4 mt-6 absolute inset-x-3 bottom-10 bg-blue-50 rounded-lg dark:bg-blue-900'
