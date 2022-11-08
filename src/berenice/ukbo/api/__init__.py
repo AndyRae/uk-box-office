@@ -1,6 +1,6 @@
 from flask import Blueprint
 
-from . import api, boxoffice, country, distributor, film, search
+from . import boxoffice, country, distributor, film, search
 
 api_bp = Blueprint("api2", __name__)
 

@@ -4,10 +4,10 @@ from typing import Any
 
 from flask import Blueprint, current_app, make_response, render_template
 from flask.wrappers import Response
-from ukbo import cache, db, models, pages  # type: ignore
+from ukbo import cache, db, models # type: ignore
 from werkzeug.exceptions import abort
 
-bp = Blueprint("sitemap", __name__, template_folder="templates/sitemap")
+bp = Blueprint("sitemap", __name__, template_folder="sitemap")
 
 
 def return_sitemap(data: Any) -> Response:
@@ -53,9 +53,6 @@ def base() -> Response:
                 and not rule.rule.startswith("/sitemap")
             ):
                 data.append([url + rule.rule, lastmod])
-
-    for page in pages:
-        data.append([url + "/" + page.path, lastmod])
 
     return return_sitemap(data)
 

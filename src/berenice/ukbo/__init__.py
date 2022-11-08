@@ -1,5 +1,5 @@
 from flask import Flask
-from ukbo.extensions import cache, db, limiter, ma, pages, scheduler, toolbar, cors
+from ukbo.extensions import cache, db, limiter, ma, scheduler, cors
 
 
 def create_app(config: str = None) -> Flask:
@@ -13,8 +13,6 @@ def create_app(config: str = None) -> Flask:
     elif config == "dev":
         app.config.from_object(settings.DevelopmentConfig)
 
-        # Debug toolbar
-        toolbar.init_app(app)
     else:
         app.config.from_object(settings.TestConfig)
 
@@ -36,7 +34,6 @@ def register_extensions(app: Flask) -> None:
 
     db.init_app(app)
     ma.init_app(app)
-    pages.init_app(app)
     cache.init_app(app)
     limiter.init_app(app)
     cors.init_app(app)
@@ -44,12 +41,10 @@ def register_extensions(app: Flask) -> None:
 
 
 def register_blueprints(app: Flask) -> None:
-    from ukbo import api, views
+    from ukbo import api, sitemap
 
-    app.register_blueprint(api.api.bp)
-    app.register_blueprint(api.api_bp, url_prefix="/api2")
-    app.register_blueprint(views.sitemap.bp)
-    app.register_blueprint(views.views.bp)
+    app.register_blueprint(api.api_bp, url_prefix="/api")
+    app.register_blueprint(sitemap.bp)
     return None
 
 

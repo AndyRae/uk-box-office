@@ -4,8 +4,6 @@ Flask
 Flask-APScheduler
 Flask-Caching
 flask-cors
-Flask-DebugToolbar
-Flask-FlatPages
 Flask-Limiter
 flask-marshmallow
 marshmallow-sqlalchemy
