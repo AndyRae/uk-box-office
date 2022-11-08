@@ -7,7 +7,7 @@ import axios from 'axios';
  */
 export const useBackendApi = () => {
 	const getBackendURL = () => {
-		return `${process.env.BACKEND_URL || 'http://localhost:5000/api2/'}`;
+		return `${process.env.BACKEND_URL || 'http://localhost:5000/api/'}`;
 	};
 
 	const getBackendDefaults = () => ({

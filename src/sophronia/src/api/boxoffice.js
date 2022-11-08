@@ -150,7 +150,7 @@ const useProtectedSWRInfinite = (startDate, endDate) => {
 	 * @param prevPageData Previous page information
 	 * @returns API to the next page
 	 */
-	const url = 'http://localhost:5000/api2/boxoffice/all';
+	const url = 'http://localhost:5000/api/boxoffice/all';
 
 	function getNextKey(pageIndex, previousPageData) {
 		// Reached the end of the collection
