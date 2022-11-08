@@ -1,8 +1,8 @@
-import { useBoxOfficeInfinite, useBoxOfficePrevious } from '../api/boxoffice';
 import { useState, useEffect } from 'react';
+import { Suspense } from 'react';
+import { useBoxOfficeInfinite, useBoxOfficePrevious } from '../api/boxoffice';
 import { Button } from '../components/ui/Button';
 import { ButtonGroup } from '../components/ui/ButtonGroup';
-import { Suspense } from 'react';
 import { Spinner } from '../components/ui/Spinner';
 import { Card } from '../components/Dashboard/Card';
 import {

@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 from flask.wrappers import Response
 from ukbo import services
 
@@ -15,11 +15,12 @@ def all() -> Response:
     distributors = services.distributor.search(query)
     countries = services.country.search(query)
 
-    return {
-        "films": films,
-        "distributors": distributors,
-        "countries": countries,
-    }
+    return jsonify(
+        films=films,
+        distributors=distributors,
+        countries=countries,
+    )
+
 
 
 @search.route("/films")
