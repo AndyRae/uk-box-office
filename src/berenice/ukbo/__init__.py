@@ -1,4 +1,3 @@
-from elasticsearch import Elasticsearch
 from flask import Flask
 from ukbo.extensions import cache, db, limiter, ma, pages, scheduler, toolbar, cors
 
@@ -21,12 +20,6 @@ def create_app(config: str = None) -> Flask:
 
     register_extensions(app)
     scheduler.init_app(app)
-
-    app.elasticsearch = (  # type: ignore
-        Elasticsearch(app.config["ELASTICSEARCH_URL"])
-        if app.config["ELASTICSEARCH_URL"]
-        else None
-    )
 
     with app.app_context():
         register_blueprints(app)

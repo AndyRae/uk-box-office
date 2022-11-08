@@ -1,1 +1,1 @@
-from . import forms, sitemap, views
+from . import sitemap, views

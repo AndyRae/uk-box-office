@@ -1,6 +1,5 @@
 beautifulsoup4
 coverage
-elasticsearch==7.13.4
 Flask
 Flask-APScheduler
 Flask-Caching
@@ -11,7 +10,6 @@ Flask-Limiter
 flask-marshmallow
 marshmallow-sqlalchemy
 Flask-SQLAlchemy
-Flask-WTF
 gunicorn
 mypy
 pandas

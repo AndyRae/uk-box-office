@@ -3,13 +3,12 @@ from typing import Any, Dict
 from slugify import slugify  # type: ignore
 from ukbo.extensions import db
 
-from .models import PkModel, SearchableMixin
+from .models import PkModel
 
 
-class Distributor(SearchableMixin, PkModel):  # type: ignore
+class Distributor(PkModel):  # type: ignore
 
     __tablename__ = "distributor"
-    __searchable__ = ["name"]
     name = db.Column(db.String(160), unique=True, nullable=False)
     films = db.relationship("Film", back_populates="distributor")
     weeks = db.relationship("Film_Week", backref="distributor", lazy="dynamic")

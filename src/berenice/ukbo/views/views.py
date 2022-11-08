@@ -10,7 +10,6 @@ from flask import Blueprint, g, render_template, request, url_for
 from ukbo import cache, db, models, pages, services  # type: ignore
 from werkzeug.exceptions import abort
 
-from . import forms
 
 bp = Blueprint("index", __name__, template_folder="templates")
 
@@ -40,80 +39,11 @@ def index() -> str:
 @bp.before_app_request
 def before_request() -> None:
     db.session.commit()
-    g.search_form = forms.SearchForm()
 
 
 @bp.errorhandler(404)
 def page_not_found(e: Any) -> str:
     return render_template("404.html")
-
-
-@bp.route("/search")
-def search() -> str:
-    page = request.args.get("page", default=1, type=int)
-    results, total = models.Film.search(
-        g.search_form.q.data, page, 20  # type: ignore
-    )
-    next_url = (
-        url_for(
-            "index.search",
-            q=g.search_form.q.data,
-            page=page + 1,  # type: ignore
-        )
-        if total > page * 20  # type: ignore
-        else None
-    )
-    prev_url = (
-        url_for(
-            "index.search",
-            q=g.search_form.q.data,
-            page=page - 1,  # type: ignore
-        )
-        if page > 1  # type: ignore
-        else None
-    )
-    return render_template(
-        "search.html",
-        title=("Search"),
-        results=results,
-        next_url=next_url,
-        prev_url=prev_url,
-        type="films",
-    )
-
-
-@bp.route("/distributors-search")
-def search_distributors() -> str:
-    page = request.args.get("page", default=1, type=int)
-    results, total = models.Distributor.search(
-        g.search_form.q.data, page, 20  # type: ignore
-    )
-    next_url = (
-        url_for(
-            "index.search_distributors",
-            q=g.search_form.q.data,
-            page=page + 1,  # type: ignore
-        )
-        if total > page * 20  # type: ignore
-        else None
-    )
-    prev_url = (
-        url_for(
-            "index.search_distributors",
-            q=g.search_form.q.data,
-            page=page - 1,  # type: ignore
-        )
-        if page > 1  # type: ignore
-        else None
-    )
-    return render_template(
-        "search.html",
-        title=("Search"),
-        results=results,
-        next_url=next_url,
-        prev_url=prev_url,
-        type="distributors",
-    )
 
 
 @bp.route("/films")

@@ -6,7 +6,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from ukbo.extensions import db
 
 from . import Film_Week
-from .models import PkModel, SearchableMixin
+from .models import PkModel
 
 countries = db.Table(
     "countries",
@@ -19,10 +19,9 @@ countries = db.Table(
 )
 
 
-class Film(SearchableMixin, PkModel):  # type: ignore
+class Film(PkModel):  # type: ignore
 
     __tablename__ = "film"
-    __searchable__ = ["name"]
     name = db.Column(db.String(160), nullable=False)
     weeks = db.relationship(
         "Film_Week",

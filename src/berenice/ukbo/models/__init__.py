@@ -1,4 +1,4 @@
-from . import models, search
+from . import models
 from .Country import Country
 from .Distributor import Distributor
 from .Film import Film
