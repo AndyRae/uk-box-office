@@ -14,18 +14,19 @@ export const Layout = () => {
 	}, []);
 
 	return (
-		<div className='fixed flex w-full h-full'>
+		<div>
 			<StructuredSiteData />
-			<Sidebar />
-
-			<div className='flex-1 p-10 overflow-auto bg-gray-50 dark:bg-gray-900 dark:text-white'>
-				<div className='h-max min-h-screen py-5'>
-					<ErrorBoundary key={location.pathname}>
-						<Outlet />
-					</ErrorBoundary>
+			<Sidebar>
+				{/* <div className='flex-1 p-10 bg-gray-50 dark:bg-gray-900 dark:text-white'> */}
+				<div className='p-4 bg-gray-50 dark:bg-gray-900 dark:text-white'>
+					<div className='h-max min-h-screen pb-5'>
+						<ErrorBoundary key={location.pathname}>
+							<Outlet />
+						</ErrorBoundary>
+					</div>
+					<Footer />
 				</div>
-				<Footer />
-			</div>
+			</Sidebar>
 		</div>
 	);
 };
