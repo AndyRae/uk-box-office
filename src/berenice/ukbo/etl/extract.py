@@ -62,7 +62,7 @@ def extract_box_office(filename: str) -> pd.DataFrame:
     df.columns = header
 
     df = df.dropna(subset=["Rank"])
-    df = df.dropna(how="all", axis=1, thresh=5)
+    df = df.dropna(axis=1, thresh=5)
 
     # TODO: This should really be from the filename
     date = transform.get_last_sunday()
@@ -82,7 +82,7 @@ def extract_box_office(filename: str) -> pd.DataFrame:
     ]
 
     df = df.dropna(subset=["distributor"])
-    df = df.dropna(how="all", axis=1, thresh=2)
+    df = df.dropna(axis=1, thresh=2)
 
     df = df.astype(
         {
