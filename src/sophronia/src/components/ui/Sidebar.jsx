@@ -59,11 +59,7 @@ const SideBarElement = ({ name, path, icon, children, isActive }) => {
 export const Brand = () => {
 	return (
 		<a href='/' className='flex items-center pl-2.5 mb-5'>
-			<img
-				src='https://flowbite.com/docs/images/logo.svg'
-				className='mr-3 h-6 sm:h-7'
-				alt='Logo'
-			/>
+			<img src='/logo.svg' className='mr-3 h-6 sm:h-7' uk-svg='' />
 			<span className='self-center text-xl font-semibold whitespace-nowrap dark:text-white'>
 				Box Office Data
 			</span>
