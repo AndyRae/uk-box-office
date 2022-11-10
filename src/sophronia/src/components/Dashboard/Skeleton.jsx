@@ -66,7 +66,7 @@ export const Skeleton = ({ children, ...props }) => {
 	return (
 		<div className='skeleton animate-pulse transition ease-in-out' {...props}>
 			{/* Skeleton Controls */}
-			<div className='flex flex-wrap mb-2 animate-pulse items-center'>
+			<div className='flex flex-wrap mb-2 animate-pulse items-center justify-center'>
 				<Datepickers />
 				<ButtonGroup>
 					<Button>1W</Button>
@@ -75,7 +75,7 @@ export const Skeleton = ({ children, ...props }) => {
 					<Button>1y</Button>
 				</ButtonGroup>
 				<div className='h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5'></div>
-				<div className='text-sm ml-auto'>Last Updated: --------</div>
+				<div className='text-sm md:ml-auto pt-4'>Last Updated: --------</div>
 			</div>
 
 			<SkeletonCards />

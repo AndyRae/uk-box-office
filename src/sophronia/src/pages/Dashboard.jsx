@@ -37,7 +37,7 @@ export const DashboardPage = () => {
 		return `${input.getFullYear()}-${input.getMonth() + 1}-${input.getDate()}`;
 	};
 
-	const daysToShow = 180;
+	const daysToShow = 90;
 	const s = new Date();
 	const [start, setStart] = useState(s.addDays(-daysToShow));
 	const [end, setEnd] = useState(new Date());
@@ -110,7 +110,7 @@ export const DashboardPage = () => {
 			/>
 
 			{/* Controls */}
-			<div className='flex flex-wrap mb-2 items-center'>
+			<div className='flex flex-wrap mb-2 items-center justify-center'>
 				<Datepickers
 					start={start}
 					end={end}
@@ -123,7 +123,9 @@ export const DashboardPage = () => {
 					<Button onClick={() => changeDate(90)}>3M</Button>
 					<Button onClick={() => changeDate(365)}>1y</Button>
 				</ButtonGroup>
-				<div className='text-sm ml-auto'>Last Updated: {lastUpdated}</div>
+				<div className='text-sm md:ml-auto pt-4'>
+					Last Updated: {lastUpdated}
+				</div>
 			</div>
 
 			{/* Scorecards grid. */}
