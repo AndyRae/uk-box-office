@@ -172,7 +172,7 @@ export const TimePage = () => {
 				endpoint={location.pathname}
 				time={pageTitle}
 			/>
-			<h1 className='text-4xl font-bold py-5 capitalize'>
+			<h1 className='text-4xl font-bold mb-10 capitalize'>
 				UK Box Office {pageTitle}
 			</h1>
 

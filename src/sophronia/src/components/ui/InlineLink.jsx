@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
  * @returns Link component
  */
 export const InlineLink = ({ to, children }) => (
-	<Link to={to} className='text-blue-500 hover:text-blue-600'>
+	<Link to={to} className='text-red-400 hover:text-red-500'>
 		{children}
 	</Link>
 );
@@ -19,7 +19,7 @@ export const InlineLink = ({ to, children }) => (
  * @returns Link component
  */
 export const ExternalLink = ({ to, children }) => (
-	<a href={to} className='text-blue-500 hover:text-blue-600' target='_blank'>
+	<a href={to} className='text-red-400 hover:text-red-500' target='_blank'>
 		{children}
 	</a>
 );

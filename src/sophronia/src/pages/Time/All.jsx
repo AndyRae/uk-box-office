@@ -25,7 +25,7 @@ export const AllTimePage = () => {
 				endpoint='/time'
 				time={`2001 - ${today}`}
 			/>
-			<h1 className='text-4xl font-bold py-5 capitalize'>
+			<h1 className='text-4xl font-bold mb-2 capitalize'>
 				All Time Box Office
 			</h1>
 

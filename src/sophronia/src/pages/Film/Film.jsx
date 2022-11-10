@@ -33,7 +33,7 @@ export const FilmPage = () => {
 				endpoint={`/film/${slug}`}
 				time={releaseDate}
 			/>
-			<h1 className='text-4xl font-bold py-5 capitalize'>
+			<h1 className='text-4xl font-bold mb-10 capitalize'>
 				{data.name} {isFirstWeek && '(2020)'}
 			</h1>
 			<div className='grid md:grid-cols-2 lg:grid-cols-4 gap-4'>

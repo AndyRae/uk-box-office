@@ -17,9 +17,8 @@ export const Layout = () => {
 		<div>
 			<StructuredSiteData />
 			<Sidebar>
-				{/* <div className='flex-1 p-10 bg-gray-50 dark:bg-gray-900 dark:text-white'> */}
 				<div className='p-4 bg-gray-50 dark:bg-gray-900 dark:text-white'>
-					<div className='h-max min-h-screen pb-5'>
+					<div className='h-max min-h-screen py-10'>
 						<ErrorBoundary key={location.pathname}>
 							<Outlet />
 						</ErrorBoundary>
