@@ -10,6 +10,7 @@ import { ExportCSV } from '../../components/ui/ExportCSV';
 import { FilmTimeChart } from '../../components/Film/FilmTimeChart';
 import { FilmCumulativeChart } from '../../components/Film/FilmCumulativeChart';
 import { StructuredTimeData } from '../../components/StructuredData';
+import { PageTitle } from '../../components/ui/PageTitle';
 
 export const FilmPage = () => {
 	const { slug } = useParams();
@@ -33,9 +34,9 @@ export const FilmPage = () => {
 				endpoint={`/film/${slug}`}
 				time={releaseDate}
 			/>
-			<h1 className='text-4xl font-bold mb-10 capitalize'>
+			<PageTitle>
 				{data.name} {isFirstWeek && '(2020)'}
-			</h1>
+			</PageTitle>
 			<div className='grid md:grid-cols-2 lg:grid-cols-4 gap-4'>
 				<Card
 					title='Total Box Office'

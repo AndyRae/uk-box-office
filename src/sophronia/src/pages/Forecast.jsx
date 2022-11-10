@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import { Spinner } from '../components/ui/Spinner';
 import { useBoxOfficeTopline } from '../api/boxoffice';
 import { ForecastChart } from '../components/charts/ForecastChart';
+import { PageTitle } from '../components/ui/PageTitle';
 
 const ForecastPage = () => {
 	Date.prototype.addDays = function (days) {
@@ -22,7 +23,7 @@ const ForecastPage = () => {
 
 	return (
 		<div>
-			<h1 className='text-4xl font-bold py-5 capitalize'>Forecast</h1>
+			<PageTitle>Forecast</PageTitle>
 			<div className='grid md:grid-cols-2 lg:grid-cols-4 gap-4'></div>
 
 			{data && <ForecastChart data={data.results} />}

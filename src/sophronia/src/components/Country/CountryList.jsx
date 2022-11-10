@@ -5,9 +5,7 @@ export const CountryList = ({ countries }) => {
 	const columns = [{ label: 'Country' }];
 
 	return (
-		<div>
-			<h1 className='text-3xl font-bold py-5'>Countries</h1>
-
+		<>
 			{countries && (
 				<BaseTable columns={columns}>
 					{countries.results.map((country, index) => (
@@ -19,6 +17,6 @@ export const CountryList = ({ countries }) => {
 					))}
 				</BaseTable>
 			)}
-		</div>
+		</>
 	);
 };

@@ -1,9 +1,10 @@
 import { InlineLink, ExternalLink } from '../../components/ui/InlineLink';
+import { PageTitle } from '../../components/ui/PageTitle';
 
 export const Contact = () => {
 	return (
 		<div className='flex flex-col max-w-xl space leading-7 space-between gap-4'>
-			<h1 className='text-4xl font-bold py-5 capitalize'>Contact</h1>
+			<PageTitle>Contact</PageTitle>
 			<p>
 				This is built by just one person -{' '}
 				<ExternalLink to='https://rae.li'>Andy Rae</ExternalLink>.

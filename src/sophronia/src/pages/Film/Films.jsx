@@ -5,6 +5,7 @@ import { Pagination } from '../../components/ui/Pagination';
 import { paginate } from '../../utils/pagination';
 import { Suspense } from 'react';
 import { Spinner } from '../../components/ui/Spinner';
+import { PageTitle } from '../../components/ui/PageTitle';
 
 export const FilmsPage = () => {
 	const [pageIndex, setPageIndex] = useState(1);
@@ -14,7 +15,7 @@ export const FilmsPage = () => {
 
 	return (
 		<>
-			<h1 className='text-4xl font-bold'>Films</h1>
+			<PageTitle>Films</PageTitle>
 			<FilmList films={data} pageIndex={pageIndex} />
 			<Pagination
 				pages={pageNumbers}

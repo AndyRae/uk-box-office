@@ -5,6 +5,7 @@ import { Spinner } from '../../components/ui/Spinner';
 import { Pagination } from '../../components/ui/Pagination';
 import { paginate } from '../../utils/pagination';
 import { CountryList } from '../../components/Country/CountryList';
+import { PageTitle } from '../../components/ui/PageTitle';
 
 export const CountriesPage = () => {
 	const [pageIndex, setPageIndex] = useState(1);
@@ -14,6 +15,7 @@ export const CountriesPage = () => {
 
 	return (
 		<>
+			<PageTitle>Countries</PageTitle>
 			<CountryList countries={data} pageIndex={pageIndex} />
 			<Pagination
 				pages={pageNumbers}

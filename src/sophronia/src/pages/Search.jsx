@@ -5,6 +5,7 @@ import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { FilmsTable } from '../components/Search/FilmsTable';
 import { Searchbar } from '../components/Search/Searchbar';
+import { PageTitle } from '../components/ui/PageTitle';
 
 const MainSearchPage = () => {
 	const location = useLocation();
@@ -12,10 +13,8 @@ const MainSearchPage = () => {
 	const { data, isLoading, isError } = useSearch(query);
 
 	return (
-		<div className=''>
-			<h1 className='text-4xl font-bold py-5 capitalize'>
-				Search Results: {query}
-			</h1>
+		<div>
+			<PageTitle>Search Results: {query}</PageTitle>
 			<div className='max-w-xl'>
 				<Searchbar value={query} />
 			</div>
@@ -28,7 +27,7 @@ const MainSearchPage = () => {
 
 					{data.countries.map((country, index) => {
 						return (
-							<div key={index} className=''>
+							<div key={index}>
 								<Link
 									to={`/country/${country.slug}`}
 									className='font-bold text-left'

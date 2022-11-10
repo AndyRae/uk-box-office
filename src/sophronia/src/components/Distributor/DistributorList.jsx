@@ -6,7 +6,6 @@ export const DistributorList = ({ distributors }) => {
 
 	return (
 		<div>
-			<h1 className='text-3xl font-bold py-5'>Distributors</h1>
 			{distributors && (
 				<BaseTable columns={columns}>
 					{distributors.results.map((distributor, index) => (

@@ -5,6 +5,7 @@ import { Spinner } from '../../components/ui/Spinner';
 import { Pagination } from '../../components/ui/Pagination';
 import { paginate } from '../../utils/pagination';
 import { FilmList } from '../../components/Film/FilmList';
+import { PageTitle } from '../../components/ui/PageTitle';
 
 export const DistributorPage = () => {
 	const { slug } = useParams();
@@ -20,7 +21,7 @@ export const DistributorPage = () => {
 
 	return (
 		<>
-			<h1 className='text-4xl font-bold mb-10'>{data.distributor.name}</h1>
+			<PageTitle>{data.distributor.name}</PageTitle>
 			<FilmList films={data} pageIndex={pageIndex} />
 			<Pagination
 				pages={pageNumbers}

@@ -6,6 +6,7 @@ import { Spinner } from '../../components/ui/Spinner';
 import { Pagination } from '../../components/ui/Pagination';
 import { paginate } from '../../utils/pagination';
 import { DistributorList } from '../../components/Distributor/DistributorList';
+import { PageTitle } from '../../components/ui/PageTitle';
 
 export const DistributorsPage = () => {
 	const [pageIndex, setPageIndex] = useState(1);
@@ -15,6 +16,7 @@ export const DistributorsPage = () => {
 
 	return (
 		<>
+			<PageTitle>Distributors</PageTitle>
 			<DistributorList distributors={data} pageIndex={pageIndex} />
 			<Pagination
 				pages={pageNumbers}

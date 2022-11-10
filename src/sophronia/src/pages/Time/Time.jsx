@@ -20,6 +20,7 @@ import { ExportCSV } from '../../components/ui/ExportCSV';
 import { TimeLineChart } from '../../components/Time/TimeLineChart';
 import { Tooltip } from '../../components/ui/Tooltip';
 import { StructuredTimeData } from '../../components/StructuredData';
+import { PageTitle } from '../../components/ui/PageTitle';
 
 const PillLink = ({ to, children, isActive }) => (
 	<li className='mr-2'>
@@ -172,9 +173,7 @@ export const TimePage = () => {
 				endpoint={location.pathname}
 				time={pageTitle}
 			/>
-			<h1 className='text-4xl font-bold mb-10 capitalize'>
-				UK Box Office {pageTitle}
-			</h1>
+			<PageTitle>UK Box Office {pageTitle}</PageTitle>
 
 			<div className='grid md:grid-cols-2 lg:grid-cols-4 gap-4'>
 				<Card

@@ -5,6 +5,7 @@ import { Spinner } from '../../components/ui/Spinner';
 import { FilmList } from '../../components/Film/FilmList';
 import { Pagination } from '../../components/ui/Pagination';
 import { paginate } from '../../utils/pagination';
+import { PageTitle } from '../../components/ui/PageTitle';
 
 export const CountryPage = () => {
 	const { slug } = useParams();
@@ -20,7 +21,7 @@ export const CountryPage = () => {
 
 	return (
 		<>
-			<h1 className='text-4xl font-bold mb-10'>{data.country.name}</h1>
+			<PageTitle>{data?.country.name}</PageTitle>
 			<FilmList films={data} pageIndex={pageIndex} />
 			<Pagination
 				pages={pageNumbers}

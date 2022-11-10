@@ -1,9 +1,10 @@
 import { ExternalLink } from '../../components/ui/InlineLink';
+import { PageTitle } from '../../components/ui/PageTitle';
 
 export const Api = () => {
 	return (
 		<div className='flex flex-col max-w-xl space leading-7 space-between gap-4'>
-			<h1 className='text-4xl font-bold py-5 capitalize'>API Access</h1>
+			<PageTitle>API Access</PageTitle>
 			<p>
 				There is an undocumented API available at:{' '}
 				<ExternalLink to='https://api.boxofficedata.co.uk'>

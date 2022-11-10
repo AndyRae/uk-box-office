@@ -1,9 +1,10 @@
 import { InlineLink, ExternalLink } from '../../components/ui/InlineLink';
+import { PageTitle } from '../../components/ui/PageTitle';
 
 export const About = () => {
 	return (
 		<div className='flex flex-col max-w-xl space leading-7 space-between gap-4'>
-			<h1 className='text-4xl font-bold py-5 capitalize'>About</h1>
+			<PageTitle>About</PageTitle>
 			<p>
 				UK Box Office data is the most detailed and searchable source for box
 				office data in the UK.

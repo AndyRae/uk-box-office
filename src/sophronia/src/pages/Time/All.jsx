@@ -5,6 +5,7 @@ import { YearsTable } from '../../components/Time/YearsTable';
 import { ExportCSV } from '../../components/ui/ExportCSV';
 import { AllTimeChart } from '../../components/Time/AllTimeChart';
 import { StructuredTimeData } from '../../components/StructuredData';
+import { PageTitle } from '../../components/ui/PageTitle';
 
 export const AllTimePage = () => {
 	const today = new Date().getFullYear();
@@ -25,9 +26,7 @@ export const AllTimePage = () => {
 				endpoint='/time'
 				time={`2001 - ${today}`}
 			/>
-			<h1 className='text-4xl font-bold mb-2 capitalize'>
-				All Time Box Office
-			</h1>
+			<PageTitle>All Time Box Office</PageTitle>
 
 			<AllTimeChart data={data.results} />
 
