@@ -169,7 +169,7 @@ export const Sidebar = ({ children }) => {
 			<input type='checkbox' id='menu-open' class='hidden' />
 
 			{/* Mobile menu */}
-			<header class='bg-gray-900 text-gray-100 flex justify-between lg:hidden'>
+			<header class='bg-gray-50 dark:bg-gray-900 dark:text-gray-100 flex justify-between lg:hidden'>
 				<div className='mt-6 px-3'>
 					<Brand />
 				</div>
@@ -187,7 +187,7 @@ export const Sidebar = ({ children }) => {
 			{/* Sidebar */}
 			<aside
 				id='sidebar'
-				class='bg-gray-900 h-screen fixed lg:sticky text-gray-100 w-72 space-y-6 pt-6 px-3 inset-y-0 left-0 transform  lg:translate-x-0 transition duration-150 ease-in-out lg:flex lg:flex-col overflow-y-auto'
+				class='bg-gray-50 dark:bg-gray-900 h-screen fixed lg:sticky dark:text-gray-100 w-72 space-y-6 pt-6 px-3 inset-y-0 left-0 transform  lg:translate-x-0 transition duration-150 ease-in-out lg:flex lg:flex-col overflow-y-auto'
 			>
 				<SidebarContent />
 			</aside>
