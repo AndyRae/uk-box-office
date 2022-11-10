@@ -71,7 +71,7 @@ const SidebarContent = () => {
 	const { pathname } = useLocation();
 	return (
 		<div>
-			<div class='flex flex-col space-y-6'>
+			<div className='flex flex-col space-y-6'>
 				<Brand />
 
 				{/* Links */}
@@ -109,7 +109,7 @@ const SidebarContent = () => {
 
 export const Sidebar = ({ children }) => {
 	return (
-		<div class='relative lg:flex'>
+		<div className='relative lg:flex'>
 			<style>
 				{`
 					#sidebar {
@@ -141,10 +141,10 @@ export const Sidebar = ({ children }) => {
 			`}
 			</style>
 
-			<input type='checkbox' id='menu-open' class='hidden' />
+			<input type='checkbox' id='menu-open' className='hidden' />
 
 			{/* Mobile menu */}
-			<header class='bg-gray-50 dark:bg-gray-900 dark:text-gray-100 flex justify-between lg:hidden'>
+			<header className='bg-gray-50 dark:bg-gray-900 dark:text-gray-100 flex justify-between lg:hidden'>
 				<div className='mt-6 px-3'>
 					<Brand />
 				</div>
@@ -152,7 +152,7 @@ export const Sidebar = ({ children }) => {
 				<label
 					for='menu-open'
 					id='mobile-menu-button'
-					class='m-4 p-2 focus:outline-none hover:text-white hover:bg-gray-700 rounded-md'
+					className='m-4 p-2 focus:outline-none hover:text-white hover:bg-gray-700 rounded-md'
 				>
 					<AiOutlineMenu className='h-6 w-6' id='menu-open-icon' />
 					<AiOutlineClose className='h-6 w-6' id='menu-close-icon' />
@@ -162,7 +162,7 @@ export const Sidebar = ({ children }) => {
 			{/* Sidebar */}
 			<aside
 				id='sidebar'
-				class='bg-gray-50 dark:bg-gray-900 h-screen fixed lg:sticky dark:text-gray-100 w-72 space-y-6 pt-6 px-3 inset-y-0 left-0 transform  lg:translate-x-0 transition duration-150 ease-in-out lg:flex lg:flex-col overflow-y-auto'
+				className='bg-gray-50 dark:bg-gray-900 h-screen fixed lg:sticky dark:text-gray-100 w-72 space-y-6 pt-6 px-3 inset-y-0 left-0 transform  lg:translate-x-0 transition duration-150 ease-in-out lg:flex lg:flex-col overflow-y-auto'
 			>
 				<SidebarContent />
 			</aside>

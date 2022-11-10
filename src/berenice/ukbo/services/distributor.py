@@ -56,7 +56,7 @@ def get_films(slug: str, page: int = 1, limit: int = 100) -> Response:
     query = query.join(models.Distributor)
 
     query = query.filter(models.Distributor.slug == slug)
-    data = query.order_by(models.Film.id.asc()).paginate(page, limit, False)
+    data = query.order_by(models.Film.id.asc()).paginate(page=page, per_page=limit, error_out=False)
 
     next_page = (page + 1) if data.has_next else ""
     previous_page = (page - 1) if data.has_prev else ""
