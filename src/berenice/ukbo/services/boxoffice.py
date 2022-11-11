@@ -43,14 +43,23 @@ def all(
     )
 
 
-def top() -> Response:
+def topfilms() -> Response:
     """
     Top films all time
     """
-    path = "./data/top_films_data.json"
-    with open(path) as json_file:
-        data = json.load(json_file)
-    return jsonify(data)
+    query = db.session.query(models.Film, func.sum(models.Film_Week.week_gross))
+    query = query.join(models.Film, models.Film.id == models.Film_Week.film_id).group_by(models.Film)
+    query = query.order_by(func.sum(models.Film_Week.week_gross).desc())
+    data = query.limit(10)
+
+    return jsonify(
+        results=[
+            dict(
+                film=row[0].as_dict(weeks=False),
+                title=row[1],
+            ) for row in data
+        ],
+    )
 
 
 def summary(start: str = None, end: str = None, limit: int = 0) -> Response:

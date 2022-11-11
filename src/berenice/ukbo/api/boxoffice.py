@@ -16,12 +16,12 @@ def all() -> Response:
     return services.boxoffice.all(start, end, page)
 
 
-@boxoffice.route("/top")
+@boxoffice.route("/topfilms")
 def get() -> Response:
     """
     Top films all time endpoint
     """
-    return services.boxoffice.top()
+    return services.boxoffice.topfilms()
 
 
 @boxoffice.route("/summary")
