@@ -36,7 +36,7 @@ def sitemap() -> Response:
 @cache.cached()
 def base() -> Response:
     data = []
-    url = "https://boxofficedata.co.uk"
+    url = "https://api.boxofficedata.co.uk"
     now = datetime.datetime.now() - datetime.timedelta(days=10)
     lastmod = now.strftime("%Y-%m-%d")
 
@@ -64,7 +64,7 @@ def films_letter(char: str) -> Response:
     10k+ films - so split sitemap alphabetically
     """
     data = []
-    url = "https://boxofficedata.co.uk"
+    url = "https://api.boxofficedata.co.uk"
     now = datetime.datetime.now() - datetime.timedelta(days=10)
     lastmod = now.strftime("%Y-%m-%d")
 
@@ -83,7 +83,7 @@ def films_letter(char: str) -> Response:
 @cache.cached()
 def countries() -> Response:
     data = []
-    url = "https://boxofficedata.co.uk"
+    url = "https://api.boxofficedata.co.uk"
     now = datetime.datetime.now() - datetime.timedelta(days=10)
     lastmod = now.strftime("%Y-%m-%d")
 
@@ -99,7 +99,7 @@ def countries() -> Response:
 @cache.cached()
 def distributors() -> Response:
     data = []
-    url = "https://boxofficedata.co.uk"
+    url = "https://api.boxofficedata.co.uk"
     now = datetime.datetime.now() - datetime.timedelta(days=10)
     lastmod = now.strftime("%Y-%m-%d")
 
@@ -118,7 +118,7 @@ def time() -> Response:
     Time sitemap
     """
     data = []
-    url = "https://boxofficedata.co.uk"
+    url = "https://api.boxofficedata.co.uk"
     now = datetime.datetime.now() - datetime.timedelta(days=10)
 
     time = db.session.query(models.Film_Week.date)

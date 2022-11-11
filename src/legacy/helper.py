@@ -110,7 +110,7 @@ def extract_box_office(
     df.columns = header
 
     df = df.dropna(subset=["Rank"])
-    df = df.dropna(how="all", axis=1, thresh=5)
+    df = df.dropna(axis=1, thresh=5)
 
     # Weekly load only needs the most recent date, archive needs all
     if arg == "week":
@@ -136,7 +136,7 @@ def extract_box_office(
     ]
 
     df = df.dropna(subset=["distributor"])
-    df = df.dropna(how="all", axis=1, thresh=2)
+    df = df.dropna(axis=1, thresh=2)
 
     df.insert(0, "date", date)
     df["film"] = df["film"].astype(str).str.upper()
