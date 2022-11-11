@@ -2,11 +2,11 @@ import { BarChart } from '../charts/BarChart';
 
 export const AllTimeChart = ({ data }) => {
 	const d = {
-		labels: data.reverse().map((d) => d.year),
+		labels: data.map((d) => d.year),
 		datasets: [
 			{
 				label: 'Box Office',
-				data: data.reverse().map((d) => d.week_gross),
+				data: data.map((d) => d.week_gross),
 				fill: false,
 				backgroundColor: ['#f87171'],
 				borderColor: ['#f87171'],

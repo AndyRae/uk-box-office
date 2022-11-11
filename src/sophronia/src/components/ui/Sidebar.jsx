@@ -150,7 +150,7 @@ export const Sidebar = ({ children }) => {
 				</div>
 
 				<label
-					for='menu-open'
+					htmlFor='menu-open'
 					id='mobile-menu-button'
 					className='m-4 p-2 focus:outline-none hover:text-white hover:bg-gray-700 rounded-md'
 				>
