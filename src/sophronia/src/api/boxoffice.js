@@ -13,7 +13,7 @@ export const fetchKeys = {
 		`boxoffice/summary?start=${start}&end=${end}&limit=${limit}`,
 	boxOfficePrevious: (start, end) =>
 		`boxoffice/previous?start=${start}&end=${end}`,
-	boxOfficeTop: () => `boxoffice/top`,
+	boxOfficeTopFilms: () => `boxoffice/topfilms`,
 	boxOfficeTopline: (start, end, limit) =>
 		`boxoffice/topline?start=${start}&end=${end}&limit=${limit}`,
 };
@@ -47,9 +47,13 @@ export const useBoxOfficeFiltered = (
 	);
 };
 
-export const useBoxOfficeTop = () => {
+/**
+ * Endpoint for top films all time.
+ * @returns all time top films.
+ */
+export const useBoxOfficeTopFilms = () => {
 	const apiFetcher = useBackendApi();
-	return useSWR(fetchKeys.boxOfficeTop(), apiFetcher, {
+	return useSWR(fetchKeys.boxOfficeTopFilms(), apiFetcher, {
 		suspense: true,
 	});
 };

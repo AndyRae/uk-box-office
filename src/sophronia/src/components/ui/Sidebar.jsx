@@ -34,6 +34,11 @@ const links = [
 		icon: <BiNetworkChart />,
 	},
 	{
+		name: 'Top Films',
+		path: '/topfilms',
+		icon: <FaGlobeEurope />,
+	},
+	{
 		name: 'About',
 		path: '/about',
 		icon: <FaGlobeEurope />,

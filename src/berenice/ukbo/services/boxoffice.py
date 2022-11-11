@@ -50,13 +50,13 @@ def topfilms() -> Response:
     query = db.session.query(models.Film, func.sum(models.Film_Week.week_gross))
     query = query.join(models.Film, models.Film.id == models.Film_Week.film_id).group_by(models.Film)
     query = query.order_by(func.sum(models.Film_Week.week_gross).desc())
-    data = query.limit(10)
+    data = query.limit(50)
 
     return jsonify(
         results=[
             dict(
                 film=row[0].as_dict(weeks=False),
-                title=row[1],
+                gross=row[1],
             ) for row in data
         ],
     )

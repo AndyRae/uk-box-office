@@ -16,6 +16,7 @@ import { About } from './pages/Flat/About';
 import { Api } from './pages/Flat/Api';
 import { Contact } from './pages/Flat/Contact';
 import { MainSearch } from './pages/Search';
+import { TopFilms } from './pages/TopFilms';
 
 export const Root = () => {
 	return (
@@ -32,6 +33,7 @@ export const Root = () => {
 					<Route path='search' element={<MainSearch />} />
 
 					<Route path='forecast' element={<Forecast />} />
+					<Route path='topfilms' element={<TopFilms />} />
 
 					<Route path='film'>
 						<Route index element={<Films />} />
