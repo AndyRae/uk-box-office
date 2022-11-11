@@ -4,11 +4,11 @@ from flask.cli import with_appcontext
 from . import tasks
 
 
-@click.command("init-db")
+@click.command("clear-db")
 @with_appcontext
 def init_db_command() -> None:
     """Drops all database tables. Useful for testing."""
-    tasks.init_db()
+    tasks.clear_db()
     click.echo("Initialised the database.")
 
 
@@ -47,20 +47,6 @@ def seed_box_office_command(year: int) -> None:
     path = "./data/archive.csv"
     tasks.seed_box_office(path, year=year)
     click.echo("Seeded box office data")
-
-
-@click.command("build-static")
-@with_appcontext
-def build_static_command() -> None:
-    """
-    Builds a cache of the reports.
-    For the fast load on the static report views.
-    """
-    tasks.static_top_films()
-    click.echo("Built top films cache")
-    tasks.static_distributor_market()
-    click.echo("Built distributor market cache")
-    click.echo("Built static data cache")
 
 
 @click.command("forecast")

@@ -79,31 +79,8 @@ def forecast_task() -> None:
     f.run_forecast()
 
 
-@scheduler.task(
-    "cron",
-    id="forecast",
-    week="*",
-    max_instances=1,
-    day_of_week="wed",
-    hour="19",
-    minute="01",
-    second=00,
-    timezone="UTC",
-)
 @with_appcontext
-def static_task() -> None:
-    """
-    Weekly task for buiding static files
-    """
-
-    print("Building static files.")
-    static_top_films()
-    static_distributor_market()
-    print("Built static files.")
-
-
-@with_appcontext
-def init_db() -> None:
+def clear_db() -> None:
     """
     Drops any existing database tables
     Useful for resetting the database in testing.
@@ -159,36 +136,6 @@ def seed_box_office(path: str, **kwargs: Any) -> None:
 
     archive = pd.read_csv(path)
     load.load_weeks(archive, **kwargs)
-
-
-@with_appcontext
-def static_top_films() -> None:
-    """
-    Builds static top films
-    """
-    query = db.session.query(models.Film).options(
-        db.selectinload(models.Film.weeks)
-    )
-    query = query.order_by(models.Film.gross.desc())  # type: ignore
-    query = query.limit(25)
-    films = query.all()
-
-    json_data = [ix.as_dict() for ix in films]
-    path = "./data/top_films_data.json"
-    with open(path, "w") as outfile:
-        json.dump(json_data, outfile)
-
-
-@with_appcontext
-def static_distributor_market() -> None:
-    query = db.session.query(models.Film_Week)
-    data = query.all()
-    data, years = services.utils.group_by_distributor(data)
-
-    json_data = data
-    path = "./data/distributor_market_data.json"
-    with open(path, "w") as outfile:
-        json.dump(json_data, outfile)
 
 
 @with_appcontext
