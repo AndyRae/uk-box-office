@@ -61,7 +61,6 @@ def register_cli(app: Flask) -> None:
     app.cli.add_command(etl.commands.backup_etl_command)
     app.cli.add_command(etl.commands.rollback_etl_command)
     app.cli.add_command(etl.commands.rollback_year_command)
-    app.cli.add_command(etl.commands.build_static_command)
     app.cli.add_command(etl.commands.forecast_command)
 
     return None
