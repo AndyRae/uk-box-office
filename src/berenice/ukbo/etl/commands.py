@@ -7,7 +7,7 @@ from . import tasks
 @click.command("init-db")
 @with_appcontext
 def init_db_command() -> None:
-    """Clears data and creates new tables."""
+    """Drops all database tables. Useful for testing."""
     tasks.init_db()
     click.echo("Initialised the database.")
 

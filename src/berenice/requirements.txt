@@ -4,6 +4,8 @@
 #
 #    pip-compile src/berenice/requirements.in
 #
+alembic==1.8.1
+    # via flask-migrate
 apscheduler==3.9.1
     # via flask-apscheduler
 attrs==22.1.0
@@ -56,6 +58,7 @@ flask==2.2.2
     #   flask-cors
     #   flask-limiter
     #   flask-marshmallow
+    #   flask-migrate
     #   flask-sqlalchemy
 flask-apscheduler==1.12.4
     # via -r src/berenice/requirements.in
@@ -67,8 +70,12 @@ flask-limiter==2.7.0
     # via -r src/berenice/requirements.in
 flask-marshmallow==0.14.0
     # via -r src/berenice/requirements.in
-flask-sqlalchemy==3.0.2
+flask-migrate==3.1.0
     # via -r src/berenice/requirements.in
+flask-sqlalchemy==3.0.2
+    # via
+    #   -r src/berenice/requirements.in
+    #   flask-migrate
 fonttools==4.38.0
     # via matplotlib
 gunicorn==20.1.0
@@ -97,9 +104,12 @@ limits==2.7.1
     # via flask-limiter
 lunarcalendar==0.0.9
     # via prophet
+mako==1.2.3
+    # via alembic
 markupsafe==2.1.1
     # via
     #   jinja2
+    #   mako
     #   werkzeug
 marshmallow==3.18.0
     # via
@@ -198,6 +208,7 @@ soupsieve==2.3.2.post1
     # via beautifulsoup4
 sqlalchemy==1.4.43
     # via
+    #   alembic
     #   flask-sqlalchemy
     #   marshmallow-sqlalchemy
 text-unidecode==1.3

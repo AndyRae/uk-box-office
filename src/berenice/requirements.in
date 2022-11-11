@@ -6,6 +6,7 @@ Flask-Caching
 flask-cors
 Flask-Limiter
 flask-marshmallow
+Flask-Migrate
 marshmallow-sqlalchemy
 Flask-SQLAlchemy
 gunicorn

@@ -1,5 +1,5 @@
 from flask import Flask
-from ukbo.extensions import cache, db, limiter, ma, scheduler, cors
+from ukbo.extensions import cache, cors, db, limiter, ma, migrate, scheduler
 
 
 def create_app(config: str = None) -> Flask:
@@ -32,11 +32,12 @@ def create_app(config: str = None) -> Flask:
 
 def register_extensions(app: Flask) -> None:
 
-    db.init_app(app)
-    ma.init_app(app)
     cache.init_app(app)
-    limiter.init_app(app)
     cors.init_app(app)
+    db.init_app(app)
+    limiter.init_app(app)
+    ma.init_app(app)
+    migrate.init_app(app, db)
     return None
 
 

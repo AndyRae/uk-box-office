@@ -105,13 +105,12 @@ def static_task() -> None:
 @with_appcontext
 def init_db() -> None:
     """
-    Drops and creates database tables
+    Drops any existing database tables
+    Useful for resetting the database in testing.
     """
 
     db.reflect()
     db.drop_all()
-    db.session.commit()
-    db.create_all()
     db.session.commit()
 
 
