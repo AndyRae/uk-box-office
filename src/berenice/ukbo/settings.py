@@ -16,15 +16,13 @@ class Config:
     SECRET_KEY = os.getenv("SECRET_KEY")
     SQLALCHEMY_TRACK_MODIFICATIONS = (False,)
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", "sqlite://")
-    ELASTICSEARCH_URL = os.getenv("ELASTICSEARCH_URL")
     SCHEDULER_API_ENABLED = False
     SCHEDULER_TIMEZONE = "UTC"
     CACHE_TYPE = "SimpleCache"
     CACHE_DEFAULT_TIMEOUT = 300
     RATELIMIT_DEFAULT = "200/minute"
     RATELIMIT_API = "200/minute"
-    FLATPAGES_ROOT = "pages"
-    FLATPAGES_EXTENSION = ".md"
+    CORS_ORIGIN = os.getenv("CORS_ORIGIN")
 
 
 class DevelopmentConfig(Config):
@@ -33,6 +31,7 @@ class DevelopmentConfig(Config):
     DEBUG = True
     CACHE_TYPE = "null"
     FLATPAGES_AUTO_RELOAD = DEBUG
+    CORS_ORIGIN = "http://localhost:3000"
 
 
 class TestConfig(Config):

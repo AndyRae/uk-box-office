@@ -154,18 +154,24 @@ const useProtectedSWRInfinite = (startDate, endDate) => {
 	 * @param prevPageData Previous page information
 	 * @returns API to the next page
 	 */
-	const url = 'http://localhost:5000/api/boxoffice/all';
+
+	const getBackendURL = () => {
+		return `${process.env.BACKEND_URL || 'http://localhost:5000/api/'}`;
+	};
+
+	const backendUrl = `${getBackendURL()}boxoffice/all`;
 
 	function getNextKey(pageIndex, previousPageData) {
 		// Reached the end of the collection
 		if (previousPageData && !previousPageData.next) return null;
 
 		// First page with no prevPageData
-		if (pageIndex === 0) return `${url}?start=${startDate}&end=${endDate}`;
+		if (pageIndex === 0)
+			return `${backendUrl}?start=${startDate}&end=${endDate}`;
 
 		// Add nextPage token to API endpoint
 		return [
-			`${url}?start=${startDate}&end=${endDate}&page=${previousPageData.next}`,
+			`${backendUrl}?start=${startDate}&end=${endDate}&page=${previousPageData.next}`,
 		];
 	}
 
