@@ -16,7 +16,7 @@ const MainSearchPage = () => {
 		<div>
 			<PageTitle>Search Results: {query}</PageTitle>
 			<div className='max-w-xl'>
-				<Searchbar value={query} />
+				<Searchbar />
 			</div>
 
 			<hr className='my-5'></hr>

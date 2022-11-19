@@ -35,7 +35,7 @@ export const FilmPage = () => {
 				time={releaseDate}
 			/>
 			<PageTitle>
-				{data.name} {isFirstWeek && '(2020)'}
+				{data.name} {isFirstWeek && `(${releaseDate.split('-')[0]})`}
 			</PageTitle>
 			<div className='grid md:grid-cols-2 lg:grid-cols-4 gap-4'>
 				<Card

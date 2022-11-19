@@ -9,6 +9,7 @@ import {
 	LinearScale,
 	Title,
 	TimeScale,
+	Tooltip,
 } from 'chart.js';
 
 ChartJS.register(
@@ -18,7 +19,8 @@ ChartJS.register(
 	PointElement,
 	LinearScale,
 	Title,
-	TimeScale
+	TimeScale,
+	Tooltip
 );
 
 export const Timeseries = ({ data, options, id }) => {
