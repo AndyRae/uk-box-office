@@ -25,7 +25,7 @@ export const MultipleFilmsChart = ({ data, labels }) => {
 				},
 				time: {
 					unit: 'week',
-					tooltipFormat: 'DD/MM/YYYY',
+					tooltipFormat: 'dd/MM/yyyy',
 				},
 				grid: {
 					display: false,

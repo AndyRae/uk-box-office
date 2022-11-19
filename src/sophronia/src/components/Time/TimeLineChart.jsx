@@ -11,7 +11,7 @@ export const TimeLineChart = ({ data }) => {
 				backgroundColor: ['#B650784D'],
 				borderColor: ['#B65078'],
 				pointStyle: 'circle',
-				tension: 0.3,
+				tension: 0.4,
 				yAxisID: 'y',
 			},
 		],
@@ -31,7 +31,7 @@ export const TimeLineChart = ({ data }) => {
 				},
 				time: {
 					unit: 'week',
-					tooltipFormat: 'DD/MM/YYYY',
+					tooltipFormat: 'dd/MM/yyyy',
 				},
 				grid: {
 					display: false,
