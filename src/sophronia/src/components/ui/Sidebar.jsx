@@ -51,7 +51,7 @@ const SideBarElement = ({ name, path, icon, children, isActive }) => {
 			to={path}
 			as={Link}
 			className={`flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 ${
-				isActive ? 'bg-gray-200 dark:bg-red-400' : ''
+				isActive ? 'bg-gray-200 dark:bg-bo-primary' : ''
 			}`}
 		>
 			{icon}
@@ -99,7 +99,7 @@ const SidebarContent = () => {
 
 			<div className='p-4 mt-6 bg-blue-50 rounded-lg dark:bg-slate-800'>
 				<div className='flex items-center mb-3'>
-					<span className='bg-red-400 text-gray-50 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded'>
+					<span className='bg-bo-primary text-gray-50 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded'>
 						Beta
 					</span>
 				</div>
