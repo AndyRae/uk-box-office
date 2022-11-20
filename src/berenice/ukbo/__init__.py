@@ -1,5 +1,6 @@
 from flask import Flask
-from ukbo.extensions import cache, cors, db, limiter, ma, migrate, scheduler
+from ukbo.extensions import cache, db, limiter, ma, migrate, scheduler
+from flask_cors import CORS
 
 
 def create_app(config: str = None) -> Flask:
@@ -23,6 +24,10 @@ def create_app(config: str = None) -> Flask:
         register_blueprints(app)
         register_cli(app)
 
+        origins = [app.config.get("CORS_ORIGIN")]
+        cors = CORS(resources={r"/api/*": {"origins": origins, "methods": ["GET"]}})
+        cors.init_app(app)
+
         from ukbo.etl import tasks
 
         scheduler.start()
@@ -33,7 +38,6 @@ def create_app(config: str = None) -> Flask:
 def register_extensions(app: Flask) -> None:
 
     cache.init_app(app)
-    cors.init_app(app)
     db.init_app(app)
     limiter.init_app(app)
     ma.init_app(app)
