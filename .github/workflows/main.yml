@@ -7,6 +7,34 @@ env:
   NGINX_IMAGE: ghcr.io/$(echo $GITHUB_REPOSITORY | tr '[:upper:]' '[:lower:]')/nginx
 
 jobs:
+  stage:
+    name: Deploy to staging.
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/new-deployment'
+    steps:
+      - name: Checkout staging
+        uses: actions/checkout@v1
+      - name: Add the private SSH key to the ssh-agent
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          mkdir -p ~/.ssh
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          ssh-add - <<< "${{ secrets.PRIVATE_KEY }}"
+      - name: Deploy on DigitalOcean
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          scp  -o StrictHostKeyChecking=no -r . andy@${{ secrets.STAGING_IP_ADDRESS }}:/var/www/uk-box-office
+          ssh -o StrictHostKeyChecking=no andy@${{ secrets.STAGING_IP_ADDRESS }} << 'ENDSSH'
+            cd /var/www/uk-box-office
+            source venv/bin/activate
+            cd src/berenice
+            flask db update
+            systemctl restart nginx
+            systemctl restart gunicorn
+          ENDSSH
 
   build:
     name: Build Docker Images
