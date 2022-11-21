@@ -22,13 +22,19 @@ jobs:
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           ssh-keyscan github.com >> ~/.ssh/known_hosts
           ssh-add - <<< "${{ secrets.PRIVATE_KEY }}"
-      - name: Build react
-      - uses: actions/setup-node@v3.5.1
+
+      - name: Setup node
+        uses: actions/setup-node@v3.5.1
         with:
           node-version: 16
-      - run: cd /src/sophronia
-      - run: npm ci
-      - run: npm run build
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Build React
+        run: npm build
+
       - name: Deploy on DigitalOcean
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
