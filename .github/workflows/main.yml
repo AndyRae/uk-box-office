@@ -30,10 +30,10 @@ jobs:
           cache: npm
 
       - name: Install
-        run: npm ci
+        run: npm ci --prefix ./src/sophronia/
 
       - name: Build React
-        run: npm run build
+        run: npm run build --prefix ./src/sophronia/
 
       - name: Deploy on DigitalOcean
         env:
