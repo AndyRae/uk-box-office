@@ -26,7 +26,7 @@ jobs:
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
-          scp  -o StrictHostKeyChecking=no -r ./* root@${{ secrets.STAGING_IP_ADDRESS }}:/var/www/uk-box-office
+          scp  -o StrictHostKeyChecking=no -r ./src/berenice/* root@${{ secrets.STAGING_IP_ADDRESS }}:/var/www/uk-box-office
           ssh -o StrictHostKeyChecking=no root@${{ secrets.STAGING_IP_ADDRESS }} << 'ENDSSH'
             cd /var/www/uk-box-office
             source venv/bin/activate

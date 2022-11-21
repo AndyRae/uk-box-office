@@ -36,7 +36,7 @@ def all(
     previous_page = (page - 1) if data.has_prev else ""
 
     return jsonify(
-        count=data.total,
+        count1=data.total,
         next=next_page,
         previous=previous_page,
         results=[ix.as_dict() for ix in data.items],
