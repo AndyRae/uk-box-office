@@ -156,7 +156,9 @@ const useProtectedSWRInfinite = (startDate, endDate) => {
 	 */
 
 	const getBackendURL = () => {
-		return `${process.env.BACKEND_URL || 'http://localhost:5000/api/'}`;
+		return `${
+			process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000/api/'
+		}`;
 	};
 
 	const backendUrl = `${getBackendURL()}boxoffice/all`;

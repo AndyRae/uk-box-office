@@ -33,6 +33,8 @@ jobs:
         run: npm ci --prefix ./src/sophronia/
 
       - name: Build React
+        env:
+          REACT_APP_BACKEND_URL: http://api.boxofficedata.co.uk/api/
         run: CI=false npm run build --prefix ./src/sophronia/
 
       - name: Deploy on DigitalOcean
