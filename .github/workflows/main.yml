@@ -40,7 +40,7 @@ jobs:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
           scp  -o StrictHostKeyChecking=no -r ./src/berenice/* root@${{ secrets.STAGING_IP_ADDRESS }}:/var/www/uk-box-office/src/berenice/
-          scp  -o StrictHostKeyChecking=no -r ./src/sophronia/build/* root@${{ secrets.STAGING_IP_ADDRESS }}:/var/www/uk-box-office/src/soprhonia/build/
+          scp  -o StrictHostKeyChecking=no -r ./src/sophronia/build/* root@${{ secrets.STAGING_IP_ADDRESS }}:/var/www/uk-box-office/src/sophronia/build/
           ssh -o StrictHostKeyChecking=no root@${{ secrets.STAGING_IP_ADDRESS }} << 'ENDSSH'
             cd /var/www/uk-box-office
             source venv/bin/activate
