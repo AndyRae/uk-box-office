@@ -61,8 +61,14 @@ export const ForecastChart = ({ data }) => {
 					autoSkip: true,
 				},
 				time: {
-					unit: 'week',
+					unit: 'month',
 					tooltipFormat: 'dd/MM/yyyy',
+					displayFormats: {
+						week: 'dd MMM',
+						month: 'MMM yy',
+						quarter: 'MMM dd',
+						year: 'yyyy',
+					},
 				},
 				grid: {
 					display: false,

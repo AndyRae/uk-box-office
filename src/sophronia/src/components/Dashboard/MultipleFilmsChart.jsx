@@ -26,6 +26,12 @@ export const MultipleFilmsChart = ({ data, labels, height }) => {
 				time: {
 					unit: 'week',
 					tooltipFormat: 'dd/MM/yyyy',
+					displayFormats: {
+						week: 'dd MMM',
+						month: 'MMM yy',
+						quarter: 'MMM dd',
+						year: 'yyyy',
+					},
 				},
 				grid: {
 					display: false,
@@ -57,6 +63,10 @@ export const MultipleFilmsChart = ({ data, labels, height }) => {
 			},
 		},
 	};
+
+	if (d.labels.length > 6) {
+		options.scales.x.time.unit = 'month';
+	}
 
 	return (
 		<div className='h-96'>
