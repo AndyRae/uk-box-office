@@ -71,6 +71,8 @@ export const groupForAreaChart = (data) => {
 			borderColor: randomColor,
 			fill: false,
 			tension: 0.3,
+			pointStyle: 'line',
+			pointRadius: 4,
 		};
 
 		let weeks = [];

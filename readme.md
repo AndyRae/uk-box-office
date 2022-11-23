@@ -24,7 +24,6 @@ These run weekly on a Wednesday, if they fail you can run them manually:
 
 - Fetch new box office data `docker exec web flask weekly-etl`
 - Build a new box office forecast `docker exec web flask forecast`
-- Build static reports data `docker exec web flask build-static`
 
 ## Utilities
 
@@ -46,4 +45,4 @@ It currently only filters by date for box office data only, with the parameters 
 
 For example, to query data between `01/01/2007` and `18/01/2007`:
 
-`https://boxofficedata.co.uk/api?start_date=2007-01-01&end_date=2007-01-18&start=1`
+`https://api.boxofficedata.co.uk/api?start_date=2007-01-01&end_date=2007-01-18&start=1`
