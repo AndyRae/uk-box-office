@@ -107,6 +107,11 @@ export const DashboardPage = () => {
 		setStart(today.addDays(-days));
 	};
 
+	// Work out the difference between the last two dates
+	const diffTime = Math.abs(s - start);
+	const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+	console.log(diffDays);
+
 	return (
 		<div className='transition ease-in-out'>
 			<StructuredTimeData
@@ -124,10 +129,18 @@ export const DashboardPage = () => {
 					setEnd={setEnd}
 				/>
 				<ButtonGroup>
-					<Button onClick={() => changeDate(7)}>1W</Button>
-					<Button onClick={() => changeDate(30)}>1M</Button>
-					<Button onClick={() => changeDate(90)}>3M</Button>
-					<Button onClick={() => changeDate(365)}>1y</Button>
+					<Button onClick={() => changeDate(7)} isActive={diffDays === 7}>
+						1W
+					</Button>
+					<Button onClick={() => changeDate(30)} isActive={diffDays === 30}>
+						1M
+					</Button>
+					<Button onClick={() => changeDate(90)} isActive={diffDays === 90}>
+						3M
+					</Button>
+					<Button onClick={() => changeDate(365)} isActive={diffDays === 365}>
+						1Y
+					</Button>
 				</ButtonGroup>
 				<div className='text-sm md:ml-auto pt-4'>
 					Last Updated: {lastUpdated}

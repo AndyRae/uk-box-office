@@ -63,12 +63,12 @@ const SideBarElement = ({ name, path, icon, children, isActive }) => {
 
 export const Brand = () => {
 	return (
-		<a href='/' className='flex items-center pl-2.5 mb-5'>
+		<NavLink to='/' className='flex items-center pl-2.5 mb-5'>
 			<img src='/logo.svg' className='mr-3 h-6 sm:h-7' uk-svg='' />
 			<span className='self-center text-xl font-semibold whitespace-nowrap dark:text-white'>
 				Box Office Data
 			</span>
-		</a>
+		</NavLink>
 	);
 };
 
@@ -104,8 +104,10 @@ const SidebarContent = () => {
 					</span>
 				</div>
 				<p className='mb-3 text-sm text-gray-900 dark:text-gray-50'>
-					This is a beta version of the Box Office Data dashboard. We are still
-					working on it and would love to hear your feedback.
+					This is a beta version of the Box Office Data dashboard.
+					<br></br>
+					I'm always still working on it and would love to hear your feedback.
+					<br></br>Email: hello@rae.li
 				</p>
 			</div>
 		</div>

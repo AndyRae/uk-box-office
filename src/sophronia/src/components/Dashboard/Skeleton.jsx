@@ -72,7 +72,7 @@ export const Skeleton = ({ children, ...props }) => {
 					<Button>1W</Button>
 					<Button>1M</Button>
 					<Button>3M</Button>
-					<Button>1y</Button>
+					<Button>1Y</Button>
 				</ButtonGroup>
 				<div className='h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5'></div>
 				<div className='text-sm md:ml-auto pt-4'>Last Updated: --------</div>

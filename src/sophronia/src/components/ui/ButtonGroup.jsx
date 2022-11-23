@@ -11,6 +11,7 @@ export const ButtonGroup = ({ children }) => {
 				return (
 					<Button
 						onClick={child.props.onClick}
+						isActive={child.props.isActive}
 						key={index}
 						className={`relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-gray-900 
               ${index === 0 ? 'rounded-l-lg' : ''} ${

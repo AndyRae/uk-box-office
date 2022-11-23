@@ -70,6 +70,7 @@ export const groupForAreaChart = (data) => {
 			label: groupedFilms[i].film,
 			borderColor: randomColor,
 			fill: false,
+			tension: 0.3,
 		};
 
 		let weeks = [];
