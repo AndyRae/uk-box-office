@@ -77,6 +77,7 @@ export const DashboardPage = () => {
 	let changeNewFilms = 0;
 	let changeWeekend = 0;
 	let changeWeek = 0;
+	let changeCinemas = 0;
 
 	if (timeComparisonData.results.length >= 1) {
 		const lastYear = timeComparisonData.results[0];
@@ -91,6 +92,11 @@ export const DashboardPage = () => {
 		);
 		changeWeekend = Math.ceil(
 			((weekendBoxOffice - lastYear.weekend_gross) / lastYear.weekend_gross) *
+				100
+		);
+		changeCinemas = Math.ceil(
+			((numberOfCinemas - lastYear.number_of_cinemas) /
+				lastYear.number_of_cinemas) *
 				100
 		);
 	}
@@ -163,11 +169,11 @@ export const DashboardPage = () => {
 						)}
 					</Card>
 
-					<Card title='New Releases' subtitle={numberOfNewFilms}>
+					<Card title='Cinemas' subtitle={numberOfCinemas}>
 						{timeComparisonData && (
 							<Tooltip text='Change from last year'>
 								{' '}
-								<MetricChange value={changeNewFilms} />{' '}
+								<MetricChange value={changeCinemas} />{' '}
 							</Tooltip>
 						)}
 					</Card>
