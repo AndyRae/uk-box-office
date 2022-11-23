@@ -198,10 +198,16 @@ export const DashboardPage = () => {
 			{/* Charts */}
 			{isReachedEnd ? (
 				<div className='grid md:grid-cols-1 mt-10 lg:grid-cols-2 gap-4'>
-					<div>{isReachedEnd && <TimeLineChart data={weekData} />}</div>
+					<div>
+						{isReachedEnd && <TimeLineChart data={weekData} height='md' />}
+					</div>
 					<div>
 						{isReachedEnd && (
-							<MultipleFilmsChart data={areaData} labels={uniqueDates} />
+							<MultipleFilmsChart
+								data={areaData}
+								labels={uniqueDates}
+								height='md'
+							/>
 						)}
 					</div>
 				</div>

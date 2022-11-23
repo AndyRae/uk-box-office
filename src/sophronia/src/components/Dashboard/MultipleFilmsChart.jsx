@@ -1,6 +1,6 @@
 import { Timeseries } from '../charts/Timeseries';
 
-export const MultipleFilmsChart = ({ data, labels }) => {
+export const MultipleFilmsChart = ({ data, labels, height }) => {
 	const d = {
 		labels: labels,
 		datasets: data,
@@ -60,7 +60,12 @@ export const MultipleFilmsChart = ({ data, labels }) => {
 
 	return (
 		<div className='h-96'>
-			<Timeseries id={'gradientid'} data={d} options={options} />
+			<Timeseries
+				id={'gradientid'}
+				data={d}
+				options={options}
+				height={height}
+			/>
 		</div>
 	);
 };

@@ -1,6 +1,6 @@
 import { Timeseries } from '../charts/Timeseries';
 
-export const TimeLineChart = ({ data }) => {
+export const TimeLineChart = ({ data, height }) => {
 	const d = {
 		labels: data.map((d) => d.date),
 		datasets: [
@@ -65,5 +65,7 @@ export const TimeLineChart = ({ data }) => {
 		},
 	};
 
-	return <Timeseries id={'gradientid'} data={d} options={options} />;
+	return (
+		<Timeseries id={'gradientid'} data={d} options={options} height={height} />
+	);
 };

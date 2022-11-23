@@ -7,7 +7,7 @@ export const MarketShareChart = ({ uniqueYears, graphData }) => {
 	};
 	const options = {
 		responsive: true,
-		// maintainAspectRatio: false,
+		maintainAspectRatio: false,
 		scales: {
 			x: {
 				grid: {
@@ -24,9 +24,5 @@ export const MarketShareChart = ({ uniqueYears, graphData }) => {
 			},
 		},
 	};
-	return (
-		<div className='my-10'>
-			<Timeseries data={d} options={options} />
-		</div>
-	);
+	return <Timeseries data={d} options={options} />;
 };

@@ -50,7 +50,7 @@ export const ForecastChart = ({ data }) => {
 	};
 	const options = {
 		responsive: true,
-		// maintainAspectRatio: false,
+		maintainAspectRatio: false,
 		scales: {
 			x: {
 				type: 'time',
@@ -96,9 +96,5 @@ export const ForecastChart = ({ data }) => {
 		},
 	};
 
-	return (
-		<div className='my-10'>
-			<Timeseries options={options} data={d} />
-		</div>
-	);
+	return <Timeseries options={options} data={d} />;
 };

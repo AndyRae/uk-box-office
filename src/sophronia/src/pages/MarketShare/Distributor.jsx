@@ -84,9 +84,11 @@ const MarketShareDistributorPage = () => {
 		<div>
 			<PageTitle>Distributor Market Share</PageTitle>
 
-			{data && (
-				<MarketShareChart uniqueYears={uniqueYears} graphData={graphData} />
-			)}
+			<div className='my-10'>
+				{data && (
+					<MarketShareChart uniqueYears={uniqueYears} graphData={graphData} />
+				)}
+			</div>
 
 			{uniqueYears.map((year) => {
 				var yearlyData = reducedData
@@ -105,7 +107,10 @@ const MarketShareDistributorPage = () => {
 				return (
 					<div key={year}>
 						<h2>{year}</h2>
-						<ExportCSV data={yearlyData} />
+						<ExportCSV
+							data={yearlyData}
+							filename={`${year}-distributor-market-share.csv`}
+						/>
 						<MarketShareTable data={yearlyData} />
 					</div>
 				);

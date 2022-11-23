@@ -23,9 +23,27 @@ ChartJS.register(
 	Tooltip
 );
 
-export const Timeseries = ({ data, options, id }) => {
+export const Timeseries = ({ data, options, id, height = 'lg' }) => {
+	var size = 'h-96';
+
+	switch (height) {
+		case 'sm':
+			size = 'h-60';
+			break;
+		case 'md':
+			size = 'h-80';
+			break;
+		case 'lg':
+			size = 'h-96';
+			break;
+		case 'xl':
+			size = 'h-screen';
+		default:
+			break;
+	}
+
 	return (
-		<div className='h-full'>
+		<div className={`relative ${size}`}>
 			<Line datasetIdKey='id' id={id} options={options} data={data} />
 		</div>
 	);

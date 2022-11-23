@@ -53,9 +53,5 @@ export const AllTimeChart = ({ data }) => {
 		},
 	};
 
-	return (
-		<>
-			<BarChart data={d} options={options} />
-		</>
-	);
+	return <BarChart data={d} options={options} />;
 };

@@ -27,7 +27,9 @@ const ForecastPage = () => {
 			<PageTitle>Forecast</PageTitle>
 			<div className='grid md:grid-cols-2 lg:grid-cols-4 gap-4'></div>
 
-			{data && <ForecastChart data={data.results} />}
+			<div className='my-10'>
+				{data && <ForecastChart data={data.results} />}
+			</div>
 
 			<PageContent>
 				<h3 className='text-2xl font-bold mb-3 dark:text-white'>
