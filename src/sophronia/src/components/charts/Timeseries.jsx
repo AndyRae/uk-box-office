@@ -25,7 +25,7 @@ ChartJS.register(
 
 export const Timeseries = ({ data, options, id }) => {
 	return (
-		<div className='h-80'>
+		<div className='h-full'>
 			<Line datasetIdKey='id' id={id} options={options} data={data} />
 		</div>
 	);
