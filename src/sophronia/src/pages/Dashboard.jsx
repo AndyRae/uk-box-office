@@ -108,9 +108,9 @@ export const DashboardPage = () => {
 	};
 
 	// Work out the difference between the last two dates
+	// Used to set the active button
 	const diffTime = Math.abs(s - start);
 	const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-	console.log(diffDays);
 
 	return (
 		<div className='transition ease-in-out'>

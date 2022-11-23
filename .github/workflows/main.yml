@@ -47,6 +47,7 @@ jobs:
             cd /var/www/uk-box-office
             source venv/bin/activate
             cd src/berenice
+            pip install -r requirements.txt
             flask db update
             systemctl restart nginx
             systemctl restart gunicorn
