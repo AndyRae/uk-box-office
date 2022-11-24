@@ -28,7 +28,7 @@ const PillLink = ({ to, children, isActive }) => (
 			to={to}
 			className={`inline-block py-3 px-4 rounded-lg hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white ${
 				isActive
-					? 'text-gray-900 bg-gray-100 dark:bg-gray-800 dark:text-white'
+					? 'text-gray-900 bg-gray-100 dark:bg-gray-900 dark:text-white'
 					: ''
 			}`}
 		>
@@ -277,14 +277,16 @@ export const TimePage = () => {
 				>
 					Films
 				</TabTitle>
-				<TabTitle
-					id={2}
-					label={'weeks'}
-					isActive={currentTab === '2'}
-					onClick={handleTabClick}
-				>
-					Weeks
-				</TabTitle>
+				{weekData.length > 1 && (
+					<TabTitle
+						id={2}
+						label={'weeks'}
+						isActive={currentTab === '2'}
+						onClick={handleTabClick}
+					>
+						Weeks
+					</TabTitle>
+				)}
 				<TabTitle
 					id={3}
 					label={'previous'}

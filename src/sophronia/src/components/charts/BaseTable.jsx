@@ -1,6 +1,6 @@
 const Thead = ({ children }) => {
 	return (
-		<thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
+		<thead className='text-xs text-gray-700 uppercase border-b-2 border-b-gray-500 bg-gray-50 dark:bg-gray-900 dark:text-gray-400'>
 			{children}
 		</thead>
 	);
@@ -16,12 +16,12 @@ const Th = ({ isNumeric, children }) => {
 
 export const Tr = ({ index, children }) => {
 	const alternatingColor = ['bg-white', 'bg-gray-100'];
-	const alternatingDarkColor = ['dark:bg-gray-800', 'dark:bg-gray-900'];
+	const alternatingDarkColor = ['dark:bg-black', 'dark:bg-gray-900'];
 	return (
 		<tr
 			className={`${alternatingColor[index % alternatingColor.length]} ${
 				alternatingDarkColor[index % alternatingDarkColor.length]
-			} py-4 px-3 hover:bg-gray-50 dark:hover:bg-gray-600`}
+			} py-4 px-3 hover:bg-gray-50 dark:hover:bg-gray-800`}
 		>
 			{children}
 		</tr>

@@ -50,7 +50,7 @@ const SideBarElement = ({ name, path, icon, children, isActive }) => {
 		<NavLink
 			to={path}
 			as={Link}
-			className={`flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 ${
+			className={`flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900 ${
 				isActive ? 'bg-gray-200 dark:bg-bo-primary' : ''
 			}`}
 		>
@@ -97,7 +97,7 @@ const SidebarContent = () => {
 				<Searchbar />
 			</div>
 
-			<div className='p-4 mt-6 bg-blue-50 rounded-lg dark:bg-slate-800'>
+			<div className='p-4 mt-6 bg-blue-50 rounded-lg dark:bg-slate-900'>
 				<div className='flex items-center mb-3'>
 					<span className='bg-bo-primary text-gray-50 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded'>
 						Beta
@@ -170,7 +170,6 @@ export const Sidebar = ({ children }) => {
 			<aside
 				id='sidebar'
 				className='bg-gray-50 dark:bg-black h-screen fixed lg:sticky dark:text-gray-100 w-72 grow-0 space-y-6 pt-6 px-3 inset-y-0 left-0 transform  lg:translate-x-0 transition duration-150 ease-in-out lg:flex-none overflow-y-auto'
-				// className='bg-gray-50 dark:bg-gray-900 h-screen fixed lg:sticky dark:text-gray-100 w-72 grow-0 space-y-6 pt-6 px-3 inset-y-0 left-0 transform  lg:translate-x-0 transition duration-150 ease-in-out lg:flex-none overflow-y-auto'
 			>
 				<SidebarContent />
 			</aside>

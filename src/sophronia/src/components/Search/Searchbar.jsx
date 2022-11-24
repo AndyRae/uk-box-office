@@ -25,14 +25,14 @@ export const Searchbar = ({ placeholder = 'Search', value = null }) => {
 						type='search'
 						id='search'
 						placeholder={placeholder}
-						className='block p-2 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+						className='block p-2 w-full text-sm text-gray-900 bg-gray-50 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
 						{...register('Search', {})}
 						value={value}
 						required
 					/>
 					<button
 						type='submit'
-						className='absolute top-0 right-0 p-2 text-sm font-medium text-white bg-bo-primary rounded-r-lg border-2 border-bo-primary hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-red-300'
+						className='absolute top-0 right-0 p-2 text-sm font-medium text-white bg-bo-primary rounded-r-lg border-1 border-bo-primary hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-red-300'
 					>
 						<AiOutlineSearch className='h-5 w-5' />
 					</button>

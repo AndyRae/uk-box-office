@@ -84,6 +84,11 @@ export const FilmTimeChart = ({ data }) => {
 			},
 		},
 	};
+
+	if (d.labels.length > 6) {
+		options.scales.x.time.unit = 'month';
+	}
+
 	return (
 		<div className='my-10 h-80'>
 			<Timeseries options={options} data={d} />

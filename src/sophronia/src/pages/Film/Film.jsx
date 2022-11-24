@@ -79,12 +79,12 @@ export const FilmPage = () => {
 				</Card>
 			</div>
 
-			<div className='grid md:grid-cols-1 lg:grid-cols-2 gap-4'>
+			<div className='grid md:grid-cols-1 lg:grid-cols-2 gap-4 mb-14'>
 				{data.weeks.length >= 2 && <FilmTimeChart data={data.weeks} />}
 				{data.weeks.length >= 2 && <FilmCumulativeChart data={data.weeks} />}
 			</div>
 
-			<div className='flex flex-row-reverse mt-3'>
+			<div className='flex flex-row-reverse my-5'>
 				<ExportCSV data={data.weeks} filename={`${data.name}_data.csv`} />
 			</div>
 
