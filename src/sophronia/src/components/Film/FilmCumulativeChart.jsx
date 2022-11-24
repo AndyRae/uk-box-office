@@ -23,6 +23,23 @@ export const FilmCumulativeChart = ({ data }) => {
 		maintainAspectRatio: false,
 		scales: {
 			x: {
+				type: 'time',
+				distribution: 'series',
+				time: {
+					unit: 'week',
+					tooltipFormat: 'dd/MM/yyyy',
+					displayFormats: {
+						week: 'dd MMM',
+						month: 'MMM yy',
+						quarter: 'MMM dd',
+						year: 'yyyy',
+					},
+				},
+				ticks: {
+					maxRotation: 0,
+					minRotation: 0,
+					autoSkip: true,
+				},
 				grid: {
 					display: false,
 				},
@@ -54,6 +71,10 @@ export const FilmCumulativeChart = ({ data }) => {
 						}
 						return '£' + formatNumber(value);
 					},
+				},
+				grid: {
+					display: false,
+					drawBorder: false,
 				},
 			},
 		},

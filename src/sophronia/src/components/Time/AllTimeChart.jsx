@@ -49,6 +49,10 @@ export const AllTimeChart = ({ data }) => {
 						return '£' + formatNumber(value);
 					},
 				},
+				grid: {
+					display: false,
+					drawBorder: false,
+				},
 			},
 		},
 	};

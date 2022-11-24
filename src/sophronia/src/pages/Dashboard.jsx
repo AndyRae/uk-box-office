@@ -149,7 +149,7 @@ export const DashboardPage = () => {
 
 			{/* Scorecards grid. */}
 			{isReachedEnd ? (
-				<div className='grid md:grid-cols-2 mt-10 lg:grid-cols-4 gap-4'>
+				<div className='grid md:grid-cols-2 mt-6 lg:grid-cols-4 gap-5'>
 					<Card
 						title='Total Box Office'
 						subtitle={`£${boxOffice.toLocaleString()}`}
@@ -197,26 +197,33 @@ export const DashboardPage = () => {
 
 			{/* Charts */}
 			{isReachedEnd ? (
-				<div className='grid md:grid-cols-1 mt-10 lg:grid-cols-2 gap-4'>
-					<div>
+				<div className='grid md:grid-cols-1 mt-6 lg:grid-cols-2 gap-5'>
+					<Card title='Box Office'>
 						{isReachedEnd && <TimeLineChart data={weekData} height='md' />}
-					</div>
-					<div>
+					</Card>
+
+					<Card title='Films'>
 						{isReachedEnd && (
 							<MultipleFilmsChart
 								data={areaData}
-								labels={uniqueDates}
 								height='md'
+								labels={uniqueDates}
 							/>
 						)}
-					</div>
+					</Card>
 				</div>
 			) : (
 				<SkeletonCharts />
 			)}
 
 			{/* Table */}
-			{isReachedEnd ? <FilmTable data={tableData} /> : <FilmTable data={[]} />}
+			<div className='mt-6'>
+				{isReachedEnd ? (
+					<FilmTable data={tableData} />
+				) : (
+					<FilmTable data={[]} />
+				)}
+			</div>
 		</div>
 	);
 };

@@ -21,6 +21,11 @@ export const TimeLineChart = ({ data, height }) => {
 	const options = {
 		responsive: true,
 		maintainAspectRatio: false,
+		plugins: {
+			legend: {
+				display: false,
+			},
+		},
 		scales: {
 			x: {
 				type: 'time',
@@ -66,6 +71,10 @@ export const TimeLineChart = ({ data, height }) => {
 						}
 						return '£' + formatNumber(value);
 					},
+				},
+				grid: {
+					display: false,
+					drawBorder: false,
 				},
 			},
 		},

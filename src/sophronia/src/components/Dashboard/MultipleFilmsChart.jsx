@@ -60,6 +60,10 @@ export const MultipleFilmsChart = ({ data, labels, height }) => {
 						return '£' + formatNumber(value);
 					},
 				},
+				grid: {
+					display: false,
+					drawBorder: false,
+				},
 			},
 		},
 	};
@@ -69,13 +73,6 @@ export const MultipleFilmsChart = ({ data, labels, height }) => {
 	}
 
 	return (
-		<div className='h-96'>
-			<Timeseries
-				id={'gradientid'}
-				data={d}
-				options={options}
-				height={height}
-			/>
-		</div>
+		<Timeseries id={'gradientid'} data={d} options={options} height={height} />
 	);
 };
