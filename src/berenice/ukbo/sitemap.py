@@ -32,31 +32,6 @@ def sitemap() -> Response:
     return response
 
 
-@bp.route("/sitemap_static.xml")
-@cache.cached()
-def base() -> Response:
-    data = []
-    url = "https://api.boxofficedata.co.uk"
-    now = datetime.datetime.now() - datetime.timedelta(days=10)
-    lastmod = now.strftime("%Y-%m-%d")
-
-    # Main Views
-    for rule in current_app.url_map.iter_rules():
-        if rule.methods is not None:
-            if (
-                "GET" in rule.methods
-                and len(rule.arguments) == 0
-                and not rule.rule.startswith("/api")
-                and not rule.rule.startswith("/auth")
-                and not rule.rule.startswith("/scheduler")
-                and not rule.rule.startswith("/test")
-                and not rule.rule.startswith("/sitemap")
-            ):
-                data.append([url + rule.rule, lastmod])
-
-    return return_sitemap(data)
-
-
 @bp.route("/sitemap_<char>.xml")
 @cache.cached()
 def films_letter(char: str) -> Response:
@@ -64,7 +39,7 @@ def films_letter(char: str) -> Response:
     10k+ films - so split sitemap alphabetically
     """
     data = []
-    url = "https://api.boxofficedata.co.uk"
+    url = "https://boxofficedata.co.uk"
     now = datetime.datetime.now() - datetime.timedelta(days=10)
     lastmod = now.strftime("%Y-%m-%d")
 
@@ -73,7 +48,7 @@ def films_letter(char: str) -> Response:
     films = query.all()
 
     for i in films:
-        slug = f"{url}/films/{i.slug}"
+        slug = f"{url}/film/{i.slug}"
         data.append([slug, lastmod])
 
     return return_sitemap(data)
@@ -83,7 +58,7 @@ def films_letter(char: str) -> Response:
 @cache.cached()
 def countries() -> Response:
     data = []
-    url = "https://api.boxofficedata.co.uk"
+    url = "https://boxofficedata.co.uk"
     now = datetime.datetime.now() - datetime.timedelta(days=10)
     lastmod = now.strftime("%Y-%m-%d")
 
@@ -99,7 +74,7 @@ def countries() -> Response:
 @cache.cached()
 def distributors() -> Response:
     data = []
-    url = "https://api.boxofficedata.co.uk"
+    url = "https://boxofficedata.co.uk"
     now = datetime.datetime.now() - datetime.timedelta(days=10)
     lastmod = now.strftime("%Y-%m-%d")
 
@@ -118,7 +93,7 @@ def time() -> Response:
     Time sitemap
     """
     data = []
-    url = "https://api.boxofficedata.co.uk"
+    url = "https://boxofficedata.co.uk"
     now = datetime.datetime.now() - datetime.timedelta(days=10)
 
     time = db.session.query(models.Film_Week.date)
