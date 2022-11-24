@@ -88,7 +88,7 @@ class Film(PkModel):  # type: ignore
 
     @hybrid_property
     def gross(self) -> int:
-        return max(week.total_gross for week in self.weeks)
+        return max((week.total_gross for week in self.weeks), default=0)
 
     @gross.expression  # type: ignore
     def gross(cls) -> Any:
