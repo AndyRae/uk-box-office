@@ -18,10 +18,16 @@ ChartJS.register(
 	Legend
 );
 
-export const BarChart = ({ data, options }) => {
+export const BarChart = ({ data, options, onClick, chartRef }) => {
 	return (
 		<div className='my-10 h-96'>
-			<Bar datasetIdKey='id' options={options} data={data} />
+			<Bar
+				datasetIdKey='id'
+				options={options}
+				data={data}
+				onClick={onClick}
+				ref={chartRef}
+			/>
 		</div>
 	);
 };

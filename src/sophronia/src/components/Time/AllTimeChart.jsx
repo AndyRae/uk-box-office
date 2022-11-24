@@ -1,6 +1,11 @@
 import { BarChart } from '../charts/BarChart';
+import { useRef } from 'react';
+import { getElementAtEvent } from 'react-chartjs-2';
+import { useNavigate } from 'react-router-dom';
 
 export const AllTimeChart = ({ data }) => {
+	const navigate = useNavigate();
+
 	const d = {
 		labels: data.map((d) => d.year),
 		datasets: [
@@ -57,5 +62,20 @@ export const AllTimeChart = ({ data }) => {
 		},
 	};
 
-	return <BarChart data={d} options={options} />;
+	// Chart Navigation
+	const chartRef = useRef();
+	const onClick = (event) => {
+		var x = getElementAtEvent(chartRef.current, event);
+		const year = d.labels[x[0].index];
+		navigate(`/time/${year}`);
+	};
+
+	return (
+		<BarChart
+			data={d}
+			options={options}
+			onClick={onClick}
+			chartRef={chartRef}
+		/>
+	);
 };
