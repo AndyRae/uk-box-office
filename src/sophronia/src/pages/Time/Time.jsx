@@ -223,15 +223,17 @@ export const TimePage = () => {
 
 			{/* // Chart */}
 			<div className='mt-6'>
-				<Card>
-					{weekData &&
-						weekData.length > 1 &&
-						(isReachedEnd ? (
+				{weekData &&
+					weekData.length > 1 &&
+					(isReachedEnd ? (
+						<Card>
 							<TimeLineChart data={weekData} />
-						) : (
+						</Card>
+					) : (
+						<Card>
 							<TimeLineChart data={[]} />
-						))}
-				</Card>
+						</Card>
+					))}
 			</div>
 
 			<div className='py-3'>
