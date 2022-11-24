@@ -121,12 +121,13 @@ export const DashboardPage = () => {
 			/>
 
 			{/* Controls */}
-			<div className='flex flex-wrap mb-2 items-center justify-center'>
+			<div className='flex flex-wrap mb-2 gap-y-4 items-center justify-center'>
 				<Datepickers
 					start={start}
 					end={end}
 					setStart={setStart}
 					setEnd={setEnd}
+					minimum={s.addDays(-547)} // Can go back 18 months
 				/>
 				<ButtonGroup>
 					<Button onClick={() => changeDate(7)} isActive={diffDays === 7}>

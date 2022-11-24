@@ -21,6 +21,10 @@ export const MarketShareChart = ({ uniqueYears, graphData }) => {
 				ticks: {
 					autoSkip: true,
 				},
+				grid: {
+					display: false,
+					drawBorder: false,
+				},
 			},
 		},
 	};

@@ -80,12 +80,16 @@ export const FilmPage = () => {
 			</div>
 
 			<div className='grid md:grid-cols-1 lg:grid-cols-2 gap-5 mb-10 mt-6'>
-				<Card title='Weekly Box Office'>
-					{data.weeks.length >= 2 && <FilmTimeChart data={data.weeks} />}
-				</Card>
-				<Card title='Cumulative Box Office'>
-					{data.weeks.length >= 2 && <FilmCumulativeChart data={data.weeks} />}
-				</Card>
+				{data.weeks.length >= 2 && (
+					<Card title='Weekly Box Office'>
+						<FilmTimeChart data={data.weeks} />
+					</Card>
+				)}
+				{data.weeks.length >= 2 && (
+					<Card title='Cumulative Box Office'>
+						<FilmCumulativeChart data={data.weeks} />
+					</Card>
+				)}
 			</div>
 
 			<div className='flex flex-row-reverse my-5'>
