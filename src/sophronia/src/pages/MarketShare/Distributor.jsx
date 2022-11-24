@@ -6,6 +6,7 @@ import { PageTitle } from '../../components/ui/PageTitle';
 import { ExportCSV } from '../../components/ui/ExportCSV';
 import { MarketShareTable } from '../../components/Distributor/MarketShareTable';
 import { Tab, Tabs, TabContent, TabTitle } from '../../components/ui/Tabs';
+import { Card } from '../../components/Dashboard/Card';
 
 const MarketShareDistributorPage = () => {
 	const { data, error } = useDistributorMarketShare();
@@ -85,7 +86,9 @@ const MarketShareDistributorPage = () => {
 
 			<div className='my-10'>
 				{data && (
-					<MarketShareChart uniqueYears={uniqueYears} graphData={graphData} />
+					<Card>
+						<MarketShareChart uniqueYears={uniqueYears} graphData={graphData} />
+					</Card>
 				)}
 			</div>
 
