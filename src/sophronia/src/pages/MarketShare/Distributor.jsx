@@ -55,19 +55,6 @@ const MarketShareDistributorPage = () => {
 		return bTotal - aTotal;
 	});
 
-	// var colors = [
-	// 	'#fe7e6d',
-	// 	'#fc9b89',
-	// 	'#f8b6a5',
-	// 	'#f2cfc0',
-	// 	'#ede7d8',
-	// 	'#d8d3e8',
-	// 	'#aeaae8',
-	// 	'#7f83de',
-	// 	'#4c61c6',
-	// 	'#17439b',
-	// ];
-
 	var colors = [
 		'#650033',
 		'#98335f',
