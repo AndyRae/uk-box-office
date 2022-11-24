@@ -27,7 +27,6 @@ export const Searchbar = ({ placeholder = 'Search', value = null }) => {
 						placeholder={placeholder}
 						className='block p-2 w-full text-sm text-gray-900 bg-white rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
 						{...register('Search', {})}
-						value={value}
 						required
 					/>
 					<button
