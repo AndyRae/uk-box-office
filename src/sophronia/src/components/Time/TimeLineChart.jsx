@@ -6,7 +6,7 @@ import { Tooltip } from '../ui/Tooltip';
 import { useNavigate } from 'react-router-dom';
 import { getElementAtEvent } from 'react-chartjs-2';
 
-export const TimeLineChart = ({ data, height }) => {
+export const TimeLineChart = ({ data, height, color = '#B65078' }) => {
 	const navigate = useNavigate();
 
 	// To configure rolling up / down the data
@@ -25,8 +25,8 @@ export const TimeLineChart = ({ data, height }) => {
 				label: 'Box Office',
 				data: chartData.map((d) => d.weekGross),
 				fill: true,
-				backgroundColor: ['#B650784D'],
-				borderColor: ['#B65078'],
+				backgroundColor: [`${color}4D`],
+				borderColor: [color],
 				pointStyle: 'line',
 				pointRadius: 4,
 				tension: 0.4,

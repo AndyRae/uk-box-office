@@ -7,10 +7,9 @@ import { Spinner } from '../../components/ui/Spinner';
 import { Suspense, useEffect } from 'react';
 import { Date } from '../../components/Date';
 import { ExportCSV } from '../../components/ui/ExportCSV';
-import { FilmTimeChart } from '../../components/Film/FilmTimeChart';
-import { FilmCumulativeChart } from '../../components/Film/FilmCumulativeChart';
 import { StructuredTimeData } from '../../components/StructuredData';
 import { PageTitle } from '../../components/ui/PageTitle';
+import { TimeLineChart } from '../../components/Time/TimeLineChart';
 
 export const FilmPage = () => {
 	const { slug } = useParams();
@@ -26,6 +25,16 @@ export const FilmPage = () => {
 	useEffect(() => {
 		document.title = `${data?.name} - UK Box Office Data`;
 	}, []);
+
+	// Rename to make it easy to reuse charts
+	const chartData = data.weeks.map(({ week_gross: weekGross, date }) => ({
+		date,
+		weekGross,
+	}));
+	const cumulativeData = data.weeks.map(({ total_gross: weekGross, date }) => ({
+		date,
+		weekGross,
+	}));
 
 	return (
 		<div>
@@ -82,12 +91,12 @@ export const FilmPage = () => {
 			<div className='grid md:grid-cols-1 lg:grid-cols-2 gap-5 mb-10 mt-6'>
 				{data.weeks.length >= 2 && (
 					<Card title='Weekly Box Office'>
-						<FilmTimeChart data={data.weeks} />
+						<TimeLineChart data={chartData} />
 					</Card>
 				)}
 				{data.weeks.length >= 2 && (
 					<Card title='Cumulative Box Office'>
-						<FilmCumulativeChart data={data.weeks} />
+						<TimeLineChart data={cumulativeData} color='#1E3A8A' />
 					</Card>
 				)}
 			</div>
