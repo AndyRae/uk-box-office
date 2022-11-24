@@ -5,6 +5,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { Root } from './Routes';
 import './index.css';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import scrollToTop from './utils/scrollToTop';
+import ScrollToTop from './utils/scrollToTop';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -12,6 +14,7 @@ root.render(
 		<ErrorBoundary>
 			<BrowserRouter>
 				<Suspense fallback={<div background='#999999'>Loading...</div>}>
+					<ScrollToTop />
 					<Root />
 				</Suspense>
 			</BrowserRouter>
