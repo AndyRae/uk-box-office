@@ -37,7 +37,7 @@ export const FilmPage = () => {
 			<PageTitle>
 				{data.name} {isFirstWeek && `(${releaseDate.split('-')[0]})`}
 			</PageTitle>
-			<div className='grid md:grid-cols-2 lg:grid-cols-4 gap-4'>
+			<div className='grid md:grid-cols-2 lg:grid-cols-4 gap-5'>
 				<Card
 					title='Total Box Office'
 					subtitle={`£ ${data.gross.toLocaleString('en-GB')}`}
@@ -79,9 +79,13 @@ export const FilmPage = () => {
 				</Card>
 			</div>
 
-			<div className='grid md:grid-cols-1 lg:grid-cols-2 gap-4 mb-14'>
-				{data.weeks.length >= 2 && <FilmTimeChart data={data.weeks} />}
-				{data.weeks.length >= 2 && <FilmCumulativeChart data={data.weeks} />}
+			<div className='grid md:grid-cols-1 lg:grid-cols-2 gap-5 mb-10 mt-6'>
+				<Card title='Weekly Box Office'>
+					{data.weeks.length >= 2 && <FilmTimeChart data={data.weeks} />}
+				</Card>
+				<Card title='Cumulative Box Office'>
+					{data.weeks.length >= 2 && <FilmCumulativeChart data={data.weeks} />}
+				</Card>
 			</div>
 
 			<div className='flex flex-row-reverse my-5'>

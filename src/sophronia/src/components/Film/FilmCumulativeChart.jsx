@@ -31,7 +31,7 @@ export const FilmCumulativeChart = ({ data }) => {
 					displayFormats: {
 						week: 'dd MMM',
 						month: 'MMM yy',
-						quarter: 'MMM dd',
+						quarter: 'MMM yy',
 						year: 'yyyy',
 					},
 				},
@@ -80,13 +80,16 @@ export const FilmCumulativeChart = ({ data }) => {
 		},
 		plugins: {
 			legend: {
-				display: true,
+				display: false,
 			},
 		},
 	};
 
 	if (d.labels.length > 6) {
 		options.scales.x.time.unit = 'month';
+	}
+	if (d.labels.length > 20) {
+		options.scales.x.time.unit = 'quarter';
 	}
 
 	return (
