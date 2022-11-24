@@ -1,12 +1,29 @@
 import { Timeseries } from '../charts/Timeseries';
+import { groupbyMonth } from '../../utils/groupData';
+import { AiOutlineArrowDown } from 'react-icons/ai';
+import { useState, useEffect, useRef } from 'react';
+import { Tooltip } from '../ui/Tooltip';
+import { useNavigate } from 'react-router-dom';
+import { getElementAtEvent } from 'react-chartjs-2';
 
 export const TimeLineChart = ({ data, height }) => {
+	const navigate = useNavigate();
+
+	// To configure rolling up / down the data
+	const [chartData, setChartData] = useState(data);
+	const { results } = groupbyMonth(data);
+	const [isGroupedByMonth, setIsGroupedByMonth] = useState(false);
+
+	useEffect(() => {
+		setChartData(data);
+	}, [data]);
+
 	const d = {
-		labels: data.map((d) => d.date),
+		labels: chartData.map((d) => d.date),
 		datasets: [
 			{
 				label: 'Box Office',
-				data: data.map((d) => d.weekGross),
+				data: chartData.map((d) => d.weekGross),
 				fill: true,
 				backgroundColor: ['#B650784D'],
 				borderColor: ['#B65078'],
@@ -25,6 +42,9 @@ export const TimeLineChart = ({ data, height }) => {
 			legend: {
 				display: false,
 			},
+		},
+		interaction: {
+			intersect: false,
 		},
 		scales: {
 			x: {
@@ -84,7 +104,50 @@ export const TimeLineChart = ({ data, height }) => {
 		options.scales.x.time.unit = 'month';
 	}
 
+	// Grouping the data by month
+	const rollUp = () => {
+		setChartData(results);
+		setIsGroupedByMonth(true);
+	};
+
+	// Grouping the data by week (default)
+	const rollDown = () => {
+		setChartData(data);
+		setIsGroupedByMonth(false);
+	};
+
+	// Navigation
+	const chartRef = useRef();
+	const onClick = (event) => {
+		var x = getElementAtEvent(chartRef.current, event);
+		if (x.length > 0) {
+			const dateString = d.labels[x[0].index].split('-');
+			const url = `/time/${dateString[0]}${
+				dateString[1] ? '/m' + parseInt(dateString[1], 10) : ''
+			}${dateString[2] ? '/d' + dateString[2] : ''}`;
+			navigate(url);
+		}
+	};
+
 	return (
-		<Timeseries id={'gradientid'} data={d} options={options} height={height} />
+		<>
+			<div className='flex flex-row-reverse'>
+				<Tooltip text={isGroupedByMonth ? 'Week' : 'Month'}>
+					<AiOutlineArrowDown
+						className='h-6 w-6 transition-all duration-500'
+						style={!isGroupedByMonth ? { transform: 'rotate(180deg)' } : ''}
+						onClick={isGroupedByMonth ? rollDown : rollUp}
+					/>
+				</Tooltip>
+			</div>
+			<Timeseries
+				id={'gradientid'}
+				data={d}
+				options={options}
+				height={height}
+				chartRef={chartRef}
+				onClick={onClick}
+			/>
+		</>
 	);
 };

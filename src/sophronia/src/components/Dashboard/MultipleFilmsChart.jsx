@@ -1,6 +1,11 @@
 import { Timeseries } from '../charts/Timeseries';
+import { useNavigate } from 'react-router-dom';
+import { getDatasetAtEvent } from 'react-chartjs-2';
+import { useRef } from 'react';
 
 export const MultipleFilmsChart = ({ data, labels, height }) => {
+	const navigate = useNavigate();
+
 	const d = {
 		labels: labels,
 		datasets: data,
@@ -9,6 +14,9 @@ export const MultipleFilmsChart = ({ data, labels, height }) => {
 	const options = {
 		responsive: true,
 		maintainAspectRatio: false,
+		interaction: {
+			intersect: false,
+		},
 		plugins: {
 			legend: {
 				display: false,
@@ -72,7 +80,24 @@ export const MultipleFilmsChart = ({ data, labels, height }) => {
 		options.scales.x.time.unit = 'month';
 	}
 
+	// Navigation
+	const chartRef = useRef();
+	const onClick = (event) => {
+		var x = getDatasetAtEvent(chartRef.current, event);
+		if (x.length > 0) {
+			const slug = data[x[0].datasetIndex].slug;
+			navigate(`/film/${slug}`);
+		}
+	};
+
 	return (
-		<Timeseries id={'gradientid'} data={d} options={options} height={height} />
+		<Timeseries
+			id={'gradientid'}
+			data={d}
+			options={options}
+			height={height}
+			chartRef={chartRef}
+			onClick={onClick}
+		/>
 	);
 };

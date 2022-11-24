@@ -151,7 +151,7 @@ export const Sidebar = ({ children }) => {
 			<input type='checkbox' id='menu-open' className='hidden' />
 
 			{/* Mobile menu */}
-			<header className='bg-bo-grey dark:bg-gray-900 dark:text-gray-100 flex sticky top-0 justify-between lg:hidden'>
+			<header className='bg-bo-grey dark:bg-gray-900 dark:text-gray-100 flex sticky top-0 justify-between lg:hidden z-10'>
 				<div className='mt-6 px-3'>
 					<Brand />
 				</div>

@@ -21,6 +21,9 @@ export const FilmCumulativeChart = ({ data }) => {
 	const options = {
 		responsive: true,
 		maintainAspectRatio: false,
+		interaction: {
+			intersect: false,
+		},
 		scales: {
 			x: {
 				type: 'time',

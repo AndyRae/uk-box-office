@@ -6,6 +6,7 @@ import { MetricChange } from '../charts/MetricChange';
 import { Datepickers } from './Datepickers';
 import { TimeLineChart } from '../Time/TimeLineChart';
 import { FilmTable } from '../Time/FilmTable';
+import { FilmCumulativeChart } from '../Film/FilmCumulativeChart';
 
 export const SkeletonCards = () => {
 	return (
@@ -47,7 +48,7 @@ export const SkeletonCharts = () => {
 				<TimeLineChart data={[]} />
 			</div>
 			<div className='animate-pulse shadow'>
-				<TimeLineChart data={[]} />
+				<FilmCumulativeChart data={[]} />
 			</div>
 		</div>
 	);

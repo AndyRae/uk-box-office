@@ -5,6 +5,7 @@ import { MarketShareChart } from '../../components/Distributor/MarketShareChart'
 import { PageTitle } from '../../components/ui/PageTitle';
 import { ExportCSV } from '../../components/ui/ExportCSV';
 import { MarketShareTable } from '../../components/Distributor/MarketShareTable';
+import { Tab, Tabs, TabContent, TabTitle } from '../../components/ui/Tabs';
 
 const MarketShareDistributorPage = () => {
 	const { data, error } = useDistributorMarketShare();
@@ -78,8 +79,6 @@ const MarketShareDistributorPage = () => {
 		};
 	});
 
-	console.log(reducedData);
-
 	return (
 		<div>
 			<PageTitle>Distributor Market Share</PageTitle>
@@ -90,31 +89,39 @@ const MarketShareDistributorPage = () => {
 				)}
 			</div>
 
-			{uniqueYears.map((year) => {
-				var yearlyData = reducedData
-					.map((d) => {
-						return {
-							name: d.distributor,
-							slug: d.distributor.toLowerCase().replace(/ /g, '-'),
-							marketShare: d.years.find((y) => y.year === year).marketShare,
-							marketPercentage: d.years.find((y) => y.year === year)
-								.marketPercentage,
-						};
-					})
-					.sort((a, b) => b.marketShare - a.marketShare)
-					.slice(0, 10);
+			<Tabs>
+				{uniqueYears.map((year) => {
+					return <TabTitle key={year}>{year}</TabTitle>;
+				})}
+			</Tabs>
 
-				return (
-					<div key={year}>
-						<h2>{year}</h2>
-						<ExportCSV
-							data={yearlyData}
-							filename={`${year}-distributor-market-share.csv`}
-						/>
-						<MarketShareTable data={yearlyData} />
-					</div>
-				);
-			})}
+			<TabContent>
+				{uniqueYears.map((year) => {
+					var yearlyData = reducedData
+						.map((d) => {
+							return {
+								name: d.distributor,
+								slug: d.distributor.toLowerCase().replace(/ /g, '-'),
+								marketShare: d.years.find((y) => y.year === year).marketShare,
+								marketPercentage: d.years.find((y) => y.year === year)
+									.marketPercentage,
+							};
+						})
+						.sort((a, b) => b.marketShare - a.marketShare)
+						.slice(0, 10);
+
+					return (
+						<Tab key={year}>
+							<h2 className=''>{year}</h2>
+							<ExportCSV
+								data={yearlyData}
+								filename={`${year}-distributor-market-share.csv`}
+							/>
+							<MarketShareTable data={yearlyData} />
+						</Tab>
+					);
+				})}
+			</TabContent>
 		</div>
 	);
 };

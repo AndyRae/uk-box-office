@@ -21,7 +21,6 @@ import {
 	Skeleton,
 	SkeletonCards,
 	SkeletonCharts,
-	SkeletonTable,
 } from '../components/Dashboard/Skeleton';
 import { MultipleFilmsChart } from '../components/Dashboard/MultipleFilmsChart';
 import { StructuredTimeData } from '../components/StructuredData';
@@ -38,6 +37,7 @@ export const DashboardPage = () => {
 	};
 
 	const daysToShow = 90;
+	const daysAllowedToGoBack = 547; // 547 days is 18 months
 	const s = new Date();
 	const [start, setStart] = useState(s.addDays(-daysToShow));
 	const [end, setEnd] = useState(new Date());
@@ -127,7 +127,7 @@ export const DashboardPage = () => {
 					end={end}
 					setStart={setStart}
 					setEnd={setEnd}
-					minimum={s.addDays(-547)} // Can go back 18 months
+					minimum={s.addDays(-daysAllowedToGoBack)} // Can go back 18 months
 				/>
 				<ButtonGroup>
 					<Button onClick={() => changeDate(7)} isActive={diffDays === 7}>

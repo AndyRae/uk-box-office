@@ -3,7 +3,7 @@
 	"name": "UK Box Office Data",
 	"icons": [
 		{
-			"src": "/icons/apple-icon.png",
+			"src": "/icons/icon.png",
 			"type": "image/png",
 			"sizes": "192x192"
 		}

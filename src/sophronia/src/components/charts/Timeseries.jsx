@@ -23,7 +23,14 @@ ChartJS.register(
 	Tooltip
 );
 
-export const Timeseries = ({ data, options, id, height = 'lg' }) => {
+export const Timeseries = ({
+	data,
+	options,
+	id,
+	height = 'lg',
+	chartRef,
+	onClick,
+}) => {
 	var size = 'h-96';
 
 	switch (height) {
@@ -44,7 +51,14 @@ export const Timeseries = ({ data, options, id, height = 'lg' }) => {
 
 	return (
 		<div className={`relative ${size}`}>
-			<Line datasetIdKey='id' id={id} options={options} data={data} />
+			<Line
+				datasetIdKey='id'
+				id={id}
+				options={options}
+				data={data}
+				ref={chartRef}
+				onClick={onClick}
+			/>
 		</div>
 	);
 };

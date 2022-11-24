@@ -5,28 +5,23 @@ import _ from 'lodash';
 
 /**
  * Groups data for the area chart.
- * TODO: This is ancient - refactor with lodash.
  * @param {*} data array of box office data.
- * @returns
+ * @returns Array of data sets objects for each film.
  */
 export const groupForAreaChart = (data) => {
 	// Reduce array to single films with box office
 
-	const groupedArea = data;
-	let groupedFilms = Array.from(
-		groupedArea.reduce(
-			(m, { film, week_gross }) => m.set(film, (m.get(film) || 0) + week_gross),
-			new Map()
-		),
-		([film, week_gross]) => ({ film, week_gross })
-	);
-
-	// Filter so we only graph the top N
-	const topNFilms = 30;
-	groupedFilms.sort(function (a, b) {
-		return b.week_gross - a.week_gross;
-	});
-	groupedFilms.splice(topNFilms);
+	const groupedFilms = _(data)
+		.groupBy('film')
+		.map((value, key) => ({
+			film: key,
+			slug: _(value).map('film_slug').first(),
+			weekGross: _.sumBy(value, 'week_gross'),
+			weekendGross: _.sumBy(value, 'weekend_gross'),
+		}))
+		.value()
+		.sort((a, b) => b.weekGross - a.weekGross)
+		.slice(0, 30); // Limit to 30 films
 
 	var colors = [
 		'#fe7e6d',
@@ -61,29 +56,25 @@ export const groupForAreaChart = (data) => {
 		'#17439b',
 	];
 
-	// Create the dataset objects - loop through the films, and then original results for matching weeks
-	let areaData = [];
-	for (let i in groupedFilms) {
-		let randomColor = colors.shift();
+	// Create the dataset objects - one for each film
+	const areaData = groupedFilms.map((film, index) => {
+		const filmData = data.filter((item) => item.film_slug === film.slug);
+		const weekData = filmData.map((item) => {
+			return { x: item.date, y: item.week_gross };
+		});
 
-		let x = {
-			label: groupedFilms[i].film,
-			borderColor: randomColor,
+		return {
+			label: film.film,
+			slug: film.slug,
+			data: weekData,
+			borderColor: colors[index],
 			fill: false,
 			tension: 0.3,
 			pointStyle: 'line',
 			pointRadius: 4,
 		};
+	});
 
-		let weeks = [];
-		for (let j in data) {
-			if (data[j].film === groupedFilms[i].film) {
-				weeks.push({ x: data[j].date, y: data[j].week_gross });
-			}
-		}
-		x.data = weeks;
-		areaData.push(x);
-	}
 	return { areaData };
 };
 
@@ -156,6 +147,25 @@ export const groupbyDate = (data) => {
 		}))
 		.value()
 		.reverse();
+
+	return { results };
+};
+
+/**
+ * Groups box office by month.
+ * @param {*} data
+ * @returns
+ */
+export const groupbyMonth = (data) => {
+	const results = _(data)
+		.groupBy((o) => o.date.substring(0, 7))
+		.map((value, key) => ({
+			date: key,
+			weekGross: _.sumBy(value, 'weekGross'),
+			weekendGross: _.sumBy(value, 'weekendGross'),
+			newReleases: _.sumBy(value, 'newReleases'),
+		}))
+		.value();
 
 	return { results };
 };
