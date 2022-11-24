@@ -5,7 +5,7 @@ import { MarketShareChart } from '../../components/Distributor/MarketShareChart'
 import { PageTitle } from '../../components/ui/PageTitle';
 import { ExportCSV } from '../../components/ui/ExportCSV';
 import { MarketShareTable } from '../../components/Distributor/MarketShareTable';
-import { Tab, Tabs, TabContent, TabTitle } from '../../components/ui/Tabs';
+import { Tabs } from '../../components/ui/Tabs';
 import { Card } from '../../components/Dashboard/Card';
 
 const MarketShareDistributorPage = () => {
@@ -92,13 +92,12 @@ const MarketShareDistributorPage = () => {
 				)}
 			</div>
 
-			<Tabs>
-				{uniqueYears.map((year) => {
-					return <TabTitle key={year}>{year}</TabTitle>;
-				})}
-			</Tabs>
-
-			<TabContent>
+			<Tabs
+				tabs={uniqueYears.map((year, index) => ({
+					title: year,
+					id: index,
+				}))}
+			>
 				{uniqueYears.map((year) => {
 					var yearlyData = reducedData
 						.map((d) => {
@@ -114,17 +113,18 @@ const MarketShareDistributorPage = () => {
 						.slice(0, 10);
 
 					return (
-						<Tab key={year}>
-							<h2 className=''>{year}</h2>
-							<ExportCSV
-								data={yearlyData}
-								filename={`${year}-distributor-market-share.csv`}
-							/>
+						<div key={year}>
+							<div className='flex flex-row-reverse mt-3'>
+								<ExportCSV
+									data={yearlyData}
+									filename={`${year}-distributor-market-share.csv`}
+								/>
+							</div>
 							<MarketShareTable data={yearlyData} />
-						</Tab>
+						</div>
 					);
 				})}
-			</TabContent>
+			</Tabs>
 		</div>
 	);
 };

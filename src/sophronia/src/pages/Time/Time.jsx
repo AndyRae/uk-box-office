@@ -12,8 +12,7 @@ import {
 } from '../../utils/groupData';
 import { FilmTable } from '../../components/Time/FilmTable';
 import { WeeksTable } from '../../components/Time/WeeksTable';
-import { useState } from 'react';
-import { Tab, Tabs, TabContent, TabTitle } from '../../components/ui/Tabs';
+import { Tabs } from '../../components/ui/Tabs';
 import { MetricChange } from '../../components/charts/MetricChange';
 import { PreviousTable } from '../../components/Time/PreviousTable';
 import { ExportCSV } from '../../components/ui/ExportCSV';
@@ -156,12 +155,6 @@ export const TimePage = () => {
 		);
 	}
 
-	// Tabs
-	const [currentTab, setCurrentTab] = useState('1');
-	const handleTabClick = (e) => {
-		setCurrentTab(e.target.id);
-	};
-
 	const pageTitle = `${day ? day : ''} ${
 		quarter ? `Q${quarter}` : month ? months[month] : ''
 	}${quarterend ? ` - Q${quarterend}` : ''} ${year}`;
@@ -270,81 +263,59 @@ export const TimePage = () => {
 				</ul>
 			</div>
 
-			<Tabs>
-				<TabTitle
-					id={1}
-					label={'films'}
-					isActive={currentTab === '1'}
-					onClick={handleTabClick}
-				>
-					Films
-				</TabTitle>
-				{weekData.length > 1 && (
-					<TabTitle
-						id={2}
-						label={'weeks'}
-						isActive={currentTab === '2'}
-						onClick={handleTabClick}
-					>
-						Weeks
-					</TabTitle>
-				)}
-				<TabTitle
-					id={3}
-					label={'previous'}
-					isActive={currentTab === '3'}
-					onClick={handleTabClick}
-				>
-					Previous Years
-				</TabTitle>
-			</Tabs>
-
-			<TabContent>
-				{currentTab === '1' && (
-					<Tab>
-						{results && (
-							<>
-								<div className='flex flex-row-reverse mt-3'>
-									<ExportCSV data={tableData} filename={'filmdata.csv'} />
-								</div>
-								<FilmTable
-									data={tableData}
-									comparisonData={isWeekView && lastWeekResults}
+			<Tabs
+				tabs={[
+					{
+						id: '1',
+						title: 'Films',
+					},
+					{
+						id: '2',
+						title: 'Weeks',
+					},
+					{
+						id: '3',
+						title: 'Previous Years',
+					},
+				]}
+			>
+				<div>
+					{results && (
+						<>
+							<div className='flex flex-row-reverse mt-3'>
+								<ExportCSV data={tableData} filename={'filmdata.csv'} />
+							</div>
+							<FilmTable
+								data={tableData}
+								comparisonData={isWeekView && lastWeekResults}
+							/>
+						</>
+					)}
+				</div>
+				<div>
+					{weekData && (
+						<>
+							<div className='flex flex-row-reverse mt-3'>
+								<ExportCSV data={weekData} filename={'timedata.csv'} />
+							</div>
+							<WeeksTable data={weekData} />
+						</>
+					)}
+				</div>
+				<div>
+					{timeComparisonData && (
+						<>
+							<div className='flex flex-row-reverse mt-3'>
+								<ExportCSV
+									data={timeComparisonData.results}
+									filename={'historic.csv'}
 								/>
-							</>
-						)}
-					</Tab>
-				)}
-
-				{currentTab === '2' && (
-					<Tab>
-						{weekData && (
-							<>
-								<div className='flex flex-row-reverse mt-3'>
-									<ExportCSV data={weekData} filename={'timedata.csv'} />
-								</div>
-								<WeeksTable data={weekData} />
-							</>
-						)}
-					</Tab>
-				)}
-
-				{currentTab === '3' && (
-					<Tab>
-						{timeComparisonData && (
-							<>
-								<div className='flex flex-row-reverse mt-3'>
-									<ExportCSV
-										data={timeComparisonData.results}
-										filename={'historic.csv'}
-									/>
-								</div>
-								<PreviousTable data={timeComparisonData.results} />
-							</>
-						)}
-					</Tab>
-				)}
-			</TabContent>
+							</div>
+							<PreviousTable data={timeComparisonData.results} />
+						</>
+					)}
+				</div>
+			</Tabs>
 		</div>
 	);
 };
