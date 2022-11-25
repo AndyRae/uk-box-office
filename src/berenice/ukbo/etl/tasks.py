@@ -229,3 +229,11 @@ def rollback_year(year: int) -> None:
         i.number_of_releases = 0
 
     db.session.commit()
+
+
+@with_appcontext
+def delete_film(id: int) -> None:
+    """
+    Deletes a film from the database
+    """
+    services.film.delete_film(id)

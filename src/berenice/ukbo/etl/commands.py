@@ -93,3 +93,13 @@ def rollback_year_command(year: int) -> None:
 
     tasks.rollback_year(year)
     click.echo(f"Deleted {year}")
+
+
+@click.command("delete-film")
+@click.option("--film", help="Film ID to rollback", type=int)
+@with_appcontext
+def delete_film_command(film: int) -> None:
+    """Deletes film of box office data"""
+
+    tasks.delete_film(film)
+    click.echo(f"Deleted {film}")

@@ -84,6 +84,19 @@ def add_film(
     return new
 
 
+def delete_film(id: int) -> None:
+    """
+    Delete a film and all its associated data.
+    """
+    query = db.session.query(models.Film)
+    query = query.filter(models.Film.id == id)
+    data = query.first()
+    if data is None:
+        abort(404)
+    data.delete()
+    db.session.commit()
+
+
 def search(search_query: str) -> Response:
     """
     Search films by name.
