@@ -8,6 +8,8 @@ import { NavLink, Link } from 'react-router-dom';
 import { Searchbar } from '../Search/Searchbar';
 import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
 import { BsListOl } from 'react-icons/bs';
+import { Card } from '../Dashboard/Card';
+import { InlineLink } from './InlineLink';
 
 const links = [
 	{
@@ -102,20 +104,20 @@ const SidebarContent = () => {
 				</ul>
 
 				<Searchbar />
-			</div>
 
-			<div className='p-4 mt-6 bg-white rounded-lg dark:bg-slate-900'>
-				<div className='flex items-center mb-3'>
-					<span className='bg-bo-primary text-gray-50 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded'>
-						Beta
-					</span>
-				</div>
-				<p className='mb-3 text-sm text-gray-900 dark:text-gray-50'>
-					This is a beta version of the Box Office Data dashboard.
-					<br></br>
-					I'm always still working on it and would love to hear your feedback.
-					<br></br>Email: hello@rae.li
-				</p>
+				<Card align='left' size='sm'>
+					<div className='flex  mb-3'>
+						<span className='bg-bo-primary text-gray-50 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded'>
+							Beta
+						</span>
+					</div>
+					<p className='mb-3 text-sm text-gray-900 dark:text-gray-50'>
+						This is a beta version of the Box Office Data dashboard.
+						<br></br>
+						I'm always still working on it and would love to{' '}
+						<InlineLink to='/contact'>get your feedback</InlineLink>.
+					</p>
+				</Card>
 			</div>
 		</div>
 	);
