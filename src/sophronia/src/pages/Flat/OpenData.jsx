@@ -38,8 +38,8 @@ export const OpenData = () => {
 					also download the entire dataset as a single CSV file below.
 				</p>
 				<p>
-					If you use this data in your own work, please{' '}
-					<InlineLink to='/contact'>let me know</InlineLink>, I'd love to see
+					If you use this data in your own work please credit the source, and{' '}
+					<InlineLink to='/contact'>let me know</InlineLink>; I'd love to see
 					what you do with it.
 				</p>
 				<Button>
