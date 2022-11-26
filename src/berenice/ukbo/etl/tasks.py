@@ -239,6 +239,17 @@ def delete_film(id: int) -> None:
     services.film.delete_film(id)
 
 
+@scheduler.task(
+    "cron",
+    id="archive",
+    week="*",
+    max_instances=1,
+    day_of_week="wed",
+    hour="19",
+    minute="30",
+    second=00,
+    timezone="UTC",
+)
 @with_appcontext
 def build_archive() -> None:
     """
