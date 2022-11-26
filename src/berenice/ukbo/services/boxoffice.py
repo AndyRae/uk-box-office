@@ -216,7 +216,7 @@ def build_archive() -> pd.DataFrame:
     Build a dataframe of all the box office data.
     """
     query = db.session.query(models.Film_Week)
-    data = query.order_by(models.Film_Week.date.asc(), models.Film_Week.rank.asc()).limit(1000).all()
+    data = query.order_by(models.Film_Week.date.asc(), models.Film_Week.rank.asc()).all()
     df = pd.DataFrame([ix.as_dict() for ix in data])
     df['date'] = pd.to_datetime(df['date'])
     df['weekend_gross'] = df['weekend_gross'].astype(float)
