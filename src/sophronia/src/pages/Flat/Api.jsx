@@ -1,4 +1,4 @@
-import { ExternalLink } from '../../components/ui/InlineLink';
+import { InlineLink, ExternalLink } from '../../components/ui/InlineLink';
 import { PageTitle } from '../../components/ui/PageTitle';
 import { PageContent } from '../../components/ui/PageContent';
 
@@ -25,7 +25,10 @@ export const Api = () => {
 					</ExternalLink>{' '}
 					for now.
 				</p>
-				<p>In the coming months, I'll be adding an entire site data export.</p>
+				<p>
+					You can also download the entire website data at{' '}
+					<InlineLink to='/opendata'>Open Data.</InlineLink>
+				</p>
 			</PageContent>
 		</>
 	);

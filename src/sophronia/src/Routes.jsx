@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { Dashboard } from './pages/Dashboard';
-import { Forecast } from './pages/Forecast';
+import { Forecast } from './pages/Flat/Forecast';
 import { Films } from './pages/Film/Films';
 import { Film } from './pages/Film/Film';
 import { Distributor } from './pages/Distributor/Distributor';
@@ -16,7 +16,8 @@ import { About } from './pages/Flat/About';
 import { Api } from './pages/Flat/Api';
 import { Contact } from './pages/Flat/Contact';
 import { MainSearch } from './pages/Search';
-import { TopFilms } from './pages/TopFilms';
+import { TopFilms } from './pages/Flat/TopFilms';
+import { OpenData } from './pages/Flat/OpenData';
 
 export const Root = () => {
 	return (
@@ -34,6 +35,7 @@ export const Root = () => {
 
 					<Route path='forecast' element={<Forecast />} />
 					<Route path='topfilms' element={<TopFilms />} />
+					<Route path='opendata' element={<OpenData />} />
 
 					<Route path='film'>
 						<Route index element={<Films />} />

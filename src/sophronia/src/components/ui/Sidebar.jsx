@@ -2,10 +2,12 @@ import { FaGlobeEurope } from 'react-icons/fa';
 import { BiFilm, BiNetworkChart } from 'react-icons/bi';
 import { MdOutlineSpaceDashboard, MdOutlineAutoGraph } from 'react-icons/md';
 import { HiOutlineTicket } from 'react-icons/hi';
+import { FiDatabase } from 'react-icons/fi';
 import { useLocation } from 'react-router-dom';
 import { NavLink, Link } from 'react-router-dom';
 import { Searchbar } from '../Search/Searchbar';
 import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
+import { BsListOl } from 'react-icons/bs';
 
 const links = [
 	{
@@ -36,7 +38,12 @@ const links = [
 	{
 		name: 'Top Films',
 		path: '/topfilms',
-		icon: <FaGlobeEurope />,
+		icon: <BsListOl />,
+	},
+	{
+		name: 'Open Data',
+		path: '/opendata',
+		icon: <FiDatabase />,
 	},
 	{
 		name: 'About',
