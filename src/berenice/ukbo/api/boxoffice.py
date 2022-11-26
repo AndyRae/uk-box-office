@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, send_from_directory, send_file
 from flask.wrappers import Response
 from ukbo import services
 
@@ -54,3 +54,11 @@ def topline() -> Response:
     end = request.args.get("end", None)
     page = int(request.args.get("page", 1))
     return services.boxoffice.topline(start, end, page)
+
+
+@boxoffice.route("/archive")
+def archive() -> Response:
+    """
+    Returns archive export csv file.
+    """
+    return send_file("../data/archive_export.csv", as_attachment=True)

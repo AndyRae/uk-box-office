@@ -1,10 +1,9 @@
-import json
-
 from flask import jsonify
 from flask.wrappers import Response
 from ukbo import models
 from ukbo.extensions import db
 from sqlalchemy.sql import func
+import pandas as pd
 
 from . import utils
 
@@ -210,3 +209,22 @@ def topline(start: str = None, end: str = None, page: int = 1) -> Response:
         previous=previous_page,
         results=[ix.as_dict() for ix in data.items],
     )
+
+
+def build_archive() -> pd.DataFrame:
+    """
+    Build a dataframe of all the box office data.
+    """
+    query = db.session.query(models.Film_Week)
+    data = query.order_by(models.Film_Week.date.asc(), models.Film_Week.rank.asc()).limit(1000).all()
+    df = pd.DataFrame([ix.as_dict() for ix in data])
+    df['date'] = pd.to_datetime(df['date'])
+    df['weekend_gross'] = df['weekend_gross'].astype(float)
+    df['week_gross'] = df['week_gross'].astype(float)
+    df['number_of_cinemas'] = df['number_of_cinemas'].astype(int)
+
+    # Unwrap country objects to their names with seperator.
+    df['country'] = ['/'.join([x['name'] for x in list_dict]) for list_dict in df['country']]
+
+    order = ['date', 'rank', 'film', 'country', 'weekend_gross', 'distributor', 'weeks_on_release', 'number_of_cinemas', 'total_gross', 'week_gross']
+    return df[order]

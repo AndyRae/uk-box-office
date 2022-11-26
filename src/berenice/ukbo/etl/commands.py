@@ -103,3 +103,11 @@ def delete_film_command(film: int) -> None:
 
     tasks.delete_film(film)
     click.echo(f"Deleted {film}")
+
+
+@click.command("build-archive")
+@with_appcontext
+def build_archive_command() -> None:
+    """Builds the archive file for the year"""
+    tasks.build_archive()
+    click.echo("Built archive file.")

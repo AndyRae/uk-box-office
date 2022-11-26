@@ -237,3 +237,12 @@ def delete_film(id: int) -> None:
     Deletes a film from the database
     """
     services.film.delete_film(id)
+
+
+@with_appcontext
+def build_archive() -> None:
+    """
+    Builds the archive of box office data
+    """
+    archive = services.boxoffice.build_archive()
+    archive.to_csv("./data/archive_export.csv", index=False, date_format="%Y%m%d")

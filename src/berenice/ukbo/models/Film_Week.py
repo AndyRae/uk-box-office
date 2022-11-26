@@ -38,6 +38,7 @@ class Film_Week(PkModel):  # type: ignore
         return {
             "id": self.id,
             "film": self.film.name,
+            "country": self.film.serialize_countries(),
             "film_slug": self.film.slug,
             "distributor": self.film.distributor.name,
             "date": datetime.strftime(self.date, "%Y-%m-%d"),
