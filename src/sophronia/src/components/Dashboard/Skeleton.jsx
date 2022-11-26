@@ -7,6 +7,7 @@ import { Datepickers } from './Datepickers';
 import { TimeLineChart } from '../Time/TimeLineChart';
 import { FilmTable } from '../Time/FilmTable';
 import { FilmCumulativeChart } from '../Film/FilmCumulativeChart';
+import { LastUpdated } from './LastUpdated';
 
 export const SkeletonCards = () => {
 	return (
@@ -76,7 +77,7 @@ export const Skeleton = ({ children, ...props }) => {
 					<Button>1Y</Button>
 				</ButtonGroup>
 				<div className='h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5'></div>
-				<div className='text-sm md:ml-auto pt-4'>Last Updated: --------</div>
+				<LastUpdated />
 			</div>
 
 			<SkeletonCards />

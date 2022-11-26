@@ -24,6 +24,7 @@ import {
 } from '../components/Dashboard/Skeleton';
 import { MultipleFilmsChart } from '../components/Dashboard/MultipleFilmsChart';
 import { StructuredTimeData } from '../components/StructuredData';
+import { LastUpdated } from '../components/Dashboard/LastUpdated';
 
 export const DashboardPage = () => {
 	Date.prototype.addDays = function (days) {
@@ -143,9 +144,8 @@ export const DashboardPage = () => {
 						1Y
 					</Button>
 				</ButtonGroup>
-				<div className='text-sm md:ml-auto pt-4'>
-					Last Updated: {lastUpdated}
-				</div>
+
+				<LastUpdated date={lastUpdated} />
 			</div>
 
 			{/* Scorecards grid. */}
