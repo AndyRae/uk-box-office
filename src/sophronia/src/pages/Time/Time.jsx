@@ -168,7 +168,7 @@ export const TimePage = () => {
 			/>
 			<PageTitle>UK Box Office {pageTitle}</PageTitle>
 
-			<div className='grid md:grid-cols-2 lg:grid-cols-4 gap-5'>
+			<div className='grid md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5'>
 				<Card
 					title='Total Box Office'
 					subtitle={`£${boxOffice.toLocaleString()}`}
@@ -222,7 +222,7 @@ export const TimePage = () => {
 			</div>
 
 			{/* // Chart */}
-			<div className='mt-6'>
+			<div className='mt-3 md:mt-6'>
 				{weekData &&
 					weekData.length > 1 &&
 					(isReachedEnd ? (

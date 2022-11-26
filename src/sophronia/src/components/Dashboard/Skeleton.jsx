@@ -10,7 +10,7 @@ import { FilmCumulativeChart } from '../Film/FilmCumulativeChart';
 
 export const SkeletonCards = () => {
 	return (
-		<div className='grid animate-pulse md:grid-cols-2 mt-6 lg:grid-cols-4 gap-5'>
+		<div className='grid animate-pulse md:grid-cols-2 mt-6 lg:grid-cols-4 gap-3 md:gap-5'>
 			<Card title='Total Box Office' subtitle='-'>
 				<Tooltip text='Change from last year'>
 					<MetricChange value='' />{' '}
@@ -43,20 +43,20 @@ export const SkeletonCards = () => {
 
 export const SkeletonCharts = () => {
 	return (
-		<div className='grid md:grid-cols-1 lg:grid-cols-2 mt-6 gap-5'>
-			<div className='animate-pulse shadow'>
+		<div className='grid md:grid-cols-1 lg:grid-cols-2 mt-3 md:mt-6 gap-3 md:gap-5 animate-pulse transition'>
+			<Card title='Box Office'>
 				<TimeLineChart data={[]} />
-			</div>
-			<div className='animate-pulse shadow'>
+			</Card>
+			<Card title='Films'>
 				<FilmCumulativeChart data={[]} />
-			</div>
+			</Card>
 		</div>
 	);
 };
 
 export const SkeletonTable = () => {
 	return (
-		<div className='p-4 mt-6 rounded border border-gray-200 shadow animate-pulse dark:border-gray-700'>
+		<div className='p-4 mt-3 md:mt-6 rounded border border-gray-200 shadow animate-pulse dark:border-gray-700'>
 			<div className='mb-10 h-2 bg-gray-200 rounded-full dark:bg-gray-700'></div>
 			<div className='h-72 bg-gray-200 rounded-t-lg dark:bg-gray-700'></div>
 		</div>
