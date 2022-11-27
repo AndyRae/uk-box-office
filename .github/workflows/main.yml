@@ -10,7 +10,7 @@ jobs:
   stage:
     name: Deploy to staging.
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/new-deployment'
+    if: github.ref == 'refs/heads/main'
     steps:
       - name: Checkout staging
         uses: actions/checkout@v1
