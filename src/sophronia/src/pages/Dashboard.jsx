@@ -22,7 +22,6 @@ import {
 	SkeletonCards,
 	SkeletonCharts,
 } from '../components/Dashboard/Skeleton';
-import { MultipleFilmsChart } from '../components/Dashboard/MultipleFilmsChart';
 import { StructuredTimeData } from '../components/StructuredData';
 import { LastUpdated } from '../components/Dashboard/LastUpdated';
 import { StackedBarChart } from '../components/charts/StackedBarChart';
