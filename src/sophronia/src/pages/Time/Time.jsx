@@ -9,6 +9,7 @@ import {
 	calculateNumberOfCinemas,
 	calculateWeek1Releases,
 	groupbyDate,
+	groupForAreaChart,
 } from '../../utils/groupData';
 import { FilmTable } from '../../components/Time/FilmTable';
 import { WeeksTable } from '../../components/Time/WeeksTable';
@@ -20,6 +21,7 @@ import { TimeLineChart } from '../../components/Time/TimeLineChart';
 import { Tooltip } from '../../components/ui/Tooltip';
 import { StructuredTimeData } from '../../components/StructuredData';
 import { PageTitle } from '../../components/ui/PageTitle';
+import { StackedBarChart } from '../../components/charts/StackedBarChart';
 
 const PillLink = ({ to, children, isActive }) => (
 	<li className='mr-2'>
@@ -123,7 +125,9 @@ export const TimePage = () => {
 
 	// Group Data
 	const { tableData } = groupForTable(results);
+	const { areaData } = groupForAreaChart(results);
 	const { results: weekData } = groupbyDate(results);
+	const uniqueDates = [...new Set(results.map((d) => d.date))];
 
 	const boxOffice = tableData.reduce((acc, curr) => acc + curr.weekGross, 0);
 	const weekendBoxOffice = tableData.reduce(
@@ -222,7 +226,7 @@ export const TimePage = () => {
 			</div>
 
 			{/* // Chart */}
-			<div className='mt-3 md:mt-6'>
+			<div className='mt-3 mb-3 md:mb-6 md:mt-6'>
 				{weekData &&
 					weekData.length > 1 &&
 					(isReachedEnd ? (
@@ -235,6 +239,10 @@ export const TimePage = () => {
 						</Card>
 					))}
 			</div>
+
+			<Card>
+				<StackedBarChart data={areaData} labels={uniqueDates} />
+			</Card>
 
 			<div className='py-3'>
 				<ul className='flex flex-wrap my-2 text-sm font-medium text-center text-gray-500 dark:text-gray-400'>
@@ -256,7 +264,7 @@ export const TimePage = () => {
 				</ul>
 
 				{/* Months */}
-				<ul className='flex flex-wrap text-sm font-medium text-center text-gray-500 dark:text-gray-400'>
+				<ul className='flex flex-wrap lg:flex-nowrap flex- text-sm font-medium text-center text-gray-500 dark:text-gray-400'>
 					{Object.keys(months).map((m) => (
 						<PillLink key={m} to={`/time/${year}/m${m}`} isActive={m === month}>
 							{months[m]}

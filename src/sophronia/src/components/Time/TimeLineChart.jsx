@@ -61,7 +61,7 @@ export const TimeLineChart = ({ data, height, color = '#B65078' }) => {
 					unit: 'week',
 					tooltipFormat: 'dd/MM/yyyy',
 					displayFormats: {
-						week: 'dd MMM',
+						week: 'MMM dd',
 						month: 'MMM yy',
 						quarter: 'MMM dd',
 						year: 'yyyy',

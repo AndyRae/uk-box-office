@@ -12,7 +12,7 @@ import {
 } from 'chart.js';
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getElementAtEvent, getDatasetAtEvent } from 'react-chartjs-2';
+import { getElementAtEvent } from 'react-chartjs-2';
 
 ChartJS.register(
 	BarElement,
@@ -28,6 +28,7 @@ export const StackedBarChart = ({ data, labels }) => {
 	const navigate = useNavigate();
 	const chartRef = useRef(null);
 
+	// Navigate to the film page when a bar is clicked
 	const onClick = (event) => {
 		var x = getElementAtEvent(chartRef.current, event);
 		if (x.length > 0) {
@@ -69,7 +70,7 @@ export const StackedBarChart = ({ data, labels }) => {
 					unit: 'week',
 					tooltipFormat: 'dd/MM/yyyy',
 					displayFormats: {
-						week: 'dd MMM',
+						week: 'MMM dd',
 						month: 'MMM yy',
 						quarter: 'MMM dd',
 						year: 'yyyy',
