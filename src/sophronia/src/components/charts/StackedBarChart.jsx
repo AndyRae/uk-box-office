@@ -12,7 +12,6 @@ import {
 } from 'chart.js';
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getElementAtEvent } from 'react-chartjs-2';
 
 ChartJS.register(
 	BarElement,
@@ -24,17 +23,18 @@ ChartJS.register(
 	TimeScale
 );
 
-export const StackedBarChart = ({ data, labels }) => {
+export const StackedBarChart = ({ data, labels, height }) => {
 	const navigate = useNavigate();
 	const chartRef = useRef(null);
 
 	// Navigate to the film page when a bar is clicked
+	// Disabled for now as it's not a good UX
 	const onClick = (event) => {
-		var x = getElementAtEvent(chartRef.current, event);
-		if (x.length > 0) {
-			const slug = data[x[0].datasetIndex].slug;
-			navigate(`/film/${slug}`);
-		}
+		// var x = getElementAtEvent(chartRef.current, event);
+		// if (x.length > 0) {
+		// 	const slug = data[x[0].datasetIndex].slug;
+		// 	navigate(`/film/${slug}`);
+		// }
 	};
 
 	const d = {
@@ -111,19 +111,41 @@ export const StackedBarChart = ({ data, labels }) => {
 		},
 	};
 
+	if (d?.labels?.length > 6) {
+		options.scales.x.time.unit = 'month';
+	}
+
 	return (
 		<BarChart
 			data={d}
 			options={options}
 			onClick={onClick}
 			chartRef={chartRef}
+			height={height}
 		/>
 	);
 };
 
-const BarChart = ({ data, options, onClick, chartRef }) => {
+const BarChart = ({ data, options, onClick, chartRef, height = 'lg' }) => {
+	var size = 'h-96';
+	switch (height) {
+		case 'sm':
+			size = 'h-60';
+			break;
+		case 'md':
+			size = 'h-80';
+			break;
+		case 'lg':
+			size = 'h-96';
+			break;
+		case 'xl':
+			size = 'h-screen';
+		default:
+			break;
+	}
+
 	return (
-		<div className='relative h-80'>
+		<div className={`relative ${size}`}>
 			<Bar
 				datasetIdKey='id'
 				options={options}

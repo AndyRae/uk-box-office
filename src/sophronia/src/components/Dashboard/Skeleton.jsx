@@ -51,7 +51,7 @@ export const SkeletonCharts = () => {
 
 			<Card title='Films'>
 				<div className='mt-6'>
-					<StackedBarChart data={[]} />
+					<StackedBarChart data={[]} height='md' />
 				</div>
 			</Card>
 		</div>
