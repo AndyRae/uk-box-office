@@ -8,7 +8,7 @@ env:
 
 jobs:
   stage:
-    name: Deploy to staging.
+    name: Deploy to production.
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
@@ -37,7 +37,7 @@ jobs:
           REACT_APP_BACKEND_URL: http://api.boxofficedata.co.uk/api/
         run: CI=false npm run build --prefix ./src/sophronia/
 
-      - name: Deploy on DigitalOcean
+      - name: Deploy on VM
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
