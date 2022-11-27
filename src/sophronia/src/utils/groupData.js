@@ -3,21 +3,17 @@
  */
 import _ from 'lodash';
 import { interpolateColors } from './colorGenerator';
-import {
-	interpolateInferno,
-	interpolateWarm,
-	interpolateCool,
-} from 'd3-scale-chromatic';
+import { interpolateSpectral } from 'd3-scale-chromatic';
 
 /**
  * Groups data for the area chart.
  * @param {*} data array of box office data.
  * @returns Array of data sets objects for each film.
  */
-export const groupForAreaChart = (data) => {
-	// Reduce array to single films with box office
-
+export const groupStackedFilms = (data) => {
 	const filmsLimit = 20; // Limit number of films to display
+
+	// Reduce array to single films with box office
 	const groupedFilms = _(data)
 		.groupBy('film')
 		.map((value, key) => ({
@@ -30,47 +26,14 @@ export const groupForAreaChart = (data) => {
 		.sort((a, b) => b.weekGross - a.weekGross)
 		.slice(0, filmsLimit);
 
-	const colorScale = interpolateCool;
+	// Interpolate colors
+	const colorScale = interpolateSpectral;
 	const colorRangeInfo = {
 		colorStart: 0,
 		colorEnd: 1,
 		useEndAsStart: false,
 	};
-	var colors1 = interpolateColors(filmsLimit, colorScale, colorRangeInfo);
-	console.log(colors1);
-
-	var colors = [
-		'#650033',
-		'#761142',
-		'#872250',
-		'#98335f',
-		'#aa446e',
-		'#bb547c',
-		'#c8658d',
-		'#d6769d',
-		'#e486ae',
-		'#f197be',
-		'#ffa7ce',
-		'#fdb7d6',
-		'#fbc6de',
-		'#f9d6e6',
-		'#f7e5ed',
-		'#e8ebf7',
-		'#dbe0f9',
-		'#ced6fb',
-		'#c1ccfd',
-		'#b4c1ff',
-		'#a2b1f6',
-		'#90a1ec',
-		'#7e91e3',
-		'#6c81d9',
-		'#5a70d0',
-		'#4862bf',
-		'#3654af',
-		'#24469e',
-		'#12388d',
-		'#002a7c',
-	];
+	var colors = interpolateColors(filmsLimit, colorScale, colorRangeInfo);
 
 	// Create the dataset objects - one for each film
 	const areaData = groupedFilms.map((film, index) => {
@@ -83,8 +46,8 @@ export const groupForAreaChart = (data) => {
 			label: film.film,
 			slug: film.slug,
 			data: weekData,
-			borderColor: colors1[index],
-			backgroundColor: colors1[index],
+			borderColor: colors[index],
+			backgroundColor: colors[index],
 			hoverBackgroundColor: '#000000',
 			hoverBorderColor: '#000000',
 			fill: false,

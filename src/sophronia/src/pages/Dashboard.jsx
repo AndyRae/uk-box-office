@@ -10,7 +10,7 @@ import {
 	calculateNumberOfCinemas,
 	calculateWeek1Releases,
 	groupbyDate,
-	groupForAreaChart,
+	groupStackedFilms,
 } from '../utils/groupData';
 import { MetricChange } from '../components/charts/MetricChange';
 import { Datepickers } from '../components/Dashboard/Datepickers';
@@ -60,7 +60,7 @@ export const DashboardPage = () => {
 
 	// Group Data
 	const { tableData } = groupForTable(results);
-	const { areaData } = groupForAreaChart(results);
+	const { areaData } = groupStackedFilms(results);
 	const { results: weekData } = groupbyDate(results);
 
 	const uniqueDates = [...new Set(results.map((d) => d.date))];
