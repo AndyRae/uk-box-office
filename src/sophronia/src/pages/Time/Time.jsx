@@ -241,7 +241,9 @@ export const TimePage = () => {
 			</div>
 
 			<Card title='Films'>
-				<StackedBarChart data={areaData} labels={uniqueDates} />
+				{isReachedEnd && (
+					<StackedBarChart data={areaData} labels={uniqueDates} />
+				)}
 			</Card>
 
 			<div className='py-3'>
