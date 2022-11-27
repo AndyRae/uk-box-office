@@ -6,8 +6,8 @@ import { MetricChange } from '../charts/MetricChange';
 import { Datepickers } from './Datepickers';
 import { TimeLineChart } from '../Time/TimeLineChart';
 import { FilmTable } from '../Time/FilmTable';
-import { FilmCumulativeChart } from '../Film/FilmCumulativeChart';
 import { LastUpdated } from './LastUpdated';
+import { StackedBarChart } from '../charts/StackedBarChart';
 
 export const SkeletonCards = () => {
 	return (
@@ -46,20 +46,14 @@ export const SkeletonCharts = () => {
 	return (
 		<div className='grid md:grid-cols-1 lg:grid-cols-2 mt-3 md:mt-6 gap-3 md:gap-5 animate-pulse transition'>
 			<Card title='Box Office'>
-				<TimeLineChart data={[]} />
+				<TimeLineChart data={[]} height='md' />
 			</Card>
-			<Card title='Films'>
-				<FilmCumulativeChart data={[]} />
-			</Card>
-		</div>
-	);
-};
 
-export const SkeletonTable = () => {
-	return (
-		<div className='p-4 mt-3 md:mt-6 rounded border border-gray-200 shadow animate-pulse dark:border-gray-700'>
-			<div className='mb-10 h-2 bg-gray-200 rounded-full dark:bg-gray-700'></div>
-			<div className='h-72 bg-gray-200 rounded-t-lg dark:bg-gray-700'></div>
+			<Card title='Films'>
+				<div className='mt-6'>
+					<StackedBarChart data={[]} />
+				</div>
+			</Card>
 		</div>
 	);
 };
@@ -68,7 +62,7 @@ export const Skeleton = ({ children, ...props }) => {
 	return (
 		<div className='skeleton animate-pulse transition ease-in-out' {...props}>
 			{/* Skeleton Controls */}
-			<div className='flex flex-wrap mb-2 animate-pulse items-center justify-center'>
+			<div className='flex flex-wrap mb-2 animate-pulse gap-y-4 items-center justify-center'>
 				<Datepickers />
 				<ButtonGroup>
 					<Button>1W</Button>
@@ -76,7 +70,6 @@ export const Skeleton = ({ children, ...props }) => {
 					<Button>3M</Button>
 					<Button>1Y</Button>
 				</ButtonGroup>
-				<div className='h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5'></div>
 				<LastUpdated />
 			</div>
 
@@ -84,7 +77,9 @@ export const Skeleton = ({ children, ...props }) => {
 
 			<SkeletonCharts />
 
-			<FilmTable data={[]} />
+			<div className='mt-3 md:mt-6'>
+				<FilmTable data={[]} />
+			</div>
 
 			{children}
 		</div>

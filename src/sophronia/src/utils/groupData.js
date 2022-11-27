@@ -68,6 +68,7 @@ export const groupForAreaChart = (data) => {
 			slug: film.slug,
 			data: weekData,
 			borderColor: colors[index],
+			backgroundColor: colors[index],
 			fill: false,
 			tension: 0.3,
 			pointStyle: 'line',

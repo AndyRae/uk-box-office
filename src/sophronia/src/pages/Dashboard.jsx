@@ -25,6 +25,7 @@ import {
 import { MultipleFilmsChart } from '../components/Dashboard/MultipleFilmsChart';
 import { StructuredTimeData } from '../components/StructuredData';
 import { LastUpdated } from '../components/Dashboard/LastUpdated';
+import { StackedBarChart } from '../components/charts/StackedBarChart';
 
 export const DashboardPage = () => {
 	Date.prototype.addDays = function (days) {
@@ -205,11 +206,13 @@ export const DashboardPage = () => {
 
 					<Card title='Films'>
 						{isReachedEnd && (
-							<MultipleFilmsChart
-								data={areaData}
-								height='md'
-								labels={uniqueDates}
-							/>
+							<div className='mt-6'>
+								<StackedBarChart
+									data={areaData}
+									height='md'
+									labels={uniqueDates}
+								/>
+							</div>
 						)}
 					</Card>
 				</div>

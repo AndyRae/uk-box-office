@@ -4,6 +4,7 @@ export const Card = ({
 	children,
 	size = 'md',
 	align = 'center',
+	className,
 }) => {
 	let cardSize;
 
@@ -23,7 +24,7 @@ export const Card = ({
 
 	return (
 		<div
-			className={`p-2 ${cardSize} max-w-full text-${align} bg-white rounded-lg shadow-lg  dark:bg-gray-900`}
+			className={`${className} p-2 ${cardSize} max-w-full text-${align} bg-white rounded-lg shadow-lg  dark:bg-gray-900`}
 		>
 			<p className='font-normal text-sm text-gray-700 dark:text-gray-400'>
 				{title}
