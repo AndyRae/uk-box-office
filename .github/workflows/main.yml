@@ -7,6 +7,51 @@ env:
   NGINX_IMAGE: ghcr.io/$(echo $GITHUB_REPOSITORY | tr '[:upper:]' '[:lower:]')/nginx
 
 jobs:
+  stage:
+    name: Deploy to production.
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout staging
+        uses: actions/checkout@v1
+      - name: Add the private SSH key to the ssh-agent
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          mkdir -p ~/.ssh
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          ssh-add - <<< "${{ secrets.PRIVATE_KEY }}"
+
+      - name: Setup node
+        uses: actions/setup-node@v3.5.1
+        with:
+          node-version: 16
+          cache: npm
+
+      - name: Install
+        run: npm ci --prefix ./src/sophronia/
+
+      - name: Build React
+        env:
+          REACT_APP_BACKEND_URL: http://api.boxofficedata.co.uk/api/
+        run: CI=false npm run build --prefix ./src/sophronia/
+
+      - name: Deploy on VM
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          scp  -o StrictHostKeyChecking=no -r ./src/berenice/* root@${{ secrets.STAGING_IP_ADDRESS }}:/var/www/uk-box-office/src/berenice/
+          scp  -o StrictHostKeyChecking=no -r ./src/sophronia/build/* root@${{ secrets.STAGING_IP_ADDRESS }}:/var/www/uk-box-office/src/sophronia/build/
+          ssh -o StrictHostKeyChecking=no root@${{ secrets.STAGING_IP_ADDRESS }} << 'ENDSSH'
+            cd /var/www/uk-box-office
+            source venv/bin/activate
+            cd src/berenice
+            pip install -r requirements.txt
+            flask db update
+            systemctl restart nginx
+            systemctl restart gunicorn
+          ENDSSH
 
   build:
     name: Build Docker Images
@@ -45,50 +90,3 @@ jobs:
         run: |
           docker push ${{ env.WEB_IMAGE }}
           docker push ${{ env.NGINX_IMAGE }}
-
-  deploy:
-    name: Deploy to production
-    runs-on: ubuntu-latest
-    needs: build
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - name: Checkout main
-        uses: actions/checkout@v1
-      - name: Add environment variables to .env
-        run: |
-          echo SOURCE_URL=${{ secrets.SOURCE_URL }} >> .env
-          echo DATABASE=postgres >> .env
-          echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
-          echo FLASK_APP=ukbo >> .env
-          echo FLASK_ENV=production >> .env
-          echo ELASTICSEARCH_URL=elastic >> .env
-          echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> .env
-          echo POSTGRES_DB=${{ secrets.POSTGRES_DB }} >> .env
-          echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> .env
-          echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
-          echo DEBUG=0 >> .env
-          echo WEB_IMAGE=${{ env.WEB_IMAGE }} >> .env
-          echo NGINX_IMAGE=${{ env.NGINX_IMAGE }} >> .env
-          echo NAMESPACE=${{ secrets.NAMESPACE }} >> .env
-          echo PERSONAL_ACCESS_TOKEN=${{ secrets.PERSONAL_ACCESS_TOKEN }} >> .env
-      - name: Add the private SSH key to the ssh-agent
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-        run: |
-          mkdir -p ~/.ssh
-          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-          ssh-add - <<< "${{ secrets.PRIVATE_KEY }}"
-      - name: Build and deploy images on DigitalOcean
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-        run: |
-          scp  -o StrictHostKeyChecking=no -r ./.env ./docker-compose.prod.yml root@${{ secrets.DIGITAL_OCEAN_IP_ADDRESS }}:/app
-          ssh -o StrictHostKeyChecking=no root@${{ secrets.DIGITAL_OCEAN_IP_ADDRESS }} << 'ENDSSH'
-            cd /app
-            source .env
-            docker login ghcr.io -u $NAMESPACE -p $PERSONAL_ACCESS_TOKEN
-            docker pull $WEB_IMAGE
-            docker pull $NGINX_IMAGE
-            docker-compose -f docker-compose.prod.yml up -d
-          ENDSSH

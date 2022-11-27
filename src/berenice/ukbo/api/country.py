@@ -1,0 +1,34 @@
+from flask import Blueprint, jsonify, request
+from flask.wrappers import Response
+from ukbo import services, cache
+
+country = Blueprint("country", __name__)
+
+
+@country.route("/")
+def all() -> Response:
+    """
+    List all countries
+    """
+    page = int(request.args.get("page", 1))
+    limit = int(request.args.get("limit", 100))
+    return services.country.list(page, limit)
+
+
+@cache.cached()
+@country.route("/<slug>")
+def get(slug: str) -> Response:
+    """
+    Country detailview
+    """
+    return jsonify(services.country.get(slug))
+
+
+@country.route("/<slug>/films")
+def get_films(slug: str) -> Response:
+    """
+    Country detailview with films
+    """
+    page = int(request.args.get("page", 1))
+    limit = int(request.args.get("limit", 100))
+    return services.country.get_films(slug, page, limit)

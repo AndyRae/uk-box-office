@@ -1,0 +1,20 @@
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+	{% for i in data %}
+		<sitemap>
+			<loc>https://api.boxofficedata.co.uk{{ url_for('sitemap.films_letter', char=i) }}</loc>
+		</sitemap>
+	{% endfor %}
+
+	<sitemap>
+		<loc>https://api.boxofficedata.co.uk{{ url_for('sitemap.base') }}</loc>
+	</sitemap>
+	<sitemap>
+		<loc>https://api.boxofficedata.co.uk{{ url_for('sitemap.countries') }}</loc>
+	</sitemap>
+	<sitemap>
+		<loc>https://api.boxofficedata.co.uk{{ url_for('sitemap.distributors') }}</loc>
+	</sitemap>
+	<sitemap>
+		<loc>https://api.boxofficedata.co.uk{{ url_for('sitemap.time') }}</loc>
+	</sitemap>
+</sitemapindex>
