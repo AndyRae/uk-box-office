@@ -96,7 +96,11 @@ export const FilmPage = () => {
 				)}
 				{data.weeks.length >= 2 && (
 					<Card title='Cumulative Box Office'>
-						<TimeLineChart data={cumulativeData} color='#1E3A8A' />
+						<TimeLineChart
+							data={cumulativeData}
+							color='#1E3A8A'
+							allowRollUp={false}
+						/>
 					</Card>
 				)}
 			</div>

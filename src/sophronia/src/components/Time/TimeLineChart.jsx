@@ -6,7 +6,12 @@ import { Tooltip } from '../ui/Tooltip';
 import { useNavigate } from 'react-router-dom';
 import { getElementAtEvent } from 'react-chartjs-2';
 
-export const TimeLineChart = ({ data, height, color = '#B65078' }) => {
+export const TimeLineChart = ({
+	data,
+	height,
+	color = '#B65078',
+	allowRollUp = true,
+}) => {
 	const navigate = useNavigate();
 
 	// To configure rolling up / down the data
@@ -134,13 +139,17 @@ export const TimeLineChart = ({ data, height, color = '#B65078' }) => {
 	return (
 		<>
 			<div className='flex flex-row-reverse'>
-				<Tooltip text={isGroupedByMonth ? 'Week' : 'Month'}>
-					<AiOutlineArrowDown
-						className='h-6 w-6 transition-all duration-500'
-						style={!isGroupedByMonth ? { transform: 'rotate(180deg)' } : ''}
-						onClick={isGroupedByMonth ? rollDown : rollUp}
-					/>
-				</Tooltip>
+				{allowRollUp ? (
+					<Tooltip text={isGroupedByMonth ? 'Week' : 'Month'}>
+						<AiOutlineArrowDown
+							className='h-6 w-6 transition-all duration-500'
+							style={!isGroupedByMonth ? { transform: 'rotate(180deg)' } : ''}
+							onClick={isGroupedByMonth ? rollDown : rollUp}
+						/>
+					</Tooltip>
+				) : (
+					<div className='mt-6'></div>
+				)}
 			</div>
 			<Timeseries
 				id={'gradientid'}
