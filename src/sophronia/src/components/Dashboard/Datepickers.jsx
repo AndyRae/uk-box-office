@@ -8,7 +8,7 @@ export const Datepickers = ({ start, end, setStart, setEnd, minimum }) => {
 			<div className='grid grid-cols-2 gap-2 items-center'>
 				<div className=''>
 					<DatePicker
-						className='w-full text-center py-1.5 overflow-hidden text-sm font-medium bg-white dark:bg-black rounded-lg hover:bg-gray-100 dark:hover:text-white text-gray-900 dark:text-white focus:outline-none border-2 border-gray-900 dark:border-white'
+						className='w-full text-center py-1.5 overflow-hidden text-sm font-medium bg-white dark:bg-black rounded-lg hover:bg-gray-100 dark:hover:text-black text-gray-900 dark:text-white focus:outline-none border-2 border-gray-900 dark:border-white transition-all duration-150'
 						dateFormat='dd/MM/yyyy'
 						selected={start}
 						onChange={(date) => setStart(date)}
@@ -23,7 +23,7 @@ export const Datepickers = ({ start, end, setStart, setEnd, minimum }) => {
 				</div>
 				<div className=''>
 					<DatePicker
-						className='w-full text-center py-1.5 overflow-hidden text-sm font-medium bg-white dark:bg-black rounded-lg hover:bg-gray-100 dark:hover:text-white text-gray-900 dark:text-white focus:outline-none border-2 border-gray-900 dark:border-white'
+						className='w-full text-center py-1.5 overflow-hidden text-sm font-medium bg-white dark:bg-black rounded-lg hover:bg-gray-100 dark:hover:text-black text-gray-900 dark:text-white focus:outline-none border-2 border-gray-900 dark:border-white transition-all duration-150'
 						dateFormat='dd/MM/yyyy'
 						selected={end}
 						onChange={(date) => setEnd(date)}
