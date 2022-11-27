@@ -37,6 +37,8 @@ export const StackedBarChart = ({ data, labels, height }) => {
 		// }
 	};
 
+	const isStacked = labels?.length > 1;
+
 	const d = {
 		labels: labels,
 		datasets: data,
@@ -60,7 +62,7 @@ export const StackedBarChart = ({ data, labels, height }) => {
 			x: {
 				type: 'time',
 				distribution: 'series',
-				stacked: true,
+				stacked: isStacked,
 				ticks: {
 					maxRotation: 0,
 					minRotation: 0,
@@ -81,7 +83,7 @@ export const StackedBarChart = ({ data, labels, height }) => {
 				},
 			},
 			y: {
-				stacked: true,
+				stacked: isStacked,
 				beginAtZero: true,
 				offset: false,
 				ticks: {
