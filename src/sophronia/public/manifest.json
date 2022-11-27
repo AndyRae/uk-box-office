@@ -1,0 +1,15 @@
+{
+	"short_name": "UK Box Office Data",
+	"name": "UK Box Office Data",
+	"icons": [
+		{
+			"src": "/icons/icon.png",
+			"type": "image/png",
+			"sizes": "192x192"
+		}
+	],
+	"start_url": ".",
+	"background_color": "#FFFFFF",
+	"display": "standalone",
+	"scope": "/"
+}
