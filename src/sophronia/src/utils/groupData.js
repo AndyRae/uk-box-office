@@ -2,6 +2,12 @@
  * Utility functions to group data for charts and tables.
  */
 import _ from 'lodash';
+import { interpolateColors } from './colorGenerator';
+import {
+	interpolateInferno,
+	interpolateWarm,
+	interpolateCool,
+} from 'd3-scale-chromatic';
 
 /**
  * Groups data for the area chart.
@@ -11,6 +17,7 @@ import _ from 'lodash';
 export const groupForAreaChart = (data) => {
 	// Reduce array to single films with box office
 
+	const filmsLimit = 20; // Limit number of films to display
 	const groupedFilms = _(data)
 		.groupBy('film')
 		.map((value, key) => ({
@@ -21,7 +28,16 @@ export const groupForAreaChart = (data) => {
 		}))
 		.value()
 		.sort((a, b) => b.weekGross - a.weekGross)
-		.slice(0, 30); // Limit to 30 films
+		.slice(0, filmsLimit);
+
+	const colorScale = interpolateCool;
+	const colorRangeInfo = {
+		colorStart: 0,
+		colorEnd: 1,
+		useEndAsStart: false,
+	};
+	var colors1 = interpolateColors(filmsLimit, colorScale, colorRangeInfo);
+	console.log(colors1);
 
 	var colors = [
 		'#650033',
@@ -67,8 +83,10 @@ export const groupForAreaChart = (data) => {
 			label: film.film,
 			slug: film.slug,
 			data: weekData,
-			borderColor: colors[index],
-			backgroundColor: colors[index],
+			borderColor: colors1[index],
+			backgroundColor: colors1[index],
+			hoverBackgroundColor: '#000000',
+			hoverBorderColor: '#000000',
 			fill: false,
 			tension: 0.3,
 			pointStyle: 'line',

@@ -9,6 +9,7 @@
 		"axios": "^0.27.2",
 		"chart.js": "^3.9.1",
 		"chartjs-adapter-date-fns": "^2.0.0",
+		"d3-scale-chromatic": "^3.0.0",
 		"date-fns": "^2.29.3",
 		"ky": "^0.31.3",
 		"lodash": "^4.17.21",
