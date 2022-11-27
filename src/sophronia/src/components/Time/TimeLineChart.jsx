@@ -27,10 +27,11 @@ export const TimeLineChart = ({ data, height, color = '#B65078' }) => {
 				fill: true,
 				backgroundColor: [`${color}4D`],
 				borderColor: [color],
-				pointStyle: 'line',
+				pointStyle: 'circle',
 				pointRadius: 4,
 				tension: 0.4,
 				yAxisID: 'y',
+				hoverRadius: 10,
 			},
 		],
 	};
@@ -44,6 +45,7 @@ export const TimeLineChart = ({ data, height, color = '#B65078' }) => {
 			},
 		},
 		interaction: {
+			mode: 'index',
 			intersect: false,
 		},
 		scales: {

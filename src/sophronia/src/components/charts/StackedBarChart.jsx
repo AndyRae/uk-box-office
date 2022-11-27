@@ -11,8 +11,8 @@ import {
 	TimeScale,
 } from 'chart.js';
 import { useRef } from 'react';
-import { Tooltip } from '../ui/Tooltip';
-import { AiOutlineArrowDown } from 'react-icons/ai';
+import { useNavigate } from 'react-router-dom';
+import { getElementAtEvent, getDatasetAtEvent } from 'react-chartjs-2';
 
 ChartJS.register(
 	BarElement,
@@ -25,12 +25,14 @@ ChartJS.register(
 );
 
 export const StackedBarChart = ({ data, labels }) => {
+	const navigate = useNavigate();
 	const chartRef = useRef(null);
-	const onClick = (e) => {
-		const { active } = chartRef.current.chartInstance;
-		if (active.length) {
-			const { _index } = active[0];
-			console.log(_index);
+
+	const onClick = (event) => {
+		var x = getElementAtEvent(chartRef.current, event);
+		if (x.length > 0) {
+			const slug = data[x[0].datasetIndex].slug;
+			navigate(`/film/${slug}`);
 		}
 	};
 
@@ -42,6 +44,12 @@ export const StackedBarChart = ({ data, labels }) => {
 	const options = {
 		responsive: true,
 		maintainAspectRatio: false,
+		hover: {
+			mode: 'dataset',
+		},
+		interaction: {
+			intersect: false,
+		},
 		plugins: {
 			legend: {
 				display: false,
@@ -70,7 +78,6 @@ export const StackedBarChart = ({ data, labels }) => {
 				grid: {
 					display: false,
 				},
-				// offset: false,
 			},
 			y: {
 				stacked: true,
