@@ -106,5 +106,5 @@ export const ForecastChart = ({ data }) => {
 		},
 	};
 
-	return <Timeseries options={options} data={d} />;
+	return <Timeseries options={options} data={d} height='xl' />;
 };

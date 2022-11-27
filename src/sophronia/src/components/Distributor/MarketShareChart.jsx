@@ -1,8 +1,10 @@
 import { Timeseries } from '../charts/Timeseries';
 
 export const MarketShareChart = ({ uniqueYears, graphData }) => {
+	const reversed = [...uniqueYears].reverse();
+
 	const d = {
-		labels: uniqueYears.reverse(),
+		labels: reversed,
 		datasets: graphData,
 	};
 	const options = {
@@ -28,5 +30,5 @@ export const MarketShareChart = ({ uniqueYears, graphData }) => {
 			},
 		},
 	};
-	return <Timeseries data={d} options={options} />;
+	return <Timeseries data={d} options={options} height='xl' />;
 };

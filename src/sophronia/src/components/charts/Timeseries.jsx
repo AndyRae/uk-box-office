@@ -44,7 +44,7 @@ export const Timeseries = ({
 			size = 'h-96';
 			break;
 		case 'xl':
-			size = 'h-screen';
+			size = 'h-[34rem]';
 		default:
 			break;
 	}

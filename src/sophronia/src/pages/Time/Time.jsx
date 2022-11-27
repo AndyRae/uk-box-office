@@ -230,17 +230,17 @@ export const TimePage = () => {
 				{weekData &&
 					weekData.length > 1 &&
 					(isReachedEnd ? (
-						<Card>
+						<Card title='Box Office'>
 							<TimeLineChart data={weekData} />
 						</Card>
 					) : (
-						<Card>
+						<Card title='Box Office'>
 							<TimeLineChart data={[]} />
 						</Card>
 					))}
 			</div>
 
-			<Card>
+			<Card title='Films'>
 				<StackedBarChart data={areaData} labels={uniqueDates} />
 			</Card>
 
