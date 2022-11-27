@@ -7,6 +7,8 @@ import { ExportCSV } from '../../components/ui/ExportCSV';
 import { MarketShareTable } from '../../components/Distributor/MarketShareTable';
 import { Tabs } from '../../components/ui/Tabs';
 import { Card } from '../../components/Dashboard/Card';
+import { interpolateColors } from '../../utils/colorGenerator';
+import { interpolateSpectral } from 'd3-scale-chromatic';
 
 const MarketShareDistributorPage = () => {
 	const { data, error } = useDistributorMarketShare();
@@ -55,18 +57,14 @@ const MarketShareDistributorPage = () => {
 		return bTotal - aTotal;
 	});
 
-	var colors = [
-		'#650033',
-		'#98335f',
-		'#c8658d',
-		'#f197be',
-		'#fbc6de',
-		'#ced6fb',
-		'#a2b1f6',
-		'#6c81d9',
-		'#3654af',
-		'#002a7c',
-	];
+	// Interpolate colors
+	const colorScale = interpolateSpectral;
+	const colorRangeInfo = {
+		colorStart: 0,
+		colorEnd: 1,
+		useEndAsStart: false,
+	};
+	var colors = interpolateColors(10, colorScale, colorRangeInfo);
 
 	// construct dataset object for each distributor
 	var graphData = reducedData.slice(0, 10).map((d) => {
