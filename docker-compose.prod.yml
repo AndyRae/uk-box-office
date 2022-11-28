@@ -1,24 +1,22 @@
-version: "3.9"
+version: '3.9'
 
 services:
   web:
-      image: "${WEB_IMAGE}"
-      # build:
-      #  context: ./src/
-      env_file:
-        - ./.env
-      command: gunicorn --preload --bind 0.0.0.0:5000 "ukbo:create_app('production')"
-      volumes:
-        - "./data:/app/data/"
-      expose:
-        - 5000
-      depends_on:
-        - db
-        - elastic
-      networks:
-        - deploy-network
+    image: '${WEB_IMAGE}'
+    env_file:
+      - ./.env
+    command: gunicorn --preload --bind 0.0.0.0:5000 "ukbo:create_app('production')"
+    volumes:
+      - './data:/app/data/'
+    expose:
+      - 5000
+    depends_on:
+      - db
+      - elastic
+    networks:
+      - deploy-network
   nginx:
-    image: "${NGINX_IMAGE}"
+    image: '${NGINX_IMAGE}'
     # build: ./nginx
     restart: always
     ports:
@@ -29,7 +27,7 @@ services:
     networks:
       - deploy-network
     volumes:
-#      - ./nginx/conf:/etc/nginx/conf.d/
+      #      - ./nginx/conf:/etc/nginx/conf.d/
       - certbot-etc:/etc/letsencrypt/
       - certbot-var:/var/www/certbot/
   certbot:
@@ -54,7 +52,7 @@ services:
     environment:
       - discovery.type=single-node
       - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - 'ES_JAVA_OPTS=-Xms512m -Xmx512m'
     ulimits:
       memlock:
         soft: -1
@@ -66,13 +64,11 @@ services:
     networks:
       - deploy-network
 
-
 volumes:
   elastic_data:
   postgres_data:
   certbot-etc:
   certbot-var:
-
 
 networks:
   deploy-network:

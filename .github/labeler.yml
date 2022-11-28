@@ -1,0 +1,11 @@
+maintenance:
+  - '*'
+
+migrations:
+  - 'src/berenice/migrations/**/*'
+
+frontend:
+  - 'src/sophronia/**/*'
+
+backend:
+  - 'src/berenice/**/*'
