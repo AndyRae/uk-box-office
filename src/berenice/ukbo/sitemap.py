@@ -4,7 +4,7 @@ from typing import Any
 
 from flask import Blueprint, current_app, make_response, render_template
 from flask.wrappers import Response
-from ukbo import cache, db, models # type: ignore
+from ukbo import cache, db, models  # type: ignore
 from werkzeug.exceptions import abort
 
 bp = Blueprint("sitemap", __name__, template_folder="sitemap")
