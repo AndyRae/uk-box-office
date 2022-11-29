@@ -24,7 +24,10 @@ def create_app(config: str = "") -> Flask:
         register_blueprints(app)
         register_cli(app)
 
-        origins = [app.config.get("CORS_ORIGIN")]
+        origins = [
+            app.config.get("CORS_ORIGIN"),
+            app.config.get("CORS_ORIGIN_2"),
+        ]
         cors = CORS(
             resources={r"/api/*": {"origins": origins, "methods": ["GET"]}}
         )
