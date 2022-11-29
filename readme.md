@@ -1,7 +1,7 @@
 # UK Box Office
 
 UK Box Office data is the most detailed and searchable source for box office data in the UK.
-A Python application built in Flask, using chart.js to visualise the data.
+The backend runs Flask built with Python, the frontend is built with React using chart.js to visualise the data.
 
 [Use the application.](https://boxofficedata.co.uk)
 
@@ -12,11 +12,22 @@ A Python application built in Flask, using chart.js to visualise the data.
 - Run locally: `docker-compose up`
 - Make migrations: `docker exec web flask db upgrade`
 
-Requires you to have a `archive.csv` of box office data:
+Seeding data requires you to have a `archive.csv` of box office data in `src/berenice/data/`.
+You can find the entire dataset to use [here](https://boxofficedata.co.uk/opendata).
+It will take a long time to seed the data, so you might try the `--year` flag to only seed a single year.
 
 - Seed films: `docker exec web flask seed-films`
 - Seed box office: `docker exec web flask seed-box-office`
   - Additionally takes `--year` option for a specific year: `--year 2007`
+
+
+## Structure
+
+- `src/berenice/` - Flask app
+- `src/berenice/ukbo/api` - API endpoints
+- `src/berenice/ukbo/services` - Services
+- `src/berenice/ukbo/etl` - ETL Pipelines / CLI Tasks
+- `src/sophronia/` - React app
 
 ## Tasks
 
