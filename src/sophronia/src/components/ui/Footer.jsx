@@ -1,11 +1,8 @@
 import { Link } from 'react-router-dom';
 import {
 	FaNetworkWired,
-	FaLock,
-	FaHome,
 	FaInfoCircle,
 	FaEnvelope,
-	FaCode,
 	FaFilm,
 	FaGlobeEurope,
 } from 'react-icons/fa';
@@ -20,11 +17,6 @@ const Links = [
 		name: 'Contact',
 		path: '/contact',
 		icon: <FaEnvelope />,
-	},
-	{
-		name: 'API',
-		path: '/api',
-		icon: <FaCode />,
 	},
 	{
 		name: 'Films',
