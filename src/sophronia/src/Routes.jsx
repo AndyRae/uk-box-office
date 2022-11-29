@@ -13,7 +13,6 @@ import { All } from './pages/Time/All';
 import { LastWeek } from './pages/Time/LastWeek';
 import { MarketShareDistributor } from './pages/MarketShare/Distributor';
 import { About } from './pages/Flat/About';
-import { Api } from './pages/Flat/Api';
 import { Contact } from './pages/Flat/Contact';
 import { MainSearch } from './pages/Search';
 import { TopFilms } from './pages/Flat/TopFilms';
@@ -28,7 +27,6 @@ export const Root = () => {
 
 					{/* Flat pages */}
 					<Route path='about' element={<About />} />
-					<Route path='api' element={<Api />} />
 					<Route path='contact' element={<Contact />} />
 
 					<Route path='search' element={<MainSearch />} />
