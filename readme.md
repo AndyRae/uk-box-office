@@ -20,7 +20,6 @@ It will take a long time to seed the data, so you might try the `--year` flag to
 - Seed box office: `docker exec web flask seed-box-office`
   - Additionally takes `--year` option for a specific year: `--year 2007`
 
-
 ## Structure
 
 - `src/berenice/` - Flask app
