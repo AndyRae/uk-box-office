@@ -135,7 +135,7 @@ export const Sidebar = ({ children }) => {
 					#menu-close-icon {
 							display: none;
 					}
-					
+
 					#menu-open:checked ~ #sidebar {
 							--tw-translate-x: 0;
 					}
@@ -148,7 +148,7 @@ export const Sidebar = ({ children }) => {
 					#menu-open:checked ~ * #menu-close-icon {
 							display: block;
 					}
-					
+
 					@media (min-width: 1024px) {
 							#sidebar {
 									--tw-translate-x: 0;
@@ -160,7 +160,7 @@ export const Sidebar = ({ children }) => {
 			<input type='checkbox' id='menu-open' className='hidden' />
 
 			{/* Mobile menu */}
-			<header className='bg-bo-grey dark:bg-gray-900 dark:text-gray-100 flex sticky top-0 justify-between lg:hidden z-10'>
+			<header className='bg-white dark:bg-gray-900 dark:text-gray-100 flex sticky top-0 justify-between lg:hidden z-10'>
 				<div className='mt-6 px-3'>
 					<Brand />
 				</div>
