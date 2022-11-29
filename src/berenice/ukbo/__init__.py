@@ -1,9 +1,9 @@
 from flask import Flask
-from ukbo.extensions import cache, db, limiter, ma, migrate, scheduler
 from flask_cors import CORS
+from ukbo.extensions import cache, db, limiter, ma, migrate, scheduler
 
 
-def create_app(config: str = None) -> Flask:
+def create_app(config: str = "") -> Flask:
     app = Flask(__name__, instance_relative_config=True)
 
     from ukbo import settings
@@ -25,7 +25,9 @@ def create_app(config: str = None) -> Flask:
         register_cli(app)
 
         origins = [app.config.get("CORS_ORIGIN")]
-        cors = CORS(resources={r"/api/*": {"origins": origins, "methods": ["GET"]}})
+        cors = CORS(
+            resources={r"/api/*": {"origins": origins, "methods": ["GET"]}}
+        )
         cors.init_app(app)
 
         from ukbo.etl import tasks
@@ -48,6 +50,7 @@ def register_extensions(app: Flask) -> None:
 def register_blueprints(app: Flask) -> None:
     from ukbo import api, sitemap
 
+    app.register_blueprint(api.root_bp)
     app.register_blueprint(api.api_bp, url_prefix="/api")
     app.register_blueprint(sitemap.bp)
     return None
