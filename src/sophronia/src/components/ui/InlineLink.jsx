@@ -19,7 +19,12 @@ export const InlineLink = ({ to, children }) => (
  * @returns Link component
  */
 export const ExternalLink = ({ to, children }) => (
-	<a href={to} className='text-bo-primary hover:text-red-500' target='_blank'>
+	<a
+		href={to}
+		className='text-bo-primary hover:text-red-500'
+		target='_blank'
+		rel='noopener noreferrer'
+	>
 		{children}
 	</a>
 );
