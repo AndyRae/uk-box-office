@@ -44,6 +44,9 @@ def get_excel_file(source_url: str) -> Tuple[bool, str]:
                 return (False, "")
 
         file_path = f"./data/{excel_title}.xls"
+        opener = urllib.request.build_opener()
+        opener.addheaders = [("User-agent", "Mozilla/5.0")]
+        urllib.request.install_opener(opener)
         urllib.request.urlretrieve(excel_link, file_path)
         return (True, file_path)
     current_app.logger.error("ETL fetch failed - couldn't download file.")

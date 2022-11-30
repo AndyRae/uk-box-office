@@ -23,7 +23,7 @@ from . import extract, load, transform
     max_instances=1,
     day_of_week="wed",
     hour="9-18",
-    minute="00,15,30,40,45",
+    minute="00,30",
     second=00,
     timezone="UTC",
 )
@@ -256,4 +256,6 @@ def build_archive() -> None:
     Builds the archive of box office data
     """
     archive = services.boxoffice.build_archive()
-    archive.to_csv("./data/archive_export.csv", index=False, date_format="%Y%m%d")
+    archive.to_csv(
+        "./data/archive_export.csv", index=False, date_format="%Y%m%d"
+    )
