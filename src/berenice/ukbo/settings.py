@@ -23,6 +23,7 @@ class Config:
     RATELIMIT_DEFAULT = "200/minute"
     RATELIMIT_API = "200/minute"
     CORS_ORIGIN = os.getenv("CORS_ORIGIN")
+    CORS_ORIGIN_2 = os.getenv("CORS_ORIGIN_2")
 
 
 class DevelopmentConfig(Config):
@@ -32,6 +33,7 @@ class DevelopmentConfig(Config):
     CACHE_TYPE = "null"
     FLATPAGES_AUTO_RELOAD = DEBUG
     CORS_ORIGIN = "http://localhost:3000"
+    CORS_ORIGIN_2 = "http://localhost:3000"
 
 
 class TestConfig(Config):

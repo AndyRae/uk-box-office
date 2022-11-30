@@ -16,12 +16,8 @@ export const OpenData = () => {
 			<PageTitle>Open Data</PageTitle>
 			<PageContent>
 				<p>
-					Box Office Data is an open data and open source project. All data is
-					available for download under the{' '}
-					<ExternalLink to='https://creativecommons.org/licenses/by/4.0/'>
-						Creative Commons Attribution 4.0 International License
-					</ExternalLink>
-					.
+					Box Office Data is an open data and open source project, all of the
+					website data is available to download.
 				</p>
 				<p>
 					Although you can think of this website as a combination of all of the
@@ -38,7 +34,8 @@ export const OpenData = () => {
 					also download the entire dataset as a single CSV file below.
 				</p>
 				<p>
-					If you use this data in your own work please credit the source, and{' '}
+					If you use this data in your own work please credit the British Film
+					Institute, and UK Box Office Data, and{' '}
 					<InlineLink to='/contact'>let me know</InlineLink>; I'd love to see
 					what you do with it.
 				</p>
