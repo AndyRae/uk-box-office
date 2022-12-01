@@ -22,13 +22,13 @@ It will take a long time to seed the data, so you might try the `--year` flag to
 
 ### Codespaces
 
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=408136770)
+
 You can run the backend of this application in Github codespaces.
 
-- Run the app
+- Open in Codespaces
 - `cd src/berenice`
 - `flask run`
-
-You might have to remove / re-add port 5000 in the ports, change it to https and back to http again.
 
 ## Structure
 
