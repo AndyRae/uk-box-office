@@ -20,6 +20,17 @@ It will take a long time to seed the data, so you might try the `--year` flag to
 - Seed box office: `docker exec web flask seed-box-office`
   - Additionally takes `--year` option for a specific year: `--year 2007`
 
+### Codespaces
+
+You can run the backend of this application in Github codespaces.
+
+- Run the app
+- `cd src/berenice`
+- `pip install -r requirements.txt`
+- `flask run`
+
+You might have to remove / re-add port 5000 in the ports, change it to https and back to http again.
+
 ## Structure
 
 - `src/berenice/` - Flask app
