@@ -26,7 +26,6 @@ You can run the backend of this application in Github codespaces.
 
 - Run the app
 - `cd src/berenice`
-- `pip install -r requirements.txt`
 - `flask run`
 
 You might have to remove / re-add port 5000 in the ports, change it to https and back to http again.
