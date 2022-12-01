@@ -3,6 +3,9 @@ FROM mcr.microsoft.com/devcontainers/python:3.10-bullseye
 ENV PYTHONUNBUFFERED 1
 ENV FLASK_APP="ukbo:create_app('dev')"
 
+COPY src/berenice/requirements.txt /tmp/pip-tmp/
+RUN pip install -r /tmp/pip-tmp/requirements.txt
+
 # [Optional] If your requirements rarely change, uncomment this section to add them to the image.
 # COPY requirements.txt /tmp/pip-tmp/
 # RUN pip3 --disable-pip-version-check --no-cache-dir install -r /tmp/pip-tmp/requirements.txt \
