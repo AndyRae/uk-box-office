@@ -18,7 +18,7 @@
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// This can be used to network with other containers or the host.
 	// Let the terminal forward 5000 as adding it here prevents it from working.
-	"forwardPorts": [5432],
+	"forwardPorts": [5432, 5000],
 
 	// Configure tool-specific properties.
 	"customizations": {
