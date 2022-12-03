@@ -9,26 +9,32 @@ The backend runs Flask built with Python, the frontend is built with React using
 
 ## Get Started
 
-- Run locally: `docker-compose up`
-- Make migrations: `docker exec web flask db upgrade`
-
-Seeding data requires you to have a `archive.csv` of box office data in `src/berenice/data/`.
-You can find the entire dataset to use [here](https://boxofficedata.co.uk/opendata).
-It will take a long time to seed the data, so you might try the `--year` flag to only seed a single year.
-
-- Seed films: `docker exec web flask seed-films`
-- Seed box office: `docker exec web flask seed-box-office`
-  - Additionally takes `--year` option for a specific year: `--year 2007`
-
 ### Codespaces
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=408136770)
 
-You can run the backend of this application in Github codespaces.
+This codespace will run the three services needed; the backend, frontend, and database for the app. 
 
-- Open in Codespaces
-- `cd src/berenice`
-- `flask run`
+Run backend
+- `cd src/berenice; flask run`
+
+Run frontend
+- `cd src/sophronia; npm run`
+
+### Run Locally
+
+- Run locally: `docker-compose up`
+
+### Seeding Data
+
+Seeding data requires you to have a `archive.csv` of box office data in `src/berenice/data/`.
+You can find the entire dataset to use [here](https://boxofficedata.co.uk/opendata).
+It will take a long time to seed the data, so you should try the `--year` flag to only seed a single year.
+
+- Make database migrations, inside `src/berenice` `flask db upgrade`
+- Seed films: `flask seed-films`
+- Seed box office: `flask seed-box-office`
+  - Additionally takes `--year` option for a specific year: `--year 2007`
 
 ## Structure
 
@@ -42,11 +48,11 @@ You can run the backend of this application in Github codespaces.
 
 These run weekly on a Wednesday, if they fail you can run them manually:
 
-- Fetch new box office data `docker exec web flask weekly-etl`
-- Build a new box office forecast `docker exec web flask forecast`
+- Fetch new box office data `flask weekly-etl`
+- Build a new box office forecast `flask forecast`
 
 ## Utilities
 
-- Fetch new box office data from a specific link (works as a backup): `docker exec web flask backup-etl {link to file}`
-- Delete and rollback the last week of data: `docker exec web flask rollback-etl`
-- Delete and rollback a specific year of data: `docker exec web flask rollback-year --year 2007`
+- Fetch new box office data from a specific link (works as a backup): `flask backup-etl {link to file}`
+- Delete and rollback the last week of data: `flask rollback-etl`
+- Delete and rollback a specific year of data: `flask rollback-year --year 2007`
