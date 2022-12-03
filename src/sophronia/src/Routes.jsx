@@ -17,6 +17,7 @@ import { Contact } from './pages/Flat/Contact';
 import { MainSearch } from './pages/Search';
 import { TopFilms } from './pages/Flat/TopFilms';
 import { OpenData } from './pages/Flat/OpenData';
+import { NotFound } from './pages/Flat/NotFound';
 
 export const Root = () => {
 	return (
@@ -90,9 +91,8 @@ export const Root = () => {
 							<Route index element={<MarketShareDistributor />} />
 						</Route>
 					</Route>
+					<Route path='*' element={<NotFound />} />
 				</Route>
-
-				{/* <Route path="*" element={<NotFound />} /> */}
 			</Route>
 		</Routes>
 	);
