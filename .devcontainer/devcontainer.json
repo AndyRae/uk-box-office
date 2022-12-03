@@ -3,7 +3,7 @@
 {
 	"name": "Python 3 & PostgreSQL",
 	"dockerComposeFile": "docker-compose-codespace.yml",
-	"service": "sophronia",
+	"service": "berenice",
 	"runServices": ["sophronia", "berenice", "db"],
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 	// Leave this off - too clunky.

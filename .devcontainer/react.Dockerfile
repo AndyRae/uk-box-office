@@ -1,5 +1,5 @@
 # pull official base image
-FROM node:16-alpine
+FROM mcr.microsoft.com/devcontainers/javascript-node:0-16-bullseye
 
 # set working directory
 WORKDIR /app
