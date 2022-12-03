@@ -2,8 +2,9 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/postgres
 {
 	"name": "Python 3 & PostgreSQL",
-	"dockerComposeFile": "docker-compose.yml",
+	"dockerComposeFile": "docker-compose-codespace.yml",
 	"service": "app",
+	"runServices": ["app", "db"],
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 	// Leave this off - too clunky.
 	// "postStartCommand": "cd src/berenice/ && flask --debug run",
