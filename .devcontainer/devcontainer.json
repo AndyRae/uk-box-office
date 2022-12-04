@@ -39,6 +39,12 @@
 				"readme.md"
 			]
 		}
+	},
+
+	// Pass the codespace variables to React
+	"containerEnv": { 
+		"REACT_APP_CODESPACE_NAME": "${localEnv:CODESPACE_NAME}",
+		"REACT_APP_GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN": "${localEnv:GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}"
 	}
 
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.

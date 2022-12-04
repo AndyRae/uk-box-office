@@ -156,8 +156,9 @@ const useProtectedSWRInfinite = (startDate, endDate) => {
 	 */
 
 	const getBackendURL = () => {
+		codespace = $`http://${process.env.REACT_APP_CODESPACE_NAME}-5000.${process.env.REACT_APP_GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}/api/`
 		return `${
-			process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000/api/'
+			codespace || 'http://localhost:5000/api/'
 		}`;
 	};
 
