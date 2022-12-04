@@ -1,20 +1,20 @@
 version: '3.8'
 
 services:
-  sophronia:
-    build:
-      context: ..
-      dockerfile: .devcontainer/react.Dockerfile
+  # sophronia:
+  #   build:
+  #     context: ..
+  #     dockerfile: .devcontainer/react.Dockerfile
 
-    volumes:
-      - ../..:/workspaces:cached
+  #   volumes:
+  #     - ../..:/workspaces:cached
 
-    # Overrides default command so things don't shut down after the process ends.
-    command: sleep infinity
+  #   # Overrides default command so things don't shut down after the process ends.
+  #   command: sleep infinity
 
-    network_mode: service:berenice
+  #   network_mode: service:berenice
 
-  berenice:
+  app:
     build:
       context: ..
       dockerfile: .devcontainer/flask.Dockerfile
