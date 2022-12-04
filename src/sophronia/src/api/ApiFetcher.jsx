@@ -7,7 +7,7 @@ import axios from 'axios';
  */
 export const useBackendApi = () => {
 	const getBackendURL = () => {
-		codespace = $`http://${process.env.REACT_APP_CODESPACE_NAME}-5000.${process.env.REACT_APP_GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}/api/`
+		const codespace = $`http://${process.env.REACT_APP_CODESPACE_NAME}-5000.${process.env.REACT_APP_GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}/api/`
 		return `${
 			codespace || 'http://localhost:5000/api/'
 		}`;

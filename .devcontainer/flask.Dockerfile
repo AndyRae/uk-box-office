@@ -13,6 +13,7 @@ ENV POSTGRES_DB=postgres
 ENV POSTGRES_USER=postgres
 ENV POSTGRES_PASSWORD=postgres
 
+
 ENV APP /app
 # Create the directory and instruct Docker to operate
 # from there from now on

@@ -41,8 +41,8 @@
 		}
 	},
 
-	// Pass the codespace variables to React
-	"containerEnv": { 
+	// // Pass the codespace variables to React
+	"remoteEnv": { 
 		"REACT_APP_CODESPACE_NAME": "${localEnv:CODESPACE_NAME}",
 		"REACT_APP_GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN": "${localEnv:GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}"
 	}
