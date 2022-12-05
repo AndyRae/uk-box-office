@@ -23,6 +23,7 @@ import { StructuredTimeData } from '../../components/StructuredData';
 import { PageTitle } from '../../components/ui/PageTitle';
 import { StackedBarChart } from '../../components/charts/StackedBarChart';
 import { DatasourceButton } from '../../components/Dashboard/Datasource';
+import { ProgressBar } from '../../components/ui/ProgressBar';
 
 const PillLink = ({ to, children, isActive }) => (
 	<li className='mr-2'>
@@ -113,7 +114,10 @@ export const TimePage = () => {
 	};
 
 	// Fetch Data
-	const { results, isReachedEnd } = useBoxOfficeInfinite(startDate, endDate);
+	const { results, isReachedEnd, percentFetched } = useBoxOfficeInfinite(
+		startDate,
+		endDate
+	);
 	const { results: lastWeekResults } = useBoxOfficeInfinite(
 		startLastWeek,
 		endLastWeek
@@ -136,7 +140,6 @@ export const TimePage = () => {
 		0
 	);
 	const numberOfNewFilms = calculateWeek1Releases(results);
-	const numberOfCinemas = calculateNumberOfCinemas(results);
 
 	// Time Comparison Data
 	let changeNewFilms = 0;
@@ -173,12 +176,14 @@ export const TimePage = () => {
 			/>
 			<PageTitle>UK Box Office {pageTitle}</PageTitle>
 
+			{isReachedEnd ? '' : <ProgressBar value={percentFetched} />}
+
 			<div className='grid md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5'>
 				<Card
 					title='Total Box Office'
-					subtitle={`£${boxOffice.toLocaleString()}`}
+					subtitle={isReachedEnd && `£${boxOffice.toLocaleString()}`}
 				>
-					{timeComparisonData && (
+					{isReachedEnd && (
 						<Tooltip text='Change from last year'>
 							<MetricChange value={changeWeek} />{' '}
 						</Tooltip>
@@ -187,9 +192,9 @@ export const TimePage = () => {
 
 				<Card
 					title='Weekend Box Office'
-					subtitle={`£${weekendBoxOffice.toLocaleString()}`}
+					subtitle={isReachedEnd && `£${weekendBoxOffice.toLocaleString()}`}
 				>
-					{timeComparisonData && (
+					{isReachedEnd && (
 						<Tooltip text='Change from last year'>
 							{' '}
 							<MetricChange value={changeWeekend} />{' '}
@@ -197,8 +202,11 @@ export const TimePage = () => {
 					)}
 				</Card>
 
-				<Card title='New Releases' subtitle={`${numberOfNewFilms}`}>
-					{timeComparisonData && (
+				<Card
+					title='New Releases'
+					subtitle={isReachedEnd && `${numberOfNewFilms}`}
+				>
+					{isReachedEnd && (
 						<Tooltip text='Change from last year'>
 							{' '}
 							<MetricChange value={changeNewFilms} />{' '}
@@ -207,7 +215,7 @@ export const TimePage = () => {
 				</Card>
 
 				<Card title='Box Office Previous Years'>
-					{timeComparisonData &&
+					{isReachedEnd &&
 						timeComparisonData.results.slice(1, 4).map((year, index) => {
 							return (
 								<div key={index} className='text-center'>

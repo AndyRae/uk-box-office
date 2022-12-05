@@ -131,6 +131,7 @@ export function useBoxOfficeInfinite(startDate, endDate) {
 	);
 
 	const isReachedEnd = results.length === data[0].count;
+	const percentFetched = Math.round((results.length / data[0].count) * 100);
 
 	return {
 		results,
@@ -139,6 +140,7 @@ export function useBoxOfficeInfinite(startDate, endDate) {
 		size,
 		setSize,
 		isReachedEnd,
+		percentFetched,
 	};
 }
 
