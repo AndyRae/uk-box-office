@@ -13,13 +13,16 @@ The backend runs Flask built with Python, the frontend is built with React using
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=408136770)
 
-This codespace will run the three services needed; the backend, frontend, and database for the app. 
+This codespace will run the services needed for the application; the backend, frontend, and database.
 
-Run backend
+Run backend:
+
 - `cd src/berenice; flask run`
+- Change the Port Visibility to `Public`
 
-Run frontend
-- `cd src/sophronia; npm run`
+Run frontend:
+
+- `cd src/sophronia; npm start`
 
 ### Run Locally
 

@@ -1,9 +1,9 @@
 import { Button } from '../../components/ui/Button';
 import { PageTitle } from '../../components/ui/PageTitle';
 import { PageContent } from '../../components/ui/PageContent';
-import { Link } from 'react-router-dom';
 import { StructuredTimeData } from '../../components/StructuredData';
 import { ExternalLink, InlineLink } from '../../components/ui/InlineLink';
+import { getBackendURL } from '../../api/ApiFetcher';
 
 export const OpenData = () => {
 	return (
@@ -42,7 +42,7 @@ export const OpenData = () => {
 				<Button>
 					<a
 						href={`${
-							process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000/api/'
+							getBackendURL()
 						}boxoffice/archive`}
 					>
 						All Time Box Office Data (.csv)
