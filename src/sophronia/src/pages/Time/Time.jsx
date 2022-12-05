@@ -23,6 +23,7 @@ import { StructuredTimeData } from '../../components/StructuredData';
 import { PageTitle } from '../../components/ui/PageTitle';
 import { StackedBarChart } from '../../components/charts/StackedBarChart';
 import { DatasourceButton } from '../../components/Dashboard/Datasource';
+import { ProgressBar } from '../../components/ui/ProgressBar';
 
 const PillLink = ({ to, children, isActive }) => (
 	<li className='mr-2'>
@@ -113,7 +114,10 @@ export const TimePage = () => {
 	};
 
 	// Fetch Data
-	const { results, isReachedEnd } = useBoxOfficeInfinite(startDate, endDate);
+	const { results, isReachedEnd, percentFetched } = useBoxOfficeInfinite(
+		startDate,
+		endDate
+	);
 	const { results: lastWeekResults } = useBoxOfficeInfinite(
 		startLastWeek,
 		endLastWeek
@@ -171,6 +175,8 @@ export const TimePage = () => {
 				time={pageTitle}
 			/>
 			<PageTitle>UK Box Office {pageTitle}</PageTitle>
+
+			{isReachedEnd ? '' : <ProgressBar value={percentFetched} />}
 
 			<div className='grid md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5'>
 				<Card
