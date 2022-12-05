@@ -136,7 +136,6 @@ export const TimePage = () => {
 		0
 	);
 	const numberOfNewFilms = calculateWeek1Releases(results);
-	const numberOfCinemas = calculateNumberOfCinemas(results);
 
 	// Time Comparison Data
 	let changeNewFilms = 0;
@@ -176,9 +175,9 @@ export const TimePage = () => {
 			<div className='grid md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5'>
 				<Card
 					title='Total Box Office'
-					subtitle={`£${boxOffice.toLocaleString()}`}
+					subtitle={isReachedEnd && `£${boxOffice.toLocaleString()}`}
 				>
-					{timeComparisonData && (
+					{isReachedEnd && (
 						<Tooltip text='Change from last year'>
 							<MetricChange value={changeWeek} />{' '}
 						</Tooltip>
@@ -187,9 +186,9 @@ export const TimePage = () => {
 
 				<Card
 					title='Weekend Box Office'
-					subtitle={`£${weekendBoxOffice.toLocaleString()}`}
+					subtitle={isReachedEnd && `£${weekendBoxOffice.toLocaleString()}`}
 				>
-					{timeComparisonData && (
+					{isReachedEnd && (
 						<Tooltip text='Change from last year'>
 							{' '}
 							<MetricChange value={changeWeekend} />{' '}
@@ -197,8 +196,11 @@ export const TimePage = () => {
 					)}
 				</Card>
 
-				<Card title='New Releases' subtitle={`${numberOfNewFilms}`}>
-					{timeComparisonData && (
+				<Card
+					title='New Releases'
+					subtitle={isReachedEnd && `${numberOfNewFilms}`}
+				>
+					{isReachedEnd && (
 						<Tooltip text='Change from last year'>
 							{' '}
 							<MetricChange value={changeNewFilms} />{' '}
@@ -207,7 +209,7 @@ export const TimePage = () => {
 				</Card>
 
 				<Card title='Box Office Previous Years'>
-					{timeComparisonData &&
+					{isReachedEnd &&
 						timeComparisonData.results.slice(1, 4).map((year, index) => {
 							return (
 								<div key={index} className='text-center'>

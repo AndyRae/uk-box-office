@@ -4,21 +4,20 @@ import axios from 'axios';
 
 export const getBackendURL = () => {
 	if (process.env.REACT_APP_CODESPACE === 'true') {
-		return `https://${process.env.REACT_APP_CODESPACE_NAME}-5000.${process.env.REACT_APP_GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}/api/`
+		return `https://${process.env.REACT_APP_CODESPACE_NAME}-5000.${process.env.REACT_APP_GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}/api/`;
 	}
 
 	if (process.env.NODE_ENV === 'development') {
-		return 'http://localhost:5000/api';
+		return 'http://localhost:5000/api/';
 	}
 
-	return process.env.REACT_APP_BACKEND_URL
+	return process.env.REACT_APP_BACKEND_URL;
 };
 
 /**
  * Builds a very simple fetcher instance for SWR
  */
 export const useBackendApi = () => {
-
 	const getBackendDefaults = () => ({
 		prefixUrl: getBackendURL(),
 	});
