@@ -22,6 +22,7 @@ import { Tooltip } from '../../components/ui/Tooltip';
 import { StructuredTimeData } from '../../components/StructuredData';
 import { PageTitle } from '../../components/ui/PageTitle';
 import { StackedBarChart } from '../../components/charts/StackedBarChart';
+import { DatasourceButton } from '../../components/Dashboard/Datasource';
 
 const PillLink = ({ to, children, isActive }) => (
 	<li className='mr-2'>
@@ -295,6 +296,7 @@ export const TimePage = () => {
 					{results && (
 						<>
 							<div className='flex flex-row-reverse mt-3'>
+								<DatasourceButton />
 								<ExportCSV data={tableData} filename={'filmdata.csv'} />
 							</div>
 							<FilmTable
@@ -308,6 +310,7 @@ export const TimePage = () => {
 					{weekData && (
 						<>
 							<div className='flex flex-row-reverse mt-3'>
+								<DatasourceButton />
 								<ExportCSV data={weekData} filename={'timedata.csv'} />
 							</div>
 							<WeeksTable data={weekData} />
@@ -318,6 +321,7 @@ export const TimePage = () => {
 					{timeComparisonData && (
 						<>
 							<div className='flex flex-row-reverse mt-3'>
+								<DatasourceButton />
 								<ExportCSV
 									data={timeComparisonData.results}
 									filename={'historic.csv'}

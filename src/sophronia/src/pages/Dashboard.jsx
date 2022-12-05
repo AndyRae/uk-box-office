@@ -25,6 +25,7 @@ import {
 import { StructuredTimeData } from '../components/StructuredData';
 import { LastUpdated } from '../components/Dashboard/LastUpdated';
 import { StackedBarChart } from '../components/charts/StackedBarChart';
+import { DatasourceCard } from '../components/Dashboard/Datasource';
 
 export const DashboardPage = () => {
 	Date.prototype.addDays = function (days) {
@@ -146,6 +147,8 @@ export const DashboardPage = () => {
 				</ButtonGroup>
 
 				<LastUpdated date={lastUpdated} />
+
+				<DatasourceCard />
 			</div>
 
 			{/* Scorecards grid. */}

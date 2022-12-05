@@ -10,6 +10,7 @@ import { ExportCSV } from '../../components/ui/ExportCSV';
 import { StructuredTimeData } from '../../components/StructuredData';
 import { PageTitle } from '../../components/ui/PageTitle';
 import { TimeLineChart } from '../../components/Time/TimeLineChart';
+import { DatasourceButton } from '../../components/Dashboard/Datasource';
 
 export const FilmPage = () => {
 	const { slug } = useParams();
@@ -106,8 +107,10 @@ export const FilmPage = () => {
 			</div>
 
 			<div className='flex flex-row-reverse my-6'>
+				<DatasourceButton />
 				<ExportCSV data={data.weeks} filename={`${data.name}_data.csv`} />
 			</div>
+
 
 			<BoxOfficeTable data={data} />
 		</div>
