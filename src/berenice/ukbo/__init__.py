@@ -32,6 +32,7 @@ def create_app(config: str = "") -> Flask:
                 r"/api/*": {"origins": [prod, beta], "methods": ["GET"]}
             }
         )
+
         cors.init_app(app)
 
         from ukbo.etl import tasks

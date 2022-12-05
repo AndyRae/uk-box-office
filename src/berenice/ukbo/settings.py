@@ -33,7 +33,7 @@ class DevelopmentConfig(Config):
     CACHE_TYPE = "null"
     FLATPAGES_AUTO_RELOAD = DEBUG
     CORS_ORIGIN = "http://localhost:3000"
-    CORS_ORIGIN_2 = "http://localhost:3000"
+    CORS_ORIGIN_2 = "*"
 
 
 class TestConfig(Config):
@@ -43,9 +43,7 @@ class TestConfig(Config):
     CACHE_TYPE = "null"
 
 
-"""
-Logging config
-"""
+# Logging config
 dictConfig(
     {
         "version": 1,

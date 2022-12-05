@@ -3,6 +3,7 @@ import useSWR from 'swr';
 import useSWRInfinite from 'swr/infinite';
 import { useMemo } from 'react';
 import { useEffect } from 'react';
+import { getBackendURL } from './ApiFetcher';
 
 export const fetchKeys = {
 	boxOffice: 'boxoffice/all',
@@ -154,12 +155,6 @@ const useProtectedSWRInfinite = (startDate, endDate) => {
 	 * @param prevPageData Previous page information
 	 * @returns API to the next page
 	 */
-
-	const getBackendURL = () => {
-		return `${
-			process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000/api/'
-		}`;
-	};
 
 	const backendUrl = `${getBackendURL()}boxoffice/all`;
 
