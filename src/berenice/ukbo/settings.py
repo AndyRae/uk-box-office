@@ -33,7 +33,9 @@ class DevelopmentConfig(Config):
     CACHE_TYPE = "null"
     FLATPAGES_AUTO_RELOAD = DEBUG
     CORS_ORIGIN = "http://localhost:3000"
-    CORS_ORIGIN_2 = "http://localhost:3000"
+    CODESPACE_NAME = os.getenv("CODESPACE_NAME")
+    CODESPACE_DOMAIN = os.getenv("GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN")
+    CORS_ORIGIN_2 = f"https://{CODESPACE_NAME}-3000.{CODESPACE_DOMAIN}"
 
 
 class TestConfig(Config):

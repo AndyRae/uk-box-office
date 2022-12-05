@@ -25,13 +25,14 @@ def create_app(config: str = "") -> Flask:
         register_cli(app)
 
         # Add CORS urls, need app_context / app.config
-        prod: str = app.config.get("CORS_ORIGIN")
-        beta: str = app.config.get("CORS_ORIGIN_2")
+        # prod: str = app.config.get("CORS_ORIGIN")
+        # beta: str = app.config.get("CORS_ORIGIN_2")
         cors = CORS(
             resources={
-                r"/api/*": {"origins": [prod, beta], "methods": ["GET"]}
+                r"/api/*": {"origins": "*", "methods": ["GET"]}
             }
         )
+
         cors.init_app(app)
 
         from ukbo.etl import tasks
