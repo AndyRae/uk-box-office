@@ -26,7 +26,7 @@ Run frontend:
 
 ### Run Locally
 
-- Run locally: `docker-compose up`
+- With Docker: `docker-compose up`
 
 ### Seeding Data
 
