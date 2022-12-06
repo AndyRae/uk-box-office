@@ -7,6 +7,17 @@ from .models import PkModel
 
 
 class Distributor(PkModel):  # type: ignore
+    """
+
+    This model stores a distributor in the UKBO database.
+
+    Attributes:
+        name: Name of the distributor.
+        slug: Slug of the distributor.
+        films: List of Films that the distributor has released.
+        weeks: List of Film weeks that the distributor has released films in.
+
+    """
 
     __tablename__ = "distributor"
     name = db.Column(db.String(160), unique=True, nullable=False)
@@ -26,4 +37,11 @@ class Distributor(PkModel):  # type: ignore
         return self.name == o
 
     def as_dict(self) -> Dict[str, Any]:
+        """
+        Serializes the model as a dictionary.
+        This is used to create JSON responses.
+
+        Returns:
+            Dictionary representation of the model.
+        """
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
