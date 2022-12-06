@@ -1,5 +1,12 @@
 from flask import Blueprint
 
+"""
+Blueprints for the API.
+
+Blueprints are registered in the app factory.
+
+"""
+
 from . import boxoffice, country, distributor, film, root, search
 
 api_bp = Blueprint("api", __name__)
