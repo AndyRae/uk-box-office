@@ -9,6 +9,11 @@ import {
 
 const Links = [
 	{
+		name: 'Data Source',
+		path: 'https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures',
+		icon: <FaInfoCircle />,
+	},
+	{
 		name: 'About',
 		path: '/about',
 		icon: <FaInfoCircle />,
@@ -44,13 +49,27 @@ export const Footer = () => {
 				</a>
 			</span>
 			<ul className='flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0'>
-				{Links.map((link) => (
+				{Links.map((link) => {
+
+					const isLocalUrl = (link) => link.path.startsWith("/");
+					return (
 					<li key={link.name} className='mr-4 hover:underline md:mr-6'>
+						{isLocalUrl(link) ? (
 						<Link to={link.path} className='mr-4 hover:underline md:mr-6'>
 							{link.name}
 						</Link>
+						) : (
+						<a href
+							={link.path}
+							target='_blank'
+							rel='noopener noreferrer'
+							className='mr-4 hover:underline md:mr-6'
+						>
+							{link.name}
+						</a>
+						)}
 					</li>
-				))}
+				);})}
 			</ul>
 		</footer>
 	);

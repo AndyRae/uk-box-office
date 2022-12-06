@@ -12,4 +12,4 @@ def index() -> Tuple[str, int]:
     """
     Root endpoint.
     """
-    return ("", 200)
+    return (".", 200)

@@ -8,6 +8,7 @@ import { TimeLineChart } from '../Time/TimeLineChart';
 import { FilmTable } from '../Time/FilmTable';
 import { LastUpdated } from './LastUpdated';
 import { StackedBarChart } from '../charts/StackedBarChart';
+import { DatasourceCard } from './Datasource';
 
 export const SkeletonCards = () => {
 	return (
@@ -71,6 +72,7 @@ export const Skeleton = ({ children, ...props }) => {
 					<Button>1Y</Button>
 				</ButtonGroup>
 				<LastUpdated />
+				<DatasourceCard />
 			</div>
 
 			<SkeletonCards />

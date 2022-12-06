@@ -8,9 +8,6 @@ ENV APP /app
 RUN mkdir $APP
 WORKDIR $APP
 
-ENV PYTHONUNBUFFERED=1
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV FLASK_APP=ukbo
 COPY requirements.txt requirements.txt
 RUN python3 -m pip install --upgrade pip
 RUN pip install -r requirements.txt
