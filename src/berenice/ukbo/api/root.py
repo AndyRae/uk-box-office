@@ -10,6 +10,9 @@ root = Blueprint("root", __name__)
 @cache.cached()
 def index() -> Tuple[str, int]:
     """
-    Root endpoint.
+    Root endpoint for the API.
+
+    Returns:
+        200 OK.
     """
     return (".", 200)

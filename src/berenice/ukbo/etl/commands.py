@@ -7,7 +7,11 @@ from . import tasks
 @click.command("clear-db")
 @with_appcontext
 def init_db_command() -> None:
-    """Drops all database tables. Useful for testing."""
+    """
+    Drops all database tables.
+
+    Only useful for testing.
+    """
     tasks.clear_db()
     click.echo("Initialised the database.")
 
@@ -15,7 +19,9 @@ def init_db_command() -> None:
 @click.command("fill-db")
 @with_appcontext
 def fill_db_command() -> None:
-    """Fills db with archive data"""
+    """
+    Seeds database with archive data.
+    """
     path = "./data/archive.csv"
     tasks.seed_db(path)
     click.echo("Filled the database.")
@@ -24,7 +30,9 @@ def fill_db_command() -> None:
 @click.command("test-db")
 @with_appcontext
 def test_db_command() -> None:
-    """Fills db with some test data"""
+    """
+    Seeds database with test data.
+    """
     path = "./data/test.csv"
     tasks.seed_db(path)
     click.echo("Filled the database with test data.")
@@ -33,7 +41,9 @@ def test_db_command() -> None:
 @click.command("seed-films")
 @with_appcontext
 def seed_films_command() -> None:
-    """Seeds db with countries/distributors/films data"""
+    """
+    Seeds database with countries/distributors/films data.
+    """
     path = "./data/archive.csv"
     tasks.seed_films(path)
     click.echo("Seeded films data.")
@@ -43,7 +53,13 @@ def seed_films_command() -> None:
 @click.option("--year", help="Year to seed", type=int)
 @with_appcontext
 def seed_box_office_command(year: int) -> None:
-    """Seeds db with box office data"""
+    """
+    Seeds database with box office data.
+
+    Args:
+        year: Year to seed.
+
+    """
     path = "./data/archive.csv"
     tasks.seed_box_office(path, year=year)
     click.echo("Seeded box office data")
@@ -52,7 +68,11 @@ def seed_box_office_command(year: int) -> None:
 @click.command("forecast")
 @with_appcontext
 def forecast_command() -> None:
-    """Runs the forecast pipeline."""
+    """
+    Runs the forecast pipeline.
+
+    Builds a new forecast and saves it to the database.
+    """
     tasks.forecast_task()
     click.echo("Built new forecast.")
 
@@ -60,7 +80,11 @@ def forecast_command() -> None:
 @click.command("weekly-etl")
 @with_appcontext
 def weekly_etl_command() -> None:
-    """Runs the weekly etl for new box office data."""
+    """
+    Runs the weekly etl for new box office data.
+
+    Downloads the latest box office data and saves it to the database.
+    """
     tasks.weekly_etl()
     click.echo("Ran weekly etl.")
 
@@ -70,7 +94,11 @@ def weekly_etl_command() -> None:
 @with_appcontext
 def backup_etl_command(source_url: str) -> None:
     """
-    A backup CLI for the pipeline - pass the excel file link directly
+    A backup interface for the ETL pipeline.
+
+    Args:
+        source_url: URL of the excel file to download.
+
     """
     tasks.backup_etl_command(source_url)
 
@@ -80,7 +108,9 @@ def backup_etl_command(source_url: str) -> None:
 def rollback_etl_command() -> None:
     """
     Deletes the last week of data.
-    Film Weeks and Weeks
+    Film Weeks and Weeks tables are updated.
+
+    Actual Films are not deleted.
     """
     tasks.rollback_etl_command()
 
@@ -89,7 +119,13 @@ def rollback_etl_command() -> None:
 @click.option("--year", help="Year to rollback", type=int)
 @with_appcontext
 def rollback_year_command(year: int) -> None:
-    """Deletes year of box office data"""
+    """
+    Deletes year of box office data.
+
+    Args:
+        year: Year to rollback.
+
+    """
 
     tasks.rollback_year(year)
     click.echo(f"Deleted {year}")
@@ -99,7 +135,13 @@ def rollback_year_command(year: int) -> None:
 @click.option("--film", help="Film ID to rollback", type=int)
 @with_appcontext
 def delete_film_command(film: int) -> None:
-    """Deletes film of box office data"""
+    """
+    Deletes film of box office data.
+
+    Args:
+        film: Film ID to rollback.
+
+    """
 
     tasks.delete_film(film)
     click.echo(f"Deleted {film}")
@@ -108,6 +150,8 @@ def delete_film_command(film: int) -> None:
 @click.command("build-archive")
 @with_appcontext
 def build_archive_command() -> None:
-    """Builds the archive file for the year"""
+    """
+    Builds the box office archive file from the database.
+    """
     tasks.build_archive()
     click.echo("Built archive file.")

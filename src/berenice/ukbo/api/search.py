@@ -1,13 +1,20 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, jsonify, request
 from flask.wrappers import Response
 from ukbo import services
 
 search = Blueprint("search", __name__)
 
+
 @search.route("")
 def all() -> Response:
     """
-    Main search endpoint for everything
+    Search everything (films, distributors, countries).
+
+    Request Arguments(optional):
+        q (str): Search query.
+
+    Returns:
+        JSON response of search results.
     """
     query = request.args.get("q", "")
 
@@ -20,12 +27,3 @@ def all() -> Response:
         distributors=distributors,
         countries=countries,
     )
-
-
-
-@search.route("/films")
-def films() -> Response:
-    """
-    Search films
-    """
-    pass

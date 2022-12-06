@@ -6,7 +6,9 @@ T = TypeVar("T", bound="PkModel")
 
 
 class CRUDMixin(object):
-    """Mixin that adds convenience methods for CRUD operations."""
+    """
+    Mixin that adds convenience methods for CRUD (create, read, update, delete) operations.
+    """
 
     @classmethod
     def create(cls, commit: bool = True, **kwargs: Any) -> Any:
@@ -36,13 +38,28 @@ class CRUDMixin(object):
 
 
 class Model(CRUDMixin, db.Model):
-    """Base model class that includes CRUD convenience methods."""
+    """
+    Base model class that includes CRUD convenience methods.
+    """
 
     __abstract__ = True
 
 
 class PkModel(Model):
-    """Base model class that includes CRUD convenience methods, plus adds a 'primary key' column named ``id``."""
+    """
+    Base model class that includes CRUD convenience methods, plus adds a 'primary key' column named ``id``.
+
+    To use, import and inherit from the mixin:
+        from ukbo.models import PkModel
+
+        class MyModelClass(PkModel):
+            pass
+
+    Then call the methods:
+        MyModelClass.create(name='a name', description='a description')
+        MyModelClass.query.filter_by(name='a name').first()
+
+    """
 
     __abstract__ = True
     id = db.Column(db.Integer, primary_key=True)

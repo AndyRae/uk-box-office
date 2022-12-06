@@ -1,5 +1,6 @@
 from typing import List
 
+import pandas as pd
 from flask import Response, abort, jsonify
 from slugify import slugify  # type: ignore
 from ukbo import models
@@ -8,7 +9,9 @@ from ukbo.extensions import db, ma
 
 class FilmSchema(ma.SQLAlchemyAutoSchema):
     """
+    TODO: Implement these schemas.
     Schema to dump - currently unused.
+
     """
 
     class Meta:
@@ -21,6 +24,12 @@ class FilmSchema(ma.SQLAlchemyAutoSchema):
 def list(page: int, limit: int = 100) -> Response:
     """
     Paginated list of all films.
+
+    Args:
+        page: Page number
+        limit: Number of results per page
+
+    Returns (JSON): Paginated list of films.
     """
     query = db.session.query(models.Film)
     data = query.order_by(models.Film.name.asc()).paginate(
@@ -44,6 +53,11 @@ def list(page: int, limit: int = 100) -> Response:
 def get(slug: str) -> Response:
     """
     Get one film based on its slug.
+
+    Args:
+        slug: Slug of the film to get.
+
+    Returns (JSON): Film data.
     """
     query = db.session.query(models.Film)
     query = query.filter(models.Film.slug == slug)
@@ -61,8 +75,17 @@ def add_film(
     countries: List[models.Country],
 ) -> models.Film:
     """
-    Checks the database if the film exists - returns the class
-    If not - creates it, adds it to the database and returns it
+    Add a film to the database.
+
+    Checks the database if the film exists - returns the object.
+    If not - creates it, adds it to the database and returns it.
+
+    Args:
+        film: Name of the film.
+        distributor: Distributor object.
+        countries: List of country objects.
+
+    Returns Film object.
     """
     film = film.strip()
 
@@ -87,6 +110,11 @@ def add_film(
 def delete_film(id: int) -> None:
     """
     Delete a film and all its associated data.
+
+    Args:
+        id: ID of the film to delete.
+
+    Returns None.
     """
     query = db.session.query(models.Film)
     query = query.filter(models.Film.id == id)
@@ -100,9 +128,44 @@ def delete_film(id: int) -> None:
 def search(search_query: str) -> Response:
     """
     Search films by name.
+
+    Args:
+        search_query: Search query.
+
+    Returns (JSON): List of films.
     """
     query = db.session.query(models.Film)
     query = query.filter(models.Film.name.ilike(f"%{search_query}%"))
     data = query.limit(15).all()
 
     return [] if data is None else [ix.as_dict(weeks=False) for ix in data]
+
+
+def spellcheck_film(film_title: pd.Series) -> str:
+    """
+    Spellchecks the film title against a list of common mistakes
+
+    Args:
+        film_title: Film title to check
+
+    Alo generally cleans up the title
+
+    Returns:
+        str: Cleaned title
+    """
+    film_title = film_title.strip().upper()
+    # if film ends with ', the', trim and add to prefix
+    if film_title.endswith(", THE"):
+        film_title = "THE " + film_title.rstrip(", THE")
+
+    # checks against the list of mistakes
+    try:
+        df = pd.read_csv("./data/film_check.csv", header=None)
+    except FileNotFoundError:
+        return film_title
+    df.columns = ["key", "correction"]
+
+    if film_title in df["key"].values:
+        df = df[df["key"].str.contains(film_title, regex=False)]
+        film_title = df["correction"].iloc[0].strip()
+    return film_title

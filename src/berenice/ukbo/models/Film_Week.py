@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Dict, List
+from typing import Any, Dict
 
 from ukbo.extensions import db
 
@@ -8,7 +8,24 @@ from .models import PkModel
 
 class Film_Week(PkModel):  # type: ignore
     """
-    DB class for the weekly data of a film.
+
+    This model stores a Film Week in the UKBO database.
+
+    This is a week that a film has been released in the UK.
+    And is the main model to store box office data.
+
+    Attributes:
+        film_id: ID of the film.
+        film: Film object.
+        distributor_id: ID of the distributor.
+        distributor: Distributor object.
+        date: Date of the film week.
+        rank: Rank of the film in the film week.
+        weeks_on_release: Number of weeks the film has been on release.
+        number_of_cinemas: Number of cinemas the film was released in.
+        weekend_gross: Weekend gross of the film.
+        week_gross: Week gross of the film.
+
     """
 
     __tablename__ = "film_week"
@@ -35,6 +52,13 @@ class Film_Week(PkModel):  # type: ignore
         return self.total_gross > o
 
     def as_dict(self) -> Dict[str, Any]:
+        """
+        Serializes the model as a dictionary.
+        This is used to create JSON responses.
+
+        Returns:
+            Dictionary representation of the model.
+        """
         return {
             "id": self.id,
             "film": self.film.name,
@@ -50,30 +74,3 @@ class Film_Week(PkModel):  # type: ignore
             "total_gross": self.total_gross,
             "site_average": self.site_average,
         }
-
-    def as_df(self) -> List[Any]:
-        return [
-            self.date,
-            self.week_gross,
-            self.weekend_gross,
-            self.number_of_cinemas,
-            self.id,
-            self.total_gross,
-            self.weeks_on_release,
-            self.rank,
-            self.site_average,
-        ]
-
-    def as_df_film(self) -> List[Any]:
-        return [self.date, self.week_gross]
-
-    def as_df2(self) -> List[Any]:
-        return [
-            self.film.name,
-            self.film.slug,
-            self.weekend_gross,
-            self.week_gross,
-            self.number_of_cinemas,
-            self.weeks_on_release,
-            self.site_average,
-        ]

@@ -1,14 +1,27 @@
-import datetime
-
 import pandas as pd
-from flask import Response, jsonify
 from prophet import Prophet
 from ukbo import db, models  # type: ignore
 
-from . import utils
-
 
 class Forecast:
+    """
+    Forecast class.
+
+    Uses Prophet to forecast the next 26 weeks of box office data.
+
+    Attributes:
+        df: Dataframe of data to model
+        prediction: Dataframe of prediction
+        prediction_weeks: Number of weeks to predict
+
+    Methods:
+        run_forecast: Runs the forecast
+        get_data: Fetches data from database to model
+        forecast_model: Builds the model
+        process_results: Processes the results
+
+    """
+
     def __init__(self) -> None:
         self.df: pd.DataFrame = None
         self.prediction: pd.DataFrame = None
@@ -16,7 +29,10 @@ class Forecast:
 
     def run_forecast(self) -> None:
         """
-        Wrapper for model
+        Runs the forecast
+
+        Returns:
+            None
         """
         self.get_data()
         self.forecast_model()
@@ -25,6 +41,9 @@ class Forecast:
     def get_data(self) -> None:
         """
         Fetches data from database to model
+
+        Returns:
+            None
         """
         query = db.session.query(models.Week).order_by(models.Week.date.asc())
         data = query.all()
@@ -40,6 +59,9 @@ class Forecast:
     def forecast_model(self) -> None:
         """
         Builds the model
+
+        Returns:
+            None
         """
         holidays = pd.DataFrame(
             {
@@ -66,13 +88,22 @@ class Forecast:
 
     def process_results(self) -> None:
         """
-        Add results to db
+        Add results to database
+
+        Returns:
+            None
         """
         self.prediction.apply(self.add_week, axis=1)
 
     def add_week(self, series: pd.Series) -> None:
         """
         Updates each week of a dataframe with forecast data
+
+        Args:
+            series: Series of data to update
+
+        Returns:
+            None
         """
 
         week = models.Week.query.filter_by(date=series["ds"]).first()
