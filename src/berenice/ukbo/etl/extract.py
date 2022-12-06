@@ -14,7 +14,11 @@ from . import transform
 
 def get_excel_file(source_url: str) -> Tuple[bool, str]:
     """
-    Fetches first (latest) excel file on the source page
+    Gets the first (latest) excel file on the source page.
+
+    Args:
+        source_url: URL of the source page.
+
     Returns whether fetch has been succesful, and path to the file
     """
 
@@ -55,7 +59,15 @@ def get_excel_file(source_url: str) -> Tuple[bool, str]:
 
 def extract_box_office(filename: str) -> pd.DataFrame:
     """
-    Main extract/load function, transforming raw box office .xls to dataframe.
+    Extracts box office data from excel file.
+
+    This is the main extract function, from raw box office .xls to dataframe.
+
+    Args:
+        filename: Path to the excel file.
+
+    Returns:
+        Dataframe of box office data.
     """
 
     df = pd.read_excel(filename)
