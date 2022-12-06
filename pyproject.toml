@@ -12,6 +12,20 @@ force_grid_wrap = 0
 use_parentheses = true
 line_length = 79
 
+[mypy-tests.*]
+ignore_errors = True
+
+[mypy]
+follow_imports = silent
+strict_optional = True
+warn_redundant_casts = True
+warn_unused_ignores = False
+disallow_any_generics = True
+check_untyped_defs = True
+disallow_untyped_defs = True
+ignore_missing_imports = True
+namespace_packages = True
+
 (
   /(
       \.eggs
