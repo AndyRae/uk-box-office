@@ -1,7 +1,7 @@
 from flask import Blueprint
 
 """
-Blueprints for the API.
+Blueprints for the API layer of the application.
 
 Blueprints are registered in the app factory.
 

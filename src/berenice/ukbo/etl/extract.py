@@ -101,11 +101,11 @@ def extract_box_office(filename: str) -> pd.DataFrame:
     )
 
     df.insert(0, "date", date)
-    df["film"] = df["film"].map(services.utils.spellcheck_film)
+    df["film"] = df["film"].map(services.film.spellcheck_film)
     df["distributor"] = df["distributor"].map(
-        services.utils.spellcheck_distributor
+        services.distributor.spellcheck_distributor
     )
-    df["country"] = df["country"].map(services.utils.spellcheck_country)
+    df["country"] = df["country"].map(services.country.spellcheck_country)
     df["week_gross"] = df.apply(transform.get_week_box_office, axis=1)
 
     return df
