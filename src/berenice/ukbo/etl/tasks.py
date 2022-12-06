@@ -1,6 +1,5 @@
 """Scheduled tasks"""
 
-import json
 import os
 import urllib.request
 from datetime import datetime, timedelta
@@ -13,7 +12,7 @@ from flask.cli import with_appcontext
 from sqlalchemy import extract as sqlextract
 from ukbo import db, models, scheduler, services  # type: ignore
 
-from . import extract, load, transform
+from . import extract, load
 
 
 @scheduler.task(
@@ -29,7 +28,9 @@ from . import extract, load, transform
 )
 def run_etl() -> None:
     """
-    Weekly task for the ETL pipeline of box office data.
+    Weekly task for running the ETL pipeline of new box office data.
+
+    This task is run every Wednesday.
     """
 
     print("ETL Pipeline task")
@@ -71,7 +72,9 @@ def run_etl() -> None:
 @with_appcontext
 def forecast_task() -> None:
     """
-    Weekly task for the box office forecast pipeline
+    Weekly task for running the box office forecast pipeline.
+
+    This task is run every Wednesday evening after the ETL pipeline.
     """
 
     print("Running forecast.")
@@ -82,7 +85,7 @@ def forecast_task() -> None:
 @with_appcontext
 def clear_db() -> None:
     """
-    Drops any existing database tables
+    Drops any existing database tables.
     Useful for resetting the database in testing.
     """
 
@@ -95,6 +98,10 @@ def clear_db() -> None:
 def seed_db(path: str) -> None:
     """
     Seeds database with box office data.
+
+    Args:
+        path: Path to the archive.csv file.
+
     """
 
     seed_films(path)
@@ -104,8 +111,12 @@ def seed_db(path: str) -> None:
 @with_appcontext
 def seed_films(path: str) -> None:
     """
-    Seeds countries / distributors / films
-    But not weeks.
+    Seeds countries / distributors / films data.
+    But not box office weeks data.
+
+    Args:
+        path: Path to the archive.csv file.
+
     """
 
     archive = pd.read_csv(path)
@@ -131,7 +142,12 @@ def seed_films(path: str) -> None:
 @with_appcontext
 def seed_box_office(path: str, **kwargs: Any) -> None:
     """
-    Seeds box office data
+    Seeds box office data for all films.
+
+    Args:
+        path: Path to the archive.csv file.
+        **kwargs: Keyword arguments for load.load_weeks.
+
     """
 
     archive = pd.read_csv(path)
@@ -140,6 +156,11 @@ def seed_box_office(path: str, **kwargs: Any) -> None:
 
 @with_appcontext
 def weekly_etl() -> None:
+    """
+    Manual CLI for the weekly ETL pipeline.
+
+    This is useful for testing the pipeline, and for running it as a backup.
+    """
     current_app.logger.info("Weekly-etl running manually")
     load_dotenv()
     source_url = os.environ.get("SOURCE_URL")
@@ -159,7 +180,11 @@ def weekly_etl() -> None:
 @with_appcontext
 def backup_etl_command(source_url: str) -> None:
     """
-    A backup CLI for the pipeline - pass the excel file link directly
+    A backup command for the ETL pipeline in case the excel file is not findable.
+
+    Args:
+        source_url: The url of the excel file to download.
+
     """
 
     current_app.logger.info("Backup-ETL manual running.")
@@ -178,8 +203,8 @@ def backup_etl_command(source_url: str) -> None:
 @with_appcontext
 def rollback_etl_command() -> None:
     """
-    Deletes the last week of data.
-    Film Weeks and Weeks
+    A command for rolling back the ETL pipeline, and deleting the last week of data.
+    Film Weeks and Weeks, but not Films, Distributors or Countries.
     """
 
     query = db.session.query(models.Film_Week)
@@ -209,7 +234,13 @@ def rollback_etl_command() -> None:
 @with_appcontext
 def rollback_year(year: int) -> None:
     """
-    Deletes the year of data
+    Deletes the year of Box Office data from the database.
+
+    Box Office data is deleted, but Films, Distributors, and Countries are not.
+
+    Args:
+        year: The year to delete
+
     """
     query = db.session.query(models.Film_Week)
     query = query.filter(sqlextract("year", models.Film_Week.date) == year)
@@ -234,7 +265,11 @@ def rollback_year(year: int) -> None:
 @with_appcontext
 def delete_film(id: int) -> None:
     """
-    Deletes a film from the database
+    Deletes a film from the database.
+
+    Args:
+        id: The id of the film to delete.
+
     """
     services.film.delete_film(id)
 
@@ -253,7 +288,10 @@ def delete_film(id: int) -> None:
 @with_appcontext
 def build_archive() -> None:
     """
-    Builds the archive of box office data
+    Builds the archive of box office data.
+
+    This is run every Wednesday evening after the box office data is updated.
+
     """
     archive = services.boxoffice.build_archive()
     archive.to_csv(

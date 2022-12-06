@@ -20,6 +20,20 @@ countries = db.Table(
 
 
 class Film(PkModel):  # type: ignore
+    """
+
+    This model stores a Film in the UKBO dataset.
+
+    Attributes:
+        name: Name of the film.
+        slug: Slug of the film.
+        weeks: List of Film weeks that the film has been released in.
+        countries: List of countries that the film has been released in.
+        country_id: ID of the country that the film was released in.
+        distributor_id: ID of the distributor that released the film.
+        distributor: Distributor that released the film.
+
+    """
 
     __tablename__ = "film"
     name = db.Column(db.String(160), nullable=False)
@@ -54,7 +68,7 @@ class Film(PkModel):  # type: ignore
     def __eq__(self, o: object) -> bool:
         return self.name == o
 
-    def as_dict(self, weeks=True) -> Dict[str, Any]:
+    def as_dict(self, weeks: bool = True) -> Dict[str, Any]:
         obj = {
             "id": self.id,
             "name": self.name,
