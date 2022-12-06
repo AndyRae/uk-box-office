@@ -9,7 +9,11 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config:
-    """Prod config."""
+    """
+    Base config.
+
+    All other configs inherit from this one.
+    """
 
     DEBUG = False
     TESTING = False
@@ -27,7 +31,9 @@ class Config:
 
 
 class DevelopmentConfig(Config):
-    """Dev config."""
+    """
+    Development config.
+    """
 
     DEBUG = True
     CACHE_TYPE = "null"
@@ -37,7 +43,9 @@ class DevelopmentConfig(Config):
 
 
 class TestConfig(Config):
-    """Test config."""
+    """
+    Test config.
+    """
 
     DEBUG = True
     CACHE_TYPE = "null"

@@ -11,6 +11,15 @@ bp = Blueprint("sitemap", __name__, template_folder="sitemap")
 
 
 def return_sitemap(data: Any) -> Response:
+    """
+    Return sitemap XML.
+
+    Args:
+        data: Data to render in sitemap.
+
+    Returns:
+        Response object with sitemap XML.
+    """
     sitemap_template = render_template("sitemap.xml", data=data)
     response = make_response(sitemap_template)
     response.headers["Content-Type"] = "application/xml"
@@ -22,7 +31,10 @@ def return_sitemap(data: Any) -> Response:
 @cache.cached()
 def sitemap() -> Response:
     """
-    Sitemap root.
+    Sitemap root for all sitemaps.
+
+    Returns:
+        Response object with sitemap XML.
     """
     numbers = list(range(10)) + list(string.ascii_lowercase)  # type: ignore
 
@@ -36,7 +48,14 @@ def sitemap() -> Response:
 @cache.cached()
 def films_letter(char: str) -> Response:
     """
-    10k+ films - so split sitemap alphabetically
+    Sitemap for films.
+
+    There are 10,000 films - so we split sitemap alphabetically.
+    Args:
+        char: Letter to filter films by.
+
+    Returns:
+        Response object with sitemap XML.
     """
     data = []
     url = "https://boxofficedata.co.uk"
@@ -57,6 +76,12 @@ def films_letter(char: str) -> Response:
 @bp.route("/sitemap_countries.xml")
 @cache.cached()
 def countries() -> Response:
+    """
+    Sitemap for countries.
+
+    Returns:
+        Response object with sitemap XML.
+    """
     data = []
     url = "https://boxofficedata.co.uk"
     now = datetime.datetime.now() - datetime.timedelta(days=10)
@@ -73,6 +98,12 @@ def countries() -> Response:
 @bp.route("/sitemap_distributors.xml")
 @cache.cached()
 def distributors() -> Response:
+    """
+    Sitemap for distributors.
+
+    Returns:
+        Response object with sitemap XML.
+    """
     data = []
     url = "https://boxofficedata.co.uk"
     now = datetime.datetime.now() - datetime.timedelta(days=10)
@@ -90,7 +121,12 @@ def distributors() -> Response:
 @cache.cached()
 def time() -> Response:
     """
-    Time sitemap
+    Time sitemap.
+
+    Builds sitemap for all the time pages.
+
+    Returns:
+        Response object with sitemap XML.
     """
     data = []
     url = "https://boxofficedata.co.uk"

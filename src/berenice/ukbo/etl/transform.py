@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-from statistics import mode
 
 import pandas as pd
 from ukbo import models
@@ -7,12 +6,14 @@ from ukbo import models
 
 def get_week_box_office(row: pd.Series) -> int:
     """
-    Calculates the actual box office for the week
-    Checks if its the first week of the film - if so, returns total box office
-    If not - it subtracts the current total, from last weeks total
-    Parameters: The row of the dataframe
-    Returns the week box office
-    Used in an apply method with pandas.
+    Calculates the actual box office for a given Film week.
+
+    Checks if its the first week of the film - if so, returns total box office.
+    If not - it subtracts the current total, from last weeks total.
+
+    Args:
+        row: The row of the dataframe
+    Returns the week box office.
     """
     film = row["film"]
 
@@ -49,7 +50,12 @@ def get_week_box_office(row: pd.Series) -> int:
 
 
 def get_last_sunday() -> str:
-    # Returns the previous sunday date for week extract
+    """
+    Returns the previous sunday date for week extract.
+
+    Returns:
+        The previous sunday date as a string in the format YYYYMMDD.
+    """
     today = datetime.now()
     sunday = today - timedelta(days=today.isoweekday())
     return sunday.strftime("%Y%m%d")

@@ -7,6 +7,15 @@ from .models import PkModel
 
 
 class Country(PkModel):  # type: ignore
+    """
+
+    This model stores a Country in the UKBO dataset.
+
+    Attributes:
+        name: Name of the country.
+        slug: Slug of the country.
+
+    """
 
     __tablename__ = "country"
     name = db.Column(db.String(160), unique=True, nullable=False)
@@ -24,4 +33,12 @@ class Country(PkModel):  # type: ignore
         return self.name == o
 
     def as_dict(self) -> Dict[str, Any]:
+        """
+        Serializes the model as a dictionary.
+
+        This is used to create JSON responses.
+
+        Returns:
+            Dictionary representation of the model.
+        """
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}

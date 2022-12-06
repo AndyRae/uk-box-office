@@ -1,18 +1,33 @@
+"""
+
+This module creates the Flask app and registers extensions.
+
+"""
+
 from flask import Flask
 from flask_cors import CORS
 from ukbo.extensions import cache, db, limiter, ma, migrate, scheduler
 
 
 def create_app(config: str = "") -> Flask:
+    """
+    Create the Flask app.
+
+    Args:
+        config: Configuration to use.
+
+    Returns:
+        Flask app.
+    """
     app = Flask(__name__, instance_relative_config=True)
 
     from ukbo import settings
 
-    if config == "production":
-        app.config.from_object(settings.Config)
-
-    elif config == "dev":
+    if config == "dev":
         app.config.from_object(settings.DevelopmentConfig)
+
+    elif config == "production":
+        app.config.from_object(settings.Config)
 
     else:
         app.config.from_object(settings.TestConfig)
@@ -21,28 +36,44 @@ def create_app(config: str = "") -> Flask:
     scheduler.init_app(app)
 
     with app.app_context():
-        register_blueprints(app)
-        register_cli(app)
+        return run_app(app)
 
-        # Add CORS urls, need app_context / app.config
-        prod: str = app.config.get("CORS_ORIGIN")
-        beta: str = app.config.get("CORS_ORIGIN_2")
-        cors = CORS(
-            resources={
-                r"/api/*": {"origins": [prod, beta], "methods": ["GET"]}
-            }
-        )
 
-        cors.init_app(app)
+def run_app(app: Flask) -> Flask:
+    """
+    Create the Flask app with app context.
 
-        from ukbo.etl import tasks
+    Args:
+        app: Flask app.
 
-        scheduler.start()
+    """
+    register_blueprints(app)
+    register_cli(app)
 
-        return app
+    # Add CORS urls, need app_context / app.config
+    prod: str = app.config.get("CORS_ORIGIN")
+    beta: str = app.config.get("CORS_ORIGIN_2")
+    cors = CORS(
+        resources={r"/api/*": {"origins": [prod, beta], "methods": ["GET"]}}
+    )
+
+    cors.init_app(app)
+
+    from ukbo.etl import tasks
+
+    scheduler.start()
+
+    return app
 
 
 def register_extensions(app: Flask) -> None:
+    """
+    Register Flask extensions.
+
+    Args:
+        app: Flask app.
+
+    """
 
     cache.init_app(app)
     db.init_app(app)
@@ -53,6 +84,13 @@ def register_extensions(app: Flask) -> None:
 
 
 def register_blueprints(app: Flask) -> None:
+    """
+    Register Flask blueprints.
+
+    Args:
+        app: Flask app.
+
+    """
     from ukbo import api, sitemap
 
     app.register_blueprint(api.root_bp)
@@ -62,6 +100,13 @@ def register_blueprints(app: Flask) -> None:
 
 
 def register_cli(app: Flask) -> None:
+    """
+    Register Flask CLI commands.
+
+    Args:
+        app: Flask app.
+
+    """
     from ukbo import etl
 
     app.cli.add_command(etl.commands.init_db_command)

@@ -7,7 +7,13 @@ from ukbo.extensions import db
 
 def load_distributors(list_of_distributors: List[str]) -> None:
     """
-    Loads a list of distributors into the database
+    Loads a list of distributors into the database.
+
+    Args:
+        list_of_distributors: List of distributors to load.
+
+    Returns:
+        None
     """
 
     for distributor in list_of_distributors:
@@ -18,7 +24,13 @@ def load_distributors(list_of_distributors: List[str]) -> None:
 
 def load_countries(list_of_countries: List[str]) -> None:
     """
-    Loads a list of countries into the database
+    Loads a list of countries into the database.
+
+    Args:
+        list_of_countries: List of countries to load.
+
+    Returns:
+        None
     """
 
     for country in list_of_countries:
@@ -28,7 +40,13 @@ def load_countries(list_of_countries: List[str]) -> None:
 
 def load_films(list_of_films: List[Dict[str, Any]]) -> None:
     """
-    Loads a list of films into the database
+    Loads a list of films into the database.
+
+    Args:
+        list_of_films: List of films to load.
+
+    Returns:
+        None
     """
 
     for film in list_of_films:
@@ -42,8 +60,15 @@ def load_films(list_of_films: List[Dict[str, Any]]) -> None:
 
 def load_weeks(df: pd.DataFrame, **kwargs: Any) -> None:
     """
-    Loads nested lists of film weeks into the database
-    And their associated film + distributor
+    Loads nested lists of film weeks into the database.
+    And their associated film + distributor.
+
+    Args:
+        df: Pandas dataframe of film weeks.
+        **kwargs: Keyword arguments.
+
+    Returns:
+        None
     """
 
     df["date"] = pd.to_datetime(df["date"], format="%Y%m%d", yearfirst=True)
