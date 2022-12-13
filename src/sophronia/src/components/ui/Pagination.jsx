@@ -1,3 +1,12 @@
+/**
+ * Pagination component
+ * @param {Array} pages - The array of pages numbers.
+ * @param {function} setPageIndex - The function to set the page index
+ * @param {number} pageIndex - The current page index
+ * @returns {JSX.Element}
+ * @example
+ * <Pagination pages={pages} setPageIndex={setPageIndex} pageIndex={pageIndex} />
+ */
 export const Pagination = ({ pages, setPageIndex, pageIndex }) => {
 	return (
 		<nav aria-label='Pagination'>

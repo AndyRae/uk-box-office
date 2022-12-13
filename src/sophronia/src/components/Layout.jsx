@@ -6,6 +6,11 @@ import { useEffect } from 'react';
 import { ErrorBoundary } from './ErrorBoundary';
 import { useLocation } from 'react-router-dom';
 
+/**
+ * Default layout component
+ * @description The layout component.
+ * @returns {JSX.Element}
+ */
 export const Layout = () => {
 	const location = useLocation();
 
