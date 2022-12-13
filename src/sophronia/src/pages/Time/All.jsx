@@ -9,13 +9,23 @@ import { PageTitle } from '../../components/ui/PageTitle';
 import { PageContent } from '../../components/ui/PageContent';
 import { Card } from '../../components/Dashboard/Card';
 
+/**
+ * All Time Page
+ * @returns {JSX.Element}
+ */
 export const AllTimePage = () => {
+	// Get the current year.
 	const today = new Date().getFullYear();
-
 	const startDate = `${today}-${1}-${1}`;
 	const endDate = `${today}-${12}-${31}`;
 
-	const { data, error } = useBoxOfficeSummary(startDate, endDate, 25);
+	// Look back 25 years.
+	const yearsToLookBack = 22;
+	const { data, error } = useBoxOfficeSummary(
+		startDate,
+		endDate,
+		yearsToLookBack
+	);
 
 	useEffect(() => {
 		document.title = `All time box office - UK Box Office Data`;
@@ -68,6 +78,11 @@ export const AllTimePage = () => {
 	);
 };
 
+/**
+ * All Time Page
+ * Wrapped in a Suspense show a loading state while data is being fetched.
+ * @returns {JSX.Element}
+ */
 export const All = () => {
 	return (
 		<Suspense fallback={<Spinner />}>

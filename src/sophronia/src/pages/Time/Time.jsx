@@ -6,7 +6,6 @@ import { Suspense } from 'react';
 import { useBoxOfficeInfinite, useBoxOfficeSummary } from '../../api/boxoffice';
 import {
 	groupForTable,
-	calculateNumberOfCinemas,
 	calculateWeek1Releases,
 	groupbyDate,
 	groupStackedFilms,
@@ -25,6 +24,13 @@ import { StackedBarChart } from '../../components/charts/StackedBarChart';
 import { DatasourceButton } from '../../components/Dashboard/Datasource';
 import { ProgressBar } from '../../components/ui/ProgressBar';
 
+/**
+ * Pill Link Component
+ * @param {string} to - Link to
+ * @param {JSX.Element} children - Children
+ * @param {boolean} isActive - Is active
+ * @returns {JSX.Element}
+ */
 const PillLink = ({ to, children, isActive }) => (
 	<li className='mr-2'>
 		<Link
@@ -40,11 +46,18 @@ const PillLink = ({ to, children, isActive }) => (
 	</li>
 );
 
+/**
+ * Time Page
+ * @returns {JSX.Element}
+ */
 export const TimePage = () => {
 	const location = useLocation();
 
-	// Unpack dates to be flexible for Year, Month, Day being null.
+	// Unpack dates to allow flexbility for Month/Day/Quarter being null.
+	// Year is never null.
 	const { year, day, quarter, quarterend = 0 } = useParams();
+
+	// Month has to be unpacked differently to allow for quarters calculations.
 	let { month } = useParams();
 	let endMonth = month;
 
@@ -70,6 +83,7 @@ export const TimePage = () => {
 	}
 	const lastDay = getLastDayofMonth(endMonth);
 
+	// Build Dates based on existing params or defaults.
 	const start = new Date(
 		year ? year : 2022,
 		month ? month - 1 : 0,
@@ -81,6 +95,7 @@ export const TimePage = () => {
 		day ? day : lastDay
 	);
 
+	// Build Date Strings for API
 	const startDate = `${start.getFullYear()}-${
 		start.getMonth() + 1
 	}-${start.getDate()}`;
@@ -344,6 +359,11 @@ export const TimePage = () => {
 	);
 };
 
+/**
+ * Time Page
+ * Wrapper for Time component
+ * @returns {JSX.Element}
+ */
 export const Time = () => {
 	return (
 		<Suspense fallback={<Spinner />}>
