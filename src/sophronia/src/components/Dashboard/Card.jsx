@@ -1,3 +1,16 @@
+/**
+ * @file Card.jsx
+ * @description Card component for dashboard
+ * @param {String} title - Title of the card
+ * @param {String} subtitle - Subtitle of the card
+ * @param {JSX.Element} children - Children of the card
+ * @param {String} size - Size of the card
+ * @param {String} align - Alignment of the card
+ * @param {String} className - Additional class name
+ * @returns {JSX.Element}
+ * @example
+ * <Card title="Box Office" subtitle="£ 1,000" size="lg" />
+ */
 export const Card = ({
 	title,
 	subtitle,

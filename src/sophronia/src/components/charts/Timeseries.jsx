@@ -23,6 +23,16 @@ ChartJS.register(
 	Tooltip
 );
 
+/**
+ * Base Timeseries component
+ * @param {Object} data - Data to be displayed in the chart
+ * @param {Object} options - Options for the chart
+ * @param {String} id - ID of the chart
+ * @param {String} height - Height of the chart
+ * @param {Object} chartRef - Reference to the chart
+ * @param {Function} onClick - Function to be called when a bar is clicked
+ * @returns {JSX.Element}
+ */
 export const Timeseries = ({
 	data,
 	options,

@@ -2,6 +2,13 @@ import { Link } from 'react-router-dom';
 import { BaseTable, Td, Tr } from '../charts/BaseTable';
 import { MetricChange } from '../charts/MetricChange';
 
+/**
+ * @description Film Table component for the time view.
+ * Each film is compared to the previous week.
+ * @param {Array} data - Array of films
+ * @param {Array} comparisonData - Array of films from the previous week
+ * @returns {JSX.Element}
+ */
 export const FilmTable = ({ data, comparisonData }) => {
 	const columns = [
 		{ label: 'rank', isNumeric: true },

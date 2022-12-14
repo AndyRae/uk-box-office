@@ -3,6 +3,14 @@ import { useRef } from 'react';
 import { getElementAtEvent } from 'react-chartjs-2';
 import { useNavigate } from 'react-router-dom';
 
+/**
+ * @description All Time Chart component as a bar chart.
+ * Includes chart navigation to the year pages.
+ * @param {Array} data - Array of annual box office data
+ * @returns {JSX.Element}
+ * @example
+ * <AllTimeChart data={data} />
+ */
 export const AllTimeChart = ({ data }) => {
 	const navigate = useNavigate();
 

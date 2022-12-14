@@ -1,5 +1,13 @@
 import { Timeseries } from '../charts/Timeseries';
 
+/**
+ * @description Market Share Chart component
+ * @param {Array} uniqueYears - Array of unique years
+ * @param {Array} graphData - Array of graph data
+ * @returns {JSX.Element}
+ * @example
+ * <MarketShareChart uniqueYears={uniqueYears} graphData={graphData} />
+ */
 export const MarketShareChart = ({ uniqueYears, graphData }) => {
 	const reversed = [...uniqueYears].reverse();
 

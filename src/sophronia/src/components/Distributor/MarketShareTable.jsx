@@ -1,6 +1,13 @@
 import { Link } from 'react-router-dom';
 import { BaseTable, Td, Tr } from '../charts/BaseTable';
 
+/**
+ * @description Market Share Table component
+ * @param {Array} data - Array of data
+ * @returns {JSX.Element}
+ * @example
+ * <MarketShareTable data={data} />
+ */
 export const MarketShareTable = ({ data }) => {
 	const columns = [
 		{ label: 'distributor' },
@@ -10,7 +17,6 @@ export const MarketShareTable = ({ data }) => {
 	return (
 		<BaseTable columns={columns}>
 			{data.map((row, index) => {
-				// console.log(row);
 				return (
 					<Tr key={index} index={index}>
 						<Td isHighlight>

@@ -1,6 +1,13 @@
 import { BaseTable, Tr, Td } from '../charts/BaseTable';
 import { Link } from 'react-router-dom';
 
+/**
+ * @description Films Table component for search
+ * @param {Array} data - Array of films
+ * @returns {JSX.Element}
+ * @example
+ * <FilmsTable data={data} />
+ */
 export const FilmsTable = ({ data }) => {
 	const columns = [
 		{ label: 'title' },

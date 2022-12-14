@@ -2,6 +2,12 @@ import { Link } from 'react-router-dom';
 import { BaseTable, Td, Tr } from '../charts/BaseTable';
 import { MetricChange } from '../charts/MetricChange';
 
+/**
+ * @description Years Table component for all time.
+ * @param {Array} data - Array of years
+ * @param {string} id - ID for table
+ * @returns {JSX.Element}
+ */
 export const YearsTable = ({ data, id }) => {
 	const columns = [
 		{ label: 'year' },

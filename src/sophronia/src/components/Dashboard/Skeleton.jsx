@@ -10,6 +10,10 @@ import { LastUpdated } from './LastUpdated';
 import { StackedBarChart } from '../charts/StackedBarChart';
 import { DatasourceCard } from './Datasource';
 
+/**
+ * @description Skeleton Card loading components for loading state
+ * @returns {JSX.Element}
+ */
 export const SkeletonCards = () => {
 	return (
 		<div className='grid animate-pulse md:grid-cols-2 mt-6 lg:grid-cols-4 gap-3 md:gap-5'>
@@ -43,6 +47,10 @@ export const SkeletonCards = () => {
 	);
 };
 
+/**
+ * @description Skeleton Film Table loading components for loading state
+ * @returns {JSX.Element}
+ */
 export const SkeletonCharts = () => {
 	return (
 		<div className='grid md:grid-cols-1 lg:grid-cols-2 mt-3 md:mt-6 gap-3 md:gap-5 animate-pulse transition'>
@@ -59,6 +67,12 @@ export const SkeletonCharts = () => {
 	);
 };
 
+/**
+ * @description Skeleton loading components for loading state of the dashboard
+ * @returns {JSX.Element}
+ * @param {JSX.Element} children - Children components
+ * @param {Object} props - Props passed to the component
+ */
 export const Skeleton = ({ children, ...props }) => {
 	return (
 		<div className='skeleton animate-pulse transition ease-in-out' {...props}>

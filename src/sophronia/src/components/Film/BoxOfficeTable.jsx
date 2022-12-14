@@ -3,6 +3,13 @@ import { Link } from 'react-router-dom';
 import { BaseTable, Td, Tr } from '../charts/BaseTable';
 import { MetricChange } from '../charts/MetricChange';
 
+/**
+ * @description Box Office Table component
+ * @param {Array} data - Array of box office data
+ * @returns {JSX.Element}
+ * @example
+ * <BoxOfficeTable data={data} />
+ */
 export const BoxOfficeTable = ({ data }) => {
 	const columns = [
 		{ label: 'week', isNumeric: true },

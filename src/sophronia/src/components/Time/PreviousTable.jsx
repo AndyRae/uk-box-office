@@ -3,6 +3,11 @@ import { Link } from 'react-router-dom';
 import { BaseTable, Td, Tr } from '../charts/BaseTable';
 import { MetricChange } from '../charts/MetricChange';
 
+/**
+ * @description Previous Table component for time.
+ * @param {Array} data - Array of box office data for years.
+ * @returns {JSX.Element}
+ */
 export const PreviousTable = ({ data }) => {
 	const columns = [
 		{ label: 'year', isNumeric: true },

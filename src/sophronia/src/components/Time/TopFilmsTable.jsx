@@ -1,7 +1,11 @@
 import { Link } from 'react-router-dom';
 import { BaseTable, Td, Tr } from '../charts/BaseTable';
-import { MetricChange } from '../charts/MetricChange';
 
+/**
+ * @description Top Films Table component
+ * @param {Array} data - Array of box office data for top films
+ * @returns {JSX.Element}
+ */
 export const TopFilmsTable = ({ data }) => {
 	const columns = [
 		{ label: 'rank', isNumeric: true },
