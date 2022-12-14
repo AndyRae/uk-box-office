@@ -1,5 +1,12 @@
 import { Timeseries } from './Timeseries';
 
+/**
+ * ForecastChart
+ * @param {Object} data - Data to be displayed in the chart
+ * @returns {JSX.Element}
+ * @example
+ * <ForecastChart data={data} />
+ */
 export const ForecastChart = ({ data }) => {
 	const reversed = [...data].reverse();
 

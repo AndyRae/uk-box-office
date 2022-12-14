@@ -11,6 +11,7 @@ import { BsListOl } from 'react-icons/bs';
 import { Card } from '../Dashboard/Card';
 import { InlineLink } from './InlineLink';
 
+// Quick links to display in the sidebar
 const links = [
 	{
 		name: 'Dashboard',
@@ -54,7 +55,18 @@ const links = [
 	},
 ];
 
-const SideBarElement = ({ name, path, icon, children, isActive }) => {
+/**
+ * Sidebar link component
+ * @description The sidebar link.
+ * @param {string} name - The name of the link.
+ * @param {string} path - The path of the link.
+ * @param {JSX.Element} icon - The icon of the link.
+ * @param {boolean} isActive - Whether the link is active.
+ * @returns {JSX.Element}
+ * @example
+ * <SideBarElement name='Dashboard' path='/' icon={<MdOutlineSpaceDashboard />} />
+ */
+const SideBarLink = ({ name, path, icon, children, isActive }) => {
 	return (
 		<NavLink
 			to={path}
@@ -65,11 +77,17 @@ const SideBarElement = ({ name, path, icon, children, isActive }) => {
 		>
 			{icon}
 			<span className='ml-3'>{name}</span>
-			{children}
 		</NavLink>
 	);
 };
 
+/**
+ * Brand component
+ * @description The brand logo and name.
+ * @returns {JSX.Element}
+ * @example
+ * <Brand />
+ */
 export const Brand = () => {
 	return (
 		<NavLink to='/' className='flex items-center pl-2.5 mb-5'>
@@ -81,6 +99,14 @@ export const Brand = () => {
 	);
 };
 
+/**
+ * SidebarContent component
+ * @returns {JSX.Element}
+ * @example
+ * <SidebarContent />
+ * @description The actual content of the sidebar.
+ * @see Sidebar
+ */
 const SidebarContent = () => {
 	const { pathname } = useLocation();
 	return (
@@ -92,7 +118,7 @@ const SidebarContent = () => {
 				<ul className='space-y-2'>
 					{links.map((element) => {
 						return (
-							<SideBarElement
+							<SideBarLink
 								key={element.name}
 								name={element.name}
 								path={element.path}
@@ -123,6 +149,15 @@ const SidebarContent = () => {
 	);
 };
 
+/**
+ * @file Sidebar.jsx
+ * @description Sidebar component including links to other pages.
+ * The page is built within the sidebar component to enable it to be hidden.
+ * @param {Object} children - page content
+ * @returns {JSX.Element}
+ * @example
+ * <Sidebar />
+ */
 export const Sidebar = ({ children }) => {
 	return (
 		<div className='relative lg:flex'>

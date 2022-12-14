@@ -1,5 +1,13 @@
 import { Card } from './Card';
 
+/**
+ * @file LastUpdated.jsx
+ * @description Last updated component for dashboard
+ * @param {String} date - Date of last update
+ * @returns {JSX.Element}
+ * @example
+ * <LastUpdated date="2021-05-01" />
+ */
 export const LastUpdated = ({ date }) => {
 	const today = new Date();
 	const lastUpdated = new Date(date);

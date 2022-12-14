@@ -1,12 +1,20 @@
 /**
- * Utility functions to group data for charts and tables.
+ * @file Utility functions to group data for charts and tables.
+ * @exports groupStackedFilms
+ * @exports groupForTable
+ * @exports groupbyDate
+ * @exports groupbyMonth
+ * @exports calculateWeek1Releases
+ * @export calculateNumberOfFilms
+ * @exports calculateNumberOfCinemas
  */
+
 import _ from 'lodash';
 import { interpolateColors } from './colorGenerator';
 import { interpolateSpectral } from 'd3-scale-chromatic';
 
 /**
- * Groups data for the area chart.
+ * Groups data for a stacked bar chart.
  * @param {*} data array of box office data.
  * @returns Array of data sets objects for each film.
  */
@@ -62,10 +70,9 @@ export const groupStackedFilms = (data) => {
 
 /**
  * Groups box office data for tables.
- * TODO: This is ancient - refactor with lodash.
- *
  * @param {*} data array of box office data.
- * @returns
+ * @returns Array of data sets objects for each film.
+ * TODO: Refactor to use lodash - this is ancient.
  */
 export const groupForTable = (data) => {
 	// Grouping by film (and slug, distributor) - summing box office, max weeks.
@@ -116,7 +123,7 @@ export const groupForTable = (data) => {
 /**
  * Groups box office data by date.
  * @param {*} data array of box office data.
- * @returns
+ * @returns array of grouped data by date.
  */
 export const groupbyDate = (data) => {
 	const results = _(data)
@@ -136,7 +143,7 @@ export const groupbyDate = (data) => {
 /**
  * Groups box office by month.
  * @param {*} data
- * @returns
+ * @returns array of grouped data by month.
  */
 export const groupbyMonth = (data) => {
 	const results = _(data)

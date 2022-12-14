@@ -1,3 +1,14 @@
+/**
+ * @file Button.jsx
+ * @description Button component with a branded gradient outline.
+ * @param {string} children - The text to display inside the button
+ * @param {function} onClick - The function to call when the button is clicked
+ * @param {boolean} isActive - Whether the button is active or not
+ * @param {object} props - Any other props to pass to the button
+ * @returns {JSX.Element}
+ * @example
+ * <Button onClick={() => console.log('Hello World!')}>Hello World!</Button>
+ */
 export const Button = ({ children, onClick, isActive, ...props }) => {
 	return (
 		<button

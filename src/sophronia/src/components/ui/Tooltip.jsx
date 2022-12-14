@@ -1,3 +1,13 @@
+/**
+ * @file Tooltip.jsx
+ * @description Simple Tooltip component to display a tooltip on hover.
+ * @param {string} text - The text to display inside the tooltip
+ * @returns {JSX.Element}
+ * @example
+ * <Tooltip text='Tooltip text'>
+ * 	<span>Hover me</span>
+ * </Tooltip>
+ */
 export const Tooltip = ({ children, text, ...props }) => {
 	return (
 		<div className='group' {...props}>

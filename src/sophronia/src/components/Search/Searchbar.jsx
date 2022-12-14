@@ -2,6 +2,15 @@ import { useForm } from 'react-hook-form';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 
+/**
+ * @description Searchbar component
+ * Search is primitive, just redirects to the search page where the api gets the query.
+ * @param {String} placeholder - Placeholder text
+ * @param {String} value - Value of the searchbar
+ * @returns {JSX.Element}
+ * @example
+ * <Searchbar placeholder='Search' value={null} />
+ */
 export const Searchbar = ({ placeholder = 'Search', value = null }) => {
 	const {
 		register,
@@ -11,8 +20,6 @@ export const Searchbar = ({ placeholder = 'Search', value = null }) => {
 	const onSubmit = (data) => handleSearch(data);
 	const navigate = useNavigate();
 
-	// Search just redirects to the search page where api gets the query.
-	// Super primitive, but it works.
 	const handleSearch = (data) => {
 		navigate(`/search?q=${data.Search}`);
 	};

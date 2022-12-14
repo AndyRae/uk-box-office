@@ -7,6 +7,10 @@ import { Pagination } from '../../components/ui/Pagination';
 import { paginate } from '../../utils/pagination';
 import { PageTitle } from '../../components/ui/PageTitle';
 
+/**
+ * Country Page
+ * @returns {JSX.Element}
+ */
 export const CountryPage = () => {
 	const { slug } = useParams();
 
@@ -15,6 +19,7 @@ export const CountryPage = () => {
 	const { data, error } = useCountryFilms(slug, pageIndex, pageLimit);
 	const pageNumbers = paginate(data?.count, pageIndex, pageLimit);
 
+	// Set the page title here as the data is fetched
 	useEffect(() => {
 		document.title = `${data?.country.name} - UK Box Office Data`;
 	}, []);
@@ -32,6 +37,11 @@ export const CountryPage = () => {
 	);
 };
 
+/**
+ * Country Page
+ * Wrapped in a Suspense show a loading state while data is being fetched.
+ * @returns {JSX.Element}
+ */
 export const Country = () => {
 	return (
 		<Suspense fallback={<Spinner />}>

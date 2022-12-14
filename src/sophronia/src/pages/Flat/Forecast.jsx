@@ -6,6 +6,10 @@ import { PageTitle } from '../../components/ui/PageTitle';
 import { PageContent } from '../../components/ui/PageContent';
 import { Card } from '../../components/Dashboard/Card';
 
+/**
+ * Forecast Page
+ * @returns {JSX.Element}
+ */
 const ForecastPage = () => {
 	Date.prototype.addDays = function (days) {
 		var date = new Date(this.valueOf());
@@ -13,6 +17,7 @@ const ForecastPage = () => {
 		return date;
 	};
 
+	// Get the last 6 months in API format
 	const today = new Date();
 	const start = today.addDays(-182);
 	const end = today.addDays(182);
@@ -56,6 +61,11 @@ const ForecastPage = () => {
 	);
 };
 
+/**
+ * Forecast Page
+ * Wrapped in a Suspense show a loading state while data is being fetched.
+ * @returns {JSX.Element}
+ */
 export const Forecast = () => {
 	return (
 		<Suspense fallback={<Spinner />}>

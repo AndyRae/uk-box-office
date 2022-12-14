@@ -1,7 +1,7 @@
 /**
- * So far just for Flatpages
+ * Simple component to wrap content in a container for flatpages.
  * @param {children} children
- * @returns
+ * @returns {JSX.Element}
  */
 export const PageContent = ({ children }) => {
 	return (

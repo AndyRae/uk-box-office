@@ -1,6 +1,13 @@
 import { Link } from 'react-router-dom';
 import { BaseTable, Td, Tr } from '../charts/BaseTable';
 
+/**
+ * Country List component
+ * @param {Object} countries - Countries to be displayed
+ * @returns {JSX.Element}
+ * @example
+ * <CountryList countries={countries} />
+ */
 export const CountryList = ({ countries }) => {
 	const columns = [{ label: 'Country' }];
 

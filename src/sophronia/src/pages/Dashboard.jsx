@@ -27,24 +27,31 @@ import { LastUpdated } from '../components/Dashboard/LastUpdated';
 import { StackedBarChart } from '../components/charts/StackedBarChart';
 import { DatasourceCard } from '../components/Dashboard/Datasource';
 
+/**
+ * Dashboard Page
+ * @returns {JSX.Element}
+ */
 export const DashboardPage = () => {
+	// Add days to a date
 	Date.prototype.addDays = function (days) {
 		var date = new Date(this.valueOf());
 		date.setDate(date.getDate() + days);
 		return date;
 	};
 
+	// Parse dates to YYYY-MM-DD for the API
 	const parseDate = (input) => {
 		return `${input.getFullYear()}-${input.getMonth() + 1}-${input.getDate()}`;
 	};
 
+	// Set the default dates
 	const daysToShow = 90;
 	const daysAllowedToGoBack = 547; // 547 days is 18 months
 	const s = new Date();
 	const [start, setStart] = useState(s.addDays(-daysToShow));
 	const [end, setEnd] = useState(new Date());
 
-	// Parse dates to YYYY-MM-DD for the API
+	// Parse dates for the API
 	const [startDate, setStartDate] = useState(parseDate(start));
 	const [endDate, setEndDate] = useState(parseDate(end));
 
@@ -53,19 +60,22 @@ export const DashboardPage = () => {
 		setEndDate(parseDate(end));
 	}, [start, end]);
 
+	// Fetch data from the API
 	const { results, mutate, error, isReachedEnd } = useBoxOfficeInfinite(
 		startDate,
 		endDate
 	);
 	const { data: timeComparisonData } = useBoxOfficePrevious(startDate, endDate);
 
-	// Group Data
+	// Group Data for the charts
 	const { tableData } = groupForTable(results);
 	const { areaData } = groupStackedFilms(results);
 	const { results: weekData } = groupbyDate(results);
 
+	// Get unique dates to label the bar chart
 	const uniqueDates = [...new Set(results.map((d) => d.date))];
 
+	// Calculate totals
 	const boxOffice = tableData.reduce((acc, curr) => acc + curr.weekGross, 0);
 	const weekendBoxOffice = tableData.reduce(
 		(acc, curr) => acc + curr.weekendGross,
@@ -114,6 +124,7 @@ export const DashboardPage = () => {
 	const diffTime = Math.abs(s - start);
 	const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
+	// Show the skeleton if the data is loading
 	return (
 		<div className='transition ease-in-out'>
 			<StructuredTimeData
@@ -129,7 +140,7 @@ export const DashboardPage = () => {
 					end={end}
 					setStart={setStart}
 					setEnd={setEnd}
-					minimum={s.addDays(-daysAllowedToGoBack)} // Can go back 18 months
+					minimum={s.addDays(-daysAllowedToGoBack)}
 				/>
 				<ButtonGroup>
 					<Button onClick={() => changeDate(7)} isActive={diffDays === 7}>
@@ -234,6 +245,11 @@ export const DashboardPage = () => {
 	);
 };
 
+/**
+ * This is the main page component.
+ * Wrapped in a Suspense show a loading state while data is being fetched.
+ * @returns {JSX.Element}
+ */
 export const Dashboard = () => {
 	return (
 		<Suspense fallback={<Skeleton />}>
