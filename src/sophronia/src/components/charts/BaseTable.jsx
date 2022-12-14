@@ -66,6 +66,7 @@ export const Tr = ({ index, children }) => {
  * @returns {JSX.Element}
  * @example
  * <Td isNumeric isHighlight>1</Td>
+ */
 export const Td = ({ isNumeric, isHighlight, children, ...rest }) => {
 	return (
 		<td
@@ -94,7 +95,7 @@ export const Td = ({ isNumeric, isHighlight, children, ...rest }) => {
  * 		<Td>3</Td>
  * 	</Tr>
  * </BaseTable>
-*/
+ */
 export const BaseTable = ({ columns, id, children }) => {
 	return (
 		<div className='overflow-x-auto rounded-lg relative max-h-screen'>
