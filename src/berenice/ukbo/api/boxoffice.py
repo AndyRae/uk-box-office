@@ -1,5 +1,4 @@
-from flask import Blueprint, request, send_file
-from flask.wrappers import Response
+from flask import Blueprint, Response, request, send_file
 from ukbo import services
 
 boxoffice = Blueprint("boxoffice", __name__)
@@ -9,6 +8,7 @@ boxoffice = Blueprint("boxoffice", __name__)
 def all() -> Response:
     """
     All box office data for a time period.
+    If no time period is specified, all data is returned.
 
     Request arguments are passed to the service layer.
 
@@ -22,8 +22,9 @@ def all() -> Response:
     """
     start = request.args.get("start", None)
     end = request.args.get("end", None)
-    page = int(request.args.get("page", 1))
-    return services.boxoffice.all(start, end, page)
+    page = request.args.get("page", 1)
+
+    return services.boxoffice.all(start, end, int(page))
 
 
 @boxoffice.route("/topfilms", methods=["GET"])
@@ -45,7 +46,7 @@ def summary() -> Response:
 
     Request arguments are passed to the service layer.
 
-    Request Arguments (optional):
+    Request Arguments:
         start (str): Start date to filter by (YYYY-MM-DD).
         end (str): End date to filter by (YYYY-MM-DD).
         limit (int): Number of years to go backwards.
@@ -55,8 +56,10 @@ def summary() -> Response:
     """
     start = request.args.get("start", None)
     end = request.args.get("end", None)
-    limit = int(request.args.get("limit", None))
-    return services.boxoffice.summary(start, end, limit)
+    limit = request.args.get("limit", 1)
+    if None in [start, end, limit]:
+        return Response('{"error": "Missing arguments"}', status=400)
+    return services.boxoffice.summary(start, end, int(limit))
 
 
 @boxoffice.route("/previous", methods=["GET"])
@@ -66,7 +69,7 @@ def previous() -> Response:
 
     Request arguments are passed to the service layer.
 
-    Request Arguments (optional):
+    Request Arguments:
         start (str): Start date to filter by (YYYY-MM-DD).
         end (str): End date to filter by (YYYY-MM-DD).
 
@@ -75,6 +78,8 @@ def previous() -> Response:
     """
     start = request.args.get("start", None)
     end = request.args.get("end", None)
+    if None in [start, end]:
+        return Response('{"error": "Missing arguments"}', status=400)
     return services.boxoffice.previous(start, end)
 
 
@@ -86,9 +91,10 @@ def topline() -> Response:
 
     Request arguments are passed to the service layer.
 
-    Request Arguments (optional):
+    Request Arguments:
         start (str): Start date to filter by (YYYY-MM-DD).
         end (str): End date to filter by (YYYY-MM-DD).
+    Optional Request Arguments:
         page (int): Page number to return.
 
     Returns:
@@ -96,8 +102,10 @@ def topline() -> Response:
     """
     start = request.args.get("start", None)
     end = request.args.get("end", None)
-    page = int(request.args.get("page", 1))
-    return services.boxoffice.topline(start, end, page)
+    page = request.args.get("page", 1)
+    if None in [start, end]:
+        return Response('{"error": "Missing arguments"}', status=400)
+    return services.boxoffice.topline(start, end, int(page))
 
 
 @boxoffice.route("/archive", methods=["GET"])

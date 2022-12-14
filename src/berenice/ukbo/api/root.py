@@ -15,4 +15,4 @@ def index() -> Tuple[str, int]:
     Returns:
         200 OK.
     """
-    return (".", 200)
+    return ("`", 200)

@@ -16,7 +16,14 @@ def all() -> Response:
     Returns:
         JSON response of search results.
     """
-    query = request.args.get("q", "")
+    query = request.args.get("q", None)
+
+    if not query:
+        return jsonify(
+            films=[],
+            distributors=[],
+            countries=[],
+        )
 
     films = services.film.search(query)
     distributors = services.distributor.search(query)
