@@ -7,9 +7,17 @@ import { FilmsTable } from '../components/Search/FilmsTable';
 import { Searchbar } from '../components/Search/Searchbar';
 import { PageTitle } from '../components/ui/PageTitle';
 
+/**
+ * Main search page
+ * @returns {JSX.Element}
+ */
 const MainSearchPage = () => {
 	const location = useLocation();
+
+	// Get query from URL params
 	const query = new URLSearchParams(location.search).get('q');
+
+	// Get search results from API
 	const { data, isLoading, isError } = useSearch(query);
 
 	return (
@@ -71,6 +79,10 @@ const MainSearchPage = () => {
 	);
 };
 
+/**
+ * Wrapper for main search page to handle suspense
+ * @returns {JSX.Element}
+ */
 export const MainSearch = () => {
 	return (
 		<Suspense fallback={<Spinner />}>

@@ -1,3 +1,15 @@
+/**
+ * @file Boxoffice API endpoints.
+ * @exports useBoxOffice
+ * @exports useBoxOfficeFiltered
+ * @exports useBoxOfficeTopFilms
+ * @exports useBoxOfficeSummary
+ * @exports useBoxOfficePrevious
+ * @exports useBoxOfficeTopline
+ * @exports useBoxOfficeInfinite
+ * @exports useProtectedSWRInfinite
+ */
+
 import { useBackendApi, useAxiosFetcher } from './ApiFetcher';
 import useSWR from 'swr';
 import useSWRInfinite from 'swr/infinite';
@@ -5,7 +17,18 @@ import { useMemo } from 'react';
 import { useEffect } from 'react';
 import { getBackendURL } from './ApiFetcher';
 
-export const fetchKeys = {
+/**
+ * Fetch keys for boxoffice.
+ * @type {Object}
+ * @property {string} boxOffice - Boxoffice endpoint.
+ * @property {function} boxOfficeFiltered - Boxoffice endpoint with filters.
+ * @property {function} boxOfficeAll - Boxoffice endpoint with filters.
+ * @property {function} boxOfficeSummary - Boxoffice summary endpoint.
+ * @property {function} boxOfficePrevious - Boxoffice previous endpoint.
+ * @property {function} boxOfficeTopFilms - Boxoffice top films endpoint.
+ * @property {function} boxOfficeTopline - Boxoffice topline endpoint.
+ */
+const fetchKeys = {
 	boxOffice: 'boxoffice/all',
 	boxOfficeFiltered: (start, end, page, limit) =>
 		`boxoffice/all?{start=${start}}&end=${end}&page=${page}&limit=${limit}`,
@@ -20,7 +43,8 @@ export const fetchKeys = {
 };
 
 /**
- * Get boxoffice.
+ * Get all boxoffice data.
+ * @returns all boxoffice data from the api with pagination.
  */
 export const useBoxOffice = () => {
 	const apiFetcher = useBackendApi();
@@ -30,17 +54,24 @@ export const useBoxOffice = () => {
 };
 
 /**
- * Get boxoffice.
+ * Get filtered boxoffice data with pagination.
+ * @param {string} startDate - Start date for the query.
+ * @param {string} endDate - End date for the query.
+ * @param {number} start - Page number to start from.
+ * @param {number} limit - Number of results per page.
+ * @returns filtered boxoffice data from the api with pagination.
+ * @example
+ * const { data, error } = useBoxOfficeFiltered('2021-01-01', '2021-01-31', 1, 300);
  */
 export const useBoxOfficeFiltered = (
-	start_date,
-	end_date,
+	startDate,
+	endDate,
 	start = 1,
 	limit = 300
 ) => {
 	const apiFetcher = useBackendApi();
 	return useSWR(
-		fetchKeys.boxOfficeFiltered(start_date, end_date, start, limit),
+		fetchKeys.boxOfficeFiltered(startDate, endDate, start, limit),
 		apiFetcher,
 		{
 			suspense: true,
@@ -49,8 +80,10 @@ export const useBoxOfficeFiltered = (
 };
 
 /**
- * Endpoint for top films all time.
- * @returns all time top films.
+ * Get top films boxoffice data.
+ * @returns top films boxoffice data from the api.
+ * @example
+ * const { data, error } = useBoxOfficeTopFilms();
  */
 export const useBoxOfficeTopFilms = () => {
 	const apiFetcher = useBackendApi();
@@ -60,15 +93,18 @@ export const useBoxOfficeTopFilms = () => {
 };
 
 /**
- * Uses the box office summary endpoint
- * @param {*} startDate
- * @param {*} endDate
- * @returns
+ * Uses the box office summary endpoint with pagination
+ * @param {string} startDate - Start date for the query.
+ * @param {string} endDate - End date for the query.
+ * @param {number} yearLimit - Number of years to limit.
+ * @returns boxoffice summary data from the api with pagination.
+ * @example
+ * const { data, error } = useBoxOfficeSummary('2021-01-01', '2021-01-31', 5);
  */
-export const useBoxOfficeSummary = (startDate, endDate, limit) => {
+export const useBoxOfficeSummary = (startDate, endDate, yearLimit) => {
 	const apiFetcher = useBackendApi();
 	return useSWR(
-		fetchKeys.boxOfficeSummary(startDate, endDate, limit),
+		fetchKeys.boxOfficeSummary(startDate, endDate, yearLimit),
 		apiFetcher,
 		{
 			suspense: true,
@@ -77,10 +113,12 @@ export const useBoxOfficeSummary = (startDate, endDate, limit) => {
 };
 
 /**
- * Uses the box office previous endpoint
- * @param {*} start
- * @param {*} end
- * @returns
+ * Uses the box office ``previous`` endpoint
+ * @param {string} start - Start date for the query.
+ * @param {string} end - End date for the query.
+ * @returns boxoffice previous data from the api.
+ * @example
+ * const { data, error } = useBoxOfficePrevious('2021-01-01', '2021-01-31');
  */
 export const useBoxOfficePrevious = (start, end) => {
 	const apiFetcher = useBackendApi();
@@ -90,15 +128,18 @@ export const useBoxOfficePrevious = (start, end) => {
 };
 
 /**
- * Uses the box office summary endpoint
- * @param {*} startDate
- * @param {*} endDate
- * @returns
+ * Uses the box office topline endpoint.
+ * @param {string} startDate - Start date for the query.
+ * @param {string} endDate - End date for the query.
+ * @param {number} page - Page number to start from.
+ * @returns boxoffice topline data from the api.
+ * @example
+ * const { data, error } = useBoxOfficeTopline('2021-01-01', '2021-01-31', 1);
  */
-export const useBoxOfficeTopline = (startDate, endDate, limit) => {
+export const useBoxOfficeTopline = (startDate, endDate, page) => {
 	const apiFetcher = useBackendApi();
 	return useSWR(
-		fetchKeys.boxOfficeTopline(startDate, endDate, limit),
+		fetchKeys.boxOfficeTopline(startDate, endDate, page),
 		apiFetcher,
 		{
 			suspense: true,
@@ -107,10 +148,13 @@ export const useBoxOfficeTopline = (startDate, endDate, limit) => {
 };
 
 /**
- * Loops through the box office api infinitely and returns the data
- * @param startDate date to query from
- * @param endDate date to query to
- * @returns boxoffice data
+ * Wrapper for useSWRInfinite that uses the protected api.
+ * Loops through the box office api infinitely and returns box office data.
+ * @param {string} startDate - Start date for the query.
+ * @param {string} endDate - End date for the query.
+ * @returns boxoffice data from the api with pagination.
+ * @example
+ * const { data, error } = useBoxOfficeInfinite('2021-01-01', '2021-01-31');
  */
 export function useBoxOfficeInfinite(startDate, endDate) {
 	const { data, mutate, error, size, setSize } = useProtectedSWRInfinite(
@@ -145,21 +189,20 @@ export function useBoxOfficeInfinite(startDate, endDate) {
 }
 
 /**
- * Paging with useSWRInfinite
- * @param startDate
- * @param endDate
- * @returns useSWRInfinite API
+ * Protected useSWRInfinite hook that uses the protected api.
+ * @param {string} startDate - Start date for the query.
+ * @param {string} endDate - End date for the query.
+ * @returns useSWR hook with boxoffice data from the api with pagination.
  */
 const useProtectedSWRInfinite = (startDate, endDate) => {
-	/**
-	 * Next page infinite loading for useSWR
-	 * @param pageIdx The index of this paging collection
-	 * @param prevPageData Previous page information
-	 * @returns API to the next page
-	 */
-
 	const backendUrl = `${getBackendURL()}boxoffice/all`;
 
+	/**
+	 * Next page infinite loading for useSWR
+	 * @param pageIndex The index of this paging collection
+	 * @param previousPageData Previous page information
+	 * @returns API to the next page
+	 */
 	function getNextKey(pageIndex, previousPageData) {
 		// Reached the end of the collection
 		if (previousPageData && !previousPageData.next) return null;

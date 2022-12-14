@@ -7,10 +7,16 @@ import {
 	FaGlobeEurope,
 } from 'react-icons/fa';
 
+// Quick links to display in the footer
 const Links = [
 	{
 		name: 'Data Source',
 		path: 'https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures',
+		icon: <FaInfoCircle />,
+	},
+	{
+		name: 'Github',
+		path: 'https://github.com/andyrae/uk-box-office',
 		icon: <FaInfoCircle />,
 	},
 	{
@@ -40,6 +46,13 @@ const Links = [
 	},
 ];
 
+/**
+ * @file Footer.jsx
+ * @description Footer component including links to other pages.
+ * @returns {JSX.Element}
+ * @example
+ * <Footer />
+ */
 export const Footer = () => {
 	return (
 		<footer className='p-4 bg-white rounded-lg shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-900'>
@@ -50,26 +63,26 @@ export const Footer = () => {
 			</span>
 			<ul className='flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0'>
 				{Links.map((link) => {
-
-					const isLocalUrl = (link) => link.path.startsWith("/");
+					const isLocalUrl = (link) => link.path.startsWith('/');
 					return (
-					<li key={link.name} className='mr-4 hover:underline md:mr-6'>
-						{isLocalUrl(link) ? (
-						<Link to={link.path} className='mr-4 hover:underline md:mr-6'>
-							{link.name}
-						</Link>
-						) : (
-						<a href
-							={link.path}
-							target='_blank'
-							rel='noopener noreferrer'
-							className='mr-4 hover:underline md:mr-6'
-						>
-							{link.name}
-						</a>
-						)}
-					</li>
-				);})}
+						<li key={link.name} className='mr-4 hover:underline md:mr-6'>
+							{isLocalUrl(link) ? (
+								<Link to={link.path} className='mr-4 hover:underline md:mr-6'>
+									{link.name}
+								</Link>
+							) : (
+								<a
+									href={link.path}
+									target='_blank'
+									rel='noopener noreferrer'
+									className='mr-4 hover:underline md:mr-6'
+								>
+									{link.name}
+								</a>
+							)}
+						</li>
+					);
+				})}
 			</ul>
 		</footer>
 	);

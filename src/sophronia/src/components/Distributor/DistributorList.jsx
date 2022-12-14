@@ -1,6 +1,13 @@
 import { Link } from 'react-router-dom';
 import { BaseTable, Td, Tr } from '../charts/BaseTable';
 
+/**
+ * Distributor List component
+ * @param {Object} distributors - Distributors to be displayed
+ * @returns {JSX.Element}
+ * @example
+ * <DistributorList distributors={distributors} />
+ */
 export const DistributorList = ({ distributors }) => {
 	const columns = [{ label: 'Distributor' }];
 

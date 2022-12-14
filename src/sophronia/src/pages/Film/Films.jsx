@@ -7,6 +7,10 @@ import { Suspense } from 'react';
 import { Spinner } from '../../components/ui/Spinner';
 import { PageTitle } from '../../components/ui/PageTitle';
 
+/**
+ * Films Page
+ * @returns {JSX.Element}
+ */
 export const FilmsPage = () => {
 	const [pageIndex, setPageIndex] = useState(1);
 	const pageLimit = 15;
@@ -26,6 +30,11 @@ export const FilmsPage = () => {
 	);
 };
 
+/**
+ * Films Page
+ * Wrapped in a Suspense show a loading state while data is being fetched.
+ * @returns {JSX.Element}
+ */
 export const Films = () => {
 	return (
 		<Suspense fallback={<Spinner />}>

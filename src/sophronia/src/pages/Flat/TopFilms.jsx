@@ -4,10 +4,13 @@ import { Spinner } from '../../components/ui/Spinner';
 import { PageTitle } from '../../components/ui/PageTitle';
 import { TopFilmsTable } from '../../components/Time/TopFilmsTable';
 
+/**
+ * Top Films Page
+ * @returns {JSX.Element}
+ */
 const TopFilmsPage = () => {
 	const { data, error, loading } = useBoxOfficeTopFilms();
 
-	console.log(data);
 	return (
 		<>
 			<PageTitle>All Time Top Films</PageTitle>
@@ -17,6 +20,11 @@ const TopFilmsPage = () => {
 	);
 };
 
+/**
+ * Top Films Page
+ * Wrapped in a Suspense show a loading state while data is being fetched.
+ * @returns {JSX.Element}
+ */
 export const TopFilms = () => {
 	return (
 		<Suspense fallback={<Spinner />}>

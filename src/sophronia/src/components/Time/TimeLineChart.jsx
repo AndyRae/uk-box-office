@@ -6,6 +6,17 @@ import { Tooltip } from '../ui/Tooltip';
 import { useNavigate } from 'react-router-dom';
 import { getElementAtEvent } from 'react-chartjs-2';
 
+/**
+ * @description Time Line Chart component as a line chart.
+ * Includes chart navigation to the week pages.
+ * @param {Array} data - Array of weekly box office data
+ * @param {Number} height - Height of the chart
+ * @param {String} color - Color of the chart
+ * @param {Boolean} allowRollUp - Allow rolling up the data to monthly data.
+ * @returns {JSX.Element}
+ * @example
+ * <TimeLineChart data={data} height={'lg'} color="#B65078" allowRollUp={true} />
+ */
 export const TimeLineChart = ({
 	data,
 	height,

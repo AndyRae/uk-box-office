@@ -1,3 +1,13 @@
+/**
+ * Paginate items
+ * @param {number} count - Total number of items
+ * @param {number} pageIndex - Page number to start from.
+ * @param {number} pageLimit - Number of items per page.
+ * @returns an array of page numbers.
+ * @example
+ * const pageNumbers = paginate(100, 1, 10);
+ * // pageNumbers = [1, 2, 3, 4, 5]
+ */
 export const paginate = (count, pageIndex, pageLimit) => {
 	if (count < pageLimit) {
 		return [1];

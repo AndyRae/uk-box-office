@@ -1,5 +1,13 @@
 import React from 'react';
 
+/**
+ * Error message component
+ * @description The error message to display when an error occurs.
+ * @param {string} error - The error message.
+ * @returns {JSX.Element}
+ * @example
+ * <ErrorMessage error='An error has occurred.' />
+ */
 const ErrorMessage = ({ error }) => {
 	return (
 		<div>
@@ -20,6 +28,11 @@ const ErrorMessage = ({ error }) => {
 	);
 };
 
+/**
+ * Error boundary component
+ * @description The error boundary component.
+ * @returns {JSX.Element}
+ */
 export class ErrorBoundary extends React.Component {
 	constructor(props) {
 		super(props);

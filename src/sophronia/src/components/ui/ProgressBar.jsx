@@ -1,3 +1,11 @@
+/**
+ * @file ProgressBar.jsx
+ * @description ProgressBar component to display page load progress.
+ * @param {number} value - The active width of the progress bar in percentage
+ * @returns {JSX.Element}
+ * @example
+ * <ProgressBar value={50} />
+ */
 export const ProgressBar = ({ value }) => {
 	return (
 		<div className='w-full bg-gray-200 rounded-full h-1 dark:bg-gray-700'>

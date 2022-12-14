@@ -7,6 +7,10 @@ import { paginate } from '../../utils/pagination';
 import { FilmList } from '../../components/Film/FilmList';
 import { PageTitle } from '../../components/ui/PageTitle';
 
+/**
+ * Distributor Page
+ * @returns {JSX.Element}
+ */
 export const DistributorPage = () => {
 	const { slug } = useParams();
 	const [pageIndex, setPageIndex] = useState(1);
@@ -15,6 +19,7 @@ export const DistributorPage = () => {
 	const { data, error } = useDistributorFilms(slug, pageIndex, pageLimit);
 	const pageNumbers = paginate(data?.count, pageIndex, pageLimit);
 
+	// Set the page title here as the data is fetched
 	useEffect(() => {
 		document.title = `${data?.distributor.name} - UK Box Office Data`;
 	}, []);
@@ -32,6 +37,11 @@ export const DistributorPage = () => {
 	);
 };
 
+/**
+ * Distributor Page
+ * Wrapped in a Suspense show a loading state while data is being fetched.
+ * @returns {JSX.Element}
+ */
 export const Distributor = () => {
 	return (
 		<Suspense fallback={<Spinner />}>

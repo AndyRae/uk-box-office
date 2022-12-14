@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useDistributorList } from '../../api/distributors';
 import { Suspense } from 'react';
 import { Spinner } from '../../components/ui/Spinner';
@@ -8,6 +7,10 @@ import { paginate } from '../../utils/pagination';
 import { DistributorList } from '../../components/Distributor/DistributorList';
 import { PageTitle } from '../../components/ui/PageTitle';
 
+/**
+ * Distributors Page
+ * @returns {JSX.Element}
+ */
 export const DistributorsPage = () => {
 	const [pageIndex, setPageIndex] = useState(1);
 	const pageLimit = 15;
@@ -27,6 +30,11 @@ export const DistributorsPage = () => {
 	);
 };
 
+/**
+ * Distributors Page
+ * Wrapped in a Suspense show a loading state while data is being fetched.
+ * @returns {JSX.Element}
+ */
 export const Distributors = () => {
 	return (
 		<Suspense fallback={<Spinner />}>

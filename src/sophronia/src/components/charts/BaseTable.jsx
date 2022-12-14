@@ -1,3 +1,14 @@
+/**
+ * Base Table Header component
+ * @param {JSX.Element} children - Header to be displayed
+ * @returns {JSX.Element}
+ * @example
+ * <Thead>
+ * 	<Tr>
+ * 		<Th>1</Th>
+ * 	</Tr>
+ * </Thead>
+ */
 const Thead = ({ children }) => {
 	return (
 		<thead className='text-xs text-gray-700 uppercase border-b-2 border-b-gray-500 bg-gray-50 dark:bg-gray-900 dark:text-gray-400'>
@@ -6,6 +17,14 @@ const Thead = ({ children }) => {
 	);
 };
 
+/**
+ * Base Table Header component
+ * @param {Boolean} isNumeric - Whether the header is numeric
+ * @param {JSX.Element} children - Header to be displayed
+ * @returns {JSX.Element}
+ * @example
+ * <Th isNumeric>1</Th>
+ */
 const Th = ({ isNumeric, children }) => {
 	return (
 		<th scope='col' className={`py-3 px-3 ${isNumeric ? 'text-center' : ''}`}>
@@ -14,6 +33,17 @@ const Th = ({ isNumeric, children }) => {
 	);
 };
 
+/**
+ * Base Table Row component
+ * @param {Number} index - Index of the row
+ * @param {JSX.Element} children - Row elements to be displayed
+ * @returns {JSX.Element}
+ * @example
+ * <Tr index={0}>
+ * 	<Td>1</Td>
+ * 	<Td>2</Td>
+ * </Tr>
+ */
 export const Tr = ({ index, children }) => {
 	const alternatingColor = ['bg-white', 'bg-gray-100'];
 	const alternatingDarkColor = ['dark:bg-black', 'dark:bg-gray-900'];
@@ -28,6 +58,15 @@ export const Tr = ({ index, children }) => {
 	);
 };
 
+/**
+ * Base Table Data component
+ * @param {Boolean} isNumeric - Whether the data is numeric
+ * @param {Boolean} isHighlight - Whether the data is highlighted
+ * @param {JSX.Element} children - Data to be displayed
+ * @returns {JSX.Element}
+ * @example
+ * <Td isNumeric isHighlight>1</Td>
+ */
 export const Td = ({ isNumeric, isHighlight, children, ...rest }) => {
 	return (
 		<td
@@ -42,6 +81,21 @@ export const Td = ({ isNumeric, isHighlight, children, ...rest }) => {
 	);
 };
 
+/**
+ * Base Table component
+ * @param {Object} columns - Columns to be displayed in the table
+ * @param {String} id - Id of the table
+ * @param {JSX.Element} children - Table elements to be displayed
+ * @returns {JSX.Element}
+ * @example
+ * <BaseTable columns={columns} id='table'>
+ * 	<Tr index={0}>
+ * 		<Td>1</Td>
+ * 		<Td>2</Td>
+ * 		<Td>3</Td>
+ * 	</Tr>
+ * </BaseTable>
+ */
 export const BaseTable = ({ columns, id, children }) => {
 	return (
 		<div className='overflow-x-auto rounded-lg relative max-h-screen'>

@@ -7,6 +7,10 @@ import { paginate } from '../../utils/pagination';
 import { CountryList } from '../../components/Country/CountryList';
 import { PageTitle } from '../../components/ui/PageTitle';
 
+/**
+ * Countries Page
+ * @returns {JSX.Element}
+ */
 export const CountriesPage = () => {
 	const [pageIndex, setPageIndex] = useState(1);
 	const pageLimit = 15;
@@ -26,6 +30,11 @@ export const CountriesPage = () => {
 	);
 };
 
+/**
+ * Countries Page
+ * Wrapped in a Suspense show a loading state while data is being fetched.
+ * @returns {JSX.Element}
+ */
 export const Countries = () => {
 	return (
 		<Suspense fallback={<Spinner />}>

@@ -23,6 +23,15 @@ ChartJS.register(
 	TimeScale
 );
 
+/**
+ * Dashboard StackedBarChart component
+ * @param {Object} data - Data to be displayed in the chart
+ * @param {Object} labels - Labels for the chart
+ * @param {Number} height - Height of the chart
+ * @returns {JSX.Element}
+ * @example
+ * <StackedBarChart data={data} labels={labels} height={height} />
+ */
 export const StackedBarChart = ({ data, labels, height }) => {
 	const navigate = useNavigate();
 	const chartRef = useRef(null);
@@ -37,6 +46,7 @@ export const StackedBarChart = ({ data, labels, height }) => {
 		// }
 	};
 
+	// Only stack the bars if there's more than one date.
 	const isStacked = labels?.length > 1;
 
 	const d = {

@@ -10,9 +10,14 @@ import { Card } from '../../components/Dashboard/Card';
 import { interpolateColors } from '../../utils/colorGenerator';
 import { interpolateSpectral } from 'd3-scale-chromatic';
 
+/**
+ * Distributor Market Share Page
+ * @returns {JSX.Element}
+ */
 const MarketShareDistributorPage = () => {
 	const { data, error } = useDistributorMarketShare();
 
+	// Map data to unique years.
 	const uniqueYears = [...new Set(data.results.map((d) => d.year))];
 
 	// the total for each year
@@ -127,6 +132,11 @@ const MarketShareDistributorPage = () => {
 	);
 };
 
+/**
+ * Distributor Market Share Page
+ * Wrapper for suspense
+ * @returns {JSX.Element}
+ */
 export const MarketShareDistributor = () => {
 	return (
 		<Suspense fallback={<Spinner />}>

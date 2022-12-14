@@ -12,10 +12,15 @@ import { PageTitle } from '../../components/ui/PageTitle';
 import { TimeLineChart } from '../../components/Time/TimeLineChart';
 import { DatasourceButton } from '../../components/Dashboard/Datasource';
 
+/**
+ * Film Page
+ * @returns {JSX.Element}
+ */
 export const FilmPage = () => {
 	const { slug } = useParams();
 	const { data, error } = useFilm(slug);
 
+	// Unwrap first week date logic
 	const weekOne = data.weeks[0];
 	const weeksOnRelease = weekOne.weeks_on_release;
 	const isFirstWeek = weeksOnRelease === 1 ? true : false;
@@ -23,11 +28,12 @@ export const FilmPage = () => {
 
 	const multiple = (data.gross / weekOne.weekend_gross).toFixed(2);
 
+	// Set the page title here as the data is fetched
 	useEffect(() => {
 		document.title = `${data?.name} - UK Box Office Data`;
 	}, []);
 
-	// Rename to make it easy to reuse charts
+	// Rename data to make it easy to reuse charts
 	const chartData = data.weeks.map(({ week_gross: weekGross, date }) => ({
 		date,
 		weekGross,
@@ -44,9 +50,11 @@ export const FilmPage = () => {
 				endpoint={`/film/${slug}`}
 				time={releaseDate}
 			/>
+
 			<PageTitle>
 				{data.name} {isFirstWeek && `(${releaseDate.split('-')[0]})`}
 			</PageTitle>
+
 			<div className='grid md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5'>
 				<Card
 					title='Total Box Office'
@@ -111,12 +119,16 @@ export const FilmPage = () => {
 				<ExportCSV data={data.weeks} filename={`${data.name}_data.csv`} />
 			</div>
 
-
 			<BoxOfficeTable data={data} />
 		</div>
 	);
 };
 
+/**
+ * Film Page
+ * Wrapper for suspense
+ * @returns {JSX.Element}
+ */
 export const Film = () => {
 	return (
 		<Suspense fallback={<Spinner />}>

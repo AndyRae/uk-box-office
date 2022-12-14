@@ -2,6 +2,13 @@ import { Link } from 'react-router-dom';
 import { BaseTable, Td, Tr } from '../charts/BaseTable';
 import { MetricChange } from '../charts/MetricChange';
 
+/**
+ * @description Weeks Table component for time
+ * @param {Array} data - Array of box office data for weeks
+ * @returns {JSX.Element}
+ * @example
+ * <WeeksTable data={data} />
+ */
 export const WeeksTable = ({ data }) => {
 	const columns = [
 		{ label: 'week ending' },

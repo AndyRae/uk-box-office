@@ -2,6 +2,15 @@ import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
+/**
+ * Datepickers component for selecting a date range
+ * @param {Object} start - Initial date
+ * @param {Object} end - Initial end date
+ * @param {Function} setStart - On change function to set start date
+ * @param {Function} setEnd - On change function to set end date
+ * @param {Object} minimum - Minimum date that can be selected
+ * @returns {JSX.Element}
+ */
 export const Datepickers = ({ start, end, setStart, setEnd, minimum }) => {
 	return (
 		<div>
