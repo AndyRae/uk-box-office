@@ -1,5 +1,5 @@
 import { Timeseries } from '../charts/Timeseries';
-import { groupbyMonth } from '../../utils/groupData';
+import { groupbyMonth, groupbyDate } from '../../utils/groupData';
 import { AiOutlineArrowDown } from 'react-icons/ai';
 import { useState, useEffect, useRef } from 'react';
 import { Tooltip } from '../ui/Tooltip';
@@ -25,13 +25,17 @@ export const TimeLineChart = ({
 }) => {
 	const navigate = useNavigate();
 
+	const { results: weekData } = groupbyDate(data);
+
+	console.log(weekData);
+
 	// To configure rolling up / down the data
-	const [chartData, setChartData] = useState(data);
-	const { results } = groupbyMonth(data);
+	const [chartData, setChartData] = useState(weekData);
+	const { results } = groupbyMonth(weekData);
 	const [isGroupedByMonth, setIsGroupedByMonth] = useState(false);
 
 	useEffect(() => {
-		setChartData(data);
+		setChartData(weekData);
 	}, [data]);
 
 	const d = {
@@ -130,7 +134,7 @@ export const TimeLineChart = ({
 
 	// Grouping the data by week (default)
 	const rollDown = () => {
-		setChartData(data);
+		setChartData(weekData);
 		setIsGroupedByMonth(false);
 	};
 
