@@ -8,7 +8,6 @@ import {
 	groupForTable,
 	calculateWeek1Releases,
 	groupbyDate,
-	groupStackedFilms,
 } from '../../utils/groupData';
 import { FilmTable } from '../../components/Time/FilmTable';
 import { WeeksTable } from '../../components/Time/WeeksTable';
@@ -145,9 +144,7 @@ export const TimePage = () => {
 
 	// Group Data
 	const { tableData } = groupForTable(results);
-	const { areaData } = groupStackedFilms(results);
 	const { results: weekData } = groupbyDate(results);
-	const uniqueDates = [...new Set(results.map((d) => d.date))];
 
 	const boxOffice = tableData.reduce((acc, curr) => acc + curr.weekGross, 0);
 	const weekendBoxOffice = tableData.reduce(
@@ -255,7 +252,7 @@ export const TimePage = () => {
 					weekData.length > 1 &&
 					(isReachedEnd ? (
 						<Card title='Box Office'>
-							<TimeLineChart data={weekData} />
+							<TimeLineChart data={results} />
 						</Card>
 					) : (
 						<Card title='Box Office'>
@@ -265,9 +262,7 @@ export const TimePage = () => {
 			</div>
 
 			<Card title='Films'>
-				{isReachedEnd && (
-					<StackedBarChart data={areaData} labels={uniqueDates} />
-				)}
+				{isReachedEnd && <StackedBarChart data={results} />}
 			</Card>
 
 			<div className='py-3'>

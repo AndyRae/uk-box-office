@@ -34,14 +34,12 @@ export const FilmPage = () => {
 	}, []);
 
 	// Rename data to make it easy to reuse charts
-	const chartData = data.weeks.map(({ week_gross: weekGross, date }) => ({
-		date,
-		weekGross,
-	}));
-	const cumulativeData = data.weeks.map(({ total_gross: weekGross, date }) => ({
-		date,
-		weekGross,
-	}));
+	const cumulativeData = data.weeks.map(
+		({ total_gross: week_gross, date }) => ({
+			date,
+			week_gross,
+		})
+	);
 
 	return (
 		<div>
@@ -100,7 +98,7 @@ export const FilmPage = () => {
 			<div className='grid md:grid-cols-1 lg:grid-cols-2 gap-3 md:gap-5 mt-3 md:mt-6'>
 				{data.weeks.length >= 2 && (
 					<Card title='Weekly Box Office'>
-						<TimeLineChart data={chartData} />
+						<TimeLineChart data={data.weeks} />
 					</Card>
 				)}
 				{data.weeks.length >= 2 && (

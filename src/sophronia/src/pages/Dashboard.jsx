@@ -3,14 +3,11 @@ import { Suspense } from 'react';
 import { useBoxOfficeInfinite, useBoxOfficePrevious } from '../api/boxoffice';
 import { Button } from '../components/ui/Button';
 import { ButtonGroup } from '../components/ui/ButtonGroup';
-import { Spinner } from '../components/ui/Spinner';
 import { Card } from '../components/Dashboard/Card';
 import {
 	groupForTable,
 	calculateNumberOfCinemas,
 	calculateWeek1Releases,
-	groupbyDate,
-	groupStackedFilms,
 } from '../utils/groupData';
 import { MetricChange } from '../components/charts/MetricChange';
 import { Datepickers } from '../components/Dashboard/Datepickers';
@@ -69,11 +66,6 @@ export const DashboardPage = () => {
 
 	// Group Data for the charts
 	const { tableData } = groupForTable(results);
-	const { areaData } = groupStackedFilms(results);
-	const { results: weekData } = groupbyDate(results);
-
-	// Get unique dates to label the bar chart
-	const uniqueDates = [...new Set(results.map((d) => d.date))];
 
 	// Calculate totals
 	const boxOffice = tableData.reduce((acc, curr) => acc + curr.weekGross, 0);
@@ -214,17 +206,13 @@ export const DashboardPage = () => {
 			{isReachedEnd ? (
 				<div className='grid md:grid-cols-1 mt-3 md:mt-6 lg:grid-cols-2 gap-3 md:gap-5'>
 					<Card title='Box Office'>
-						{isReachedEnd && <TimeLineChart data={weekData} height='md' />}
+						{isReachedEnd && <TimeLineChart data={results} height='md' />}
 					</Card>
 
 					<Card title='Films'>
 						{isReachedEnd && (
 							<div className='mt-6'>
-								<StackedBarChart
-									data={areaData}
-									height='md'
-									labels={uniqueDates}
-								/>
+								<StackedBarChart data={results} height='md' />
 							</div>
 						)}
 					</Card>
