@@ -12,6 +12,7 @@ import {
 } from 'chart.js';
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { groupStackedFilms } from '../../utils/groupData';
 
 ChartJS.register(
 	BarElement,
@@ -32,9 +33,16 @@ ChartJS.register(
  * @example
  * <StackedBarChart data={data} labels={labels} height={height} />
  */
-export const StackedBarChart = ({ data, labels, height }) => {
+export const StackedBarChart = ({ data, height }) => {
 	const navigate = useNavigate();
 	const chartRef = useRef(null);
+
+	// Prepare the data for the chart
+	const { stackedData } = groupStackedFilms(data);
+	const labels = [...new Set(data.map((d) => d.date))];
+
+	// Only stack the bars if there's more than one date.
+	const isStacked = labels?.length > 1;
 
 	// Navigate to the film page when a bar is clicked
 	// Disabled for now as it's not a good UX
@@ -46,12 +54,9 @@ export const StackedBarChart = ({ data, labels, height }) => {
 		// }
 	};
 
-	// Only stack the bars if there's more than one date.
-	const isStacked = labels?.length > 1;
-
 	const d = {
 		labels: labels,
-		datasets: data,
+		datasets: stackedData,
 	};
 
 	const options = {

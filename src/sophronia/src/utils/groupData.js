@@ -44,7 +44,7 @@ export const groupStackedFilms = (data) => {
 	var colors = interpolateColors(filmsLimit, colorScale, colorRangeInfo);
 
 	// Create the dataset objects - one for each film
-	const areaData = groupedFilms.map((film, index) => {
+	const stackedData = groupedFilms.map((film, index) => {
 		const filmData = data.filter((item) => item.film_slug === film.slug);
 		const weekData = filmData.map((item) => {
 			return { x: item.date, y: item.week_gross };
@@ -65,7 +65,7 @@ export const groupStackedFilms = (data) => {
 		};
 	});
 
-	return { areaData };
+	return { stackedData };
 };
 
 /**
