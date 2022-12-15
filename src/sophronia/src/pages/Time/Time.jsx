@@ -252,7 +252,7 @@ export const TimePage = () => {
 					weekData.length > 1 &&
 					(isReachedEnd ? (
 						<Card title='Box Office'>
-							<TimeLineChart data={weekData} />
+							<TimeLineChart data={results} />
 						</Card>
 					) : (
 						<Card title='Box Office'>

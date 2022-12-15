@@ -8,7 +8,6 @@ import {
 	groupForTable,
 	calculateNumberOfCinemas,
 	calculateWeek1Releases,
-	groupbyDate,
 } from '../utils/groupData';
 import { MetricChange } from '../components/charts/MetricChange';
 import { Datepickers } from '../components/Dashboard/Datepickers';
@@ -67,7 +66,6 @@ export const DashboardPage = () => {
 
 	// Group Data for the charts
 	const { tableData } = groupForTable(results);
-	const { results: weekData } = groupbyDate(results);
 
 	// Calculate totals
 	const boxOffice = tableData.reduce((acc, curr) => acc + curr.weekGross, 0);
@@ -208,7 +206,7 @@ export const DashboardPage = () => {
 			{isReachedEnd ? (
 				<div className='grid md:grid-cols-1 mt-3 md:mt-6 lg:grid-cols-2 gap-3 md:gap-5'>
 					<Card title='Box Office'>
-						{isReachedEnd && <TimeLineChart data={weekData} height='md' />}
+						{isReachedEnd && <TimeLineChart data={results} height='md' />}
 					</Card>
 
 					<Card title='Films'>

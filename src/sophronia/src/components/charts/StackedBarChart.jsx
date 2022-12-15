@@ -27,11 +27,10 @@ ChartJS.register(
 /**
  * Dashboard StackedBarChart component
  * @param {Object} data - Data to be displayed in the chart
- * @param {Object} labels - Labels for the chart
  * @param {Number} height - Height of the chart
  * @returns {JSX.Element}
  * @example
- * <StackedBarChart data={data} labels={labels} height={height} />
+ * <StackedBarChart data={data} height={height} />
  */
 export const StackedBarChart = ({ data, height }) => {
 	const navigate = useNavigate();
