@@ -6,6 +6,7 @@ from flask import jsonify
 from flask.wrappers import Response
 from sqlalchemy.sql import func
 from ukbo import models
+from ukbo.dto import FilmSchema, FilmWeekSchema, WeekSchema
 from ukbo.extensions import db
 
 
@@ -41,11 +42,13 @@ def all(
     next_page = (page + 1) if data.has_next else ""
     previous_page = (page - 1) if data.has_prev else ""
 
+    film_week_schema = FilmWeekSchema()  # type: ignore
+
     return jsonify(
         count=data.total,
         next=next_page,
         previous=previous_page,
-        results=[ix.as_dict() for ix in data.items],
+        results=[film_week_schema.dump(ix) for ix in data.items],
     )
 
 
@@ -65,10 +68,12 @@ def topfilms() -> Response:
     query = query.order_by(func.sum(models.Film_Week.week_gross).desc())
     data = query.limit(50)
 
+    film_schema = FilmSchema()  # type: ignore
+
     return jsonify(
         results=[
             dict(
-                film=row[0].as_dict(weeks=False),
+                film=film_schema.dump(row[0]),
                 gross=row[1],
             )
             for row in data
@@ -245,11 +250,13 @@ def topline(
     next_page = (page + 1) if data.has_next else ""
     previous_page = (page - 1) if data.has_prev else ""
 
+    week_schema = WeekSchema()  # type: ignore
+
     return jsonify(
         count=data.total,
         next=next_page,
         previous=previous_page,
-        results=[ix.as_dict() for ix in data.items],
+        results=[week_schema.dump(ix) for ix in data.items],
     )
 
 

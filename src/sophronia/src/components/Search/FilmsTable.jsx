@@ -24,7 +24,7 @@ export const FilmsTable = ({ data }) => {
 						<Link to={`/film/${film.slug}`}>{film.name}</Link>
 					</Td>
 					<Td>{film.distributor.name}</Td>
-					<Td>{film.country.map((c, index) => `${c.name} `)}</Td>
+					<Td>{film.countries.map((c, index) => `${c.name} `)}</Td>
 					<Td isNumeric>£ {film.gross.toLocaleString('en-GB')}</Td>
 				</Tr>
 			))}
