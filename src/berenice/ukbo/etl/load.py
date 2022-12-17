@@ -126,3 +126,15 @@ def load_weeks(df: pd.DataFrame, **kwargs: Any) -> None:
             models.Film_Week.create(**record, commit=False)
 
         db.session.commit()
+
+
+def load_admissions(path: str) -> None:
+    """
+    Loads admissions data into the database.
+    Finds the first week in a month to load into.
+
+    Args:
+        path: Path to admissions data.
+
+    """
+    pass

@@ -65,6 +65,17 @@ def seed_box_office_command(year: int) -> None:
     click.echo("Seeded box office data")
 
 
+@click.command("seed-admissions")
+@with_appcontext
+def seed_admissions_command() -> None:
+    """
+    Seeds database with admissions data.
+    """
+    path = "./data/admissions.csv"
+    tasks.seed_admissions(path)
+    click.echo("Seeded admissions data")
+
+
 @click.command("forecast")
 @with_appcontext
 def forecast_command() -> None:

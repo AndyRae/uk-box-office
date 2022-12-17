@@ -155,6 +155,20 @@ def seed_box_office(path: str, **kwargs: Any) -> None:
 
 
 @with_appcontext
+def seed_admissions(path: str) -> None:
+    """
+    Seeds admissions data.
+
+    Args:
+        path: Path to the admissions.csv file.
+
+    """
+
+    archive = pd.read_csv(path)
+    load.load_admissions(archive)
+
+
+@with_appcontext
 def weekly_etl() -> None:
     """
     Manual CLI for the weekly ETL pipeline.
