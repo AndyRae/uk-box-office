@@ -4,7 +4,7 @@ from ukbo.extensions import ma
 
 class WeekSchema(ma.SQLAlchemyAutoSchema):
     """
-    Week schema to dump - currently unused.
+    Week schema for serialisation.
     """
 
     class Meta:

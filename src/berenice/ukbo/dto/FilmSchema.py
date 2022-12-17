@@ -8,9 +8,8 @@ from .FilmWeekSchema import FilmWeekSchema
 
 class FilmSchema(ma.SQLAlchemyAutoSchema):
     """
-    TODO: Implement these schemas.
-    Schema to dump - currently unused.
-
+    Film schema for serialisation with nested objects.
+    Includes distributor, countries, weeks and gross.
     """
 
     class Meta:
@@ -23,7 +22,10 @@ class FilmSchema(ma.SQLAlchemyAutoSchema):
 
 
 class FilmSchemaStrict(ma.SQLAlchemyAutoSchema):
-    """ """
+    """
+    Film schema for serialisation with nested objects.
+    Does not include weeks.
+    """
 
     class Meta:
         model = models.Film

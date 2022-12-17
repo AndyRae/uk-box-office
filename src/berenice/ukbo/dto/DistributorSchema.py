@@ -4,7 +4,7 @@ from ukbo.extensions import ma
 
 class DistributorSchema(ma.SQLAlchemyAutoSchema):
     """
-    Distributor schema to dump - currently unused.
+    Distributor schema for serialisation.
     """
 
     class Meta:

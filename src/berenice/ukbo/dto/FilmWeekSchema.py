@@ -4,7 +4,7 @@ from ukbo.extensions import ma
 
 class FilmWeekSchema(ma.SQLAlchemyAutoSchema):
     """
-    FilmWeek schema to dump - currently unused.
+    FilmWeek schema for serialisation.
     """
 
     class Meta:

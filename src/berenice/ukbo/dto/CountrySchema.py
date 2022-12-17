@@ -4,7 +4,7 @@ from ukbo.extensions import ma
 
 class CountrySchema(ma.SQLAlchemyAutoSchema):
     """
-    Country schema to dump - currently unused.
+    Country schema for serialisation.
     """
 
     class Meta:
