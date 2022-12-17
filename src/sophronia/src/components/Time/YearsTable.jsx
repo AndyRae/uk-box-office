@@ -14,6 +14,8 @@ export const YearsTable = ({ data, id }) => {
 		{ label: 'weekend box office', isNumeric: true },
 		{ label: 'total box office', isNumeric: true },
 		{ label: 'total change', isNumeric: true },
+		{ label: 'admissions', isNumeric: true },
+		{ label: 'average ticket price', isNumeric: true },
 		{ label: 'new releases', isNumeric: true },
 	];
 	return (
@@ -27,6 +29,9 @@ export const YearsTable = ({ data, id }) => {
 								100
 					  )
 					: '-';
+				const averageTicketPrice = (
+					year.weekend_gross / year.admissions
+				).toFixed(2);
 				return (
 					<Tr key={year.year} index={index}>
 						<Td isHighlight>
@@ -37,6 +42,10 @@ export const YearsTable = ({ data, id }) => {
 						<Td isNumeric>
 							<MetricChange value={changeWeekend} />
 						</Td>
+						<Td isNumeric>
+							{year.admissions ? year.admissions.toLocaleString('en-GB') : ''}
+						</Td>
+						<Td isNumeric>£ {year.admissions ? averageTicketPrice : '-'}</Td>
 						<Td isNumeric>{year.number_of_releases}</Td>
 					</Tr>
 				);

@@ -18,6 +18,20 @@ export const AllTimeChart = ({ data }) => {
 		labels: data.map((d) => d.year),
 		datasets: [
 			{
+				label: 'Admissions',
+				data: data.map((d) => d.admissions),
+				fill: false,
+				backgroundColor: ['#52A5ED4D'],
+				borderColor: ['#52A5ED'],
+				pointStyle: 'point',
+				pointRadius: 4,
+				borderRadius: 4,
+				hoverRadius: 10,
+				tension: 0.3,
+				yAxisID: 'y1',
+				type: 'line',
+			},
+			{
 				label: 'Box Office',
 				data: data.map((d) => d.week_gross),
 				fill: false,
@@ -44,6 +58,7 @@ export const AllTimeChart = ({ data }) => {
 			},
 			y: {
 				beginAtZero: true,
+				position: 'left',
 				ticks: {
 					autoSkip: true,
 					stepSize: 200000000,
@@ -61,6 +76,33 @@ export const AllTimeChart = ({ data }) => {
 							return n;
 						}
 						return '£' + formatNumber(value);
+					},
+				},
+				grid: {
+					display: false,
+					drawBorder: false,
+				},
+			},
+			y1: {
+				beginAtZero: true,
+				position: 'right',
+				ticks: {
+					autoSkip: true,
+					stepSize: 200000000,
+					callback: function (value, index, values) {
+						var ranges = [
+							{ divider: 1e6, suffix: 'M' },
+							{ divider: 1e3, suffix: 'k' },
+						];
+						function formatNumber(n) {
+							for (var i = 0; i < ranges.length; i++) {
+								if (n >= ranges[i].divider) {
+									return (n / ranges[i].divider).toString() + ranges[i].suffix;
+								}
+							}
+							return n;
+						}
+						return '' + formatNumber(value);
 					},
 				},
 				grid: {
