@@ -62,6 +62,7 @@ export const groupStackedFilms = (data) => {
 			tension: 0.3,
 			pointStyle: 'line',
 			pointRadius: 4,
+			borderRadius: 4,
 		};
 	});
 

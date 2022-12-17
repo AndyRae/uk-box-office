@@ -4,49 +4,38 @@ import { getElementAtEvent } from 'react-chartjs-2';
 import { useNavigate } from 'react-router-dom';
 
 /**
- * @description All Time Chart component as a bar chart.
+ * @description Charts previous box office years as a horizontal bar chart.
  * Includes chart navigation to the year pages.
  * @param {Array} data - Array of annual box office data
  * @returns {JSX.Element}
  * @example
- * <AllTimeChart data={data} />
+ * <PreviousYearsChart data={data} />
  */
-export const AllTimeChart = ({ data }) => {
+export const PreviousYearsChart = ({ data }) => {
 	const navigate = useNavigate();
-
-	const d = {
-		labels: data.map((d) => d.year),
-		datasets: [
-			{
-				label: 'Box Office',
-				data: data.map((d) => d.week_gross),
-				fill: false,
-				backgroundColor: ['#B65078'],
-				borderColor: ['#B65078'],
-				pointStyle: 'line',
-				pointRadius: 4,
-				borderRadius: 4,
-				tension: 0.3,
-				yAxisID: 'y',
-			},
-		],
-	};
 
 	const options = {
 		responsive: true,
 		maintainAspectRatio: false,
+		indexAxis: 'y',
+		plugins: {
+			legend: {
+				display: false,
+			},
+		},
 		scales: {
 			x: {
+				ticks: {
+					maxRotation: 0,
+					minRotation: 0,
+					autoSkip: true,
+				},
 				grid: {
 					display: false,
 				},
-				offset: true,
-			},
-			y: {
-				beginAtZero: true,
 				ticks: {
 					autoSkip: true,
-					stepSize: 200000000,
+					stepSize: 10000000,
 					callback: function (value, index, values) {
 						var ranges = [
 							{ divider: 1e6, suffix: 'M' },
@@ -63,12 +52,30 @@ export const AllTimeChart = ({ data }) => {
 						return '£' + formatNumber(value);
 					},
 				},
+			},
+			y: {
+				beginAtZero: true,
 				grid: {
 					display: false,
 					drawBorder: false,
 				},
 			},
 		},
+	};
+
+	const d = {
+		labels: data.results.map((d) => d.year),
+		datasets: [
+			{
+				label: 'Box Office',
+				data: data.results.map((d) => d.weekend_gross),
+				fill: true,
+				backgroundColor: ['#B65078'],
+				borderColor: ['#B65078'],
+				borderRadius: 4,
+				hoverRadius: 10,
+			},
+		],
 	};
 
 	// Chart Navigation
@@ -80,11 +87,13 @@ export const AllTimeChart = ({ data }) => {
 	};
 
 	return (
-		<BarChart
-			data={d}
-			options={options}
-			onClick={onClick}
-			chartRef={chartRef}
-		/>
+		<div className='my-10 h-96'>
+			<BarChart
+				data={d}
+				options={options}
+				onClick={onClick}
+				chartRef={chartRef}
+			/>
+		</div>
 	);
 };

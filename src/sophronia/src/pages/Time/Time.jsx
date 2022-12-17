@@ -22,6 +22,7 @@ import { PageTitle } from '../../components/ui/PageTitle';
 import { StackedBarChart } from '../../components/charts/StackedBarChart';
 import { DatasourceButton } from '../../components/Dashboard/Datasource';
 import { ProgressBar } from '../../components/ui/ProgressBar';
+import { PreviousYearsChart } from '../../components/Time/PreviousYearsChart';
 
 /**
  * Pill Link Component
@@ -111,6 +112,12 @@ export const TimePage = () => {
 
 	// To check if we're on a week page.
 	const isWeekView = startDate === endDate;
+
+	// Set Grid Columns for charts.
+	let gridColumns = 'md:grid-cols-1';
+	if (isWeekView) {
+		gridColumns = 'md:grid-cols-2';
+	}
 
 	const months = {
 		1: 'January',
@@ -246,10 +253,12 @@ export const TimePage = () => {
 				</Card>
 			</div>
 
-			{/* // Chart */}
-			<div className='mt-3 mb-3 md:mb-6 md:mt-6'>
+			{/* // Charts */}
+			<div
+				className={`grid grid-cols-1 ${gridColumns} gap-3 md:gap-5 mt-3 mb-3 md:mb-5 md:mt-5`}
+			>
 				{weekData &&
-					weekData.length > 1 &&
+					!isWeekView &&
 					(isReachedEnd ? (
 						<Card title='Box Office'>
 							<TimeLineChart data={results} />
@@ -259,11 +268,15 @@ export const TimePage = () => {
 							<TimeLineChart data={[]} />
 						</Card>
 					))}
-			</div>
 
-			<Card title='Films'>
-				{isReachedEnd && <StackedBarChart data={results} />}
-			</Card>
+				<Card title='Films'>
+					{isReachedEnd && <StackedBarChart data={results} />}
+				</Card>
+
+				<Card title='Previous Years'>
+					{isReachedEnd && <PreviousYearsChart data={timeComparisonData} />}
+				</Card>
+			</div>
 
 			<div className='py-3'>
 				<ul className='flex flex-wrap my-2 text-sm font-medium text-center text-gray-500 dark:text-gray-400'>

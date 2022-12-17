@@ -27,8 +27,6 @@ export const TimeLineChart = ({
 
 	const { results: weekData } = groupbyDate(data);
 
-	console.log(weekData);
-
 	// To configure rolling up / down the data
 	const [chartData, setChartData] = useState(weekData);
 	const { results } = groupbyMonth(weekData);
