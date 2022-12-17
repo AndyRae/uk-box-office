@@ -68,9 +68,9 @@ export const FilmPage = () => {
 
 				<Card title='Multiple' subtitle={`x${multiple}`} />
 
-				<Card title={data.country.length > 1 ? 'Countries' : 'Country'}>
+				<Card title={data.countries.length > 1 ? 'Countries' : 'Country'}>
 					<ul className='flex flex-wrap justify-center'>
-						{data.country.map((country) => {
+						{data.countries.map((country) => {
 							return (
 								<li key={country.id} className='mr-2'>
 									<Link

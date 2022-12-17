@@ -4,21 +4,8 @@ import pandas as pd
 from flask import Response, abort, jsonify
 from slugify import slugify  # type: ignore
 from ukbo import models
-from ukbo.extensions import db, ma
-
-
-class FilmSchema(ma.SQLAlchemyAutoSchema):
-    """
-    TODO: Implement these schemas.
-    Schema to dump - currently unused.
-
-    """
-
-    class Meta:
-        model = models.Film
-        include_fk = True
-
-    distributor_name = ma.Function(lambda obj: obj.distributor.name)
+from ukbo.dto import FilmSchema, FilmSchemaStrict
+from ukbo.extensions import db
 
 
 def list(page: int, limit: int = 100) -> Response:
@@ -42,11 +29,13 @@ def list(page: int, limit: int = 100) -> Response:
     next_page = (page + 1) if data.has_next else ""
     previous_page = (page - 1) if data.has_prev else ""
 
+    film_schema = FilmSchemaStrict()
+
     return jsonify(
         count=data.total,
         next=next_page,
         previous=previous_page,
-        results=[ix.as_dict(weeks=False) for ix in data.items],
+        results=[film_schema.dump(ix) for ix in data.items],
     )
 
 
@@ -66,7 +55,8 @@ def get(slug: str) -> Response:
     if data is None:
         abort(404)
 
-    return data.as_dict()
+    film_schema = FilmSchema()
+    return film_schema.dump(data)
 
 
 def add_film(
@@ -138,7 +128,9 @@ def search(search_query: str) -> Response:
     query = query.filter(models.Film.name.ilike(f"%{search_query}%"))
     data = query.limit(15).all()
 
-    return [] if data is None else [ix.as_dict(weeks=False) for ix in data]
+    film_schema = FilmSchemaStrict()
+
+    return [] if data is None else [film_schema.dump(ix) for ix in data]
 
 
 def spellcheck_film(film_title: pd.Series) -> str:
