@@ -35,13 +35,3 @@ class Distributor(PkModel):  # type: ignore
 
     def __eq__(self, o: object) -> bool:
         return self.name == o
-
-    def as_dict(self) -> Dict[str, Any]:
-        """
-        Serializes the model as a dictionary.
-        This is used to create JSON responses.
-
-        Returns:
-            Dictionary representation of the model.
-        """
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}

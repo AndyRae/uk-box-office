@@ -54,7 +54,7 @@ class Film_Week(PkModel):  # type: ignore
     def as_dict(self) -> Dict[str, Any]:
         """
         Serializes the model as a dictionary.
-        This is used to create JSON responses.
+        This is used to create the archive.
 
         Returns:
             Dictionary representation of the model.
