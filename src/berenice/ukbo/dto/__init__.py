@@ -10,3 +10,4 @@ from .CountrySchema import CountrySchema
 from .DistributorSchema import DistributorSchema
 from .FilmSchema import FilmSchema, FilmSchemaStrict
 from .FilmWeekSchema import FilmWeekSchema
+from .WeekSchema import WeekSchema
