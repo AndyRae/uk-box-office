@@ -131,7 +131,6 @@ def search(search_query: str) -> Response:
     film_schema = FilmSchemaStrict()
 
     return [] if data is None else [film_schema.dump(ix) for ix in data]
-    # return [] if data is None else [ix.as_dict(weeks=False) for ix in data]
 
 
 def spellcheck_film(film_title: pd.Series) -> str:
