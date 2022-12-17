@@ -113,6 +113,12 @@ export const TimePage = () => {
 	// To check if we're on a week page.
 	const isWeekView = startDate === endDate;
 
+	// Set Grid Columns for charts.
+	let gridColumns = 'md:grid-cols-1';
+	if (isWeekView) {
+		gridColumns = 'md:grid-cols-2';
+	}
+
 	const months = {
 		1: 'January',
 		2: 'February',
@@ -248,9 +254,11 @@ export const TimePage = () => {
 			</div>
 
 			{/* // Charts */}
-			<div className='grid grid-cols-1 gap-3 md:gap-5 mt-3 mb-3 md:mb-5 md:mt-5'>
+			<div
+				className={`grid grid-cols-1 ${gridColumns} gap-3 md:gap-5 mt-3 mb-3 md:mb-5 md:mt-5`}
+			>
 				{weekData &&
-					weekData.length > 1 &&
+					!isWeekView &&
 					(isReachedEnd ? (
 						<Card title='Box Office'>
 							<TimeLineChart data={results} />
