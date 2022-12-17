@@ -165,7 +165,8 @@ def seed_admissions(path: str) -> None:
     """
 
     archive = pd.read_csv(path)
-    load.load_admissions(archive)
+    archive["date"] = pd.to_datetime(archive["date"], format="%d/%m/%Y")
+    load.load_admissions(archive.to_dict(orient="records"))
 
 
 @with_appcontext

@@ -104,6 +104,7 @@ def summary(start: str, end: str, limit: int = 0) -> Response:
         func.sum(models.Week.weekend_gross),
         func.sum(models.Week.number_of_releases),
         func.max(models.Week.number_of_cinemas),
+        func.sum(models.Week.admissions),
     ).group_by(func.extract("year", models.Week.date))
 
     if start != end:
@@ -154,6 +155,7 @@ def summary(start: str, end: str, limit: int = 0) -> Response:
                 weekend_gross=row[2],
                 number_of_releases=row[3],
                 number_of_cinemas=row[4],
+                admissions=row[5],
             )
             for row in data
         ]

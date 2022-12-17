@@ -1,4 +1,4 @@
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Union
 
 import pandas as pd
 from ukbo import models, services
@@ -128,7 +128,7 @@ def load_weeks(df: pd.DataFrame, **kwargs: Any) -> None:
         db.session.commit()
 
 
-def load_admissions(path: str) -> None:
+def load_admissions(data: Union[Any, Any]) -> None:
     """
     Loads admissions data into the database.
     Finds the first week in a month to load into.
@@ -137,4 +137,13 @@ def load_admissions(path: str) -> None:
         path: Path to admissions data.
 
     """
-    pass
+    for month in data:
+        # Get the first week in the month that matches.
+        week = (
+            models.Week.query.filter(models.Week.date >= month["date"])
+            .order_by(models.Week.date.asc())
+            .first()
+        )
+        week.admissions = month["admissions"]
+
+        db.session.commit()
