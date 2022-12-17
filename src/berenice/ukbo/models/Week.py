@@ -36,6 +36,7 @@ class Week(PkModel):  # type: ignore
     number_of_releases = db.Column(db.Integer, nullable=True, default=0)
     weekend_gross = db.Column(db.Integer, nullable=True, default=0)
     week_gross = db.Column(db.Integer, nullable=True, default=0)
+    admissions = db.Column(db.Integer, nullable=True, default=0)
     forecast_high = db.Column(db.Integer, nullable=True, default=0)
     forecast_medium = db.Column(db.Integer, nullable=True, default=0)
     forecast_low = db.Column(db.Integer, nullable=True, default=0)
