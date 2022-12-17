@@ -4,6 +4,7 @@ import pandas as pd
 from flask import Response, abort, jsonify
 from slugify import slugify  # type: ignore
 from ukbo import models
+from ukbo.dto import CountrySchema, FilmSchemaStrict
 from ukbo.extensions import db
 
 
@@ -28,11 +29,13 @@ def list(page: int = 1, limit: int = 100) -> Response:
     next_page = (page + 1) if data.has_next else ""
     previous_page = (page - 1) if data.has_prev else ""
 
+    country_schema = CountrySchema()
+
     return jsonify(
         count=data.total,
         next=next_page,
         previous=previous_page,
-        results=[ix.as_dict() for ix in data.items],
+        results=[country_schema.dump(ix) for ix in data.items],
     )
 
 
@@ -52,7 +55,9 @@ def get(slug: str) -> Response:
     if data is None:
         abort(404)
 
-    return data.as_dict()
+    country_schema = CountrySchema()
+
+    return country_schema.dump(data)
 
 
 def get_films(slug: str, page: int = 1, limit: int = 100) -> Response:
@@ -81,12 +86,15 @@ def get_films(slug: str, page: int = 1, limit: int = 100) -> Response:
     next_page = (page + 1) if data.has_next else ""
     previous_page = (page - 1) if data.has_prev else ""
 
+    country_schema = CountrySchema()
+    film_schema = FilmSchemaStrict()
+
     return jsonify(
-        country=country.as_dict(),
+        country=country_schema.dump(country),
         count=data.total,
         next=next_page,
         previous=previous_page,
-        results=[ix.as_dict(weeks=False) for ix in data.items],
+        results=[film_schema.dump(ix) for ix in data.items],
     )
 
 
@@ -136,7 +144,9 @@ def search(search_query: str) -> Response:
     query = query.filter(models.Country.name.ilike(f"%{search_query}%"))
     data = query.limit(10).all()
 
-    return [] if data is None else [ix.as_dict() for ix in data]
+    country_schema = CountrySchema()
+
+    return [] if data is None else [country_schema.dump(ix) for ix in data]
 
 
 def spellcheck_country(country: str) -> str:
