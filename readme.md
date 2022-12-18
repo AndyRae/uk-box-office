@@ -38,6 +38,7 @@ It will take a long time to seed the data, so you should try the `--year` flag t
 - Seed films: `flask seed-films`
 - Seed box office: `flask seed-box-office`
   - Additionally takes `--year` option for a specific year: `--year 2007`
+- Seed Admissions: `flask seed-admissions` (requires `admissions.csv`)
 
 ## Structure
 
@@ -59,3 +60,4 @@ These run weekly on a Wednesday, if they fail you can run them manually:
 - Fetch new box office data from a specific link (works as a backup): `flask backup-etl {link to file}`
 - Delete and rollback the last week of data: `flask rollback-etl`
 - Delete and rollback a specific year of data: `flask rollback-year --year 2007`
+- Update admissions manually: `flask update-admissions --year 2020 --month 1 --admissions 100`
