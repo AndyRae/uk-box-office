@@ -170,6 +170,19 @@ def seed_admissions(path: str) -> None:
 
 
 @with_appcontext
+def update_admissions(year: int, month: int, admissions: int) -> None:
+    """
+    Updates admissions data.
+
+    Args:
+        year: Year of admissions data.
+        month: Month of admissions data.
+
+    """
+    services.week.update_admissions(year, month, admissions)
+
+
+@with_appcontext
 def weekly_etl() -> None:
     """
     Manual CLI for the weekly ETL pipeline.

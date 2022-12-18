@@ -76,6 +76,19 @@ def seed_admissions_command() -> None:
     click.echo("Seeded admissions data")
 
 
+@click.command("update-admissions")
+@click.option("--year", prompt=True, type=int)
+@click.option("--month", prompt=True, type=int)
+@click.option("--admissions", prompt=True, type=int)
+@with_appcontext
+def update_admissions_command(year: int, month: int, admissions: int) -> None:
+    """
+    Updates admissions data for a given month.
+    """
+    tasks.update_admissions(year, month, admissions)
+    click.echo("Updated admissions data")
+
+
 @click.command("forecast")
 @with_appcontext
 def forecast_command() -> None:
