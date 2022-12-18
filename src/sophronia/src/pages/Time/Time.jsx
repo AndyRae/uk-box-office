@@ -153,17 +153,23 @@ export const TimePage = () => {
 	const { tableData } = groupForTable(results);
 	const { results: weekData } = groupbyDate(results);
 
-	const boxOffice = tableData.reduce((acc, curr) => acc + curr.weekGross, 0);
-	const weekendBoxOffice = tableData.reduce(
-		(acc, curr) => acc + curr.weekendGross,
-		0
-	);
-	const numberOfNewFilms = calculateWeek1Releases(results);
+	// Get Data for Charts
+	const thisYear = timeComparisonData.results[0];
+	const boxOffice = thisYear.week_gross;
+	const weekendBoxOffice = thisYear.weekend_gross;
+	const numberOfNewFilms = thisYear.number_of_releases;
+	const admissions = thisYear.admissions;
+	const numberOfCinemas = thisYear.number_of_cinemas;
+	const averageTicketPrice = (boxOffice / admissions).toFixed(2);
+	const siteAverage = Math.ceil(boxOffice / numberOfCinemas);
 
 	// Time Comparison Data
 	let changeNewFilms = 0;
 	let changeWeekend = 0;
 	let changeWeek = 0;
+	let changeAdmissions = 0;
+	let changeCinemas = 0;
+	let changeAverageTicketPrice = 0;
 
 	if (timeComparisonData.results.length > 1) {
 		const lastYear = timeComparisonData.results[1];
@@ -178,6 +184,20 @@ export const TimePage = () => {
 		);
 		changeWeekend = Math.ceil(
 			((weekendBoxOffice - lastYear.weekend_gross) / lastYear.weekend_gross) *
+				100
+		);
+		changeAdmissions = Math.ceil(
+			((admissions - lastYear.admissions) / lastYear.admissions) * 100
+		);
+		changeCinemas = Math.ceil(
+			((numberOfCinemas - lastYear.number_of_cinemas) /
+				lastYear.number_of_cinemas) *
+				100
+		);
+
+		changeAverageTicketPrice = Math.ceil(
+			((averageTicketPrice - lastYear.week_gross / lastYear.admissions) /
+				(lastYear.week_gross / lastYear.admissions)) *
 				100
 		);
 	}
@@ -233,6 +253,20 @@ export const TimePage = () => {
 					)}
 				</Card>
 
+				{!isWeekView && admissions && (
+					<Card
+						title='Admissions'
+						subtitle={isReachedEnd && `${admissions.toLocaleString()}`}
+					>
+						{isReachedEnd && (
+							<Tooltip text='Change from last year'>
+								{' '}
+								<MetricChange value={changeAdmissions} />{' '}
+							</Tooltip>
+						)}
+					</Card>
+				)}
+
 				<Card title='Box Office Previous Years'>
 					{isReachedEnd &&
 						timeComparisonData.results.slice(1, 4).map((year, index) => {
@@ -251,6 +285,40 @@ export const TimePage = () => {
 							);
 						})}
 				</Card>
+
+				{!isWeekView && admissions && (
+					<Card
+						title='Average Ticket Price'
+						subtitle={
+							isReachedEnd && `£ ${averageTicketPrice.toLocaleString()}`
+						}
+					>
+						{isReachedEnd && (
+							<Tooltip text='Change from last year'>
+								{' '}
+								<MetricChange value={changeAverageTicketPrice} />{' '}
+							</Tooltip>
+						)}
+					</Card>
+				)}
+
+				{!isWeekView && admissions && (
+					<Card
+						title='Site Average'
+						subtitle={isReachedEnd && `£ ${siteAverage.toLocaleString()}`}
+					></Card>
+				)}
+
+				{!isWeekView && admissions && (
+					<Card title='Cinemas' subtitle={isReachedEnd && `${numberOfCinemas}`}>
+						{isReachedEnd && (
+							<Tooltip text='Change from last year'>
+								{' '}
+								<MetricChange value={changeCinemas} />{' '}
+							</Tooltip>
+						)}
+					</Card>
+				)}
 			</div>
 
 			{/* // Charts */}

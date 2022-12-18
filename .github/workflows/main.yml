@@ -47,7 +47,7 @@ jobs:
             source venv/bin/activate
             cd src/berenice
             pip install -r requirements.txt
-            flask db update
+            flask db upgrade
             systemctl restart nginx
             systemctl restart gunicorn
           ENDSSH

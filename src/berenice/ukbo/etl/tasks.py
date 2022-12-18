@@ -155,6 +155,35 @@ def seed_box_office(path: str, **kwargs: Any) -> None:
 
 
 @with_appcontext
+def seed_admissions(path: str) -> None:
+    """
+    Seeds admissions data.
+
+    Args:
+        path: Path to the admissions.csv file.
+
+    """
+
+    archive = pd.read_csv(path)
+    archive["date"] = pd.to_datetime(archive["date"], format="%d/%m/%Y")
+    load.load_admissions(archive.to_dict(orient="records"))
+
+
+@with_appcontext
+def update_admissions(year: int, month: int, admissions: int) -> None:
+    """
+    Updates admissions data.
+
+    Args:
+        year: Year of admissions data.
+        month: Month of admissions data.
+        admissions: Number of admissions.
+
+    """
+    services.week.update_admissions(year, month, admissions)
+
+
+@with_appcontext
 def weekly_etl() -> None:
     """
     Manual CLI for the weekly ETL pipeline.

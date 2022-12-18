@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import Any
 
 from ukbo import models
+from ukbo.extensions import db
 
 
 def add_week(
@@ -39,5 +40,26 @@ def add_week(
     }
 
     models.Week.create(**new_week, commit=False)
+
+    return None
+
+
+def update_admissions(year: int, month: int, admissions: int) -> None:
+    """
+    Updates admissions data for a given month.
+
+    Args:
+        year: Year of the month.
+        month: Month to update.
+        admissions: Number of admissions.
+
+    """
+    if week := (
+        models.Week.query.filter(models.Week.date >= datetime(year, month, 1))
+        .order_by(models.Week.date.asc())
+        .first()
+    ):
+        week.admissions = admissions
+        db.session.commit()
 
     return None
