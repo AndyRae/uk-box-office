@@ -134,7 +134,7 @@ def load_admissions(data: Union[Any, Any]) -> None:
     Finds the first week in a month to load into.
 
     Args:
-        path: Path to admissions data.
+        data: List of admissions data.
 
     """
     for month in data:

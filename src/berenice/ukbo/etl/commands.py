@@ -84,6 +84,12 @@ def seed_admissions_command() -> None:
 def update_admissions_command(year: int, month: int, admissions: int) -> None:
     """
     Updates admissions data for a given month.
+
+    Args:
+        year: Year of admissions data.
+        month: Month of admissions data.
+        admissions: Number of admissions.
+
     """
     tasks.update_admissions(year, month, admissions)
     click.echo("Updated admissions data")

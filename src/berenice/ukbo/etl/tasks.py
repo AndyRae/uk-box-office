@@ -177,6 +177,7 @@ def update_admissions(year: int, month: int, admissions: int) -> None:
     Args:
         year: Year of admissions data.
         month: Month of admissions data.
+        admissions: Number of admissions.
 
     """
     services.week.update_admissions(year, month, admissions)

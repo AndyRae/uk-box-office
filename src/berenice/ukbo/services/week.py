@@ -47,6 +47,12 @@ def add_week(
 def update_admissions(year: int, month: int, admissions: int) -> None:
     """
     Updates admissions data for a given month.
+
+    Args:
+        year: Year of the month.
+        month: Month to update.
+        admissions: Number of admissions.
+
     """
     if week := (
         models.Week.query.filter(models.Week.date >= datetime(year, month, 1))
