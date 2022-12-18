@@ -29,9 +29,9 @@ export const YearsTable = ({ data, id }) => {
 								100
 					  )
 					: '-';
-				const averageTicketPrice = (
-					year.weekend_gross / year.admissions
-				).toFixed(2);
+				const averageTicketPrice = (year.week_gross / year.admissions).toFixed(
+					2
+				);
 				return (
 					<Tr key={year.year} index={index}>
 						<Td isHighlight>
