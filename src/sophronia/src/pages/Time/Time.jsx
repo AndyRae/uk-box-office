@@ -306,14 +306,7 @@ export const TimePage = () => {
 					<Card
 						title='Site Average'
 						subtitle={isReachedEnd && `£ ${siteAverage.toLocaleString()}`}
-					>
-						{isReachedEnd && (
-							<Tooltip text='Change from last year'>
-								{' '}
-								<MetricChange value={0} />{' '}
-							</Tooltip>
-						)}
-					</Card>
+					></Card>
 				)}
 
 				{!isWeekView && admissions && (
