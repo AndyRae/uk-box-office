@@ -7,7 +7,12 @@ def test_distributor(app):
 
     :param app: Flask app
     """
-    distributor = models.Distributor(name="Test Distributor")
+    fox = models.Distributor(name="20th Century Fox")
+    disney = models.Distributor(name="Disney")
+    disney_duplicate = models.Distributor(name="Disney")
 
-    assert distributor.name == "Test Distributor"
-    assert distributor.slug == "test-distributor"
+    assert fox.name == "20th Century Fox"
+    assert fox.slug == "20th-century-fox"
+
+    assert disney != fox
+    assert disney == disney_duplicate
