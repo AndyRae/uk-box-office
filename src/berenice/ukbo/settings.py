@@ -41,6 +41,7 @@ class DevelopmentConfig(Config):
     FLATPAGES_AUTO_RELOAD = DEBUG
     CORS_ORIGIN = "http://localhost:3000"
     CORS_ORIGIN_2 = "*"
+    CACHE_TYPE = "NullCache"
     CACHE_NO_NULL_WARNING = True
 
 
@@ -52,6 +53,7 @@ class TestConfig(Config):
     DEBUG = True
     CACHE_TYPE = "null"
     TESTING = True
+    CACHE_TYPE = "NullCache"
     CACHE_NO_NULL_WARNING = True
 
 
