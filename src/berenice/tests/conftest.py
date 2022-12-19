@@ -8,7 +8,7 @@ from ukbo.extensions import db
 
 @pytest.fixture
 def app():
-    db_path = tempfile.mkstemp()
+    db_fd, db_path = tempfile.mkstemp()
 
     app = create_app(
         {
