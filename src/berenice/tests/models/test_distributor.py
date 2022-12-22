@@ -1,15 +1,17 @@
+import pytest
 from ukbo import models
 
 
-def test_distributor(app):
+def test_distributor(app, make_distributor):
     """
     Test distributor model
 
     :param app: Flask app
     """
-    fox = models.Distributor(name="20th Century Fox")
-    disney = models.Distributor(name="Disney")
-    disney_duplicate = models.Distributor(name="Disney")
+
+    fox = make_distributor()
+    disney = make_distributor(name="Disney")
+    disney_duplicate = make_distributor(name="Disney")
 
     assert fox.name == "20th Century Fox"
     assert fox.slug == "20th-century-fox"

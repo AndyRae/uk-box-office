@@ -1,15 +1,17 @@
+import pytest
 from ukbo import models
 
 
-def test_distributor(app):
+def test_country(app, make_country):
     """
     Test country model
 
     :param app: Flask app
     """
-    uk = models.Country(name="United Kingdom")
-    us = models.Country(name="United States")
-    us_duplicate = models.Country(name="United States")
+
+    uk = make_country()
+    us = make_country(name="United States")
+    us_duplicate = make_country(name="United States")
 
     assert uk.name == "United Kingdom"
     assert uk.slug == "united-kingdom"
