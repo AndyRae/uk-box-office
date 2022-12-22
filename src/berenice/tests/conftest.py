@@ -59,3 +59,33 @@ def make_country():
         return models.Country(name=name)
 
     return make
+
+
+@pytest.fixture
+def make_film_week():
+    def make(
+        date,
+        rank,
+        weeks_on_release,
+        number_of_cinemas,
+        weekend_gross,
+        week_gross,
+        total_gross,
+        site_average,
+        film,
+        distributor,
+    ):
+        return models.Film_Week(
+            date=date,
+            rank=rank,
+            weeks_on_release=weeks_on_release,
+            number_of_cinemas=number_of_cinemas,
+            weekend_gross=weekend_gross,
+            week_gross=week_gross,
+            total_gross=total_gross,
+            site_average=site_average,
+            film=film,
+            distributor=distributor,
+        )
+
+    return make

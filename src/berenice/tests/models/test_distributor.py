@@ -1,8 +1,4 @@
-import pytest
-from ukbo import models
-
-
-def test_distributor(app, make_distributor):
+def test_distributor(make_distributor):
     """
     Test distributor model
 

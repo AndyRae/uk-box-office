@@ -1,8 +1,4 @@
-import pytest
-from ukbo import models
-
-
-def test_country(app, make_country):
+def test_country(make_country):
     """
     Test country model
 

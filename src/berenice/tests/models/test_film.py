@@ -1,7 +1,4 @@
-import pytest
-
-
-def test_film(app, make_film, make_distributor, make_country):
+def test_film(make_film, make_distributor, make_country):
     """
     Test film model.
 
@@ -9,21 +6,20 @@ def test_film(app, make_film, make_distributor, make_country):
 
     :param app: Flask app
     """
-    with app.app_context():
-        distributor = make_distributor()
-        country = make_country()
-        country_us = make_country(name="United States")
+    distributor = make_distributor()
+    country = make_country()
+    country_us = make_country(name="United States")
 
-        film = make_film("The Lion King", distributor, [country, country_us])
+    film = make_film("The Lion King", distributor, [country, country_us])
 
-        film_duplicate = make_film("The Lion King", distributor, [country])
-        film_alt = make_film("Clerks", distributor, [country])
+    film_duplicate = make_film("The Lion King", distributor, [country])
+    film_alt = make_film("Clerks", distributor, [country])
 
-        assert film.name == "The Lion King"
-        assert film.slug == "the-lion-king"
-        assert film.distributor == distributor
-        assert film.countries == [country, country_us]
-        assert film_alt.countries == [country]
+    assert film.name == "The Lion King"
+    assert film.slug == "the-lion-king"
+    assert film.distributor == distributor
+    assert film.countries == [country, country_us]
+    assert film_alt.countries == [country]
 
-        assert film == film_duplicate
-        assert film != film_alt
+    assert film == film_duplicate
+    assert film != film_alt
