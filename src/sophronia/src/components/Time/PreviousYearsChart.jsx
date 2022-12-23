@@ -68,7 +68,7 @@ export const PreviousYearsChart = ({ data }) => {
 		datasets: [
 			{
 				label: 'Box Office',
-				data: data.results.map((d) => d.weekend_gross),
+				data: data.results.map((d) => d.week_gross),
 				fill: true,
 				backgroundColor: ['#B65078'],
 				borderColor: ['#B65078'],
