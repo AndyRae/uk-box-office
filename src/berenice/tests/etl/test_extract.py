@@ -70,7 +70,6 @@ def test_extract_box_office(app):
         "week_gross",
     ]
     assert "SMILE" in df["film"].tolist()
-    assert "United Kingdom" in df["country"].tolist()
     assert "DISNEY" in df["distributor"].tolist()
     assert 1 in df["rank"].tolist()
     assert 643 in df["number_of_cinemas"].tolist()
