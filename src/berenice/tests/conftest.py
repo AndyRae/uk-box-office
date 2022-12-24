@@ -65,15 +65,15 @@ def make_country():
 def make_film_week():
     def make(
         date,
-        rank,
-        weeks_on_release,
-        number_of_cinemas,
-        weekend_gross,
-        week_gross,
-        total_gross,
-        site_average,
         film,
         distributor,
+        rank=1,
+        weeks_on_release=1,
+        number_of_cinemas=100,
+        weekend_gross=500,
+        week_gross=1000,
+        total_gross=1000,
+        site_average=5.0,
     ):
         return models.Film_Week(
             date=date,
