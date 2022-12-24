@@ -31,3 +31,18 @@ def test_check_file_new(
         assert etl.extract.check_file_new(future_excel_title) is True
         assert etl.extract.check_file_new(current_excel_title) is False
         assert etl.extract.check_file_new(past_excel_title) is False
+
+
+def test_check_file_new_no_film_weeks(app):
+    """
+    Test check_file_new function with no film weeks
+
+    :param app: Flask app
+    """
+    with app.app_context():
+        future_excel_title = "21 January 2022"
+        current_excel_title = "20 January 2022"
+        past_excel_title = "19 January 2021"
+        assert etl.extract.check_file_new(future_excel_title) is True
+        assert etl.extract.check_file_new(current_excel_title) is True
+        assert etl.extract.check_file_new(past_excel_title) is True
