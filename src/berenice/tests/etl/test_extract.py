@@ -46,3 +46,35 @@ def test_check_file_new_no_film_weeks(app):
         assert etl.extract.check_file_new(future_excel_title) is True
         assert etl.extract.check_file_new(current_excel_title) is True
         assert etl.extract.check_file_new(past_excel_title) is True
+
+
+def test_extract_box_office(app):
+    """
+    Test extract_box_office function
+    """
+    test_excel_path = "tests/test_data/13 November 2022.xls"
+
+    with app.app_context():
+        df = etl.extract.extract_box_office(test_excel_path)
+
+    assert df.columns.tolist() == [
+        "date",
+        "rank",
+        "film",
+        "country",
+        "weekend_gross",
+        "distributor",
+        "weeks_on_release",
+        "number_of_cinemas",
+        "total_gross",
+        "week_gross",
+    ]
+    assert "SMILE" in df["film"].tolist()
+    assert "United Kingdom" in df["country"].tolist()
+    assert "DISNEY" in df["distributor"].tolist()
+    assert 1 in df["rank"].tolist()
+    assert 643 in df["number_of_cinemas"].tolist()
+    assert 44301 in df["weekend_gross"].tolist()
+    assert 981057 in df["total_gross"].tolist()
+    assert 7 in df["weeks_on_release"].tolist()
+    assert "20221113" in df["date"].tolist()

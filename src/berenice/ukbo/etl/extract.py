@@ -82,7 +82,8 @@ def get_excel_file(soup: BeautifulSoup) -> Optional[str]:
     Args:
         soup: BeautifulSoup object of the source page.
 
-    Returns whether fetch has been succesful, and path to the file
+    Returns:
+        Path to the downloaded file.
     """
 
     page = soup.find("article")
@@ -105,20 +106,20 @@ def get_excel_file(soup: BeautifulSoup) -> Optional[str]:
     return None
 
 
-def extract_box_office(filename: str) -> pd.DataFrame:
+def extract_box_office(path: str) -> pd.DataFrame:
     """
     Extracts box office data from excel file.
 
     This is the main extract function, from raw box office .xls to dataframe.
 
     Args:
-        filename: Path to the excel file.
+        Path: Path to the excel file.
 
     Returns:
         Dataframe of box office data.
     """
 
-    df = pd.read_excel(filename)
+    df = pd.read_excel(path)
 
     header = df.iloc[0]
     df = df.iloc[1:]
@@ -127,8 +128,10 @@ def extract_box_office(filename: str) -> pd.DataFrame:
     df = df.dropna(subset=["Rank"])
     df = df.dropna(axis=1, thresh=5)
 
-    # TODO: This should really be from the filename
-    date = transform.get_last_sunday()
+    # get the filename from the path and convert to date
+    filename = path.split("/")[-1].strip(".xls")
+    date = datetime.strptime(filename, "%d %B %Y").strftime("%Y%m%d")
+
     df = df.drop(
         columns=["% change on last week", "Site average"], errors="ignore"
     )

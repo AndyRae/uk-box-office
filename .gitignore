@@ -180,7 +180,6 @@ yarn-error.log*
 
 src/data
 *.csv
-*.xls
 .DS_store
 .vscode
 .python-version
