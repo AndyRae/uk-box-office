@@ -61,7 +61,8 @@ def run_app(app: Flask) -> Flask:
 
     from ukbo.etl import tasks
 
-    scheduler.start()
+    if not app.config["TESTING"]:
+        scheduler.start()
 
     return app
 

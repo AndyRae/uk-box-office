@@ -1,13 +1,16 @@
-from ukbo import models
-
-
-def test_distributor(app):
+def test_distributor(make_distributor):
     """
     Test distributor model
 
     :param app: Flask app
     """
-    distributor = models.Distributor(name="Test Distributor")
 
-    assert distributor.name == "Test Distributor"
-    assert distributor.slug == "test-distributor"
+    fox = make_distributor()
+    disney = make_distributor(name="Disney")
+    disney_duplicate = make_distributor(name="Disney")
+
+    assert fox.name == "20th Century Fox"
+    assert fox.slug == "20th-century-fox"
+
+    assert disney != fox
+    assert disney == disney_duplicate
