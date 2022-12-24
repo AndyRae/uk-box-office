@@ -103,7 +103,7 @@ def make_film_weeks():
                 number_of_cinemas=100,
                 weekend_gross=500,
                 week_gross=1000,
-                total_gross=1000,
+                total_gross=(1000 * (i + 1)),
                 site_average=5.0,
                 film=film,
                 distributor=distributor,
