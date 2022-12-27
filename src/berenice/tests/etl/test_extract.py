@@ -80,9 +80,9 @@ def test_extract_box_office(app):
     assert "20221113" in df["date"].tolist()
 
 
-def test_get_excel_file(app):
+def test_find_excel_file(app):
     """
-    Test get_excel_file function
+    Test find_excel_file function
     """
     soup = BeautifulSoup(open("tests/test_data/source.html"), "html.parser")
 
