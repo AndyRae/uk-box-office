@@ -1,5 +1,6 @@
 import datetime
 
+from bs4 import BeautifulSoup
 from ukbo import db, etl, models
 
 
@@ -77,3 +78,16 @@ def test_extract_box_office(app):
     assert 981057 in df["total_gross"].tolist()
     assert 7 in df["weeks_on_release"].tolist()
     assert "20221113" in df["date"].tolist()
+
+
+def test_get_excel_file(app):
+    """
+    Test get_excel_file function
+    """
+    soup = BeautifulSoup(open("tests/test_data/source.html"), "html.parser")
+
+    with app.app_context():
+        excel = etl.extract.find_excel_file(soup=soup)
+    assert excel["link"] is not None
+    assert excel["link"].endswith(".xls")
+    assert excel["title"] == "13 November 2022"

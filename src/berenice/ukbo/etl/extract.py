@@ -1,6 +1,6 @@
 import urllib.request
 from datetime import datetime
-from typing import Optional
+from typing import Any, Dict, Optional, Tuple
 
 import pandas as pd
 import requests  # type: ignore
@@ -75,6 +75,28 @@ def download_excel(excel_link: str, excel_title: str) -> str:
     return file_path
 
 
+def find_excel_file(soup: BeautifulSoup) -> Dict[str, Any]:
+    """
+    Finds the first (latest) excel file on the source page.
+
+    Args:
+        soup: BeautifulSoup object of the source page.
+
+    Returns:
+        Path to the file.
+    """
+
+    page = soup.find("article")
+    # First link in the class
+    link = page.find_all("a")[0]
+    if link is not None:
+        excel_link = link.get("href")
+        excel_title = link.find("span").get_text().split("-")[-1]
+        current_app.logger.info(f"ETL fetch - Found {excel_title}.")
+        return {"link": excel_link, "title": excel_title}
+    return {"link": None, "title": None}
+
+
 def get_excel_file(soup: BeautifulSoup) -> Optional[str]:
     """
     Gets the first (latest) excel file on the source page.
@@ -85,22 +107,15 @@ def get_excel_file(soup: BeautifulSoup) -> Optional[str]:
     Returns:
         Path to the downloaded file.
     """
+    excel = find_excel_file(soup)
 
-    page = soup.find("article")
-    # First link in the class
-    link = page.find_all("a")[0]
-    if link is not None:
-        excel_link = link.get("href")
-        excel_title = link.find("span").get_text().split("-")[-1]
-        current_app.logger.info(f"ETL fetch - Found {excel_title}.")
-
-        if check_file_new(excel_title):
-            return download_excel(excel_link, excel_title)
-        else:
-            current_app.logger.warning(
-                "ETL fetch failed - website file is pending update."
-            )
-            return None
+    if excel["link"] is not None:
+        if check_file_new(excel["link"]):
+            return download_excel(excel["link"], excel["title"])
+        current_app.logger.warning(
+            "ETL fetch failed - website file is pending update."
+        )
+        return None
 
     current_app.logger.error("ETL fetch failed - couldn't download file.")
     return None
