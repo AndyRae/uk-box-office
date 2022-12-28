@@ -1,19 +1,20 @@
 import datetime
 
 import pandas as pd
+import pytest
 from flask import current_app
 from ukbo import db, etl, models
 
 
-def test_find_recent_film(
+@pytest.fixture
+def add_test_data(
     app, make_film_week, make_film, make_distributor, make_country
 ):
     """
-    Test find_recent_film function
+    Add test data to the database
     """
     with app.app_context():
 
-        #  Set up test data
         distributor = make_distributor()
         countries = [make_country()]
         film = make_film("Nope", distributor, countries)
@@ -26,16 +27,20 @@ def test_find_recent_film(
         db.session.add(film_week)
         db.session.commit()
 
-        df = pd.Series(
-            {
-                "date": "20220127",
-                "film": "Nope",
-            }
-        )
 
+def test_find_recent_film(app, add_test_data):
+    """
+    Test find_recent_film function
+    """
+    df = pd.Series(
+        {
+            "date": "20220127",
+            "film": "Nope",
+        }
+    )
+
+    with app.app_context():
         response = etl.transform.find_recent_film(df)
-
-        current_app.logger.warning(response)
 
     assert response is not None
     assert response.film.name == "Nope"
@@ -44,10 +49,93 @@ def test_find_recent_film(
     assert response.weekend_gross == 500
 
 
-# def test_get_week_box_office():
-#     """
-#     Test get_week_box_office function
-#     """
+def test_get_week_box_office(app, add_test_data):
+    """
+    Test get_week_box_office function
+    """
 
-#     df["week_gross"] = df.apply(etl.transform.get_week_box_office, axis=1)
-#     assert df is not None
+    df = pd.Series(
+        {
+            "date": "20220127",
+            "film": "Nope",
+            "weekend_gross": 500,
+            "total_gross": 3000,
+            "weeks_on_release": 3,
+        }
+    )
+
+    with app.app_context():
+        response = etl.transform.get_week_box_office(df)
+
+    assert response is not None
+    assert response == 2000
+
+
+def test_get_week_box_office_week_1(app, add_test_data):
+    """
+    Test get_week_box_office function
+    When the film is in its first week of release
+    """
+
+    df = pd.Series(
+        {
+            "date": "20220127",
+            "film": "Nope",
+            "weekend_gross": 500,
+            "total_gross": 3000,
+            "weeks_on_release": 1,
+        }
+    )
+
+    with app.app_context():
+        response = etl.transform.get_week_box_office(df)
+
+    assert response is not None
+    assert response == 3000
+
+
+def test_get_week_box_office_no_film(app, add_test_data):
+    """
+    Test get_week_box_office function
+    When the film is not in the database
+    """
+
+    df = pd.Series(
+        {
+            "date": "20220127",
+            "film": "7 Years in Tibet",
+            "weekend_gross": 500,
+            "total_gross": 3000,
+            "weeks_on_release": 3,
+        }
+    )
+
+    with app.app_context():
+        response = etl.transform.get_week_box_office(df)
+
+    assert response is not None
+    assert response == 500
+
+
+def test_get_week_box_office_errors(app, add_test_data):
+    """
+    Test get_week_box_office function
+    When there are errors in the data:
+    e.g previous week's gross is greater than total gross
+    """
+
+    df = pd.Series(
+        {
+            "date": "20220127",
+            "film": "Nope",
+            "weekend_gross": 50,
+            "total_gross": 100,
+            "weeks_on_release": 3,
+        }
+    )
+
+    with app.app_context():
+        response = etl.transform.get_week_box_office(df)
+
+    assert response is not None
+    assert response == 50
