@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 import pandas as pd
+from flask import current_app
 from ukbo import models
 
 
@@ -19,6 +20,10 @@ def find_recent_film(row: pd.Series) -> models.Film:
     days_to_look_back = 90
     filter_date = pd.to_datetime(row["date"], format="%Y%m%d", yearfirst=True)
     previous_period = filter_date - timedelta(days=days_to_look_back)
+
+    film = row["film"]
+    current_app.logger.warning(f"🎾 Film: {film}")
+    # return models.Film.query.filter_by(name=film).first()
 
     return (
         models.Film_Week.query.filter(
