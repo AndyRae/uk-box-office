@@ -2,8 +2,7 @@ import datetime
 
 import pandas as pd
 import pytest
-from flask import current_app
-from ukbo import db, etl, models
+from ukbo import db, etl
 
 
 @pytest.fixture
