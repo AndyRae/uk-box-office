@@ -1,4 +1,6 @@
-from ukbo import etl, models
+import datetime
+
+from ukbo import db, etl, models
 
 
 def test_init_db_command(runner):
@@ -67,27 +69,46 @@ def test_seed_box_office_command(app, runner):
     assert "Seeded box office data" in result.output
 
 
-def test_seed_admissions_command(app, runner):
+def test_seed_admissions_command(app, runner, make_week):
+
+    date = datetime.datetime(2022, 1, 7, 0, 0)
+    week = make_week(date=date)
+
+    with app.app_context():
+        db.session.add(week)
+        db.session.commit()
+
     result = runner.invoke(
         etl.commands.seed_admissions_command,
         ["--path", "tests/test_data/admissions.csv"],
     )
 
     with app.app_context():
-        assert len(models.Week.query.all()) == 2
+        response = models.Week.query.filter_by(date=date).first()
+        assert len(models.Week.query.all()) == 1
 
+    assert response.admissions == 100
     assert result.exit_code == 0
     assert "Seeded admissions data" in result.output
 
 
-def test_update_admissions_command(app, runner):
+def test_update_admissions_command(app, runner, make_week):
+    date = datetime.datetime(2022, 1, 7, 0, 0)
+    week = make_week(date=date)
+
+    with app.app_context():
+        db.session.add(week)
+        db.session.commit()
+
     result = runner.invoke(
         etl.commands.update_admissions_command,
-        ["--path", "tests/test_data/admissions.csv"],
+        ["--year", "2022", "--month", "1", "--admissions", "100"],
     )
 
     with app.app_context():
-        assert len(models.Week.query.all()) == 2
+        response = models.Week.query.filter_by(date=date).first()
+        assert len(models.Week.query.all()) == 1
 
+    assert response.admissions == 100
     assert result.exit_code == 0
     assert "Updated admissions data" in result.output
