@@ -22,4 +22,4 @@ jobs:
           pip install -r src/berenice/requirements.txt
       - name: Test with pytest
         run: |
-          pytest src/berenice/tests
+          cd src/berenice && pytest
