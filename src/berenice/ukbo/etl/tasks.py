@@ -117,7 +117,7 @@ def seed_films(path: str) -> None:
     print("Seeded distributors.")
 
     list_of_films = (
-        archive.groupby(["film", "distributor", "country"])
+        archive.groupby(["film", "distributor", "country"], dropna=False)
         .size()
         .reset_index()
         .rename(columns={0: "count"})
