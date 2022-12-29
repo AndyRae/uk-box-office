@@ -1,6 +1,23 @@
 import datetime
 
+import pytest
 from ukbo import db, etl, models
+
+
+@pytest.fixture
+def add_test_week(app, make_week):
+    """
+    Add test data to the database
+    """
+    with app.app_context():
+        week = make_week(
+            date=datetime.date(2022, 1, 7),
+        )
+
+        db.session.add(week)
+        db.session.commit()
+
+        return week
 
 
 def test_init_db_command(runner):
@@ -69,14 +86,8 @@ def test_seed_box_office_command(app, runner):
     assert "Seeded box office data" in result.output
 
 
-def test_seed_admissions_command(app, runner, make_week):
-
+def test_seed_admissions_command(app, runner, add_test_week):
     date = datetime.datetime(2022, 1, 7, 0, 0)
-    week = make_week(date=date)
-
-    with app.app_context():
-        db.session.add(week)
-        db.session.commit()
 
     result = runner.invoke(
         etl.commands.seed_admissions_command,
@@ -92,13 +103,8 @@ def test_seed_admissions_command(app, runner, make_week):
     assert "Seeded admissions data" in result.output
 
 
-def test_update_admissions_command(app, runner, make_week):
+def test_update_admissions_command(app, runner, add_test_week):
     date = datetime.datetime(2022, 1, 7, 0, 0)
-    week = make_week(date=date)
-
-    with app.app_context():
-        db.session.add(week)
-        db.session.commit()
 
     result = runner.invoke(
         etl.commands.update_admissions_command,
