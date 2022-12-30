@@ -1,0 +1,17 @@
+{
+  "folders": [
+    {
+      "name": "ROOT",
+      "path": "../"
+    },
+    {
+      "name": "src/berenice",
+      "path": "../src/berenice"
+    },
+    {
+      "name": "src/sophronia",
+      "path": "../src/sophronia"
+    },
+  ],
+  "settings": {}
+}

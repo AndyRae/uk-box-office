@@ -182,6 +182,5 @@ src/data
 src/berenice/data
 src/legacy/*.csv
 .DS_store
-.vscode
 .python-version
 src/berenice/data
