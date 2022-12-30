@@ -8,6 +8,7 @@ from ukbo.extensions import db
 def load_distributors(list_of_distributors: List[str]) -> None:
     """
     Loads a list of distributors into the database.
+    Will not load duplicates.
 
     Args:
         list_of_distributors: List of distributors to load.
@@ -15,8 +16,7 @@ def load_distributors(list_of_distributors: List[str]) -> None:
     Returns:
         None
     """
-
-    for distributor in list_of_distributors:
+    for distributor in set(list_of_distributors):
         distributor = str(distributor.strip())
         services.distributor.add_distributor(distributor)
         db.session.commit()
@@ -25,6 +25,7 @@ def load_distributors(list_of_distributors: List[str]) -> None:
 def load_countries(list_of_countries: List[str]) -> None:
     """
     Loads a list of countries into the database.
+    Will not load duplicates.
 
     Args:
         list_of_countries: List of countries to load.
@@ -33,7 +34,7 @@ def load_countries(list_of_countries: List[str]) -> None:
         None
     """
 
-    for country in list_of_countries:
+    for country in set(list_of_countries):
         services.country.add_country(country)
         db.session.commit()
 

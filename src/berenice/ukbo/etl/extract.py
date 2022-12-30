@@ -1,6 +1,6 @@
 import urllib.request
 from datetime import datetime
-from typing import Tuple
+from typing import Any, Dict, Optional, Tuple
 
 import pandas as pd
 import requests  # type: ignore
@@ -12,19 +12,79 @@ from ukbo.extensions import db
 from . import transform
 
 
-def get_excel_file(source_url: str) -> Tuple[bool, str]:
+def get_soup(url: str) -> BeautifulSoup:
     """
-    Gets the first (latest) excel file on the source page.
+    Gets the page soup from the url.
 
     Args:
-        source_url: URL of the source page.
+        url: URL of the page.
 
-    Returns whether fetch has been succesful, and path to the file
+    Returns:
+        BeautifulSoup object.
     """
 
-    soup = BeautifulSoup(
-        requests.get(source_url, timeout=5).content, "html.parser"
-    )
+    opener = urllib.request.build_opener()
+    opener.addheaders = [("User-agent", "Mozilla/5.0")]
+
+    return BeautifulSoup(requests.get(url, timeout=5).content, "html.parser")
+
+
+def check_file_new(excel_title: str) -> bool:
+    """
+    Checks whether this excel file is new against the database.
+
+    Args:
+        excel_title: Title of the excel file, which is the date.
+
+    Returns:
+        Whether the file is new.
+
+    """
+    excel_date = datetime.strptime(excel_title, "%d %B %Y")
+    query = db.session.query(models.Film_Week)
+    first = query.order_by(models.Film_Week.date.desc()).first()
+
+    if first is not None:
+        last_date = first.date
+
+        if excel_date <= last_date:
+            current_app.logger.warning(
+                "ETL fetch failed - website file is pending update."
+            )
+            return False
+    return True
+
+
+def download_excel(excel_link: str, excel_title: str) -> str:
+    """
+    Downloads the excel file from the link.
+
+    Args:
+        excel_link: Link to the excel file.
+        excel_title: Title of the excel file.
+
+    Returns:
+        Path to the file.
+
+    """
+    file_path = f"./data/{excel_title}.xls"
+    opener = urllib.request.build_opener()
+    opener.addheaders = [("User-agent", "Mozilla/5.0")]
+    urllib.request.install_opener(opener)
+    urllib.request.urlretrieve(excel_link, file_path)
+    return file_path
+
+
+def find_excel_file(soup: BeautifulSoup) -> Dict[str, Any]:
+    """
+    Finds the first (latest) excel file on the source page.
+
+    Args:
+        soup: BeautifulSoup object of the source page.
+
+    Returns:
+        Path to the file.
+    """
 
     page = soup.find("article")
     # First link in the class
@@ -33,44 +93,48 @@ def get_excel_file(source_url: str) -> Tuple[bool, str]:
         excel_link = link.get("href")
         excel_title = link.find("span").get_text().split("-")[-1]
         current_app.logger.info(f"ETL fetch - Found {excel_title}.")
+        return {"link": excel_link, "title": excel_title}
+    return {"link": None, "title": None}
 
-        # Checks whether this excel file is new against the database
-        excel_date = datetime.strptime(excel_title, "%d %B %Y")
-        query = db.session.query(models.Film_Week)
-        first = query.order_by(models.Film_Week.date.desc()).first()
-        if first is not None:
-            last_date = first.date
 
-            if excel_date <= last_date:
-                current_app.logger.warning(
-                    "ETL fetch failed - website file is pending update."
-                )
-                return (False, "")
+def get_excel_file(soup: BeautifulSoup) -> Optional[str]:
+    """
+    Gets the first (latest) excel file on the source page.
 
-        file_path = f"./data/{excel_title}.xls"
-        opener = urllib.request.build_opener()
-        opener.addheaders = [("User-agent", "Mozilla/5.0")]
-        urllib.request.install_opener(opener)
-        urllib.request.urlretrieve(excel_link, file_path)
-        return (True, file_path)
+    Args:
+        soup: BeautifulSoup object of the source page.
+
+    Returns:
+        Path to the downloaded file.
+    """
+    excel = find_excel_file(soup)
+
+    if excel["link"] is not None:
+        if check_file_new(excel["link"]):
+            return download_excel(excel["link"], excel["title"])
+        current_app.logger.warning(
+            "ETL fetch failed - website file is pending update."
+        )
+        return None
+
     current_app.logger.error("ETL fetch failed - couldn't download file.")
-    return (False, "")
+    return None
 
 
-def extract_box_office(filename: str) -> pd.DataFrame:
+def extract_box_office(path: str) -> pd.DataFrame:
     """
     Extracts box office data from excel file.
 
     This is the main extract function, from raw box office .xls to dataframe.
 
     Args:
-        filename: Path to the excel file.
+        Path: Path to the excel file.
 
     Returns:
         Dataframe of box office data.
     """
 
-    df = pd.read_excel(filename)
+    df = pd.read_excel(path)
 
     header = df.iloc[0]
     df = df.iloc[1:]
@@ -79,8 +143,10 @@ def extract_box_office(filename: str) -> pd.DataFrame:
     df = df.dropna(subset=["Rank"])
     df = df.dropna(axis=1, thresh=5)
 
-    # TODO: This should really be from the filename
-    date = transform.get_last_sunday()
+    # get the filename from the path and convert to date
+    filename = path.split("/")[-1].strip(".xls")
+    date = datetime.strptime(filename, "%d %B %Y").strftime("%Y%m%d")
+
     df = df.drop(
         columns=["% change on last week", "Site average"], errors="ignore"
     )

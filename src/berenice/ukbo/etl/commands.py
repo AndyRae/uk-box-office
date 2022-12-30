@@ -17,42 +17,45 @@ def init_db_command() -> None:
 
 
 @click.command("fill-db")
+@click.option("--path", help="Path to archive.csv", type=str)
 @with_appcontext
-def fill_db_command() -> None:
+def fill_db_command(path: str = "./data/archive.csv") -> None:
     """
     Seeds database with archive data.
     """
-    path = "./data/archive.csv"
     tasks.seed_db(path)
     click.echo("Filled the database.")
 
 
 @click.command("test-db")
+@click.option("--path", help="Path to test.csv", type=str)
 @with_appcontext
-def test_db_command() -> None:
+def test_db_command(path: str = "./data/test.csv") -> None:
     """
     Seeds database with test data.
     """
-    path = "./data/test.csv"
     tasks.seed_db(path)
     click.echo("Filled the database with test data.")
 
 
 @click.command("seed-films")
+@click.option("--path", help="Path to archive.csv", type=str)
 @with_appcontext
-def seed_films_command() -> None:
+def seed_films_command(path: str = "./data/archive.csv") -> None:
     """
     Seeds database with countries/distributors/films data.
     """
-    path = "./data/archive.csv"
     tasks.seed_films(path)
     click.echo("Seeded films data.")
 
 
 @click.command("seed-box-office")
 @click.option("--year", help="Year to seed", type=int)
+@click.option("--path", help="Path to archive.csv", type=str)
 @with_appcontext
-def seed_box_office_command(year: int) -> None:
+def seed_box_office_command(
+    year: int, path: str = "./data/archive.csv"
+) -> None:
     """
     Seeds database with box office data.
 
@@ -60,18 +63,17 @@ def seed_box_office_command(year: int) -> None:
         year: Year to seed.
 
     """
-    path = "./data/archive.csv"
     tasks.seed_box_office(path, year=year)
     click.echo("Seeded box office data")
 
 
 @click.command("seed-admissions")
+@click.option("--path", help="Path to admissions.csv", type=str)
 @with_appcontext
-def seed_admissions_command() -> None:
+def seed_admissions_command(path: str = "./data/admissions.csv") -> None:
     """
     Seeds database with admissions data.
     """
-    path = "./data/admissions.csv"
     tasks.seed_admissions(path)
     click.echo("Seeded admissions data")
 

@@ -43,19 +43,7 @@ def run_etl() -> None:
 
         if now >= last_date:
             load_dotenv()
-            source_url = os.environ.get("SOURCE_URL")
-            if source_url is not None:
-                path = extract.get_excel_file(source_url)
-                if path[0] is True:
-                    df = extract.extract_box_office(path[1])
-                    load.load_weeks(df)
-                    current_app.logger.info("Weekly-ETL auto run succesful.")
-                else:
-                    current_app.logger.warning("Weekly-ETL auto run failed.")
-        else:
-            current_app.logger.warning(
-                "ETL fetch failed - website file is pending update."
-            )
+            weekly_etl()
 
 
 @scheduler.task(
@@ -129,7 +117,7 @@ def seed_films(path: str) -> None:
     print("Seeded distributors.")
 
     list_of_films = (
-        archive.groupby(["film", "distributor", "country"])
+        archive.groupby(["film", "distributor", "country"], dropna=False)
         .size()
         .reset_index()
         .rename(columns={0: "count"})
@@ -192,12 +180,10 @@ def weekly_etl() -> None:
     """
     current_app.logger.info("Weekly-etl running manually")
     load_dotenv()
-    source_url = os.environ.get("SOURCE_URL")
-    if source_url is not None:
-        path = extract.get_excel_file(source_url)
-
-        if path[0] is True:
-            df = extract.extract_box_office(path[1])
+    if source_url := os.environ.get("SOURCE_URL"):
+        soup = extract.get_soup(source_url)
+        if path := extract.get_excel_file(soup):
+            df = extract.extract_box_office(path)
             load.load_weeks(df)
             current_app.logger.info("Weekly-ETL manual run succesful.")
         else:
