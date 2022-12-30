@@ -55,6 +55,7 @@ class TestConfig(Config):
     TESTING = True
     CACHE_TYPE = "NullCache"
     CACHE_NO_NULL_WARNING = True
+    CORS_ORIGIN = "*"
 
 
 # Logging config

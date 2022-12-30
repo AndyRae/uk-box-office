@@ -1,33 +1,8 @@
-import datetime
-
 import pandas as pd
-import pytest
 from ukbo import db, etl
 
 
-@pytest.fixture
-def add_test_data(
-    app, make_film_week, make_film, make_distributor, make_country
-):
-    """
-    Add test data to the database
-    """
-    with app.app_context():
-
-        distributor = make_distributor()
-        countries = [make_country()]
-        film = make_film("Nope", distributor, countries)
-        film_week = make_film_week(
-            date=datetime.date(2022, 1, 20), film=film, distributor=distributor
-        )
-
-        db.session.add(distributor)
-        db.session.add(film)
-        db.session.add(film_week)
-        db.session.commit()
-
-
-def test_find_recent_film(app, add_test_data):
+def test_find_recent_film(app, add_test_film):
     """
     Test find_recent_film function
     """
@@ -48,7 +23,7 @@ def test_find_recent_film(app, add_test_data):
     assert response.weekend_gross == 500
 
 
-def test_get_week_box_office(app, add_test_data):
+def test_get_week_box_office(app, add_test_film):
     """
     Test get_week_box_office function
     """
@@ -70,7 +45,7 @@ def test_get_week_box_office(app, add_test_data):
     assert response == 2000
 
 
-def test_get_week_box_office_week_1(app, add_test_data):
+def test_get_week_box_office_week_1(app, add_test_film):
     """
     Test get_week_box_office function
     When the film is in its first week of release
@@ -93,7 +68,7 @@ def test_get_week_box_office_week_1(app, add_test_data):
     assert response == 3000
 
 
-def test_get_week_box_office_no_film(app, add_test_data):
+def test_get_week_box_office_no_film(app, add_test_film):
     """
     Test get_week_box_office function
     When the film is not in the database
@@ -116,7 +91,7 @@ def test_get_week_box_office_no_film(app, add_test_data):
     assert response == 500
 
 
-def test_get_week_box_office_errors(app, add_test_data):
+def test_get_week_box_office_errors(app, add_test_film):
     """
     Test get_week_box_office function
     When there are errors in the data:
