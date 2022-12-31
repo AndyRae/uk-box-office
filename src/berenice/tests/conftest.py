@@ -187,3 +187,16 @@ def add_test_film(
         db.session.add(film)
         db.session.add(film_week)
         db.session.commit()
+
+
+@pytest.fixture
+def add_test_week(app, make_week):
+    """
+    Add test data to the database
+    """
+    with app.app_context():
+
+        week = make_week(date=datetime.date(2022, 1, 20))
+
+        db.session.add(week)
+        db.session.commit()
