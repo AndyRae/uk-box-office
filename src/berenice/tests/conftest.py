@@ -1,6 +1,8 @@
+import datetime
 import os
 import tempfile
 
+import flask
 import pytest
 from ukbo import create_app, models
 from ukbo.extensions import db
@@ -163,3 +165,38 @@ def make_week():
         )
 
     return make
+
+
+@pytest.fixture
+def add_test_film(
+    app, make_film_week, make_film, make_distributor, make_country
+):
+    """
+    Add test data to the database
+    """
+    with app.app_context():
+
+        distributor = make_distributor()
+        countries = [make_country()]
+        film = make_film("Nope", distributor, countries)
+        film_week = make_film_week(
+            date=datetime.date(2022, 1, 20), film=film, distributor=distributor
+        )
+
+        db.session.add(distributor)
+        db.session.add(film)
+        db.session.add(film_week)
+        db.session.commit()
+
+
+@pytest.fixture
+def add_test_week(app, make_week):
+    """
+    Add test data to the database
+    """
+    with app.app_context():
+
+        week = make_week(date=datetime.date(2022, 1, 20))
+
+        db.session.add(week)
+        db.session.commit()
