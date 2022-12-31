@@ -118,3 +118,16 @@ def test_update_admissions_command(app, runner, add_test_week):
     assert response.admissions == 100
     assert result.exit_code == 0
     assert "Updated admissions data" in result.output
+
+
+@pytest.mark.skip(reason="TODO: Fix this command, see #282")
+def test_build_archive_command(app, runner, add_test_film):
+    """
+    TODO: Fix this command, see #282
+    """
+    result = runner.invoke(
+        etl.commands.build_archive_command,
+    )
+
+    assert result.exit_code == 0
+    assert "Built archive" in result.output
