@@ -168,6 +168,15 @@ def make_week():
 
 
 @pytest.fixture
+def add_test_country(app, make_country):
+    country = make_country()
+
+    with app.app_context():
+        db.session.add(country)
+        db.session.commit()
+
+
+@pytest.fixture
 def add_test_film(
     app, make_film_week, make_film, make_distributor, make_country
 ):
