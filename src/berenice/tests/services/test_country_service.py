@@ -1,7 +1,6 @@
 import json
 
-import pytest
-from ukbo import db, models, services
+from ukbo import services
 
 
 def test_list(app, add_test_country):

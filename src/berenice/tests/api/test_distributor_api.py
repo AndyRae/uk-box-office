@@ -4,15 +4,6 @@ import pytest
 from ukbo import db, models
 
 
-@pytest.fixture
-def add_test_distributor(app, make_distributor):
-    distributor = make_distributor()
-
-    with app.app_context():
-        db.session.add(distributor)
-        db.session.commit()
-
-
 def test_all_distributors(app, client, add_test_distributor):
     with app.app_context():
         response = client.get("/api/distributor/")

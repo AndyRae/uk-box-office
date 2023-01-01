@@ -177,6 +177,15 @@ def add_test_country(app, make_country):
 
 
 @pytest.fixture
+def add_test_distributor(app, make_distributor):
+    distributor = make_distributor()
+
+    with app.app_context():
+        db.session.add(distributor)
+        db.session.commit()
+
+
+@pytest.fixture
 def add_test_film(
     app, make_film_week, make_film, make_distributor, make_country
 ):
