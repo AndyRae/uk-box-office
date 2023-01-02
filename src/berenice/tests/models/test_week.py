@@ -3,7 +3,10 @@ import datetime
 
 def test_week(make_week):
     """
-    Test week model
+    Test week model creation.
+
+    Args:
+        :param make_week: Fixture to create a week
     """
     week = make_week(datetime.date(2019, 7, 6))
 

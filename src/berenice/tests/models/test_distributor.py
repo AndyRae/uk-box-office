@@ -1,8 +1,9 @@
 def test_distributor(make_distributor):
     """
-    Test distributor model
+    Test distributor model creation.
 
-    :param app: Flask app
+    Args:
+        :param app: Flask app
     """
 
     fox = make_distributor()

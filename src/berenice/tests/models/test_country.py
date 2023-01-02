@@ -1,8 +1,9 @@
 def test_country(make_country):
     """
-    Test country model
+    Test country model creation.
 
-    :param app: Flask app
+    Args:
+        :param app: Flask app
     """
 
     uk = make_country()

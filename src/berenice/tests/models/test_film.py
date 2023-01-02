@@ -1,10 +1,13 @@
 def test_film(make_film, make_distributor, make_country):
     """
-    Test film model.
+    Test film model creation.
 
     A film matches another film if they have the same name and distributor.
 
-    :param app: Flask app
+    Args:
+        :param make_film: Fixture to create a film
+        :param make_distributor: Fixture to create a distributor
+        :param make_country: Fixture to create a country
     """
     distributor = make_distributor()
     country = make_country()

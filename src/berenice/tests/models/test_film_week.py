@@ -3,9 +3,13 @@ import datetime
 
 def test_film_week(make_film, make_distributor, make_country, make_film_week):
     """
-    Test film week model
+    Test film week model creation.
 
-    :param app: Flask app
+    Args:
+        :param make_film: Fixture to create a film
+        :param make_distributor: Fixture to create a distributor
+        :param make_country: Fixture to create a country
+        :param make_film_week: Fixture to create a film week
     """
 
     distributor = make_distributor()
@@ -44,6 +48,12 @@ def test_film_weeks(
 ):
     """
     Test multiple film weeks
+
+    Args:
+        :param make_film: Fixture to create a film
+        :param make_distributor: Fixture to create a distributor
+        :param make_country: Fixture to create a country
+        :param make_film_weeks: Fixture to create multiple film weeks
     """
 
     distributor = make_distributor()
