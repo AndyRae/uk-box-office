@@ -218,3 +218,19 @@ def add_test_week(app, make_week):
 
         db.session.add(week)
         db.session.commit()
+
+
+@pytest.fixture
+def add_test_weeks(app, make_week):
+    """
+    Add test data to the database
+    """
+    with app.app_context():
+
+        weeks = []
+        for i in range(10):
+            week = make_week(date=datetime.date(2022, 1, i + 1))
+            weeks.append(week)
+
+        db.session.add_all(weeks)
+        db.session.commit()
