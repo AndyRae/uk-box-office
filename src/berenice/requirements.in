@@ -17,6 +17,7 @@ pre-commit
 prophet
 psycopg2-binary
 pytest
+pytest-cov
 python-dotenv
 python-slugify
 requests

@@ -168,6 +168,24 @@ def make_week():
 
 
 @pytest.fixture
+def add_test_country(app, make_country):
+    country = make_country()
+
+    with app.app_context():
+        db.session.add(country)
+        db.session.commit()
+
+
+@pytest.fixture
+def add_test_distributor(app, make_distributor):
+    distributor = make_distributor()
+
+    with app.app_context():
+        db.session.add(distributor)
+        db.session.commit()
+
+
+@pytest.fixture
 def add_test_film(
     app, make_film_week, make_film, make_distributor, make_country
 ):
@@ -199,4 +217,20 @@ def add_test_week(app, make_week):
         week = make_week(date=datetime.date(2022, 1, 20))
 
         db.session.add(week)
+        db.session.commit()
+
+
+@pytest.fixture
+def add_test_weeks(app, make_week):
+    """
+    Add test data to the database
+    """
+    with app.app_context():
+
+        weeks = []
+        for i in range(10):
+            week = make_week(date=datetime.date(2022, 1, i + 1))
+            weeks.append(week)
+
+        db.session.add_all(weeks)
         db.session.commit()
