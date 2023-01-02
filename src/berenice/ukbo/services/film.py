@@ -8,7 +8,7 @@ from ukbo.dto import FilmSchema, FilmSchemaStrict
 from ukbo.extensions import db
 
 
-def list(page: int, limit: int = 100) -> Response:
+def list(page: int = 1, limit: int = 100) -> Response:
     """
     Paginated list of all films.
 
@@ -97,7 +97,7 @@ def add_film(
     return new
 
 
-def delete_film(id: int) -> None:
+def delete_film(id: int) -> bool:
     """
     Delete a film and all its associated data.
 
@@ -111,8 +111,14 @@ def delete_film(id: int) -> None:
     data = query.first()
     if data is None:
         abort(404)
-    data.delete()
-    db.session.commit()
+    try:
+        data.delete()
+        db.session.commit()
+        return True
+    except Exception:
+        print(f"Failed to delete {data.name}")
+        db.session.rollback()
+        return False
 
 
 def search(search_query: str) -> Response:

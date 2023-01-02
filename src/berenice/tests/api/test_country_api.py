@@ -1,17 +1,5 @@
 import json
 
-import pytest
-from ukbo import db, models
-
-
-@pytest.fixture
-def add_test_country(app, make_country):
-    country = make_country()
-
-    with app.app_context():
-        db.session.add(country)
-        db.session.commit()
-
 
 def test_all_countries(app, client, add_test_country):
     with app.app_context():
