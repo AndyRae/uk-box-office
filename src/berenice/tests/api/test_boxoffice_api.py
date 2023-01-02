@@ -5,6 +5,14 @@ from ukbo import etl
 
 
 def test_all_boxoffice(app, client, add_test_film):
+    """
+    Test the boxoffice/all endpoint.
+
+    Args:
+        :param app: Flask app
+        :param client: Flask test client
+        :param add_test_film: Fixture to add a test film
+    """
     with app.app_context():
         response = client.get("/api/boxoffice/all")
         data = json.loads(response.data)
@@ -19,7 +27,15 @@ def test_all_boxoffice(app, client, add_test_film):
         assert data["results"][0]["number_of_cinemas"] == 100
 
 
-def test_filtered_boxoffice(app, client, add_test_film):
+def test_filtered__all_boxoffice(app, client, add_test_film):
+    """
+    Test the boxoffice/all endpoint with a date filter.
+
+    Args:
+        :param app: Flask app
+        :param client: Flask test client
+        :param add_test_film: Fixture to add a test film
+    """
     with app.app_context():
         response = client.get(
             "/api/boxoffice/all?start=2022-1-19&end=2022-1-21"
@@ -37,6 +53,14 @@ def test_filtered_boxoffice(app, client, add_test_film):
 
 
 def test_filtered_boxoffice_empty(app, client, add_test_film):
+    """
+    Test the boxoffice/all endpoint with a date filter that returns no results.
+
+    Args:
+        :param app: Flask app
+        :param client: Flask test client
+        :param add_test_film: Fixture to add a test film
+    """
     with app.app_context():
         response = client.get(
             "/api/boxoffice/all?start=2022-1-21&end=2022-1-22"
@@ -47,6 +71,14 @@ def test_filtered_boxoffice_empty(app, client, add_test_film):
 
 
 def test_top_films(app, client, add_test_film):
+    """
+    Test the boxoffice/topfilms endpoint.
+
+    Args:
+        :param app: Flask app
+        :param client: Flask test client
+        :param add_test_film: Fixture to add a test film
+    """
     with app.app_context():
         response = client.get("/api/boxoffice/topfilms")
         data = json.loads(response.data)
@@ -72,6 +104,14 @@ def test_top_films(app, client, add_test_film):
 
 
 def test_summary(app, client, add_test_week):
+    """
+    Test the boxoffice/summary endpoint.
+
+    Args:
+        :param app: Flask app
+        :param client: Flask test client
+        :param add_test_week: Fixture to add a test week
+    """
     with app.app_context():
         response = client.get(
             "/api/boxoffice/summary?start=2022-1-19&end=2022-1-20&limit=1"
@@ -86,6 +126,13 @@ def test_summary(app, client, add_test_week):
 
 
 def test_summary_empty(app, client):
+    """
+    Test the boxoffice/summary endpoint with a date filter that returns no results.
+
+    Args:
+        :param app: Flask app
+        :param client: Flask test client
+    """
     with app.app_context():
         response = client.get(
             "/api/boxoffice/summary?start=2022-1-21&end=2022-1-22&limit=1"
@@ -96,6 +143,14 @@ def test_summary_empty(app, client):
 
 
 def test_previous(app, client, add_test_week):
+    """
+    Test the boxoffice/previous endpoint.
+
+    Args:
+        :param app: Flask app
+        :param client: Flask test client
+        :param add_test_week: Fixture to add a test week
+    """
     with app.app_context():
         response = client.get(
             "/api/boxoffice/previous?start=2023-1-19&end=2023-1-20&limit=1"
@@ -110,6 +165,13 @@ def test_previous(app, client, add_test_week):
 
 
 def test_previous_empty(app, client):
+    """
+    Test the boxoffice/previous endpoint with a date filter that returns no results.
+
+    Args:
+        :param app: Flask app
+        :param client: Flask test client
+    """
     with app.app_context():
         response = client.get(
             "/api/boxoffice/previous?start=2022-1-21&end=2022-1-22&limit=1"
@@ -120,6 +182,14 @@ def test_previous_empty(app, client):
 
 
 def test_topline(app, client, add_test_week):
+    """
+    Test the boxoffice/topline endpoint.
+
+    Args:
+        :param app: Flask app
+        :param client: Flask test client
+        :param add_test_week: Fixture to add a test week
+    """
     with app.app_context():
         response = client.get(
             "/api/boxoffice/topline?start=2022-1-19&end=2022-1-20&limit=1"
@@ -136,6 +206,13 @@ def test_topline(app, client, add_test_week):
 
 
 def test_topline_empty(app, client):
+    """
+    Test the boxoffice/topline endpoint with a date filter that returns no results.
+
+    Args:
+        :param app: Flask app
+        :param client: Flask test client
+    """
     with app.app_context():
         response = client.get(
             "/api/boxoffice/topline?start=2022-1-21&end=2022-1-22&limit=1"
@@ -148,7 +225,14 @@ def test_topline_empty(app, client):
 @pytest.mark.skip("This test is failing on CI")
 def test_archive(app, runner, client, add_test_film):
     """
+    Test the boxoffice/archive endpoint.
     TODO: Fix this command, see #282
+
+    Args:
+        :param app: Flask app
+        :param runner: Flask test runner
+        :param client: Flask test client
+        :param add_test_film: Fixture to add a test film
     """
     with app.app_context():
         result = runner.invoke(etl.commands.build_archive_command)

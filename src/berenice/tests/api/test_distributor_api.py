@@ -5,6 +5,14 @@ from ukbo import db, models
 
 
 def test_all_distributors(app, client, add_test_distributor):
+    """
+    Test the distributor/all endpoint.
+
+    Args:
+        :param app: Flask app
+        :param client: Flask test client
+        :param add_test_distributor: Fixture to add a test distributor
+    """
     with app.app_context():
         response = client.get("/api/distributor/")
 
@@ -12,7 +20,15 @@ def test_all_distributors(app, client, add_test_distributor):
         assert b"20th Century Fox" in response.data
 
 
-def test_single_distributor(app, client, add_test_distributor):
+def test_get_distributor(app, client, add_test_distributor):
+    """
+    Test the distributor/get endpoint.
+
+    Args:
+        :param app: Flask app
+        :param client: Flask test client
+        :param add_test_distributor: Fixture to add a test distributor
+    """
     with app.app_context():
         response = client.get("/api/distributor/20th-century-fox")
         data = json.loads(response.data)
@@ -22,13 +38,28 @@ def test_single_distributor(app, client, add_test_distributor):
         assert data.get("slug") == "20th-century-fox"
 
 
-def test_single_distributor_not_found(app, client):
+def test_get_distributor_not_found(app, client):
+    """
+    Test the distributor/get endpoint with a distributor that doesn't exist.
+
+    Args:
+        :param app: Flask app
+        :param client: Flask test client
+    """
     with app.app_context():
         response = client.get("/api/distributor/20th-century-fox")
         assert response.status_code == 404
 
 
 def test_distributor_films(app, client, add_test_film):
+    """
+    Test the distributor/films endpoint.
+
+    Args:
+        :param app: Flask app
+        :param client: Flask test client
+        :param add_test_film: Fixture to add a test film
+    """
     with app.app_context():
         response = client.get("/api/distributor/20th-century-fox/films")
         data = json.loads(response.data)
@@ -41,6 +72,13 @@ def test_distributor_films(app, client, add_test_film):
 
 
 def test_distributor_films_not_found(app, client):
+    """
+    Test the distributor/films endpoint with a distributor that doesn't exist.
+
+    Args:
+        :param app: Flask app
+        :param client: Flask test client
+    """
     with app.app_context():
         response = client.get("/api/distributor/20th-century-fox/films")
         assert response.status_code == 200
@@ -48,6 +86,14 @@ def test_distributor_films_not_found(app, client):
 
 
 def test_market_share(app, client, add_test_film):
+    """
+    Test the distributor/marketshare endpoint.
+
+    Args:
+        :param app: Flask app
+        :param client: Flask test client
+        :param add_test_film: Fixture to add a test film
+    """
     with app.app_context():
         response = client.get("/api/distributor/marketshare")
         data = json.loads(response.data)
@@ -60,6 +106,13 @@ def test_market_share(app, client, add_test_film):
 
 
 def test_market_share_not_found(app, client):
+    """
+    Test the distributor/marketshare endpoint with a distributor that doesn't exist.
+
+    Args:
+        :param app: Flask app
+        :param client: Flask test client
+    """
     with app.app_context():
         response = client.get("/api/distributor/marketshare")
         assert response.status_code == 200
@@ -67,6 +120,14 @@ def test_market_share_not_found(app, client):
 
 
 def test_market_share_by_year(app, client, add_test_film):
+    """
+    Test the distributor/marketshare endpoint with a year.
+
+    Args:
+        :param app: Flask app
+        :param client: Flask test client
+        :param add_test_film: Fixture to add a test film
+    """
     with app.app_context():
         response = client.get("/api/distributor/marketshare/2022")
         data = json.loads(response.data)
