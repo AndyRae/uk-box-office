@@ -47,6 +47,8 @@ def test_get(app, add_test_film):
                     "date": "2022-01-20",
                     "film": "Nope",
                     "film_slug": "nope",
+                    "distributor": "20th Century Fox",
+                    "distributor_slug": "20th-century-fox",
                     "id": 1,
                     "week_gross": 1000,
                     "weekend_gross": 500,

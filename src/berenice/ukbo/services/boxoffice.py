@@ -185,7 +185,6 @@ def previous(start: str, end: str) -> Response:
         if start is not None:
             s = to_date(start)
             s = s.replace(year=(s.year - 1))
-            print(s)
             query = query.filter(models.Week.date >= s)
 
         if end is not None:
