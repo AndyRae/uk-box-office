@@ -4,7 +4,11 @@ from ukbo import db, etl
 
 def test_find_recent_film(app, add_test_film):
     """
-    Test find_recent_film function
+    Test find_recent_film function with a film that exists.
+
+    Args:
+        app: Flask app
+        add_test_film: Fixture to add a test film
     """
     df = pd.Series(
         {
@@ -25,7 +29,11 @@ def test_find_recent_film(app, add_test_film):
 
 def test_get_week_box_office(app, add_test_film):
     """
-    Test get_week_box_office function
+    Test get_week_box_office function with a film that exists.
+
+    Args:
+        app: Flask app
+        add_test_film: Fixture to add a test film
     """
 
     df = pd.Series(
@@ -47,8 +55,11 @@ def test_get_week_box_office(app, add_test_film):
 
 def test_get_week_box_office_week_1(app, add_test_film):
     """
-    Test get_week_box_office function
-    When the film is in its first week of release
+    Test get_week_box_office function when the film is in its first week of release.
+
+    Args:
+        app: Flask app
+        add_test_film: Fixture to add a test film
     """
 
     df = pd.Series(
@@ -70,8 +81,11 @@ def test_get_week_box_office_week_1(app, add_test_film):
 
 def test_get_week_box_office_no_film(app, add_test_film):
     """
-    Test get_week_box_office function
-    When the film is not in the database
+    Test get_week_box_office function when the film is not in the database.
+
+    Args:
+        app: Flask app
+        add_test_film: Fixture to add a test film
     """
 
     df = pd.Series(
@@ -93,9 +107,12 @@ def test_get_week_box_office_no_film(app, add_test_film):
 
 def test_get_week_box_office_errors(app, add_test_film):
     """
-    Test get_week_box_office function
-    When there are errors in the data:
-    e.g previous week's gross is greater than total gross
+    Test get_week_box_office function when there are errors in the data.
+    For example when the previous week's gross is greater than total gross
+
+    Args:
+        app: Flask app
+        add_test_film: Fixture to add a test film
     """
 
     df = pd.Series(

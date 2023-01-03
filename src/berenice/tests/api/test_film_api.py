@@ -2,6 +2,14 @@ import json
 
 
 def test_all_films(app, client, add_test_film):
+    """
+    Test the film/all endpoint.
+
+    Args:
+        app: Flask app
+        client: Flask test client
+        add_test_film: Fixture to add a test film
+    """
     with app.app_context():
         response = client.get("/api/film/")
 
@@ -10,6 +18,14 @@ def test_all_films(app, client, add_test_film):
 
 
 def test_single_film(app, client, add_test_film):
+    """
+    Test the film/get endpoint.
+
+    Args:
+        app: Flask app
+        client: Flask test client
+        add_test_film: Fixture to add a test film
+    """
     with app.app_context():
         response = client.get("/api/film/nope")
         data = json.loads(response.data)
@@ -35,6 +51,13 @@ def test_single_film(app, client, add_test_film):
 
 
 def test_single_film_not_found(app, client):
+    """
+    Test the film/get endpoint with a film that doesn't exist.
+
+    Args:
+        app: Flask app
+        client: Flask test client
+    """
     with app.app_context():
         response = client.get("/api/film/nope")
         assert response.status_code == 404

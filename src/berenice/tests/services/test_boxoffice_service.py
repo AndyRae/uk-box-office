@@ -6,6 +6,13 @@ from ukbo import services
 
 
 def test_all(app, add_test_film):
+    """
+    Test that the all() method returns the correct data.
+
+    Args:
+        app: The Flask application
+        add_test_film: Fixture to add a test film to the database
+    """
     with app.app_context():
         response = services.boxoffice.all()
 
@@ -29,6 +36,13 @@ def test_all(app, add_test_film):
 
 
 def test_all_filtered(app, add_test_film):
+    """
+    Test that the all() method returns the correct data when filtered.
+
+    Args:
+        app: The Flask application
+        add_test_film: Fixture to add a test film to the database
+    """
     with app.app_context():
         response = services.boxoffice.all(start="2022-01-20", end="2022-01-21")
 
@@ -52,6 +66,13 @@ def test_all_filtered(app, add_test_film):
 
 
 def test_all_filtered_empty(app, add_test_film):
+    """
+    Test that the all() method returns the empty when filtered with no results.
+
+    Args:
+        app: The Flask application
+        add_test_film: Fixture to add a test film to the database
+    """
     with app.app_context():
         response = services.boxoffice.all(start="2022-01-21", end="2022-01-22")
 
@@ -64,6 +85,13 @@ def test_all_filtered_empty(app, add_test_film):
 
 
 def test_topfilms(app, add_test_film):
+    """
+    Test that the topfilms() method returns the correct data.
+
+    Args:
+        app: The Flask application
+        add_test_film: Fixture to add a test film to the database
+    """
     with app.app_context():
         response = services.boxoffice.topfilms()
 
@@ -81,6 +109,13 @@ def test_topfilms(app, add_test_film):
 
 
 def test_summary(app, add_test_week):
+    """
+    Test that the summary() method returns the correct data.
+
+    Args:
+        app: The Flask application
+        add_test_week: Fixture to add a test week to the database
+    """
     with app.app_context():
         response = services.boxoffice.summary("2022-01-19", "2022-01-21", 1)
 
@@ -94,6 +129,14 @@ def test_summary(app, add_test_week):
 
 
 def test_summary_single_week(app, add_test_week):
+    """
+    Test that the summary() method returns the correct data when only a single
+    week is requested.
+
+    Args:
+        app: The Flask application
+        add_test_week: Fixture to add a test week to the database
+    """
     with app.app_context():
         response = services.boxoffice.summary("2022-01-20", "2022-01-20", 1)
 
@@ -107,6 +150,14 @@ def test_summary_single_week(app, add_test_week):
 
 
 def test_summary_empty(app, add_test_week):
+    """
+    Test that the summary() method returns the correct data when no results are
+    found.
+
+    Args:
+        app: The Flask application
+        add_test_week: Fixture to add a test week to the database
+    """
     with app.app_context():
         response = services.boxoffice.summary("2022-01-21", "2022-01-22", 1)
 
@@ -116,6 +167,13 @@ def test_summary_empty(app, add_test_week):
 
 
 def test_previous(app, add_test_week):
+    """
+    Test that the previous() method returns the correct data.
+
+    Args:
+        app: The Flask application
+        add_test_week: Fixture to add a test week to the database
+    """
     with app.app_context():
         response = services.boxoffice.previous("2023-01-19", "2023-01-21")
 
@@ -129,6 +187,14 @@ def test_previous(app, add_test_week):
 
 
 def test_previous_single_week(app, add_test_week):
+    """
+    Test that the previous() method returns the correct data when only a single
+    week is requested.
+
+    Args:
+        app: The Flask application
+        add_test_week: Fixture to add a test week to the database
+    """
     with app.app_context():
         response = services.boxoffice.previous("2023-01-20", "2023-01-20")
 
@@ -142,6 +208,14 @@ def test_previous_single_week(app, add_test_week):
 
 
 def test_previous_empty(app, add_test_week):
+    """
+    Test that the previous() method returns the correct data when no results are
+    found.
+
+    Args:
+        app: The Flask application
+        add_test_week: Fixture to add a test week to the database
+    """
     with app.app_context():
         response = services.boxoffice.previous("2022-01-10", "2022-01-17")
 
@@ -151,6 +225,13 @@ def test_previous_empty(app, add_test_week):
 
 
 def test_topline(app, add_test_week):
+    """
+    Test that the topline() method returns the correct data.
+
+    Args:
+        app: The Flask application
+        add_test_week: Fixture to add a test week to the database
+    """
     with app.app_context():
         response = services.boxoffice.topline("2022-01-19", "2022-01-21")
 
@@ -166,6 +247,14 @@ def test_topline(app, add_test_week):
 
 
 def test_topline_empty(app, add_test_week):
+    """
+    Test that the topline() method returns the correct data when no results are
+    found.
+
+    Args:
+        app: The Flask application
+        add_test_week: Fixture to add a test week to the database
+    """
     with app.app_context():
         response = services.boxoffice.topline("2022-01-21", "2022-01-22")
 
@@ -177,7 +266,12 @@ def test_topline_empty(app, add_test_week):
 @pytest.mark.skip(reason="Fix the build archive function")
 def test_build_archive(app, add_test_week):
     """
+    Test that the build_archive() method returns the correct data.
     TODO: Fix the build archive function.
+
+    Args:
+        app: The Flask application
+        add_test_week: Fixture to add a test week to the database
     """
     with app.app_context():
         response = services.boxoffice.build_archive()
@@ -208,5 +302,8 @@ def test_build_archive(app, add_test_week):
 
 
 def test_to_date():
+    """
+    Test that the to_date() method converts a string to a datetime object.
+    """
     response = services.boxoffice.to_date("2022-01-19")
     assert response == datetime.datetime(2022, 1, 19)

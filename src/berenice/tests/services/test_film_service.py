@@ -5,6 +5,13 @@ from ukbo import db, models, services
 
 
 def test_list(app, add_test_film):
+    """
+    Test that the list() method returns the correct data.
+
+    Args:
+        app: The Flask application
+        add_test_film: Fixture to add a test film to the database
+    """
     with app.app_context():
 
         response = services.film.list()
@@ -22,6 +29,13 @@ def test_list(app, add_test_film):
 
 
 def test_get(app, add_test_film):
+    """
+    Test that the get() method returns the correct data.
+
+    Args:
+        app: The Flask application
+        add_test_film: Fixture to add a test film to the database.
+    """
     with app.app_context():
 
         response = services.film.get("nope")
@@ -63,8 +77,17 @@ def test_get(app, add_test_film):
 
 
 def test_add_film(app, add_test_distributor, add_test_country):
+    """
+    Test that the add_film() method adds a film to the database.
+
+    Args:
+        app: The Flask application
+        add_test_distributor: Fixture to add a test distributor to the database.
+        add_test_country: Fixture to add a test country to the database.
+    """
     with app.app_context():
 
+        # Get the distributor and country from the database.
         distributor = (
             db.session.query(models.Distributor)
             .filter_by(slug="20th-century-fox")
@@ -91,6 +114,14 @@ def test_add_film(app, add_test_distributor, add_test_country):
 
 
 def test_delete_film(app, add_test_distributor, add_test_country):
+    """
+    Test that the delete_film() method deletes a film from the database.
+
+    Args:
+        app: The Flask application
+        add_test_distributor: Fixture to add a test distributor to the database.
+        add_test_country: Fixture to add a test country to the database.
+    """
     with app.app_context():
 
         distributor = (
@@ -122,6 +153,13 @@ def test_delete_film(app, add_test_distributor, add_test_country):
 
 
 def test_search(app, add_test_film):
+    """
+    Test that the search() method returns the correct data.
+
+    Args:
+        app: The Flask application
+        add_test_film: Fixture to add a test film to the database.
+    """
     with app.app_context():
 
         response = services.film.search("Nope")
@@ -134,6 +172,13 @@ def test_search(app, add_test_film):
 
 
 def test_search_with_no_results(app, add_test_film):
+    """
+    Test that the search() method returns an empty list when no results are found.
+
+    Args:
+        app: The Flask application
+        add_test_film: Fixture to add a test film to the database.
+    """
     with app.app_context():
 
         response = services.film.search("Nope2")

@@ -4,6 +4,11 @@ import json
 def test_search_film(app, client, add_test_film):
     """
     Test search endpoint.
+
+    Args:
+        app: Flask app
+        client: Flask test client
+        add_test_film: Fixture to add a test film
     """
     result = client.get("/api/search?q=nope")
     assert result.status_code == 200
@@ -15,7 +20,12 @@ def test_search_film(app, client, add_test_film):
 
 def test_search_distributor(app, client, add_test_film):
     """
-    Test search endpoint.
+    Test search endpoint for distributors.
+
+    Args:
+        app: Flask app
+        client: Flask test client
+        add_test_film: Fixture to add a test film
     """
     result = client.get("/api/search?q=20th")
     assert result.status_code == 200
@@ -26,7 +36,12 @@ def test_search_distributor(app, client, add_test_film):
 
 def test_search_country(app, client, add_test_film):
     """
-    Test search endpoint.
+    Test search endpoint for countries.
+
+    Args:
+        app: Flask app
+        client: Flask test client
+        add_test_film: Fixture to add a test film
     """
     result = client.get("/api/search?q=united")
     assert result.status_code == 200
@@ -37,7 +52,11 @@ def test_search_country(app, client, add_test_film):
 
 def test_search_empty(app, client):
     """
-    Test search endpoint.
+    Test search endpoint for empty results.
+
+    Args:
+        app: Flask app
+        client: Flask test client
     """
     result = client.get("/api/search?q=notfound")
     assert result.status_code == 200
