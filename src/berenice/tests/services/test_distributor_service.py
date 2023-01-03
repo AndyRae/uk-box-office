@@ -4,6 +4,13 @@ from ukbo import services
 
 
 def test_list(app, add_test_distributor):
+    """
+    Test that the list() method returns the correct data.
+
+    Args:
+        app: The Flask application
+        add_test_distributor: Fixture to add a test distributor to the database
+    """
     with app.app_context():
 
         response = services.distributor.list()
@@ -17,6 +24,13 @@ def test_list(app, add_test_distributor):
 
 
 def test_get(app, add_test_distributor):
+    """
+    Test that the get() method returns the correct data.
+
+    Args:
+        app: The Flask application
+        add_test_distributor: Fixture to add a test distributor to the database.
+    """
     with app.app_context():
 
         response = services.distributor.get("20th-century-fox")
@@ -28,6 +42,14 @@ def test_get(app, add_test_distributor):
 
 
 def test_get_films(app, add_test_film):
+    """
+    Test that the get_films() method returns the correct data including the
+    distributor its films.
+
+    Args:
+        app: The Flask application
+        add_test_film: Fixture to add a test film to the database
+    """
     with app.app_context():
 
         response = services.distributor.get_films("20th-century-fox")
@@ -45,6 +67,12 @@ def test_get_films(app, add_test_film):
 
 
 def test_add_distributor(app):
+    """
+    Test that the add_distributor() method adds a distributor to the database.
+
+    Args:
+        app: The Flask application
+    """
     with app.app_context():
 
         response = services.distributor.add_distributor("20th Century Fox")
@@ -59,6 +87,13 @@ def test_add_distributor(app):
 
 
 def test_search(app, add_test_distributor):
+    """
+    Test that the search() method returns the correct data.
+
+    Args:
+        app: The Flask application
+        add_test_distributor: Fixture to add a test distributor to the database
+    """
     with app.app_context():
 
         response = services.distributor.search("Fox")
@@ -72,6 +107,13 @@ def test_search(app, add_test_distributor):
 
 
 def test_market_share(app, add_test_film):
+    """
+    Test that the market_share() method returns the correct data.
+
+    Args:
+        app: The Flask application
+        add_test_film: Fixture to add a test film to the database
+    """
     with app.app_context():
 
         response = services.distributor.market_share()
@@ -83,6 +125,13 @@ def test_market_share(app, add_test_film):
 
 
 def test_market_share_by_year(app, add_test_film):
+    """
+    Test that the market_share() method returns the correct data.
+
+    Args:
+        app: The Flask application
+        add_test_film: Fixture to add a test film to the database
+    """
     with app.app_context():
 
         response = services.distributor.market_share(2022)

@@ -10,6 +10,13 @@ from ukbo.extensions import db
 
 @pytest.fixture
 def app():
+    """
+    This fixture creates a temporary database and returns a Flask application
+    with the database initialised.
+
+    Returns:
+        Flask application
+    """
     db_fd, db_path = tempfile.mkstemp()
 
     app = create_app(
@@ -29,16 +36,35 @@ def app():
 
 @pytest.fixture
 def client(app):
+    """
+    This fixture returns a Flask test client.
+
+    Args:
+        app: The Flask application
+    """
     return app.test_client()
 
 
 @pytest.fixture
 def runner(app):
+    """
+    This fixture returns a Flask test CLI runner.
+
+    Args:
+        app: The Flask application
+    """
     return app.test_cli_runner()
 
 
 @pytest.fixture
 def make_film():
+    """
+    Fixture returns a function to create a film.
+
+    Returns:
+        Function to create a film
+    """
+
     def make(name, distributor, countries):
         return models.Film(
             name=name, distributor=distributor, countries=countries
@@ -49,6 +75,13 @@ def make_film():
 
 @pytest.fixture
 def make_distributor():
+    """
+    Fixture to create a distributor.
+
+    Returns:
+        Function to create a distributor
+    """
+
     def make(name: str = "20th Century Fox"):
         return models.Distributor(name=name)
 
@@ -57,6 +90,13 @@ def make_distributor():
 
 @pytest.fixture
 def make_country():
+    """
+    Fixture to create a country.
+
+    Returns:
+        Function to create a country
+    """
+
     def make(name: str = "United Kingdom"):
         return models.Country(name=name)
 
@@ -65,6 +105,13 @@ def make_country():
 
 @pytest.fixture
 def make_film_week():
+    """
+    Fixture to create a film week.
+
+    Returns:
+        Function to create a film week
+    """
+
     def make(
         date,
         film,
@@ -95,6 +142,13 @@ def make_film_week():
 
 @pytest.fixture
 def make_film_weeks():
+    """
+    Fixture to create a list of film weeks.
+
+    Returns:
+        Function to create a list of film weeks
+    """
+
     def make(film, distributor, number_of_weeks):
         film_weeks = []
         for i in range(number_of_weeks):
@@ -118,6 +172,13 @@ def make_film_weeks():
 
 @pytest.fixture
 def make_film_weeks_with_gaps():
+    """
+    Fixture to create a list of film weeks with gaps.
+
+    Returns:
+        Function to create a list of film weeks with gaps
+    """
+
     def make(film, distributor, number_of_weeks):
         film_weeks = []
         for i in range(number_of_weeks):
@@ -141,6 +202,13 @@ def make_film_weeks_with_gaps():
 
 @pytest.fixture
 def make_week():
+    """
+    Fixture to create a week.
+
+    Returns:
+        Function to create a week
+    """
+
     def make(
         date,
         number_of_cinemas=700,
@@ -169,6 +237,13 @@ def make_week():
 
 @pytest.fixture
 def add_test_country(app, make_country):
+    """
+    Fixture to add a country to the database.
+
+    Args:
+        app: The Flask application
+        make_country: The country fixture
+    """
     country = make_country()
 
     with app.app_context():
@@ -178,6 +253,13 @@ def add_test_country(app, make_country):
 
 @pytest.fixture
 def add_test_distributor(app, make_distributor):
+    """
+    Fixture to add a distributor to the database.
+
+    Args:
+        app: The Flask application
+        make_distributor: The distributor fixture
+    """
     distributor = make_distributor()
 
     with app.app_context():
@@ -190,7 +272,15 @@ def add_test_film(
     app, make_film_week, make_film, make_distributor, make_country
 ):
     """
-    Add test data to the database
+    Fixture to add a film to the database, including a film week, distributor and
+    country.
+
+    Args:
+        app: The Flask application
+        make_film_week: The film week fixture
+        make_film: The film fixture
+        make_distributor: The distributor fixture
+        make_country: The country fixture
     """
     with app.app_context():
 
@@ -210,7 +300,11 @@ def add_test_film(
 @pytest.fixture
 def add_test_week(app, make_week):
     """
-    Add test data to the database
+    Fixture to add a week to the database.
+
+    Args:
+        app: The Flask application
+        make_week: The week fixture
     """
     with app.app_context():
 
@@ -223,7 +317,13 @@ def add_test_week(app, make_week):
 @pytest.fixture
 def add_test_weeks(app, make_week):
     """
-    Add test data to the database
+    Fixture to add a list of weeks to the database.
+    The weeks just consecutively increment the date by one day as this is
+    all that is required for the tests.
+
+    Args:
+        app: The Flask application
+        make_week: The week fixture
     """
     with app.app_context():
 

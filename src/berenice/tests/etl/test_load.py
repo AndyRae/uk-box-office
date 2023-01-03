@@ -6,7 +6,10 @@ from ukbo import db, etl, models
 
 def test_load_distributors(app):
     """
-    Test load_distributors function
+    Test load_distributors function with a list of distributors
+
+    Args:
+        app: Flask app
     """
     distributors = ["20th Century Fox", "Disney", "Disney"]
 
@@ -25,7 +28,10 @@ def test_load_distributors(app):
 
 def test_load_countries(app):
     """
-    Test load_countries function
+    Test load_countries function with a list of countries
+
+    Args:
+        app: Flask app
     """
     countries = ["United Kingdom", "United Kingdom", "United States"]
 
@@ -44,7 +50,10 @@ def test_load_countries(app):
 
 def test_load_films(app):
     """
-    Test load_films function
+    Test load_films function with a film.
+
+    Args:
+        app: Flask app
     """
 
     film = {
@@ -67,7 +76,10 @@ def test_load_films(app):
 
 def test_load_weeks(app):
     """
-    Test load_weeks function
+    Test load_weeks function with a film.
+
+    Args:
+        app: Flask app
     """
 
     df = pd.DataFrame(
@@ -118,7 +130,10 @@ def test_load_weeks(app):
 
 def test_load_admissions(app, make_week):
     """
-    Test load_admissions function
+    Test load_admissions function with a week.
+
+    Args:
+        app: Flask app
     """
 
     date_week = datetime.datetime(2020, 1, 1, 0, 0)

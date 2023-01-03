@@ -7,7 +7,11 @@ from ukbo import db, etl, models
 @pytest.fixture
 def add_test_week(app, make_week):
     """
-    Add test data to the database
+    Add test data to the database for testing.
+
+    Args:
+        app: Flask app
+        make_week: Fixture to make a week
     """
     with app.app_context():
         week = make_week(
@@ -21,12 +25,25 @@ def add_test_week(app, make_week):
 
 
 def test_init_db_command(runner):
+    """
+    Test init_db_command function.
+
+    Args:
+        runner: CliRunner
+    """
     result = runner.invoke(etl.commands.init_db_command)
     assert result.exit_code == 0
     assert "Initialised the database." in result.output
 
 
 def test_fill_db_command(app, runner):
+    """
+    Test fill_db_command function with a test csv file.
+
+    Args:
+        app: Flask app
+        runner: CliRunner
+    """
     result = runner.invoke(
         etl.commands.fill_db_command, ["--path", "tests/test_data/test.csv"]
     )
@@ -43,6 +60,13 @@ def test_fill_db_command(app, runner):
 
 
 def test_test_db_command(app, runner):
+    """
+    Test test_db_command function with a test csv file.
+
+    Args:
+        app: Flask app
+        runner: CliRunner
+    """
     result = runner.invoke(
         etl.commands.test_db_command, ["--path", "tests/test_data/test.csv"]
     )
@@ -59,6 +83,13 @@ def test_test_db_command(app, runner):
 
 
 def test_seed_films_command(app, runner):
+    """
+    Test seed_films_command function with a test csv file.
+
+    Args:
+        app: Flask app
+        runner: CliRunner
+    """
     result = runner.invoke(
         etl.commands.seed_films_command, ["--path", "tests/test_data/test.csv"]
     )
@@ -73,6 +104,13 @@ def test_seed_films_command(app, runner):
 
 
 def test_seed_box_office_command(app, runner):
+    """
+    Test seed_box_office_command function with a test csv file.
+
+    Args:
+        app: Flask app
+        runner: CliRunner
+    """
     result = runner.invoke(
         etl.commands.seed_box_office_command,
         ["--path", "tests/test_data/test.csv", "--year", 2022],
@@ -87,6 +125,14 @@ def test_seed_box_office_command(app, runner):
 
 
 def test_seed_admissions_command(app, runner, add_test_week):
+    """
+    Test seed_admissions_command function with a test csv file.
+
+    Args:
+        app: Flask app
+        runner: CliRunner
+        add_test_week: Fixture to add test week
+    """
     date = datetime.datetime(2022, 1, 7, 0, 0)
 
     result = runner.invoke(
@@ -104,6 +150,13 @@ def test_seed_admissions_command(app, runner, add_test_week):
 
 
 def test_update_admissions_command(app, runner, add_test_week):
+    """
+    Test update_admissions_command function with a test csv file.
+
+    Args:
+        app: Flask app
+        runner: CliRunner
+    """
     date = datetime.datetime(2022, 1, 7, 0, 0)
 
     result = runner.invoke(
@@ -123,7 +176,12 @@ def test_update_admissions_command(app, runner, add_test_week):
 @pytest.mark.skip(reason="TODO: Fix this command, see #282")
 def test_build_archive_command(app, runner, add_test_film):
     """
+    Test build_archive_command function.
     TODO: Fix this command, see #282
+
+    Args:
+        app: Flask app
+        runner: CliRunner
     """
     result = runner.invoke(
         etl.commands.build_archive_command,

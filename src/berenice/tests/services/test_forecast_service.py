@@ -5,7 +5,13 @@ import pytest
 from ukbo import models, services
 
 
-def test_init(app, add_test_week):
+def test_init(app):
+    """
+    Test that the Forecast class is initialised correctly.
+
+    Args:
+        app: The Flask application
+    """
     with app.app_context():
         forecast = services.forecast.Forecast()
         assert forecast.df is None
@@ -14,6 +20,13 @@ def test_init(app, add_test_week):
 
 
 def test_run_forecast(app, add_test_weeks):
+    """
+    Test that the run_forecast() method runs correctly.
+
+    Args:
+        app: The Flask application
+        add_test_weeks: Fixture to add multiple test weeks to the database
+    """
     with app.app_context():
         forecast = services.forecast.Forecast()
         forecast.run_forecast()
@@ -24,6 +37,13 @@ def test_run_forecast(app, add_test_weeks):
 
 
 def test_get_data(app, add_test_week):
+    """
+    Test that the get_data() method adds the correct data to the df attribute.
+
+    Args:
+        app: The Flask application
+        add_test_week: Fixture to add a test week to the database
+    """
     with app.app_context():
         forecast = services.forecast.Forecast()
         forecast.get_data()
@@ -33,6 +53,14 @@ def test_get_data(app, add_test_week):
 
 
 def test_forecast_model(app, add_test_weeks):
+    """
+    Test that the forecast_model() method adds the correct data to the
+    prediction attribute.
+
+    Args:
+        app: The Flask application
+        add_test_weeks: Fixture to add multiple test weeks to the database
+    """
     with app.app_context():
         forecast = services.forecast.Forecast()
         forecast.get_data()
@@ -43,6 +71,14 @@ def test_forecast_model(app, add_test_weeks):
 
 
 def test_process_results(app, add_test_week):
+    """
+    Test that the process_results() method adds the correct data to the
+    database.
+
+    Args:
+        app: The Flask application
+        add_test_week: Fixture to add a test week to the database
+    """
     with app.app_context():
         forecast = services.forecast.Forecast()
 
@@ -66,6 +102,13 @@ def test_process_results(app, add_test_week):
 
 
 def test_add_week(app, add_test_week):
+    """
+    Test that the add_week() method adds the correct data to the database.
+
+    Args:
+        app: The Flask application
+        add_test_week: Fixture to add a test week to the database
+    """
     with app.app_context():
         forecast = services.forecast.Forecast()
 

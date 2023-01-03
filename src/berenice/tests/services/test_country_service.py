@@ -4,6 +4,13 @@ from ukbo import services
 
 
 def test_list(app, add_test_country):
+    """
+    Test that the list() method returns the correct data.
+
+    Args:
+        app: The Flask application
+        add_test_country: Fixture to add a test country to the database
+    """
     with app.app_context():
 
         response = services.country.list()
@@ -17,6 +24,13 @@ def test_list(app, add_test_country):
 
 
 def test_get(app, add_test_country):
+    """
+    Test that the get() method returns the correct data.
+
+    Args:
+        app: The Flask application
+        add_test_country: Fixture to add a test country to the database
+    """
     with app.app_context():
 
         response = services.country.get("united-kingdom")
@@ -28,6 +42,14 @@ def test_get(app, add_test_country):
 
 
 def test_get_films(app, add_test_film):
+    """
+    Test that the get_films() method returns the correct data including the
+    films for the country.
+
+    Args:
+        app: The Flask application
+        add_test_film: Fixture to add a test film to the database
+    """
     with app.app_context():
 
         response = services.country.get_films("united-kingdom")
@@ -45,6 +67,12 @@ def test_get_films(app, add_test_film):
 
 
 def test_add_country(app):
+    """
+    Test that the add_country() method adds a country to the database.
+
+    Args:
+        app: The Flask application
+    """
     with app.app_context():
 
         response = services.country.add_country("United Kingdom")
@@ -59,6 +87,13 @@ def test_add_country(app):
 
 
 def test_search(app, add_test_country):
+    """
+    Test that the search() method returns search results for a country.
+
+    Args:
+        app: The Flask application
+        add_test_country: Fixture to add a test country to the database
+    """
     with app.app_context():
 
         response = services.country.search("United Kingdom")
