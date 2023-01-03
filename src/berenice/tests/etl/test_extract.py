@@ -11,11 +11,11 @@ def test_check_file_new(
     Test check_file_new function with a film week in the database.
 
     Args:
-        :param app: Flask app
-        :param make_film_week: Fixture to make a film week
-        :param make_film: Fixture to make a film
-        :param make_distributor: Fixture to make a distributor
-        :param make_country: Fixture to make a country
+        app: Flask app
+        make_film_week: Fixture to make a film week
+        make_film: Fixture to make a film
+        make_distributor: Fixture to make a distributor
+        make_country: Fixture to make a country
     """
     with app.app_context():
 
@@ -44,7 +44,7 @@ def test_check_file_new_no_film_weeks(app):
     Test check_file_new function with no film weeks in the database.
 
     Args:
-        :param app: Flask app
+        app: Flask app
     """
     with app.app_context():
         future_excel_title = "21 January 2022"
@@ -60,7 +60,7 @@ def test_extract_box_office(app):
     Test extract_box_office function with a test excel file.
 
     Args:
-        :param app: Flask app
+        app: Flask app
     """
     test_excel_path = "tests/test_data/13 November 2022.xls"
 
@@ -94,7 +94,7 @@ def test_find_excel_file(app):
     Test find_excel_file function with a test html file.
 
     Args:
-        :param app: Flask app
+        app: Flask app
     """
     soup = BeautifulSoup(open("tests/test_data/source.html"), "html.parser")
 

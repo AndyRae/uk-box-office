@@ -1,9 +1,15 @@
 import datetime
 
-from ukbo import db, models, services
+from ukbo import models, services
 
 
 def test_add_week(app):
+    """
+    Test that the add_week() method adds a new week to the database.
+
+    Args:
+        app: The Flask application
+    """
     with app.app_context():
         date = datetime.datetime(2022, 1, 20)
 
@@ -25,6 +31,13 @@ def test_add_week(app):
 
 
 def test_add_existing_week(app, add_test_week):
+    """
+    Test that the add_week() method updates an existing week in the database.
+
+    Args:
+        app: The Flask application
+        add_test_week: Fixture to add a test week to the database.
+    """
     with app.app_context():
         date = datetime.datetime(2022, 1, 20)
 
@@ -50,6 +63,12 @@ def test_add_existing_week(app, add_test_week):
 
 
 def test_add_week_with_no_new_releases(app):
+    """
+    Test that the add_week() method adds a new week to the database with no new releases.
+
+    Args:
+        app: The Flask application
+    """
     with app.app_context():
         date = datetime.datetime(2022, 1, 20)
 
@@ -71,6 +90,13 @@ def test_add_week_with_no_new_releases(app):
 
 
 def test_update_admissions(app, add_test_week):
+    """
+    Test that the update_admissions() method updates the admissions for a week.
+
+    Args:
+        app: The Flask application
+        add_test_week: Fixture to add a test week to the database.
+    """
     with app.app_context():
         date = datetime.datetime(2022, 1, 20)
 

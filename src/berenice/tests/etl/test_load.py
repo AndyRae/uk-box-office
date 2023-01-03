@@ -9,7 +9,7 @@ def test_load_distributors(app):
     Test load_distributors function with a list of distributors
 
     Args:
-        :param app: Flask app
+        app: Flask app
     """
     distributors = ["20th Century Fox", "Disney", "Disney"]
 
@@ -31,7 +31,7 @@ def test_load_countries(app):
     Test load_countries function with a list of countries
 
     Args:
-        :param app: Flask app
+        app: Flask app
     """
     countries = ["United Kingdom", "United Kingdom", "United States"]
 
@@ -53,7 +53,7 @@ def test_load_films(app):
     Test load_films function with a film.
 
     Args:
-        :param app: Flask app
+        app: Flask app
     """
 
     film = {
@@ -79,7 +79,7 @@ def test_load_weeks(app):
     Test load_weeks function with a film.
 
     Args:
-        :param app: Flask app
+        app: Flask app
     """
 
     df = pd.DataFrame(
@@ -133,7 +133,7 @@ def test_load_admissions(app, make_week):
     Test load_admissions function with a week.
 
     Args:
-        :param app: Flask app
+        app: Flask app
     """
 
     date_week = datetime.datetime(2020, 1, 1, 0, 0)

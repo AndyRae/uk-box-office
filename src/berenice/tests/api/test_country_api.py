@@ -6,9 +6,9 @@ def test_all_countries(app, client, add_test_country):
     Test the country/all endpoint.
 
     Args:
-        :param app: Flask app
-        :param client: Flask test client
-        :param add_test_country: Fixture to add a test country
+        app: Flask app
+        client: Flask test client
+        add_test_country: Fixture to add a test country
     """
     with app.app_context():
         response = client.get("/api/country/")
@@ -22,9 +22,9 @@ def test_get_country(app, client, add_test_country):
     Test the country/get endpoint.
 
     Args:
-        :param app: Flask app
-        :param client: Flask test client
-        :param add_test_country: Fixture to add a test country
+        app: Flask app
+        client: Flask test client
+        add_test_country: Fixture to add a test country
     """
     with app.app_context():
         response = client.get("/api/country/united-kingdom")
@@ -40,8 +40,8 @@ def test_get_country_not_found(app, client):
     Test the country/get endpoint with a country that doesn't exist.
 
     Args:
-        :param app: Flask app
-        :param client: Flask test client
+        app: Flask app
+        client: Flask test client
     """
     with app.app_context():
         response = client.get("/api/country/united-kingdom")
@@ -53,9 +53,9 @@ def test_country_films(app, client, add_test_film):
     Test the country/films endpoint.
 
     Args:
-        :param app: Flask app
-        :param client: Flask test client
-        :param add_test_film: Fixture to add a test film
+        app: Flask app
+        client: Flask test client
+        add_test_film: Fixture to add a test film
     """
     with app.app_context():
         response = client.get("/api/country/united-kingdom/films")

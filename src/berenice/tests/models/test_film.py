@@ -5,9 +5,9 @@ def test_film(make_film, make_distributor, make_country):
     A film matches another film if they have the same name and distributor.
 
     Args:
-        :param make_film: Fixture to create a film
-        :param make_distributor: Fixture to create a distributor
-        :param make_country: Fixture to create a country
+        make_film: Fixture to create a film
+        make_distributor: Fixture to create a distributor
+        make_country: Fixture to create a country
     """
     distributor = make_distributor()
     country = make_country()

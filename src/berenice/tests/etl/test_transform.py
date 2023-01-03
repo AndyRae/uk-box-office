@@ -7,8 +7,8 @@ def test_find_recent_film(app, add_test_film):
     Test find_recent_film function with a film that exists.
 
     Args:
-        :param app: Flask app
-        :param add_test_film: Fixture to add a test film
+        app: Flask app
+        add_test_film: Fixture to add a test film
     """
     df = pd.Series(
         {
@@ -32,8 +32,8 @@ def test_get_week_box_office(app, add_test_film):
     Test get_week_box_office function with a film that exists.
 
     Args:
-        :param app: Flask app
-        :param add_test_film: Fixture to add a test film
+        app: Flask app
+        add_test_film: Fixture to add a test film
     """
 
     df = pd.Series(
@@ -58,8 +58,8 @@ def test_get_week_box_office_week_1(app, add_test_film):
     Test get_week_box_office function when the film is in its first week of release.
 
     Args:
-        :param app: Flask app
-        :param add_test_film: Fixture to add a test film
+        app: Flask app
+        add_test_film: Fixture to add a test film
     """
 
     df = pd.Series(
@@ -84,8 +84,8 @@ def test_get_week_box_office_no_film(app, add_test_film):
     Test get_week_box_office function when the film is not in the database.
 
     Args:
-        :param app: Flask app
-        :param add_test_film: Fixture to add a test film
+        app: Flask app
+        add_test_film: Fixture to add a test film
     """
 
     df = pd.Series(
@@ -111,8 +111,8 @@ def test_get_week_box_office_errors(app, add_test_film):
     For example when the previous week's gross is greater than total gross
 
     Args:
-        :param app: Flask app
-        :param add_test_film: Fixture to add a test film
+        app: Flask app
+        add_test_film: Fixture to add a test film
     """
 
     df = pd.Series(

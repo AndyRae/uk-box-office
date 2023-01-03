@@ -6,9 +6,9 @@ def test_all_films(app, client, add_test_film):
     Test the film/all endpoint.
 
     Args:
-        :param app: Flask app
-        :param client: Flask test client
-        :param add_test_film: Fixture to add a test film
+        app: Flask app
+        client: Flask test client
+        add_test_film: Fixture to add a test film
     """
     with app.app_context():
         response = client.get("/api/film/")
@@ -22,9 +22,9 @@ def test_single_film(app, client, add_test_film):
     Test the film/get endpoint.
 
     Args:
-        :param app: Flask app
-        :param client: Flask test client
-        :param add_test_film: Fixture to add a test film
+        app: Flask app
+        client: Flask test client
+        add_test_film: Fixture to add a test film
     """
     with app.app_context():
         response = client.get("/api/film/nope")
@@ -55,8 +55,8 @@ def test_single_film_not_found(app, client):
     Test the film/get endpoint with a film that doesn't exist.
 
     Args:
-        :param app: Flask app
-        :param client: Flask test client
+        app: Flask app
+        client: Flask test client
     """
     with app.app_context():
         response = client.get("/api/film/nope")

@@ -6,9 +6,9 @@ def test_search_film(app, client, add_test_film):
     Test search endpoint.
 
     Args:
-        :param app: Flask app
-        :param client: Flask test client
-        :param add_test_film: Fixture to add a test film
+        app: Flask app
+        client: Flask test client
+        add_test_film: Fixture to add a test film
     """
     result = client.get("/api/search?q=nope")
     assert result.status_code == 200
@@ -23,9 +23,9 @@ def test_search_distributor(app, client, add_test_film):
     Test search endpoint for distributors.
 
     Args:
-        :param app: Flask app
-        :param client: Flask test client
-        :param add_test_film: Fixture to add a test film
+        app: Flask app
+        client: Flask test client
+        add_test_film: Fixture to add a test film
     """
     result = client.get("/api/search?q=20th")
     assert result.status_code == 200
@@ -39,9 +39,9 @@ def test_search_country(app, client, add_test_film):
     Test search endpoint for countries.
 
     Args:
-        :param app: Flask app
-        :param client: Flask test client
-        :param add_test_film: Fixture to add a test film
+        app: Flask app
+        client: Flask test client
+        add_test_film: Fixture to add a test film
     """
     result = client.get("/api/search?q=united")
     assert result.status_code == 200
@@ -55,8 +55,8 @@ def test_search_empty(app, client):
     Test search endpoint for empty results.
 
     Args:
-        :param app: Flask app
-        :param client: Flask test client
+        app: Flask app
+        client: Flask test client
     """
     result = client.get("/api/search?q=notfound")
     assert result.status_code == 200

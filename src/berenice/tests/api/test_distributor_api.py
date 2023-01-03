@@ -9,9 +9,9 @@ def test_all_distributors(app, client, add_test_distributor):
     Test the distributor/all endpoint.
 
     Args:
-        :param app: Flask app
-        :param client: Flask test client
-        :param add_test_distributor: Fixture to add a test distributor
+        app: Flask app
+        client: Flask test client
+        add_test_distributor: Fixture to add a test distributor
     """
     with app.app_context():
         response = client.get("/api/distributor/")
@@ -25,9 +25,9 @@ def test_get_distributor(app, client, add_test_distributor):
     Test the distributor/get endpoint.
 
     Args:
-        :param app: Flask app
-        :param client: Flask test client
-        :param add_test_distributor: Fixture to add a test distributor
+        app: Flask app
+        client: Flask test client
+        add_test_distributor: Fixture to add a test distributor
     """
     with app.app_context():
         response = client.get("/api/distributor/20th-century-fox")
@@ -43,8 +43,8 @@ def test_get_distributor_not_found(app, client):
     Test the distributor/get endpoint with a distributor that doesn't exist.
 
     Args:
-        :param app: Flask app
-        :param client: Flask test client
+        app: Flask app
+        client: Flask test client
     """
     with app.app_context():
         response = client.get("/api/distributor/20th-century-fox")
@@ -56,9 +56,9 @@ def test_distributor_films(app, client, add_test_film):
     Test the distributor/films endpoint.
 
     Args:
-        :param app: Flask app
-        :param client: Flask test client
-        :param add_test_film: Fixture to add a test film
+        app: Flask app
+        client: Flask test client
+        add_test_film: Fixture to add a test film
     """
     with app.app_context():
         response = client.get("/api/distributor/20th-century-fox/films")
@@ -76,8 +76,8 @@ def test_distributor_films_not_found(app, client):
     Test the distributor/films endpoint with a distributor that doesn't exist.
 
     Args:
-        :param app: Flask app
-        :param client: Flask test client
+        app: Flask app
+        client: Flask test client
     """
     with app.app_context():
         response = client.get("/api/distributor/20th-century-fox/films")
@@ -90,9 +90,9 @@ def test_market_share(app, client, add_test_film):
     Test the distributor/marketshare endpoint.
 
     Args:
-        :param app: Flask app
-        :param client: Flask test client
-        :param add_test_film: Fixture to add a test film
+        app: Flask app
+        client: Flask test client
+        add_test_film: Fixture to add a test film
     """
     with app.app_context():
         response = client.get("/api/distributor/marketshare")
@@ -110,8 +110,8 @@ def test_market_share_not_found(app, client):
     Test the distributor/marketshare endpoint with a distributor that doesn't exist.
 
     Args:
-        :param app: Flask app
-        :param client: Flask test client
+        app: Flask app
+        client: Flask test client
     """
     with app.app_context():
         response = client.get("/api/distributor/marketshare")
@@ -124,9 +124,9 @@ def test_market_share_by_year(app, client, add_test_film):
     Test the distributor/marketshare endpoint with a year.
 
     Args:
-        :param app: Flask app
-        :param client: Flask test client
-        :param add_test_film: Fixture to add a test film
+        app: Flask app
+        client: Flask test client
+        add_test_film: Fixture to add a test film
     """
     with app.app_context():
         response = client.get("/api/distributor/marketshare/2022")

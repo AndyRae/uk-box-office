@@ -9,9 +9,9 @@ def test_all_boxoffice(app, client, add_test_film):
     Test the boxoffice/all endpoint.
 
     Args:
-        :param app: Flask app
-        :param client: Flask test client
-        :param add_test_film: Fixture to add a test film
+        app: Flask app
+        client: Flask test client
+        add_test_film: Fixture to add a test film
     """
     with app.app_context():
         response = client.get("/api/boxoffice/all")
@@ -32,9 +32,9 @@ def test_filtered__all_boxoffice(app, client, add_test_film):
     Test the boxoffice/all endpoint with a date filter.
 
     Args:
-        :param app: Flask app
-        :param client: Flask test client
-        :param add_test_film: Fixture to add a test film
+        app: Flask app
+        client: Flask test client
+        add_test_film: Fixture to add a test film
     """
     with app.app_context():
         response = client.get(
@@ -57,9 +57,9 @@ def test_filtered_boxoffice_empty(app, client, add_test_film):
     Test the boxoffice/all endpoint with a date filter that returns no results.
 
     Args:
-        :param app: Flask app
-        :param client: Flask test client
-        :param add_test_film: Fixture to add a test film
+        app: Flask app
+        client: Flask test client
+        add_test_film: Fixture to add a test film
     """
     with app.app_context():
         response = client.get(
@@ -75,9 +75,9 @@ def test_top_films(app, client, add_test_film):
     Test the boxoffice/topfilms endpoint.
 
     Args:
-        :param app: Flask app
-        :param client: Flask test client
-        :param add_test_film: Fixture to add a test film
+        app: Flask app
+        client: Flask test client
+        add_test_film: Fixture to add a test film
     """
     with app.app_context():
         response = client.get("/api/boxoffice/topfilms")
@@ -108,9 +108,9 @@ def test_summary(app, client, add_test_week):
     Test the boxoffice/summary endpoint.
 
     Args:
-        :param app: Flask app
-        :param client: Flask test client
-        :param add_test_week: Fixture to add a test week
+        app: Flask app
+        client: Flask test client
+        add_test_week: Fixture to add a test week
     """
     with app.app_context():
         response = client.get(
@@ -130,8 +130,8 @@ def test_summary_empty(app, client):
     Test the boxoffice/summary endpoint with a date filter that returns no results.
 
     Args:
-        :param app: Flask app
-        :param client: Flask test client
+        app: Flask app
+        client: Flask test client
     """
     with app.app_context():
         response = client.get(
@@ -147,9 +147,9 @@ def test_previous(app, client, add_test_week):
     Test the boxoffice/previous endpoint.
 
     Args:
-        :param app: Flask app
-        :param client: Flask test client
-        :param add_test_week: Fixture to add a test week
+        app: Flask app
+        client: Flask test client
+        add_test_week: Fixture to add a test week
     """
     with app.app_context():
         response = client.get(
@@ -169,8 +169,8 @@ def test_previous_empty(app, client):
     Test the boxoffice/previous endpoint with a date filter that returns no results.
 
     Args:
-        :param app: Flask app
-        :param client: Flask test client
+        app: Flask app
+        client: Flask test client
     """
     with app.app_context():
         response = client.get(
@@ -186,9 +186,9 @@ def test_topline(app, client, add_test_week):
     Test the boxoffice/topline endpoint.
 
     Args:
-        :param app: Flask app
-        :param client: Flask test client
-        :param add_test_week: Fixture to add a test week
+        app: Flask app
+        client: Flask test client
+        add_test_week: Fixture to add a test week
     """
     with app.app_context():
         response = client.get(
@@ -210,8 +210,8 @@ def test_topline_empty(app, client):
     Test the boxoffice/topline endpoint with a date filter that returns no results.
 
     Args:
-        :param app: Flask app
-        :param client: Flask test client
+        app: Flask app
+        client: Flask test client
     """
     with app.app_context():
         response = client.get(
@@ -229,10 +229,10 @@ def test_archive(app, runner, client, add_test_film):
     TODO: Fix this command, see #282
 
     Args:
-        :param app: Flask app
-        :param runner: Flask test runner
-        :param client: Flask test client
-        :param add_test_film: Fixture to add a test film
+        app: Flask app
+        runner: Flask test runner
+        client: Flask test client
+        add_test_film: Fixture to add a test film
     """
     with app.app_context():
         result = runner.invoke(etl.commands.build_archive_command)

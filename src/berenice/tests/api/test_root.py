@@ -3,7 +3,7 @@ def test_root(client):
     Test the root endpoint.
 
     Args:
-        :param client: Flask test client
+        client: Flask test client
     """
     response = client.get("/")
     assert response.status_code == 200

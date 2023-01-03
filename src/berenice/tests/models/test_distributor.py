@@ -3,7 +3,7 @@ def test_distributor(make_distributor):
     Test distributor model creation.
 
     Args:
-        :param app: Flask app
+        app: Flask app
     """
 
     fox = make_distributor()
