@@ -1,6 +1,6 @@
 name: Pytest
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   build:
@@ -22,4 +22,9 @@ jobs:
           pip install -r src/berenice/requirements.txt
       - name: Test with pytest
         run: |
-          cd src/berenice && pytest
+          cd src/berenice && pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=ukbo tests/ | tee pytest-coverage.txt
+      - name: Pytest coverage comment
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          pytest-coverage-path: ./src/berenice/pytest-coverage.txt
+          junitxml-path: ./src/berenice/pytest.xml
