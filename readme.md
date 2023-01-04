@@ -57,7 +57,7 @@ These run weekly on a Wednesday, if they fail you can run them manually:
 
 ## Utilities
 
-- Fetch new box office data from a specific link (works as a backup): `flask backup-etl {link to file}`
+- Fetch new box office data from a specific link (works as a backup): `flask backup-etl {link to file} "01 January 2007"`
 - Delete and rollback the last week of data: `flask rollback-etl`
 - Delete and rollback a specific year of data: `flask rollback-year --year 2007`
 - Update admissions manually: `flask update-admissions --year 2020 --month 1 --admissions 100`

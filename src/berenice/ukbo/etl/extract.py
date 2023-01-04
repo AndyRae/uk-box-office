@@ -110,7 +110,7 @@ def get_excel_file(soup: BeautifulSoup) -> Optional[str]:
     excel = find_excel_file(soup)
 
     if excel["link"] is not None:
-        if check_file_new(excel["link"]):
+        if check_file_new(excel["title"]):
             return download_excel(excel["link"], excel["title"])
         current_app.logger.warning(
             "ETL fetch failed - website file is pending update."

@@ -193,7 +193,7 @@ def weekly_etl() -> None:
 
 
 @with_appcontext
-def backup_etl_command(source_url: str) -> None:
+def backup_etl_command(source_url: str, date: str) -> None:
     """
     A backup command for the ETL pipeline in case the excel file is not findable.
 
@@ -204,8 +204,11 @@ def backup_etl_command(source_url: str) -> None:
 
     current_app.logger.info("Backup-ETL manual running.")
     if source_url is not None:
-        now = datetime.now().strftime("ETL%Y%m%d%M%H%S")
-        file_path = f"./data/{now}.xls"
+        # now = datetime.now().strftime("ETL%Y%m%d%M%H%S")
+        file_path = f"./data/{date}.xls"
+        opener = urllib.request.build_opener()
+        opener.addheaders = [("User-agent", "Mozilla/5.0")]
+        urllib.request.install_opener(opener)
         urllib.request.urlretrieve(source_url, file_path)
 
         df = extract.extract_box_office(file_path)
