@@ -123,16 +123,18 @@ def weekly_etl_command() -> None:
 
 @click.command("backup-etl")
 @click.argument("source_url")
+@click.argument("date")
 @with_appcontext
-def backup_etl_command(source_url: str) -> None:
+def backup_etl_command(source_url: str, date: str) -> None:
     """
     A backup interface for the ETL pipeline.
 
     Args:
         source_url: URL of the excel file to download.
+        date: Date of the excel file. %d %B %Y format.
 
     """
-    tasks.backup_etl_command(source_url)
+    tasks.backup_etl_command(source_url, date)
 
 
 @click.command("rollback-etl")
