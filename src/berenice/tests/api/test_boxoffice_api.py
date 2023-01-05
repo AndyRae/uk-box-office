@@ -222,11 +222,9 @@ def test_topline_empty(app, client):
         assert data["results"] == []
 
 
-@pytest.mark.skip("This test is failing on CI")
 def test_archive(app, runner, client, add_test_film):
     """
     Test the boxoffice/archive endpoint.
-    TODO: Fix this command, see #282
 
     Args:
         app: Flask app
@@ -239,3 +237,12 @@ def test_archive(app, runner, client, add_test_film):
         assert result.exit_code == 0
         response = client.get("/api/boxoffice/archive")
         assert response.status_code == 200
+
+        # check its a csv file attachment
+        assert response.headers["Content-Disposition"] == (
+            "attachment; filename=archive_export.csv"
+        )
+        # assert its not empty
+        assert response.data
+        # assert its a csv file
+        assert response.data.decode("utf-8").startswith("date")

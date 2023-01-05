@@ -173,11 +173,9 @@ def test_update_admissions_command(app, runner, add_test_week):
     assert "Updated admissions data" in result.output
 
 
-@pytest.mark.skip(reason="TODO: Fix this command, see #282")
 def test_build_archive_command(app, runner, add_test_film):
     """
     Test build_archive_command function.
-    TODO: Fix this command, see #282
 
     Args:
         app: Flask app
