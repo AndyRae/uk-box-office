@@ -134,7 +134,7 @@ def backup_etl_command(source_url: str, date: str) -> None:
         date: Date of the excel file. %d %B %Y format.
 
     """
-    tasks.backup_etl_command(source_url, date)
+    tasks.backup_etl(source_url, date)
 
 
 @click.command("rollback-etl")
@@ -146,7 +146,7 @@ def rollback_etl_command() -> None:
 
     Actual Films are not deleted.
     """
-    tasks.rollback_etl_command()
+    tasks.rollback_etl()
 
 
 @click.command("rollback-year")

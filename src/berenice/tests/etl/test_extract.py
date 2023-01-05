@@ -1,7 +1,61 @@
 import datetime
 
+import pytest
+import requests  # type: ignore
 from bs4 import BeautifulSoup
-from ukbo import db, etl, models
+from ukbo import db, etl
+
+
+@pytest.fixture
+def test_url():
+    """
+    Create a test URL fixture.
+    """
+    return "https://www.example.com"
+
+
+def test_get_soup(test_url):
+    """
+    Test get_soup function that returns a BeautifulSoup object.
+
+    Args:
+        test_url: URL to test
+    """
+    soup = etl.extract.get_soup(test_url)
+    assert isinstance(soup, BeautifulSoup)
+
+
+def test_get_soup_raises_value_error_on_invalid_url(test_url):
+    """
+    Test get_soup function that raises a ValueError on invalid URL.
+
+    Args:
+        test_url: URL to test
+    """
+    with pytest.raises(ValueError):
+        etl.extract.get_soup("invalid url")
+
+
+def test_get_soup_raises_request_exception_on_request_timeout(test_url):
+    """
+    Test get_soup function that raises a RequestException on request timeout.
+
+    Args:
+        test_url: URL to test
+    """
+    with pytest.raises(requests.RequestException):
+        etl.extract.get_soup(test_url, timeout=0.001)
+
+
+def test_download_excel_raises_value_error_on_invalid_link():
+    """
+    Test download_excel function that raises a ValueError on invalid link.
+
+    Args:
+        test_url: URL to test
+    """
+    with pytest.raises(ValueError):
+        etl.extract.download_excel("invalid link", "test_title")
 
 
 def test_check_file_new(
