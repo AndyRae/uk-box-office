@@ -193,7 +193,7 @@ def weekly_etl() -> None:
 
 
 @with_appcontext
-def backup_etl_command(source_url: str, date: str) -> None:
+def backup_etl(source_url: str, date: str) -> None:
     """
     A backup command for the ETL pipeline in case the excel file is not findable.
 
@@ -204,7 +204,6 @@ def backup_etl_command(source_url: str, date: str) -> None:
 
     current_app.logger.info("Backup-ETL manual running.")
     if source_url is not None:
-        # now = datetime.now().strftime("ETL%Y%m%d%M%H%S")
         file_path = f"./data/{date}.xls"
         opener = urllib.request.build_opener()
         opener.addheaders = [("User-agent", "Mozilla/5.0")]
@@ -219,7 +218,7 @@ def backup_etl_command(source_url: str, date: str) -> None:
 
 
 @with_appcontext
-def rollback_etl_command() -> None:
+def rollback_etl() -> None:
     """
     A command for rolling back the ETL pipeline, and deleting the last week of data.
     Film Weeks and Weeks, but not Films, Distributors or Countries.
@@ -304,7 +303,7 @@ def delete_film(id: int) -> None:
     timezone="UTC",
 )
 @with_appcontext
-def build_archive() -> None:
+def build_archive(path: str = "./data/archive_export.csv") -> None:
     """
     Builds the archive of box office data.
 
@@ -312,6 +311,4 @@ def build_archive() -> None:
 
     """
     archive = services.boxoffice.build_archive()
-    archive.to_csv(
-        "./data/archive_export.csv", index=False, date_format="%Y%m%d"
-    )
+    archive.to_csv(path, index=False, date_format="%Y%m%d")

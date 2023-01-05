@@ -12,7 +12,7 @@ from ukbo.extensions import db
 from . import transform
 
 
-def get_soup(url: str) -> BeautifulSoup:
+def get_soup(url: str, timeout: float = 5) -> BeautifulSoup:
     """
     Gets the page soup from the url.
 
@@ -26,7 +26,9 @@ def get_soup(url: str) -> BeautifulSoup:
     opener = urllib.request.build_opener()
     opener.addheaders = [("User-agent", "Mozilla/5.0")]
 
-    return BeautifulSoup(requests.get(url, timeout=5).content, "html.parser")
+    return BeautifulSoup(
+        requests.get(url, timeout=timeout).content, "html.parser"
+    )
 
 
 def check_file_new(excel_title: str) -> bool:
