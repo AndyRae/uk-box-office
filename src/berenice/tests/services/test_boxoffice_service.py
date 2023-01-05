@@ -263,11 +263,9 @@ def test_topline_empty(app, add_test_week):
     assert data["results"] == []
 
 
-@pytest.mark.skip(reason="Fix the build archive function")
-def test_build_archive(app, add_test_week):
+def test_build_archive(app, add_test_film):
     """
     Test that the build_archive() method returns the correct data.
-    TODO: Fix the build archive function.
 
     Args:
         app: The Flask application
@@ -276,7 +274,7 @@ def test_build_archive(app, add_test_week):
     with app.app_context():
         response = services.boxoffice.build_archive()
 
-    assert response.columns == [
+    assert list(response.columns) == [
         "date",
         "rank",
         "film",
@@ -288,15 +286,14 @@ def test_build_archive(app, add_test_week):
         "total_gross",
         "week_gross",
     ]
-    assert response.shape == (10, 1)
-    assert response["date"].iloc[0] == "2022-01-20"
+    assert response.shape == (1, 10)
     assert response["rank"].iloc[0] == 1
     assert response["film"].iloc[0] == "Nope"
-    assert response["country"].iloc[0] == "UK"
+    assert response["country"].iloc[0] == "United Kingdom"
     assert response["weekend_gross"].iloc[0] == 500
     assert response["distributor"].iloc[0] == "20th Century Fox"
     assert response["weeks_on_release"].iloc[0] == 1
-    assert response["number_of_cinemas"].iloc[0] == 700
+    assert response["number_of_cinemas"].iloc[0] == 100
     assert response["total_gross"].iloc[0] == 1000
     assert response["week_gross"].iloc[0] == 1000
 

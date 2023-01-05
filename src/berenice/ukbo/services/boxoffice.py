@@ -6,7 +6,12 @@ from flask import jsonify
 from flask.wrappers import Response
 from sqlalchemy.sql import func
 from ukbo import models
-from ukbo.dto import FilmSchema, FilmWeekSchema, WeekSchema
+from ukbo.dto import (
+    FilmSchema,
+    FilmWeekSchema,
+    FilmWeekSchemaArchive,
+    WeekSchema,
+)
 from ukbo.extensions import db
 
 
@@ -272,16 +277,17 @@ def build_archive() -> pd.DataFrame:
     data = query.order_by(
         models.Film_Week.date.asc(), models.Film_Week.rank.asc()
     ).all()
-    df = pd.DataFrame([ix.as_dict() for ix in data])
+
+    film_week_schema = FilmWeekSchemaArchive()
+
+    df = pd.DataFrame([film_week_schema.dump(ix) for ix in data])
     df["date"] = pd.to_datetime(df["date"])
     df["weekend_gross"] = df["weekend_gross"].astype(float)
     df["week_gross"] = df["week_gross"].astype(float)
     df["number_of_cinemas"] = df["number_of_cinemas"].astype(int)
 
     # Unwrap country objects to their names with seperator.
-    df["country"] = [
-        "/".join([x["name"] for x in list_dict]) for list_dict in df["country"]
-    ]
+    df["country"] = ["/".join(list(ix)) for ix in df["country"]]
 
     order = [
         "date",
