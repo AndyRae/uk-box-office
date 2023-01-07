@@ -33,7 +33,7 @@ jobs:
 
       - name: Build React
         env:
-          REACT_APP_BACKEND_URL: https://api.boxofficedata.co.uk/api/
+          NEXT_PUBLIC_BACKEND_URL: https://api.boxofficedata.co.uk/api/
         run: CI=false npm run build --prefix ./src/sophronia/
 
       - name: Deploy on VM
