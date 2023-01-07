@@ -6,7 +6,7 @@ services:
     build: src/sophronia
     env_file:
       - ./.env
-    command: npm dev
+    command: npm run dev
     volumes:
       - ./src/sophronia/:/app
     ports:
