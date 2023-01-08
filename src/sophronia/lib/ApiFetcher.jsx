@@ -14,7 +14,7 @@ import axios from 'axios';
  * Returns the backend URL based on the environment
  * @returns {string} The backend URL
  * @example
- * // returns http://localhost:5000/api/
+ * returns http://localhost:5000/api/
  */
 export const getBackendURL = () => {
 	if (process.env.NEXT_PUBLIC_CODESPACE === 'true') {
@@ -22,7 +22,7 @@ export const getBackendURL = () => {
 	}
 
 	if (process.env.NODE_ENV === 'development') {
-		return 'http://localhost:5000/api/';
+		return 'http://berenice:5000/api/';
 	}
 
 	return process.env.NEXT_PUBLIC_BACKEND_URL;
