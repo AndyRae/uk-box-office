@@ -3,12 +3,13 @@ import { BiFilm, BiNetworkChart } from 'react-icons/bi';
 import { MdOutlineSpaceDashboard, MdOutlineAutoGraph } from 'react-icons/md';
 import { HiOutlineTicket } from 'react-icons/hi';
 import { FiDatabase } from 'react-icons/fi';
-import Link from 'next/link';
 // import { Searchbar } from '../Search/Searchbar';
+import { SideBarLink } from './SideBarLink';
 import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
 import { BsListOl } from 'react-icons/bs';
 import { Card } from '../Dashboard/Card';
 import { InlineLink } from './InlineLink';
+import Link from 'next/link';
 
 // Quick links to display in the sidebar
 const links = [
@@ -55,32 +56,6 @@ const links = [
 ];
 
 /**
- * Sidebar link component
- * @description The sidebar link.
- * @param {string} name - The name of the link.
- * @param {string} path - The path of the link.
- * @param {JSX.Element} icon - The icon of the link.
- * @param {boolean} isActive - Whether the link is active.
- * @returns {JSX.Element}
- * @example
- * <SideBarElement name='Dashboard' path='/' icon={<MdOutlineSpaceDashboard />} />
- */
-const SideBarLink = ({ name, path, icon, children, isActive }) => {
-	return (
-		<Link
-			href={path}
-			as={Link}
-			className={`flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900 ${
-				isActive ? 'bg-gray-200 dark:bg-bo-primary' : ''
-			}`}
-		>
-			{icon}
-			<span className='ml-3'>{name}</span>
-		</Link>
-	);
-};
-
-/**
  * Brand component
  * @description The brand logo and name.
  * @returns {JSX.Element}
@@ -107,7 +82,6 @@ export const Brand = () => {
  * @see Sidebar
  */
 const SidebarContent = () => {
-	// const { pathname } = useLocation();
 	return (
 		<div>
 			<div className='flex flex-col space-y-6'>
@@ -122,7 +96,6 @@ const SidebarContent = () => {
 								name={element.name}
 								path={element.path}
 								icon={element.icon}
-								isActive={false}
 							/>
 						);
 					})}
