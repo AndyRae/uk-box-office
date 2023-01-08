@@ -29,7 +29,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "app/layout.tsx", "components/ui/Footer.jsx"  ],
   "exclude": [
     "node_modules"
   ],

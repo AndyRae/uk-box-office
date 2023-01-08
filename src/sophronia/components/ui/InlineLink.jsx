@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 /**
  * Simple wrapper for a link to add some styling.
@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
  * @returns Link component
  */
 export const InlineLink = ({ to, children }) => (
-	<Link to={to} className='text-bo-primary hover:text-red-500'>
+	<Link href={to} className='text-bo-primary hover:text-red-500'>
 		{children}
 	</Link>
 );

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import {
 	FaNetworkWired,
 	FaInfoCircle,
@@ -67,7 +67,7 @@ export const Footer = () => {
 					return (
 						<li key={link.name} className='mr-4 hover:underline md:mr-6'>
 							{isLocalUrl(link) ? (
-								<Link to={link.path} className='mr-4 hover:underline md:mr-6'>
+								<Link href={link.path} className='mr-4 hover:underline md:mr-6'>
 									{link.name}
 								</Link>
 							) : (
