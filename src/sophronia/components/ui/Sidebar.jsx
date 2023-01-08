@@ -3,7 +3,7 @@ import { BiFilm, BiNetworkChart } from 'react-icons/bi';
 import { MdOutlineSpaceDashboard, MdOutlineAutoGraph } from 'react-icons/md';
 import { HiOutlineTicket } from 'react-icons/hi';
 import { FiDatabase } from 'react-icons/fi';
-// import { Searchbar } from '../Search/Searchbar';
+import { Searchbar } from '../Search/Searchbar';
 import { SideBarLink } from './SideBarLink';
 import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
 import { BsListOl } from 'react-icons/bs';
@@ -101,7 +101,7 @@ const SidebarContent = () => {
 					})}
 				</ul>
 
-				{/* <Searchbar /> */}
+				<Searchbar />
 
 				<Card align='left' size='sm'>
 					<div className='flex  mb-3'>
