@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 import { useSearch } from '../api/search';
 import { Spinner } from '../components/ui/Spinner';
 import { useLocation } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { FilmsTable } from '../components/Search/FilmsTable';
 import { Searchbar } from '../components/Search/Searchbar';
 import { PageTitle } from '../components/ui/PageTitle';
@@ -37,7 +37,7 @@ const MainSearchPage = () => {
 						return (
 							<div key={index}>
 								<Link
-									to={`/country/${country.slug}`}
+									href={`/country/${country.slug}`}
 									className='font-bold text-left'
 								>
 									{country.name}
@@ -57,7 +57,7 @@ const MainSearchPage = () => {
 						return (
 							<div key={index} className=''>
 								<Link
-									to={`/distributor/${distributor.slug}`}
+									href={`/distributor/${distributor.slug}`}
 									className='font-bold text-left'
 								>
 									{distributor.name}

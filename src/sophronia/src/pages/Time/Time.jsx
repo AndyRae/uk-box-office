@@ -1,5 +1,5 @@
 import { useParams, useLocation } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { Card } from '../../components/Dashboard/Card';
 import { Spinner } from '../../components/ui/Spinner';
 import { Suspense } from 'react';
@@ -34,7 +34,7 @@ import { PreviousYearsChart } from '../../components/Time/PreviousYearsChart';
 const PillLink = ({ to, children, isActive }) => (
 	<li className='mr-2'>
 		<Link
-			to={to}
+			href={to}
 			className={`inline-block py-3 px-4 rounded-lg hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white ${
 				isActive
 					? 'text-gray-900 bg-gray-100 dark:bg-gray-900 dark:text-white'
@@ -273,7 +273,7 @@ export const TimePage = () => {
 							return (
 								<div key={index} className='text-center'>
 									<Link
-										to={`/time/${year.year}${
+										href={`/time/${year.year}${
 											quarter ? '/q' + quarter : month ? '/m' + month : ''
 										}${quarterend ? '/q' + quarterend : ''}`}
 										className='font-bold text-left'

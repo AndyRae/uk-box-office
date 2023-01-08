@@ -1,5 +1,5 @@
 import { BaseTable, Tr, Td } from '../charts/BaseTable';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 /**
  * @description Films Table component for search
@@ -21,7 +21,7 @@ export const FilmsTable = ({ data }) => {
 			{data.map((film, index) => (
 				<Tr key={film.id} index={index}>
 					<Td isHighlight>
-						<Link to={`/film/${film.slug}`}>{film.name}</Link>
+						<Link href={`/film/${film.slug}`}>{film.name}</Link>
 					</Td>
 					<Td>{film.distributor.name}</Td>
 					<Td>{film.countries.map((c, index) => `${c.name} `)}</Td>

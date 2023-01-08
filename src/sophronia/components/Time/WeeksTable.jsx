@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { BaseTable, Td, Tr } from '../charts/BaseTable';
 import { MetricChange } from '../charts/MetricChange';
 
@@ -32,7 +32,7 @@ export const WeeksTable = ({ data }) => {
 				return (
 					<Tr key={week.date} index={index}>
 						<Td isHighlight>
-							<Link to={`/time/${year}/m${parseInt(month, 10)}/d${day}`}>
+							<Link href={`/time/${year}/m${parseInt(month, 10)}/d${day}`}>
 								{week.date}
 							</Link>
 						</Td>

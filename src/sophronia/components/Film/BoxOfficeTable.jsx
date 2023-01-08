@@ -1,5 +1,5 @@
 import { Date } from '../Date';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { BaseTable, Td, Tr } from '../charts/BaseTable';
 import { MetricChange } from '../charts/MetricChange';
 
@@ -40,7 +40,7 @@ export const BoxOfficeTable = ({ data }) => {
 					<Tr key={week.id} index={index}>
 						<Td isNumeric>{week.weeks_on_release}</Td>
 						<Td isHighlight>
-							<Link to={`/time/${year}/m${parseInt(month, 10)}/d${day}`}>
+							<Link href={`/time/${year}/m${parseInt(month, 10)}/d${day}`}>
 								<Date dateString={week.date} />
 							</Link>
 						</Td>

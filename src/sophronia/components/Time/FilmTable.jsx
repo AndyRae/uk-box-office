@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { BaseTable, Td, Tr } from '../charts/BaseTable';
 import { MetricChange } from '../charts/MetricChange';
 
@@ -48,7 +48,7 @@ export const FilmTable = ({ data, comparisonData }) => {
 					<Tr key={film.filmSlug} index={index}>
 						<Td isNumeric>{index + 1}</Td>
 						<Td isHighlight>
-							<Link to={`/film/${film.filmSlug}`}>{film.title}</Link>
+							<Link href={`/film/${film.filmSlug}`}>{film.title}</Link>
 						</Td>
 						<Td>{film.distributor}</Td>
 						<Td isNumeric>£ {film.weekendGross.toLocaleString('en-GB')}</Td>

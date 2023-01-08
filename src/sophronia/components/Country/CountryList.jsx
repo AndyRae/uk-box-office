@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { BaseTable, Td, Tr } from '../charts/BaseTable';
 
 /**
@@ -18,7 +18,7 @@ export const CountryList = ({ countries }) => {
 					{countries.results.map((country, index) => (
 						<Tr key={country.id} index={index}>
 							<Td isHighlight>
-								<Link to={country.slug}>{country.name}</Link>
+								<Link href={country.slug}>{country.name}</Link>
 							</Td>
 						</Tr>
 					))}

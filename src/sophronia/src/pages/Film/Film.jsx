@@ -1,6 +1,6 @@
 import { useFilm } from '../../api/films';
 import { useParams } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { BoxOfficeTable } from '../../components/Film/BoxOfficeTable';
 import { Card } from '../../components/Dashboard/Card';
 import { Spinner } from '../../components/ui/Spinner';
@@ -75,7 +75,7 @@ export const FilmPage = () => {
 								<li key={country.id} className='mr-2'>
 									<Link
 										key={country.name}
-										to={`/country/${country.slug}`}
+										href={`/country/${country.slug}`}
 										className='text'
 									>
 										{country.name}
@@ -87,7 +87,7 @@ export const FilmPage = () => {
 				</Card>
 
 				<Card title='Distributor'>
-					<Link to={`/distributor/${data.distributor.slug}`}>
+					<Link href={`/distributor/${data.distributor.slug}`}>
 						<h5 className='mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white'>
 							{data.distributor.name}
 						</h5>
