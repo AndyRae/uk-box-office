@@ -14,7 +14,6 @@ export default async function Page({ params }) {
 
 	return (
 		<div>
-			<br></br>
 			<PageTitle title={data.name}>{data.name}</PageTitle>
 			<DistributorFilmsList slug={params.slug} />
 		</div>

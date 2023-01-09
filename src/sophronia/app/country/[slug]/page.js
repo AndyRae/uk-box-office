@@ -1,5 +1,8 @@
 import { getBackendURL } from 'lib/ApiFetcher';
 
+import { PageTitle } from 'components/ui/PageTitle';
+import { CountryFilmsList } from './CountryFilmsList';
+
 export async function getCountry(slug) {
 	const url = getBackendURL();
 	const res = await fetch(`${url}country/${slug}`, { cache: 'no-store' });
@@ -11,8 +14,8 @@ export default async function Page({ params }) {
 
 	return (
 		<div>
-			<br></br>
-			Or: {data.slug} - {data.name}
+			<PageTitle title={data.name}>{data.name}</PageTitle>
+			<CountryFilmsList slug={params.slug} />
 		</div>
 	);
 }
