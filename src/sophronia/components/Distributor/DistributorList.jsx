@@ -18,7 +18,9 @@ export const DistributorList = ({ distributors }) => {
 					{distributors.results.map((distributor, index) => (
 						<Tr key={distributor.id} index={index}>
 							<Td isHighlight>
-								<Link href={distributor.slug}>{distributor.name}</Link>
+								<Link href={`distributor/${distributor.slug}`}>
+									{distributor.name}
+								</Link>
 							</Td>
 						</Tr>
 					))}
