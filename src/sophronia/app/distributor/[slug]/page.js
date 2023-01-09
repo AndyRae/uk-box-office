@@ -1,5 +1,3 @@
-// 'use client';
-
 import { getBackendURL } from 'lib/ApiFetcher';
 
 import { PageTitle } from 'components/ui/PageTitle';
