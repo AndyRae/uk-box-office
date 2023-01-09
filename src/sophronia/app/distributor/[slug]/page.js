@@ -1,4 +1,9 @@
+// 'use client';
+
 import { getBackendURL } from 'lib/ApiFetcher';
+
+import { PageTitle } from 'components/ui/PageTitle';
+import { DistributorFilmsList } from 'components/distributor/DistributorFilmsList';
 
 export async function getDistributor(slug) {
 	const url = getBackendURL();
@@ -12,7 +17,8 @@ export default async function Page({ params }) {
 	return (
 		<div>
 			<br></br>
-			Or: {data.slug} - {data.name}
+			<PageTitle title={data.name}>{data.name}</PageTitle>
+			<DistributorFilmsList slug={params.slug} />
 		</div>
 	);
 }

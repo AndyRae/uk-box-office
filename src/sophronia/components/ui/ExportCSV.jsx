@@ -10,6 +10,7 @@ import { CSVLink } from 'react-csv';
  * @returns {JSX.Element}
  * @example
  * <ExportCSV data={data} filename={'TopGunData.csv'} />
+ * TODO: Fix this in NextJS
  */
 export const ExportCSV = ({ data, filename }) => {
 	return (
