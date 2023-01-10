@@ -1,7 +1,7 @@
-import { PageTitle } from '../../components/ui/PageTitle';
-import { Searchbar } from '../../components/Search/Searchbar';
+import { PageTitle } from 'components/ui/PageTitle';
+import { Searchbar } from 'components/Search/Searchbar';
 
-export const NotFound = () => {
+export default function NotFound() {
 	return (
 		<>
 			<PageTitle>404</PageTitle>
@@ -14,4 +14,4 @@ export const NotFound = () => {
 			</div>
 		</>
 	);
-};
+}
