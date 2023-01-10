@@ -10,7 +10,6 @@ export async function getTopFilms() {
 
 export default async function Page() {
 	const data = await getTopFilms();
-	console.log(data);
 	return (
 		<>
 			<PageTitle>All Time Top Films</PageTitle>

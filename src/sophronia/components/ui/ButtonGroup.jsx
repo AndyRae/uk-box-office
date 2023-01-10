@@ -9,7 +9,6 @@ import { Button } from './Button';
  * @example
  * <ButtonGroup>
  *  <Button onClick={() => console.log('Hello World!')}>Hello World!</Button>
- *  <Button onClick={() => console.log('Hello World!')}>Hello World!</Button>
  * </ButtonGroup>
  */
 export const ButtonGroup = ({ children }) => {
