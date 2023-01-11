@@ -1,3 +1,9 @@
+import { TimePage } from '../../../time';
+
 export default function Page({ params }) {
-	return <div>Holding Page for {params.month}</div>;
+	return (
+		<>
+			<TimePage year={params.year} month={params.month} />
+		</>
+	);
 }

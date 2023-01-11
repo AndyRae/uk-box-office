@@ -1,7 +1,9 @@
+import { TimePage } from '../../../../../time';
+
 export default function Page({ params }) {
 	return (
-		<div>
-			Holding Page for {params.year} / {params.month} / {params.day}
-		</div>
+		<>
+			<TimePage year={params.year} month={params.month} day={params.day} />
+		</>
 	);
 }
