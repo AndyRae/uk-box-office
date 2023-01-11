@@ -1,7 +1,13 @@
+import { TimePage } from '../../../../time';
+
 export default function Page({ params }) {
 	return (
-		<div>
-			Holding Page for {params.year} / {params.quarter} - {params.quarterend}
-		</div>
+		<>
+			<TimePage
+				year={params.year}
+				quarter={params.quarter}
+				quarterend={params.quarterend}
+			/>
+		</>
 	);
 }

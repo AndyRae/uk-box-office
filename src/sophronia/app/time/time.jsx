@@ -65,14 +65,14 @@ export const TimePage = ({
 	let endMonth = month;
 
 	// Quarters unpack
-	// if (quarter) {
-	// 	month = quarter * 3 - 2;
-	// 	if (quarterend !== 0) {
-	// 		endMonth = quarterend * 3;
-	// 	} else {
-	// 		endMonth = quarter * 3;
-	// 	}
-	// }
+	if (quarter) {
+		month = quarter * 3 - 2;
+		if (quarterend !== 0) {
+			endMonth = quarterend * 3;
+		} else {
+			endMonth = quarter * 3;
+		}
+	}
 
 	Date.prototype.addDays = function (days) {
 		var date = new Date(this.valueOf());
