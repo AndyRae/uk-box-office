@@ -54,14 +54,10 @@ export const TimePage = ({
 	quarter = null,
 	quarterend = 0,
 }) => {
-	// const location = useLocation();
-
 	// Unpack dates to allow flexbility for Month/Day/Quarter being null.
 	// Year is never null.
-	// const { year, day, quarter, quarterend = 0 } = useParams();
 
 	// Month has to be unpacked differently to allow for quarters calculations.
-	// let { month } = useParams();
 	let endMonth = month;
 
 	// Quarters unpack
@@ -277,8 +273,8 @@ export const TimePage = ({
 								<div key={index} className='text-center'>
 									<Link
 										href={`/time/${year.year}${
-											quarter ? '/q' + quarter : month ? '/m' + month : ''
-										}${quarterend ? '/q' + quarterend : ''}`}
+											quarter ? '/q/' + quarter : month ? '/m/' + month : ''
+										}${quarterend ? '/' + quarterend : ''}`}
 										className='font-bold text-left'
 									>
 										{year.year}
@@ -354,16 +350,16 @@ export const TimePage = ({
 					<PillLink to={`/time/${year}`} isActive={true}>
 						{year}
 					</PillLink>
-					<PillLink to={`/time/${year}/q1`} isActive={quarter === '1'}>
+					<PillLink to={`/time/${year}/q/1`} isActive={quarter === '1'}>
 						Q1
 					</PillLink>
-					<PillLink to={`/time/${year}/q2`} isActive={quarter === '2'}>
+					<PillLink to={`/time/${year}/q/2`} isActive={quarter === '2'}>
 						Q2
 					</PillLink>
-					<PillLink to={`/time/${year}/q3`} isActive={quarter === '3'}>
+					<PillLink to={`/time/${year}/q/3`} isActive={quarter === '3'}>
 						Q3
 					</PillLink>
-					<PillLink to={`/time/${year}/q4`} isActive={quarter === '4'}>
+					<PillLink to={`/time/${year}/q/4`} isActive={quarter === '4'}>
 						Q4
 					</PillLink>
 				</ul>
@@ -371,7 +367,11 @@ export const TimePage = ({
 				{/* Months */}
 				<ul className='flex flex-wrap lg:flex-nowrap flex- text-sm font-medium text-center text-gray-500 dark:text-gray-400'>
 					{Object.keys(months).map((m) => (
-						<PillLink key={m} to={`/time/${year}/m${m}`} isActive={m === month}>
+						<PillLink
+							key={m}
+							to={`/time/${year}/m/${m}`}
+							isActive={m === month}
+						>
 							{months[m]}
 						</PillLink>
 					))}

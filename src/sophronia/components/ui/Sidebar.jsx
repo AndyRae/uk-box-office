@@ -35,7 +35,7 @@ const links = [
 	},
 	{
 		name: 'Market Share',
-		path: '/marketshare',
+		path: '/marketshare/distributors',
 		icon: <BiNetworkChart />,
 	},
 	{
