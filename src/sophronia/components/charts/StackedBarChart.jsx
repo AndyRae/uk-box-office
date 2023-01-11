@@ -11,8 +11,7 @@ import {
 	TimeScale,
 } from 'chart.js';
 import { useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { groupStackedFilms } from '../../utils/groupData';
+import { groupStackedFilms } from 'lib/utils/groupData';
 
 ChartJS.register(
 	BarElement,
@@ -33,7 +32,7 @@ ChartJS.register(
  * <StackedBarChart data={data} height={height} />
  */
 export const StackedBarChart = ({ data, height }) => {
-	const navigate = useNavigate();
+	// const navigate = useNavigate();
 	const chartRef = useRef(null);
 
 	// Prepare the data for the chart
