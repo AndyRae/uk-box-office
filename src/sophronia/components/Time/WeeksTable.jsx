@@ -32,7 +32,7 @@ export const WeeksTable = ({ data }) => {
 				return (
 					<Tr key={week.date} index={index}>
 						<Td isHighlight>
-							<Link href={`/time/${year}/m${parseInt(month, 10)}/d${day}`}>
+							<Link href={`/time/${year}/m/${parseInt(month, 10)}/d/${day}`}>
 								{week.date}
 							</Link>
 						</Td>

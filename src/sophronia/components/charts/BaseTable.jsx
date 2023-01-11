@@ -71,7 +71,7 @@ export const Td = ({ isNumeric, isHighlight, children, ...rest }) => {
 	return (
 		<td
 			className={`py-4 px-3 ${
-				isNumeric ? 'text-center whitespace-nowrap' : ''
+				isNumeric ? 'text-center whitespace-nowrap tabular-nums' : ''
 			} ${isHighlight ? 'font-medium text-gray-900 dark:text-white' : ''} ${
 				rest.className
 			}`}

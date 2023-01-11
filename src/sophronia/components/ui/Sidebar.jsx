@@ -20,7 +20,7 @@ const links = [
 	},
 	{
 		name: 'Last Week',
-		path: '/week',
+		path: '/time/lastweek',
 		icon: <BiFilm />,
 	},
 	{
