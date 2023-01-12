@@ -25,7 +25,9 @@ export const getBackendURL = () => {
 		return 'http://berenice:5000/api/';
 	}
 
-	return process.env.NEXT_PUBLIC_BACKEND_URL;
+	return (
+		process.env.NEXT_PUBLIC_BACKEND_URL || 'https://boxofficedata.co.uk/api/'
+	);
 };
 
 export const getBackendURLClient = () => {
@@ -37,7 +39,9 @@ export const getBackendURLClient = () => {
 		return 'http://localhost:5000/api/';
 	}
 
-	return process.env.NEXT_PUBLIC_BACKEND_URL;
+	return (
+		process.env.NEXT_PUBLIC_BACKEND_URL || 'https://boxofficedata.co.uk/api/'
+	);
 };
 
 /**
