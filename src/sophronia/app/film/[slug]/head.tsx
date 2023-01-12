@@ -1,4 +1,4 @@
-import { getFilm } from './page';
+import { getFilm } from './getFilm';
 
 export default async function Head({ params }: { params: { slug: string } }) {
 	const film = await getFilm(params.slug);

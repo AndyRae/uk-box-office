@@ -8,7 +8,7 @@ import { PageTitle } from 'components/ui/PageTitle';
 import { PageContent } from 'components/ui/PageContent';
 import { Card } from 'components/Dashboard/Card';
 
-export async function getBoxOfficeSummary(startDate, endDate, limit) {
+async function getBoxOfficeSummary(startDate, endDate, limit) {
 	const url = getBackendURL();
 	const res = await fetch(
 		`${url}boxoffice/summary?start=${startDate}&end=${endDate}&limit=${limit}`,

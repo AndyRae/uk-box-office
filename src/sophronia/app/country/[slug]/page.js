@@ -3,11 +3,7 @@ import { getBackendURL } from 'lib/ApiFetcher';
 import { PageTitle } from 'components/ui/PageTitle';
 import { CountryFilmsList } from './CountryFilmsList';
 
-export async function getCountry(slug) {
-	const url = getBackendURL();
-	const res = await fetch(`${url}country/${slug}`, { cache: 'no-store' });
-	return res.json();
-}
+import { getCountry } from './getCountry';
 
 export default async function Page({ params }) {
 	const data = await getCountry(params.slug);

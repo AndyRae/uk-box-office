@@ -9,11 +9,7 @@ import { TimeLineChart } from 'components/Time/TimeLineChart';
 import { DatasourceButton } from 'components/Dashboard/Datasource';
 import Link from 'next/link';
 
-export async function getFilm(slug) {
-	const url = getBackendURL();
-	const res = await fetch(`${url}film/${slug}`, { cache: 'no-store' });
-	return res.json();
-}
+import { getFilm } from './getFilm';
 
 export default async function Page({ params }) {
 	const data = await getFilm(params.slug);

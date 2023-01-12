@@ -5,7 +5,7 @@ import { PageTitle } from 'components/ui/PageTitle';
 import { PageContent } from 'components/ui/PageContent';
 import { Card } from 'components/Dashboard/Card';
 
-export async function getForecast(startDate, endDate, limit) {
+async function getForecast(startDate, endDate, limit) {
 	const url = getBackendURL();
 	const res = await fetch(
 		`${url}boxoffice/topline?start=${startDate}&end=${endDate}&limit=${limit}`,

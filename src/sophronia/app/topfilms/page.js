@@ -2,7 +2,7 @@ import { getBackendURL } from 'lib/ApiFetcher';
 import { PageTitle } from 'components/ui/PageTitle';
 import { TopFilmsTable } from 'components/Time/TopFilmsTable';
 
-export async function getTopFilms() {
+async function getTopFilms() {
 	const url = getBackendURL();
 	const res = await fetch(`${url}boxoffice/topfilms`, { cache: 'no-store' });
 	return res.json();

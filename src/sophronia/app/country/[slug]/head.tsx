@@ -1,4 +1,4 @@
-import { getCountry } from './page';
+import { getCountry } from './getCountry';
 
 export default async function Head({ params }: { params: { slug: string } }) {
 	const country = await getCountry(params.slug);
