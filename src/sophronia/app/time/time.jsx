@@ -270,7 +270,7 @@ export const TimePage = ({
 					{isReachedEnd &&
 						timeComparisonData.results.slice(1, 4).map((year, index) => {
 							return (
-								<div key={index} className='text-center'>
+								<div key={index} className='text-center tabular-nums'>
 									<Link
 										href={`/time/${year.year}${
 											quarter ? '/q/' + quarter : month ? '/m/' + month : ''
