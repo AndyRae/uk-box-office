@@ -36,33 +36,13 @@ class Week(PkModel):  # type: ignore
     number_of_releases = db.Column(db.Integer, nullable=True, default=0)
     weekend_gross = db.Column(db.Integer, nullable=True, default=0)
     week_gross = db.Column(db.Integer, nullable=True, default=0)
+    admissions = db.Column(db.Integer, nullable=True, default=0)
     forecast_high = db.Column(db.Integer, nullable=True, default=0)
     forecast_medium = db.Column(db.Integer, nullable=True, default=0)
     forecast_low = db.Column(db.Integer, nullable=True, default=0)
 
     def __repr__(self) -> str:
         return f"{self.date}"
-
-    def as_dict(self) -> Dict[str, Any]:
-        """
-        Serialise the week as a dictionary.
-
-        This is used to create the JSON responses.
-
-        Returns:
-            A dictionary representation of the week.
-
-        """
-        return {
-            "id": self.id,
-            "date": datetime.strftime(self.date, "%Y-%m-%d"),
-            "number_of_cinemas": self.number_of_cinemas,
-            "weekend_gross": self.weekend_gross,
-            "week_gross": self.week_gross,
-            "forecast_high": self.forecast_high,
-            "forecast_medium": self.forecast_medium,
-            "forecast_low": self.forecast_low,
-        }
 
     def as_df(self) -> List[Any]:
         """

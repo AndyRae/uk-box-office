@@ -41,11 +41,11 @@
 		}
 	},
 
-	// // Pass the codespace variables to React
-	"remoteEnv": { 
-		"REACT_APP_CODESPACE": "true",
-		"REACT_APP_CODESPACE_NAME": "${localEnv:CODESPACE_NAME}",
-		"REACT_APP_GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN": "${localEnv:GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}"
+	// // Pass the codespace variables to Next
+	"remoteEnv": {
+		"NEXT_PUBLIC_CODESPACE": "true",
+		"NEXT_PUBLIC_CODESPACE_NAME": "${localEnv:CODESPACE_NAME}",
+		"NEXT_PUBLIC_GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN": "${localEnv:GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}"
 	}
 
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.

@@ -33,7 +33,7 @@ jobs:
 
       - name: Build React
         env:
-          REACT_APP_BACKEND_URL: https://api.boxofficedata.co.uk/api/
+          NEXT_PUBLIC__BACKEND_URL: https://api.boxofficedata.co.uk/api/
         run: CI=false npm run build --prefix ./src/sophronia/
 
       - name: Deploy on VM
@@ -47,7 +47,7 @@ jobs:
             source venv/bin/activate
             cd src/berenice
             pip install -r requirements.txt
-            flask db update
+            flask db upgrade
             systemctl restart nginx
             systemctl restart gunicorn
           ENDSSH

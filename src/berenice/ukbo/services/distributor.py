@@ -5,6 +5,7 @@ from flask import Response, abort, jsonify
 from slugify import slugify  # type: ignore
 from sqlalchemy.sql import func
 from ukbo import models
+from ukbo.dto import DistributorSchema, FilmSchemaStrict
 from ukbo.extensions import db
 
 
@@ -29,11 +30,13 @@ def list(page: int = 1, limit: int = 100) -> Response:
     next_page = (page + 1) if data.has_next else ""
     previous_page = (page - 1) if data.has_prev else ""
 
+    distributor_schema = DistributorSchema()
+
     return jsonify(
         count=data.total,
         next=next_page,
         previous=previous_page,
-        results=[ix.as_dict() for ix in data.items],
+        results=[distributor_schema.dump(ix) for ix in data.items],
     )
 
 
@@ -53,7 +56,9 @@ def get(slug: str) -> Response:
     if data is None:
         abort(404)
 
-    return data.as_dict()
+    distributor_schema = DistributorSchema()
+
+    return distributor_schema.dump(data)
 
 
 def get_films(slug: str, page: int = 1, limit: int = 100) -> Response:
@@ -84,12 +89,15 @@ def get_films(slug: str, page: int = 1, limit: int = 100) -> Response:
     next_page = (page + 1) if data.has_next else ""
     previous_page = (page - 1) if data.has_prev else ""
 
+    distributor_schema = DistributorSchema()
+    film_schema = FilmSchemaStrict()
+
     return jsonify(
-        distributor=distributor.as_dict(),
+        distributor=distributor_schema.dump(distributor),
         count=data.total,
         next=next_page,
         previous=previous_page,
-        results=[ix.as_dict() for ix in data.items],
+        results=[film_schema.dump(ix) for ix in data.items],
     )
 
 
@@ -126,7 +134,9 @@ def search(search_query: str) -> Response:
     query = query.filter(models.Distributor.name.ilike(f"%{search_query}%"))
     data = query.limit(10).all()
 
-    return [] if data is None else [ix.as_dict() for ix in data]
+    distributor_schema = DistributorSchema()
+
+    return [] if data is None else [distributor_schema.dump(ix) for ix in data]
 
 
 def market_share(year: Optional[str] = None) -> Response:
@@ -159,9 +169,15 @@ def market_share(year: Optional[str] = None) -> Response:
     if data is None:
         abort(404)
 
+    distributor_schema = DistributorSchema()
+
     return jsonify(
         results=[
-            dict(year=row[0], distributor=row[1].as_dict(), gross=row[2])
+            dict(
+                year=row[0],
+                distributor=distributor_schema.dump(row[1]),
+                gross=row[2],
+            )
             for row in data
         ]
     )

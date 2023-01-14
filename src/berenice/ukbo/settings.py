@@ -28,6 +28,7 @@ class Config:
     RATELIMIT_API = "200/minute"
     CORS_ORIGIN = os.getenv("CORS_ORIGIN")
     CORS_ORIGIN_2 = os.getenv("CORS_ORIGIN_2")
+    RATELIMIT_STORAGE_URI = "memory://"
 
 
 class DevelopmentConfig(Config):
@@ -40,6 +41,8 @@ class DevelopmentConfig(Config):
     FLATPAGES_AUTO_RELOAD = DEBUG
     CORS_ORIGIN = "http://localhost:3000"
     CORS_ORIGIN_2 = "*"
+    CACHE_TYPE = "NullCache"
+    CACHE_NO_NULL_WARNING = True
 
 
 class TestConfig(Config):
@@ -49,6 +52,10 @@ class TestConfig(Config):
 
     DEBUG = True
     CACHE_TYPE = "null"
+    TESTING = True
+    CACHE_TYPE = "NullCache"
+    CACHE_NO_NULL_WARNING = True
+    CORS_ORIGIN = "*"
 
 
 # Logging config

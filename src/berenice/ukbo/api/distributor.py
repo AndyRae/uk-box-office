@@ -22,8 +22,8 @@ def all() -> Response:
     return services.distributor.list(page, limit)
 
 
-@cache.cached()
 @distributor.route("/marketshare", methods=["GET"])
+@cache.cached()
 def market_share() -> Response:
     """
     Get distributors market share data for all time.
@@ -45,11 +45,16 @@ def market_share_year(year: str) -> Response:
     Returns:
         JSON response of distributors market share data.
     """
+    try:
+        int(year)
+    except ValueError:
+        return Response('{"error: "Year must be an integer."}', status=400)
+
     return services.distributor.market_share(year)
 
 
-@cache.cached()
 @distributor.route("/<slug>", methods=["GET"])
+@cache.cached()
 def get(slug: str) -> Response:
     """
     Get one distributor details.
