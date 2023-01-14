@@ -40,7 +40,7 @@ jobs:
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
-          scp  -o StrictHostKeyChecking=no -r ./src/sophronia/.next/* root@${{ secrets.STAGING_IP_ADDRESS }}:/var/www/uk-box-office-beta/src/sophronia/.next/
+          scp  -o StrictHostKeyChecking=no -r ./src/sophronia/* root@${{ secrets.STAGING_IP_ADDRESS }}:/var/www/uk-box-office-beta/src/sophronia/*
           ssh -o StrictHostKeyChecking=no root@${{ secrets.STAGING_IP_ADDRESS }} << 'ENDSSH'
             systemctl restart nginx
           ENDSSH
