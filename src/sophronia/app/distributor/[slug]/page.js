@@ -1,18 +1,15 @@
-import { getBackendURL } from 'lib/ApiFetcher';
+import { getDistributor } from './getDistributor';
 
-export async function getDistributor(slug) {
-	const url = getBackendURL();
-	const res = await fetch(`${url}distributor/${slug}`, { cache: 'no-store' });
-	return res.json();
-}
+import { PageTitle } from 'components/ui/PageTitle';
+import { DistributorFilmsList } from './DistributorFilmsList';
 
 export default async function Page({ params }) {
 	const data = await getDistributor(params.slug);
 
 	return (
 		<div>
-			<br></br>
-			Or: {data.slug} - {data.name}
+			<PageTitle title={data.name}>{data.name}</PageTitle>
+			<DistributorFilmsList slug={params.slug} />
 		</div>
 	);
 }

@@ -10,7 +10,11 @@
  * @exports useProtectedSWRInfinite
  */
 
-import { useBackendApi, useAxiosFetcher } from './ApiFetcher';
+import {
+	useBackendApi,
+	useAxiosFetcher,
+	getBackendURLClient,
+} from './ApiFetcher';
 import useSWR from 'swr';
 import useSWRInfinite from 'swr/infinite';
 import { useMemo } from 'react';
@@ -195,7 +199,7 @@ export function useBoxOfficeInfinite(startDate, endDate) {
  * @returns useSWR hook with boxoffice data from the api with pagination.
  */
 const useProtectedSWRInfinite = (startDate, endDate) => {
-	const backendUrl = `${getBackendURL()}boxoffice/all`;
+	const backendUrl = `${getBackendURLClient()}boxoffice/all`;
 
 	/**
 	 * Next page infinite loading for useSWR

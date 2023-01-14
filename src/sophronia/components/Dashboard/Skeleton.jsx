@@ -5,7 +5,7 @@ import { Tooltip } from '../ui/Tooltip';
 import { MetricChange } from '../charts/MetricChange';
 import { Datepickers } from './Datepickers';
 import { TimeLineChart } from '../Time/TimeLineChart';
-import { FilmTable } from '../Time/FilmTable';
+import { FilmTableDetailed } from '../Time/FilmTableDetailed';
 import { LastUpdated } from './LastUpdated';
 import { StackedBarChart } from '../charts/StackedBarChart';
 import { DatasourceCard } from './Datasource';
@@ -94,7 +94,7 @@ export const Skeleton = ({ children, ...props }) => {
 			<SkeletonCharts />
 
 			<div className='mt-3 md:mt-6'>
-				<FilmTable data={[]} />
+				<FilmTableDetailed data={[]} />
 			</div>
 
 			{children}

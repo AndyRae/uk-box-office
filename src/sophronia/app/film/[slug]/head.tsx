@@ -1,14 +1,13 @@
-import { getFilm } from './page';
+import { getFilm } from './getFilm';
 
 export default async function Head({ params }: { params: { slug: string } }) {
 	const film = await getFilm(params.slug);
 
-	const title = `${film.name} | ${film.distributor.name}`;
+	const title = `${film.name} | Box Office Data`;
 
 	return (
 		<>
 			<title>{title}</title>
-			<meta name='viewport' content='width=device-width, initial-scale=1' />
 		</>
 	);
 }

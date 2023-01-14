@@ -25,7 +25,23 @@ export const getBackendURL = () => {
 		return 'http://berenice:5000/api/';
 	}
 
-	return process.env.NEXT_PUBLIC_BACKEND_URL;
+	return (
+		process.env.NEXT_PUBLIC_BACKEND_URL || 'https://boxofficedata.co.uk/api/'
+	);
+};
+
+export const getBackendURLClient = () => {
+	if (process.env.NEXT_PUBLIC_CODESPACE === 'true') {
+		return `https://${process.env.NEXT_PUBLIC_CODESPACE_NAME}-5000.${process.env.NEXT_PUBLIC_GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}/api/`;
+	}
+
+	if (process.env.NODE_ENV === 'development') {
+		return 'http://localhost:5000/api/';
+	}
+
+	return (
+		process.env.NEXT_PUBLIC_BACKEND_URL || 'https://boxofficedata.co.uk/api/'
+	);
 };
 
 /**
@@ -37,7 +53,7 @@ export const getBackendURL = () => {
  */
 export const useBackendApi = () => {
 	const getBackendDefaults = () => ({
-		prefixUrl: getBackendURL(),
+		prefixUrl: getBackendURLClient(),
 	});
 
 	const api = ky.create(getBackendDefaults());

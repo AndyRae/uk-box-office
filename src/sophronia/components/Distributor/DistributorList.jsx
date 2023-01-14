@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { BaseTable, Td, Tr } from '../charts/BaseTable';
 
 /**
@@ -18,7 +18,9 @@ export const DistributorList = ({ distributors }) => {
 					{distributors.results.map((distributor, index) => (
 						<Tr key={distributor.id} index={index}>
 							<Td isHighlight>
-								<Link to={distributor.slug}>{distributor.name}</Link>
+								<Link href={`distributor/${distributor.slug}`}>
+									{distributor.name}
+								</Link>
 							</Td>
 						</Tr>
 					))}

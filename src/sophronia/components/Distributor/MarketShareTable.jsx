@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { BaseTable, Td, Tr } from '../charts/BaseTable';
 
 /**
@@ -20,7 +20,7 @@ export const MarketShareTable = ({ data }) => {
 				return (
 					<Tr key={index} index={index}>
 						<Td isHighlight>
-							<Link to={`/distributor/${row.slug}`}>{row.name}</Link>
+							<Link href={`/distributor/${row.slug}`}>{row.name}</Link>
 						</Td>
 						<Td isNumeric>£ {row.marketShare.toLocaleString('en-GB')}</Td>
 						<Td isNumeric>{Math.ceil(row.marketPercentage * 100)}%</Td>
