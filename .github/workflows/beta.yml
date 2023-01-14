@@ -40,7 +40,7 @@ jobs:
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
-          scp  -o StrictHostKeyChecking=no -r ./src/sophronia/package.json ./src/sophronia/package-lock.json root@${{ secrets.STAGING_IP_ADDRESS }}:/var/www/uk-box-office-beta/src/sophronia
+          scp  -o StrictHostKeyChecking=no ./src/sophronia/package.json ./src/sophronia/package-lock.json root@${{ secrets.STAGING_IP_ADDRESS }}:/var/www/uk-box-office-beta/src/sophronia
           scp  -o StrictHostKeyChecking=no -r ./src/sophronia/.next/* root@${{ secrets.STAGING_IP_ADDRESS }}:/var/www/uk-box-office-beta/src/sophronia/.next/*
           ssh -o StrictHostKeyChecking=no root@${{ secrets.STAGING_IP_ADDRESS }} << 'ENDSSH'
             cd /var/www/uk-box-office-beta/src/sophronia
