@@ -1,7 +1,7 @@
 import { getDistributor } from './getDistributor';
 
 import { PageTitle } from 'components/ui/PageTitle';
-import { DistributorFilmsList } from 'components/distributor/DistributorFilmsList';
+import { DistributorFilmsList } from './DistributorFilmsList';
 
 export default async function Page({ params }) {
 	const data = await getDistributor(params.slug);

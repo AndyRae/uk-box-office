@@ -1,7 +1,7 @@
 'use client';
 
 import { useCountryFilms } from 'lib/countries';
-import { FilmTable } from 'components/film/FilmTable';
+import { FilmTable } from 'components/Film/FilmTable';
 import { Pagination } from 'components/ui/Pagination';
 import { paginate } from 'lib/utils/pagination';
 import { useState } from 'react';

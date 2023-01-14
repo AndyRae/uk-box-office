@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Card } from 'components/Dashboard/Card';
 
 import { groupForTable, groupbyDate } from 'lib/utils/groupData';
-import { FilmTable } from 'components/Time/FilmTable';
+import { FilmTableDetailed } from 'components/Time/FilmTableDetailed';
 import { WeeksTable } from 'components/Time/WeeksTable';
 import { Tabs } from 'components/ui/Tabs';
 import { MetricChange } from 'components/charts/MetricChange';
@@ -401,7 +401,7 @@ export const TimePage = ({
 								<DatasourceButton />
 								<ExportCSV data={tableData} filename={'filmdata.csv'} />
 							</div>
-							<FilmTable
+							<FilmTableDetailed
 								data={tableData}
 								comparisonData={isWeekView && lastWeekResults}
 							/>

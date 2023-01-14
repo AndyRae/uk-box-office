@@ -9,7 +9,7 @@ import { MetricChange } from '../charts/MetricChange';
  * @param {Array} comparisonData - Array of films from the previous week
  * @returns {JSX.Element}
  */
-export const FilmTable = ({ data, comparisonData }) => {
+export const FilmTableDetailed = ({ data, comparisonData }) => {
 	const columns = [
 		{ label: 'rank', isNumeric: true },
 		{ label: 'title' },

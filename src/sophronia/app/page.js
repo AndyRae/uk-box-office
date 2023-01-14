@@ -13,7 +13,7 @@ import {
 } from 'lib/utils/groupData';
 import { MetricChange } from 'components/charts/MetricChange';
 import { Datepickers } from 'components/Dashboard/Datepickers';
-import { FilmTable } from 'components/Time/FilmTable';
+import { FilmTableDetailed } from 'components/Time/FilmTableDetailed';
 import { TimeLineChart } from 'components/Time/TimeLineChart';
 import { Tooltip } from 'components/ui/Tooltip';
 import {
@@ -220,9 +220,9 @@ export default function Home() {
 			{/* Table */}
 			<div className='mt-3 md:mt-6'>
 				{isReachedEnd ? (
-					<FilmTable data={tableData} />
+					<FilmTableDetailed data={tableData} />
 				) : (
-					<FilmTable data={[]} />
+					<FilmTableDetailed data={[]} />
 				)}
 			</div>
 		</div>
