@@ -3,13 +3,13 @@ import { BiFilm, BiNetworkChart } from 'react-icons/bi';
 import { MdOutlineSpaceDashboard, MdOutlineAutoGraph } from 'react-icons/md';
 import { HiOutlineTicket } from 'react-icons/hi';
 import { FiDatabase } from 'react-icons/fi';
-import { useLocation } from 'react-router-dom';
-import { NavLink, Link } from 'react-router-dom';
 import { Searchbar } from '../Search/Searchbar';
+import { SideBarLink } from './SideBarLink';
 import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
 import { BsListOl } from 'react-icons/bs';
 import { Card } from '../Dashboard/Card';
 import { InlineLink } from './InlineLink';
+import Link from 'next/link';
 
 // Quick links to display in the sidebar
 const links = [
@@ -20,7 +20,7 @@ const links = [
 	},
 	{
 		name: 'Last Week',
-		path: '/week',
+		path: '/time/lastweek',
 		icon: <BiFilm />,
 	},
 	{
@@ -35,7 +35,7 @@ const links = [
 	},
 	{
 		name: 'Market Share',
-		path: '/marketshare',
+		path: '/marketshare/distributors',
 		icon: <BiNetworkChart />,
 	},
 	{
@@ -56,32 +56,6 @@ const links = [
 ];
 
 /**
- * Sidebar link component
- * @description The sidebar link.
- * @param {string} name - The name of the link.
- * @param {string} path - The path of the link.
- * @param {JSX.Element} icon - The icon of the link.
- * @param {boolean} isActive - Whether the link is active.
- * @returns {JSX.Element}
- * @example
- * <SideBarElement name='Dashboard' path='/' icon={<MdOutlineSpaceDashboard />} />
- */
-const SideBarLink = ({ name, path, icon, children, isActive }) => {
-	return (
-		<NavLink
-			to={path}
-			as={Link}
-			className={`flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900 ${
-				isActive ? 'bg-gray-200 dark:bg-bo-primary' : ''
-			}`}
-		>
-			{icon}
-			<span className='ml-3'>{name}</span>
-		</NavLink>
-	);
-};
-
-/**
  * Brand component
  * @description The brand logo and name.
  * @returns {JSX.Element}
@@ -90,12 +64,12 @@ const SideBarLink = ({ name, path, icon, children, isActive }) => {
  */
 export const Brand = () => {
 	return (
-		<NavLink to='/' className='flex items-center pl-2.5 mb-5'>
+		<Link href='/' className='flex items-center pl-2.5 mb-5'>
 			<img src='/logo.svg' className='mr-3 h-6 sm:h-7' uk-svg='' />
 			<span className='self-center text-xl font-semibold whitespace-nowrap dark:text-white'>
 				Box Office Data
 			</span>
-		</NavLink>
+		</Link>
 	);
 };
 
@@ -108,7 +82,6 @@ export const Brand = () => {
  * @see Sidebar
  */
 const SidebarContent = () => {
-	const { pathname } = useLocation();
 	return (
 		<div>
 			<div className='flex flex-col space-y-6'>
@@ -123,7 +96,6 @@ const SidebarContent = () => {
 								name={element.name}
 								path={element.path}
 								icon={element.icon}
-								isActive={pathname === element.path}
 							/>
 						);
 					})}

@@ -1,9 +1,11 @@
+'use client';
+
 import { Timeseries } from '../charts/Timeseries';
-import { groupbyMonth, groupbyDate } from '../../utils/groupData';
+import { groupbyMonth, groupbyDate } from 'lib/utils/groupData';
 import { AiOutlineArrowDown } from 'react-icons/ai';
 import { useState, useEffect, useRef } from 'react';
 import { Tooltip } from '../ui/Tooltip';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { getElementAtEvent } from 'react-chartjs-2';
 
 /**
@@ -23,7 +25,7 @@ export const TimeLineChart = ({
 	color = '#B65078',
 	allowRollUp = true,
 }) => {
-	const navigate = useNavigate();
+	// const navigate = useNavigate();
 
 	const { results: weekData } = groupbyDate(data);
 
@@ -145,7 +147,7 @@ export const TimeLineChart = ({
 			const url = `/time/${dateString[0]}${
 				dateString[1] ? '/m' + parseInt(dateString[1], 10) : ''
 			}${dateString[2] ? '/d' + dateString[2] : ''}`;
-			navigate(url);
+			// navigate(url);
 		}
 	};
 

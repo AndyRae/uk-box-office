@@ -1,7 +1,6 @@
 import { BarChart } from '../charts/BarChart';
 import { useRef } from 'react';
 import { getElementAtEvent } from 'react-chartjs-2';
-import { useNavigate } from 'react-router-dom';
 
 /**
  * @description Charts previous box office years as a horizontal bar chart.
@@ -12,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
  * <PreviousYearsChart data={data} />
  */
 export const PreviousYearsChart = ({ data }) => {
-	const navigate = useNavigate();
+	// const navigate = useNavigate();
 
 	const options = {
 		responsive: true,
@@ -83,7 +82,7 @@ export const PreviousYearsChart = ({ data }) => {
 	const onClick = (event) => {
 		var x = getElementAtEvent(chartRef.current, event);
 		const year = d.labels[x[0].index];
-		navigate(`/time/${year}`);
+		// navigate(`/time/${year}`);
 	};
 
 	return (

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { BaseTable, Td, Tr } from '../charts/BaseTable';
 import { MetricChange } from '../charts/MetricChange';
 
@@ -35,7 +35,7 @@ export const YearsTable = ({ data, id }) => {
 				return (
 					<Tr key={year.year} index={index}>
 						<Td isHighlight>
-							<Link to={`/time/${year.year}`}>{year.year}</Link>
+							<Link href={`/time/${year.year}`}>{year.year}</Link>
 						</Td>
 						<Td isNumeric>£ {year.weekend_gross.toLocaleString('en-GB')}</Td>
 						<Td isNumeric>£ {year.week_gross.toLocaleString('en-GB')}</Td>

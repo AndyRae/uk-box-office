@@ -36,6 +36,7 @@ export const StructuredSiteData = () => {
  * @param {endpoint} url of the pgae
  * @param {time} time period of the page
  * @returns JSON-LD structured data for the current page.
+ * TODO: Fix this in NextJS
  */
 export const StructuredTimeData = ({ title, endpoint, time }) => {
 	const data = {

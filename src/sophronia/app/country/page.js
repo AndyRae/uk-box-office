@@ -3,6 +3,9 @@
 import { useCountryList } from 'lib/countries';
 import { useState } from 'react';
 import { paginate } from 'lib/utils/pagination';
+import { CountryList } from 'components/Country/CountryList';
+import { Pagination } from 'components/ui/Pagination';
+import { PageTitle } from 'components/ui/PageTitle';
 
 export default function Page() {
 	const [pageIndex, setPageIndex] = useState(1);
@@ -10,5 +13,15 @@ export default function Page() {
 	const { data, error } = useCountryList(pageIndex, pageLimit);
 	const pageNumbers = paginate(data?.count, pageIndex, pageLimit);
 
-	return <div>Holding Page</div>;
+	return (
+		<>
+			<PageTitle>Countries</PageTitle>
+			<CountryList countries={data} pageIndex={pageIndex} />
+			<Pagination
+				pages={pageNumbers}
+				setPageIndex={setPageIndex}
+				pageIndex={pageIndex}
+			/>
+		</>
+	);
 }

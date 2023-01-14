@@ -1,6 +1,8 @@
+'use client';
+
 import { useForm } from 'react-hook-form';
 import { AiOutlineSearch } from 'react-icons/ai';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 
 /**
  * @description Searchbar component
@@ -18,10 +20,10 @@ export const Searchbar = ({ placeholder = 'Search', value = null }) => {
 		formState: { errors },
 	} = useForm();
 	const onSubmit = (data) => handleSearch(data);
-	const navigate = useNavigate();
+	const router = useRouter();
 
 	const handleSearch = (data) => {
-		navigate(`/search?q=${data.Search}`);
+		router.push(`/search?q=${data.Search}`);
 	};
 
 	return (

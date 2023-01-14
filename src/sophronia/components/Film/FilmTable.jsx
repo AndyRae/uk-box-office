@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { BaseTable, Td, Tr } from '../charts/BaseTable';
 
 /**
@@ -19,7 +19,7 @@ export const FilmTable = ({ films }) => {
 			{films.results.map((film, index) => (
 				<Tr key={film.id} index={index}>
 					<Td isHighlight>
-						<Link to={`/film/${film.slug}`}>{film.name}</Link>
+						<Link href={`/film/${film.slug}`}>{film.name}</Link>
 					</Td>
 					<Td>{film.distributor.name}</Td>
 					<Td isNumeric>£ {film.gross.toLocaleString('en-GB')}</Td>
