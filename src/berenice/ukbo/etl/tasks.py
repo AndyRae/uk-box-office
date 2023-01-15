@@ -5,6 +5,7 @@ import urllib.request
 from datetime import datetime, timedelta
 from typing import Any
 
+import click
 import pandas as pd
 from dotenv import load_dotenv
 from flask import current_app
@@ -22,7 +23,7 @@ from . import extract, load
     max_instances=1,
     day_of_week="wed",
     hour="9-18",
-    minute="00,30",
+    minute="15,30,45",
     second=00,
     timezone="UTC",
 )
@@ -43,7 +44,11 @@ def run_etl() -> None:
 
         if now >= last_date:
             load_dotenv()
-            weekly_etl()
+            ctx = click.Context(
+                click.Command("cmd"), obj={"prop": "A Context"}
+            )
+            with ctx:
+                weekly_etl()
 
 
 @scheduler.task(
