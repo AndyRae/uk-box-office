@@ -3,7 +3,7 @@
 import { useDistributorList } from 'lib/distributors';
 import { useState } from 'react';
 import { paginate } from 'lib/utils/pagination';
-import { DistributorList } from 'components/Distributor/DistributorList';
+import { DistributorList } from './DistributorList';
 import { Pagination } from 'components/ui/Pagination';
 import { PageTitle } from 'components/ui/PageTitle';
 

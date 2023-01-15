@@ -1,11 +1,11 @@
 import { getBackendURL } from 'lib/ApiFetcher';
 
-import { MarketShareChart } from 'components/Distributor/MarketShareChart';
 import { PageTitle } from 'components/ui/PageTitle';
-// import { ExportCSV } from 'components/ui/ExportCSV';
-import { MarketShareTable } from 'components/Distributor/MarketShareTable';
 import { Tabs } from 'components/ui/Tabs';
 import { Card } from 'components/Dashboard/Card';
+// import { ExportCSV } from 'components/ui/ExportCSV';
+import { MarketShareChart } from './MarketShareChart';
+import { MarketShareTable } from './MarketShareTable';
 import { interpolateColors } from 'lib/utils/colorGenerator';
 import { interpolateSpectral } from 'd3-scale-chromatic';
 
