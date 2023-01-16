@@ -1,3 +1,5 @@
+'use client';
+
 import { BsFileEarmarkSpreadsheet } from 'react-icons/bs';
 import { Button } from './Button';
 import { CSVLink } from 'react-csv';

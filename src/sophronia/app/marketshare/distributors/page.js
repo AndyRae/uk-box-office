@@ -2,7 +2,7 @@ import { getBackendURL } from 'lib/ApiFetcher';
 
 import { PageTitle } from 'components/ui/PageTitle';
 import { Tabs } from 'components/ui/Tabs';
-import { Card } from 'components/Dashboard/Card';
+import { Card } from 'components/ui/Card';
 // import { ExportCSV } from 'components/ui/ExportCSV';
 import { MarketShareChart } from './MarketShareChart';
 import { MarketShareTable } from './MarketShareTable';

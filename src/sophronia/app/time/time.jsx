@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { Card } from 'components/Dashboard/Card';
 
 import { groupForTable, groupbyDate } from 'lib/utils/groupData';
 
@@ -9,6 +8,7 @@ import { PageTitle } from 'components/ui/PageTitle';
 import { ProgressBar } from 'components/ui/ProgressBar';
 import { Tooltip } from 'components/ui/Tooltip';
 import { Tabs } from 'components/ui/Tabs';
+import { Card } from 'components/ui/Card';
 import { ExportCSV } from 'components/ui/ExportCSV';
 import { StructuredTimeData } from 'components/StructuredData';
 import { DatasourceButton } from 'components/Dashboard/Datasource';

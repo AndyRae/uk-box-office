@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { BoxOfficeTable } from './BoxOfficeTable';
 import { PageTitle } from 'components/ui/PageTitle';
-import { Card } from 'components/Dashboard/Card';
+import { Card } from 'components/ui/Card';
 import { Date } from 'components/Date';
 import { StructuredTimeData } from 'components/StructuredData';
 import { DatasourceButton } from 'components/Dashboard/Datasource';
