@@ -26,7 +26,8 @@ export const getBackendURL = () => {
 	}
 
 	return (
-		process.env.NEXT_PUBLIC_BACKEND_URL || 'https://boxofficedata.co.uk/api/'
+		process.env.NEXT_PUBLIC_BACKEND_URL ||
+		'https://api.boxofficedata.co.uk/api/'
 	);
 };
 
@@ -40,7 +41,8 @@ export const getBackendURLClient = () => {
 	}
 
 	return (
-		process.env.NEXT_PUBLIC_BACKEND_URL || 'https://boxofficedata.co.uk/api/'
+		process.env.NEXT_PUBLIC_BACKEND_URL ||
+		'https://api.boxofficedata.co.uk/api/'
 	);
 };
 
