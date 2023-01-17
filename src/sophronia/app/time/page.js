@@ -1,12 +1,13 @@
 import { getBackendURL } from 'lib/ApiFetcher';
 
-import { YearsTable } from 'components/Time/YearsTable';
-// import { ExportCSV } from 'components/ui/ExportCSV';
-import { AllTimeChart } from 'components/Time/AllTimeChart';
-import { StructuredTimeData } from 'components/StructuredData';
 import { PageTitle } from 'components/ui/PageTitle';
 import { PageContent } from 'components/ui/PageContent';
-import { Card } from 'components/Dashboard/Card';
+import { ExportCSV } from 'components/ui/ExportCSV';
+import { StructuredTimeData } from 'components/StructuredData';
+import { Card } from 'components/ui/Card';
+
+import { AllTimeChart } from './AllTimeChart';
+import { YearsTable } from './YearsTable';
 
 async function getBoxOfficeSummary(startDate, endDate, limit) {
 	const url = getBackendURL();
@@ -67,7 +68,7 @@ export default async function Page() {
 				</Card>
 			</div>
 
-			{/* <ExportCSV data={data.results} filename={'alltime.csv'} /> */}
+			<ExportCSV data={data.results} filename={'alltime.csv'} />
 			<YearsTable data={data.results} id={'yearstable'} />
 		</>
 	);

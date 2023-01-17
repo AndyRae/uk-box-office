@@ -3,7 +3,7 @@
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useSearch } from 'lib/search';
-import { FilmsTable } from 'components/Search/FilmsTable';
+import { FilmsTable } from './FilmsTable';
 import { Searchbar } from 'components/Search/Searchbar';
 import { PageTitle } from 'components/ui/PageTitle';
 

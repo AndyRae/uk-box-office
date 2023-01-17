@@ -1,4 +1,4 @@
-import { Timeseries } from '../charts/Timeseries';
+import { Timeseries } from 'components/charts/Timeseries';
 
 /**
  * @description Market Share Chart component

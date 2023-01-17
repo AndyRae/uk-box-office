@@ -1,6 +1,5 @@
 import { ButtonGroup } from '../ui/ButtonGroup';
 import { Button } from '../ui/Button';
-import { Card } from './Card';
 import { Tooltip } from '../ui/Tooltip';
 import { MetricChange } from '../charts/MetricChange';
 import { Datepickers } from './Datepickers';
@@ -9,6 +8,7 @@ import { FilmTableDetailed } from '../Time/FilmTableDetailed';
 import { LastUpdated } from './LastUpdated';
 import { StackedBarChart } from '../charts/StackedBarChart';
 import { DatasourceCard } from './Datasource';
+import { Card } from 'components/ui/Card';
 
 /**
  * @description Skeleton Card loading components for loading state
