@@ -7,7 +7,7 @@ import { Searchbar } from '../Search/Searchbar';
 import { SideBarLink } from './SideBarLink';
 import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
 import { BsListOl } from 'react-icons/bs';
-import { Card } from '../Dashboard/Card';
+import { Card } from 'components/ui/Card';
 import { InlineLink } from './InlineLink';
 import Link from 'next/link';
 

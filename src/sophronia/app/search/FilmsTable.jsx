@@ -1,5 +1,5 @@
-import { BaseTable, Tr, Td } from '../charts/BaseTable';
 import Link from 'next/link';
+import { BaseTable, Tr, Td } from 'components/charts/BaseTable';
 
 /**
  * @description Films Table component for search

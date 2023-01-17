@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { BaseTable, Td, Tr } from '../charts/BaseTable';
-import { MetricChange } from '../charts/MetricChange';
+import { BaseTable, Td, Tr } from 'components/charts/BaseTable';
+import { MetricChange } from 'components/charts/MetricChange';
 
 /**
  * @description Weeks Table component for time

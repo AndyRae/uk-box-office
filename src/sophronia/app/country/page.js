@@ -3,7 +3,7 @@
 import { useCountryList } from 'lib/countries';
 import { useState } from 'react';
 import { paginate } from 'lib/utils/pagination';
-import { CountryList } from 'components/Country/CountryList';
+import { CountryList } from './CountryList';
 import { Pagination } from 'components/ui/Pagination';
 import { PageTitle } from 'components/ui/PageTitle';
 

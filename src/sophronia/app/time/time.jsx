@@ -1,23 +1,25 @@
 'use client';
 
 import Link from 'next/link';
-import { Card } from 'components/Dashboard/Card';
 
 import { groupForTable, groupbyDate } from 'lib/utils/groupData';
-import { FilmTableDetailed } from 'components/Time/FilmTableDetailed';
-import { WeeksTable } from 'components/Time/WeeksTable';
-import { Tabs } from 'components/ui/Tabs';
-import { MetricChange } from 'components/charts/MetricChange';
-import { PreviousTable } from 'components/Time/PreviousTable';
-import { ExportCSV } from 'components/ui/ExportCSV';
-import { TimeLineChart } from 'components/Time/TimeLineChart';
-import { Tooltip } from 'components/ui/Tooltip';
-import { StructuredTimeData } from 'components/StructuredData';
+
 import { PageTitle } from 'components/ui/PageTitle';
-import { StackedBarChart } from 'components/charts/StackedBarChart';
-import { DatasourceButton } from 'components/Dashboard/Datasource';
 import { ProgressBar } from 'components/ui/ProgressBar';
-import { PreviousYearsChart } from 'components/Time/PreviousYearsChart';
+import { Tooltip } from 'components/ui/Tooltip';
+import { Tabs } from 'components/ui/Tabs';
+import { Card } from 'components/ui/Card';
+import { ExportCSV } from 'components/ui/ExportCSV';
+import { StructuredTimeData } from 'components/StructuredData';
+import { DatasourceButton } from 'components/Dashboard/Datasource';
+import { MetricChange } from 'components/charts/MetricChange';
+import { StackedBarChart } from 'components/charts/StackedBarChart';
+import { TimeLineChart } from 'components/Time/TimeLineChart';
+import { FilmTableDetailed } from 'components/Time/FilmTableDetailed';
+
+import { WeeksTable } from './WeeksTable';
+import { PreviousTable } from './PreviousTable';
+import { PreviousYearsChart } from './PreviousYearsChart';
 
 import { useBoxOfficeInfinite, useBoxOfficeSummary } from 'lib/boxoffice';
 

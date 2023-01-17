@@ -1,4 +1,4 @@
-import { BarChart } from '../charts/BarChart';
+import { BarChart } from 'components/charts/BarChart';
 import { useRef } from 'react';
 import { getElementAtEvent } from 'react-chartjs-2';
 

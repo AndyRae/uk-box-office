@@ -1,13 +1,12 @@
-import { getBackendURL } from 'lib/ApiFetcher';
-import { BoxOfficeTable } from 'components/Film/BoxOfficeTable';
-import { Card } from 'components/Dashboard/Card';
-import { Date } from 'components/Date';
-// import { ExportCSV } from 'components/ui/ExportCSV';
-import { StructuredTimeData } from 'components/StructuredData';
-import { PageTitle } from 'components/ui/PageTitle';
-import { TimeLineChart } from 'components/Time/TimeLineChart';
-import { DatasourceButton } from 'components/Dashboard/Datasource';
 import Link from 'next/link';
+import { BoxOfficeTable } from './BoxOfficeTable';
+import { PageTitle } from 'components/ui/PageTitle';
+import { Card } from 'components/ui/Card';
+import { Date } from 'components/Date';
+import { StructuredTimeData } from 'components/StructuredData';
+import { DatasourceButton } from 'components/Dashboard/Datasource';
+// import { ExportCSV } from 'components/ui/ExportCSV';
+import { TimeLineChart } from 'components/Time/TimeLineChart';
 
 import { getFilm } from './getFilm';
 
