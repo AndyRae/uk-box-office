@@ -5,7 +5,7 @@ import { Suspense } from 'react';
 import { useBoxOfficeInfinite, useBoxOfficePrevious } from 'lib/boxoffice';
 import { Button } from 'components/ui/Button';
 import { ButtonGroup } from 'components/ui/ButtonGroup';
-import { Card } from 'components/Dashboard/Card';
+import { Card } from 'components/ui/Card';
 import {
 	groupForTable,
 	calculateNumberOfCinemas,

@@ -3,7 +3,7 @@ import { getBackendURL } from 'lib/ApiFetcher';
 import { ForecastChart } from 'components/charts/ForecastChart';
 import { PageTitle } from 'components/ui/PageTitle';
 import { PageContent } from 'components/ui/PageContent';
-import { Card } from 'components/Dashboard/Card';
+import { Card } from 'components/ui/Card';
 
 async function getForecast(startDate, endDate, limit) {
 	const url = getBackendURL();

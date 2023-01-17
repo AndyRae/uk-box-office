@@ -1,6 +1,6 @@
 import { getBackendURL } from 'lib/ApiFetcher';
 import { PageTitle } from 'components/ui/PageTitle';
-import { TopFilmsTable } from 'components/Time/TopFilmsTable';
+import { TopFilmsTable } from './TopFilmsTable';
 
 async function getTopFilms() {
 	const url = getBackendURL();

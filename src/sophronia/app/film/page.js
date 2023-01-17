@@ -3,7 +3,7 @@
 import { useFilmList } from 'lib/films';
 import { useState } from 'react';
 import { paginate } from 'lib/utils/pagination';
-import { FilmList } from 'components/Film/FilmList';
+import { FilmList } from './FilmList';
 import { Pagination } from 'components/ui/Pagination';
 import { PageTitle } from 'components/ui/PageTitle';
 

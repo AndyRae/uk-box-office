@@ -1,7 +1,7 @@
-import { Date } from '../Date';
 import Link from 'next/link';
-import { BaseTable, Td, Tr } from '../charts/BaseTable';
-import { MetricChange } from '../charts/MetricChange';
+import { Date } from 'components/Date';
+import { BaseTable, Td, Tr } from 'components/charts/BaseTable';
+import { MetricChange } from 'components/charts/MetricChange';
 
 /**
  * @description Box Office Table component
