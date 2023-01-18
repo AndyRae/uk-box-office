@@ -7,10 +7,23 @@ import { StructuredTimeData } from 'components/StructuredData';
 import { DatasourceButton } from 'components/Dashboard/Datasource';
 import { ExportCSV } from 'components/ui/ExportCSV';
 import { TimeLineChart } from 'components/Time/TimeLineChart';
+import { Suspense } from 'react';
+import { Spinner } from 'components/ui/Spinner';
 
 import { getFilm } from './getFilm';
 
 export default async function Page({ params }) {
+	return (
+		<Suspense fallback={<Spinner />}>
+			<FilmPage params={params} />
+		</Suspense>
+	);
+}
+
+{
+	/* export default async function Page({ params }) { */
+}
+async function FilmPage({ params }) {
 	const data = await getFilm(params.slug);
 
 	// Unwrap first week date logic
