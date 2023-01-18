@@ -22,7 +22,7 @@ export const getBackendURL = () => {
 	}
 
 	if (process.env.NODE_ENV === 'development') {
-		return 'http://berenice:5000/api/';
+		return 'http://localhost:5000/api/';
 	}
 
 	return (
