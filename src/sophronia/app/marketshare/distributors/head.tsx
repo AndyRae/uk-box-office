@@ -1,9 +1,9 @@
-import DefaultTags from '../DefaultTags';
+import DefaultTags from '../../DefaultTags';
 
 export default async function Head() {
 	return (
 		<>
-			<title>Countries | Box Office Data</title>
+			<title>Distributor Market Share | Box Office Data</title>
 			<DefaultTags />
 			<meta
 				name='description'
