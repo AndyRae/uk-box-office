@@ -22,7 +22,10 @@ export const LastUpdated = ({ date }) => {
 	return (
 		<div className='md:ml-auto'>
 			<Card size='sm'>
-				<div className='text-xs italic text-gray-700 dark:text-gray-400'>
+				<div
+					className='text-xs italic text-gray-700 dark:text-gray-400'
+					suppressHydrationWarning
+				>
 					{diffDays === 0
 						? 'Updated today'
 						: `Updated ${diffDays} day${diffDays === 1 ? '' : 's'} ago`}

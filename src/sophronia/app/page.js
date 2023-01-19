@@ -21,7 +21,7 @@ import {
 	SkeletonCards,
 	SkeletonCharts,
 } from 'components/Dashboard/Skeleton';
-import { StructuredTimeData } from 'components/StructuredData';
+// import { StructuredTimeData } from 'components/StructuredData';
 import { LastUpdated } from 'components/Dashboard/LastUpdated';
 import { StackedBarChart } from 'components/charts/StackedBarChart';
 import { DatasourceCard } from 'components/Dashboard/Datasource';
@@ -115,11 +115,11 @@ export default function Home() {
 
 	return (
 		<div className='transition ease-in-out'>
-			<StructuredTimeData
+			{/* <StructuredTimeData
 				title='Box Office Data'
 				endpoint='/'
 				time={lastUpdated}
-			/>
+			/> */}
 
 			{/* Controls */}
 			<div className='flex flex-wrap mb-2 gap-y-4 items-center justify-center'>

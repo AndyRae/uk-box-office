@@ -3,7 +3,7 @@ import { getBackendURL } from 'lib/ApiFetcher';
 import { PageTitle } from 'components/ui/PageTitle';
 import { Tabs } from 'components/ui/Tabs';
 import { Card } from 'components/ui/Card';
-import { ExportCSV } from 'components/ui/ExportCSV';
+// import { ExportCSV } from 'components/ui/ExportCSV';
 import { MarketShareChart } from './MarketShareChart';
 import { MarketShareTable } from './MarketShareTable';
 import { interpolateColors } from 'lib/utils/colorGenerator';
@@ -121,10 +121,10 @@ export default async function Page() {
 					return (
 						<div key={year}>
 							<div className='flex flex-row-reverse mt-3'>
-								<ExportCSV
+								{/* <ExportCSV
 									data={yearlyData}
 									filename={`${year}-distributor-market-share.csv`}
-								/>
+								/> */}
 							</div>
 							<MarketShareTable data={yearlyData} />
 						</div>
