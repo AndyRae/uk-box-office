@@ -1,3 +1,5 @@
+import Script from 'next/script';
+
 export function HeadTags() {
 	return (
 		<>
@@ -37,19 +39,20 @@ export function HeadTags() {
 			<meta name='twitter:creator' content='@AndyRae_' />
 			<meta name='twitter:image' content='/icons/1.png' />
 
-			{/* <script
-        async
-        src="https://www.googletagmanager.com/gtag/js?id=G-H0HGC7K5TL"
-      ></script>
-      <script async>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() {
-          dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
+			<Script
+				src='https://www.googletagmanager.com/gtag/js?id=G-H0HGC7K5TL'
+				strategy='afterInteractive'
+			/>
 
-        gtag('config', 'G-H0HGC7K5TL');
-      </script> */}
+			<Script id='google-analytics' strategy='afterInteractive'>
+				{`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){window.dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-H0HGC7K5TL');
+        `}
+			</Script>
 		</>
 	);
 }
