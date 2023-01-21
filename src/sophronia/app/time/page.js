@@ -12,8 +12,7 @@ import { YearsTable } from './YearsTable';
 async function getBoxOfficeSummary(startDate, endDate, limit) {
 	const url = getBackendURL();
 	const res = await fetch(
-		`${url}boxoffice/summary?start=${startDate}&end=${endDate}&limit=${limit}`,
-		{ cache: 'no-store' }
+		`${url}boxoffice/summary?start=${startDate}&end=${endDate}&limit=${limit}`
 	);
 	return res.json();
 }
