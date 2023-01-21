@@ -3,7 +3,7 @@ import { getBackendURL } from 'lib/ApiFetcher';
 
 async function getLastWeek() {
 	const url = getBackendURL();
-	const res = await fetch(`${url}boxoffice/all`, { cache: 'no-store' });
+	const res = await fetch(`${url}boxoffice/all`);
 	return res.json();
 }
 
