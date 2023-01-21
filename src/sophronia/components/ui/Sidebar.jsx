@@ -92,7 +92,7 @@ const SidebarContent = () => {
 				<Brand />
 
 				{/* Links */}
-				<ul className='space-y-2'>
+				<nav className='space-y-2'>
 					{links.map((element) => {
 						return (
 							<SideBarLink
@@ -103,7 +103,7 @@ const SidebarContent = () => {
 							/>
 						);
 					})}
-				</ul>
+				</nav>
 
 				<Searchbar />
 
