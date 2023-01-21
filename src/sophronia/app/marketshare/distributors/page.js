@@ -11,9 +11,7 @@ import { interpolateSpectral } from 'd3-scale-chromatic';
 
 export async function getMarketshare() {
 	const url = getBackendURL();
-	const res = await fetch(`${url}distributor/marketshare`, {
-		cache: 'no-store',
-	});
+	const res = await fetch(`${url}distributor/marketshare`, {});
 	return res.json();
 }
 
