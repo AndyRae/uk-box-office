@@ -1,18 +1,18 @@
 import { Button } from 'components/ui/Button';
 import { PageTitle } from 'components/ui/PageTitle';
 import { PageContent } from 'components/ui/PageContent';
-// import { StructuredTimeData } from 'components/StructuredData';
+import { StructuredTimeData } from 'components/StructuredData';
 import { ExternalLink, InlineLink } from 'components/ui/InlineLink';
 import { getBackendURL } from 'lib/ApiFetcher';
 
 export default function Page() {
 	return (
 		<>
-			{/* <StructuredTimeData
+			<StructuredTimeData
 				title='UK Box Office 2001 - 2023'
 				endpoint='/opendata'
 				time='2001-2023'
-			/> */}
+			/>
 			<PageTitle>Open Data</PageTitle>
 			<PageContent>
 				<p>
