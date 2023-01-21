@@ -1,3 +1,5 @@
+import DefaultTags from '../../../../../../DefaultTags';
+
 export default async function Head({
 	params,
 }: {
@@ -26,6 +28,7 @@ export default async function Head({
 	return (
 		<>
 			<title>{title}</title>
+			<DefaultTags />
 		</>
 	);
 }

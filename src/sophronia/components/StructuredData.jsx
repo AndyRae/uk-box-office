@@ -1,3 +1,5 @@
+import Script from 'next/script';
+
 /**
  * Very simple JSON-LD component for structured data.
  * @returns JSON-LD structured data for the current page
@@ -26,7 +28,7 @@ export const StructuredSiteData = () => {
 			},
 		],
 	};
-	return <script type='application/ld+json'>{JSON.stringify(data)}</script>;
+	return <Script type='application/ld+json'>{JSON.stringify(data)}</Script>;
 };
 
 /**
@@ -99,5 +101,5 @@ export const StructuredTimeData = ({ title, endpoint, time }) => {
 		],
 		temporalCoverage: `${time}`,
 	};
-	return <script type='application/ld+json'>{JSON.stringify(data)}</script>;
+	return <Script type='application/ld+json'> {JSON.stringify(data)} </Script>;
 };
