@@ -2,13 +2,12 @@
  * @fileoverview This file contains the functions used to fetch data from the backend
  * @exports getBackendURL
  * @exports useBackendApi
- * @exports useAxiosFetcher
+ * @exports useInfiniteFetcher
  *
  */
 
 import ky from 'ky';
 import { useCallback } from 'react';
-import axios from 'axios';
 
 /**
  * Returns the backend URL based on the environment
@@ -69,16 +68,20 @@ export const useBackendApi = () => {
 };
 
 /**
- * Common axios fetch function for use with useSWRInfinite
+ * Common fetch function for use with useSWRInfinite
  * @param {string} url
  * @returns {object} The data from the backend
  * @example
  * // returns { "message": "Hello World!" }
  */
-export async function useAxiosFetcher(url) {
+export async function useInfiniteFetcher(url) {
 	try {
-		return (await axios.get(url)).data;
+		const response = await fetch(url);
+		if (!response.ok) {
+			throw { status: response.status, message: await response.json() };
+		}
+		return await response.json();
 	} catch (err) {
-		throw { status: err.response.status, message: err.response.data };
+		throw err;
 	}
 }
