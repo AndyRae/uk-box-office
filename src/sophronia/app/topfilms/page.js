@@ -4,7 +4,7 @@ import { TopFilmsTable } from './TopFilmsTable';
 
 async function getTopFilms() {
 	const url = getBackendURL();
-	const res = await fetch(`${url}boxoffice/topfilms`, { cache: 'no-store' });
+	const res = await fetch(`${url}boxoffice/topfilms`);
 	return res.json();
 }
 
