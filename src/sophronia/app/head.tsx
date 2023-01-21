@@ -1,8 +1,10 @@
+import DefaultTags from './DefaultTags';
+
 export default function Head() {
 	return (
 		<>
-			<title>Box Office Data</title>
-			<meta name='viewport' content='width=device-width, initial-scale=1' />
+			<title>Box Office Data Dashboard</title>
+			<DefaultTags />
 		</>
 	);
 }

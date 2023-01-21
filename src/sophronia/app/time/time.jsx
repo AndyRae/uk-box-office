@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 import { groupForTable, groupbyDate } from 'lib/utils/groupData';
 
@@ -10,7 +11,7 @@ import { Tooltip } from 'components/ui/Tooltip';
 import { Tabs } from 'components/ui/Tabs';
 import { Card } from 'components/ui/Card';
 // import { ExportCSV } from 'components/ui/ExportCSV';
-// import { StructuredTimeData } from 'components/StructuredData';
+import { StructuredTimeData } from 'components/StructuredData';
 import { DatasourceButton } from 'components/Dashboard/Datasource';
 import { MetricChange } from 'components/charts/MetricChange';
 import { StackedBarChart } from 'components/charts/StackedBarChart';
@@ -56,6 +57,8 @@ export const TimePage = ({
 	quarter = null,
 	quarterend = 0,
 }) => {
+	const pathname = usePathname();
+
 	// Unpack dates to allow flexbility for Month/Day/Quarter being null.
 	// Year is never null.
 
@@ -209,11 +212,11 @@ export const TimePage = ({
 
 	return (
 		<div>
-			{/* <StructuredTimeData
+			<StructuredTimeData
 				title={`UK Box Office ${pageTitle}`}
-				// endpoint={location.pathname}
+				endpoint={pathname}
 				time={pageTitle}
-			/> */}
+			/>
 			<PageTitle>UK Box Office {pageTitle}</PageTitle>
 
 			{isReachedEnd ? '' : <ProgressBar value={percentFetched} />}

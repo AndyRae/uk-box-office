@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Suspense } from 'react';
 import { useBoxOfficeInfinite, useBoxOfficePrevious } from 'lib/boxoffice';
 import { Button } from 'components/ui/Button';
 import { ButtonGroup } from 'components/ui/ButtonGroup';
@@ -16,12 +15,8 @@ import { Datepickers } from 'components/Dashboard/Datepickers';
 import { FilmTableDetailed } from 'components/Time/FilmTableDetailed';
 import { TimeLineChart } from 'components/Time/TimeLineChart';
 import { Tooltip } from 'components/ui/Tooltip';
-import {
-	Skeleton,
-	SkeletonCards,
-	SkeletonCharts,
-} from 'components/Dashboard/Skeleton';
-// import { StructuredTimeData } from 'components/StructuredData';
+import { SkeletonCards, SkeletonCharts } from 'components/Dashboard/Skeleton';
+import { StructuredTimeData } from 'components/StructuredData';
 import { LastUpdated } from 'components/Dashboard/LastUpdated';
 import { StackedBarChart } from 'components/charts/StackedBarChart';
 import { DatasourceCard } from 'components/Dashboard/Datasource';
@@ -115,11 +110,11 @@ export default function Home() {
 
 	return (
 		<div className='transition ease-in-out'>
-			{/* <StructuredTimeData
+			<StructuredTimeData
 				title='Box Office Data'
 				endpoint='/'
 				time={lastUpdated}
-			/> */}
+			/>
 
 			{/* Controls */}
 			<div className='flex flex-wrap mb-2 gap-y-4 items-center justify-center'>

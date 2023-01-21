@@ -3,7 +3,7 @@ import { getBackendURL } from 'lib/ApiFetcher';
 import { PageTitle } from 'components/ui/PageTitle';
 import { PageContent } from 'components/ui/PageContent';
 // import { ExportCSV } from 'components/ui/ExportCSV';
-// import { StructuredTimeData } from 'components/StructuredData';
+import { StructuredTimeData } from 'components/StructuredData';
 import { Card } from 'components/ui/Card';
 
 import { AllTimeChart } from './AllTimeChart';
@@ -32,11 +32,11 @@ export default async function Page() {
 	const reversedData = data?.results.slice().reverse();
 	return (
 		<>
-			{/* <StructuredTimeData
-					title='All Time Box Office'
-					endpoint='/time'
-					time={`2001 - ${today}`}
-				/> */}
+			<StructuredTimeData
+				title='All Time Box Office'
+				endpoint='/time'
+				time={`2001 - ${today}`}
+			/>
 			<PageTitle>All Time Box Office</PageTitle>
 
 			<Card>
