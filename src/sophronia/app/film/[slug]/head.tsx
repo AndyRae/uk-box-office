@@ -1,3 +1,4 @@
+import DefaultTags from '../../DefaultTags';
 import { getFilm } from './getFilm';
 
 export default async function Head({ params }: { params: { slug: string } }) {
@@ -11,9 +12,7 @@ export default async function Head({ params }: { params: { slug: string } }) {
 	return (
 		<>
 			<title>{`${film.name} ${year} | Box Office Data`}</title>
-			<meta name='description' content={description} />
-			<meta property='og:description' content={description} />
-			<meta name='twitter:description' content={description} />
+			<DefaultTags description={description} />
 		</>
 	);
 }

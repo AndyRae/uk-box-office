@@ -1,4 +1,4 @@
-export default function DefaultTags() {
+export function HeadTags() {
 	return (
 		<>
 			<meta
@@ -50,6 +50,24 @@ export default function DefaultTags() {
 
         gtag('config', 'G-H0HGC7K5TL');
       </script> */}
+		</>
+	);
+}
+
+/**
+ * Default tags for all pages, including description, viewport, icons, etc.
+ * @param description Optional description for the page (defaults to UK Box Office)
+ * @returns Default tags for all pages
+ */
+export default function DefaultTags({
+	description = 'UK Box Office gets the latest box office revenue and data for the UK film industry. Including dashboards, statistics, reports, and analysis.',
+}) {
+	return (
+		<>
+			<HeadTags />
+			<meta name='description' content={description} />
+			<meta property='og:description' content={description} />
+			<meta name='twitter:description' content={description} />
 		</>
 	);
 }
