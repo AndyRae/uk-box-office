@@ -6,7 +6,15 @@ This module creates the Flask app and registers extensions.
 
 from flask import Flask
 from flask_cors import CORS
-from ukbo.extensions import cache, db, limiter, ma, migrate, scheduler
+from ukbo.extensions import (
+    cache,
+    compress,
+    db,
+    limiter,
+    ma,
+    migrate,
+    scheduler,
+)
 
 
 def create_app(config: str = "") -> Flask:
@@ -77,6 +85,7 @@ def register_extensions(app: Flask) -> None:
     """
 
     cache.init_app(app)
+    compress.init_app(app)
     db.init_app(app)
     limiter.init_app(app)
     ma.init_app(app)
