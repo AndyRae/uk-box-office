@@ -21,33 +21,17 @@ jobs:
           ssh-keyscan github.com >> ~/.ssh/known_hosts
           ssh-add - <<< "${{ secrets.PRIVATE_KEY }}"
 
-      - name: Setup node
-        uses: actions/setup-node@v3.5.1
-        with:
-          node-version: 16
-          cache: npm
-          cache-dependency-path: './src/sophronia/package-lock.json'
-
-      - name: Install
-        run: npm ci --prefix ./src/sophronia/
-
-      - name: Build React
-        env:
-          REACT_APP_BACKEND_URL: https://api.boxofficedata.co.uk/api/
-        run: CI=false npm run build --prefix ./src/sophronia/
-
       - name: Deploy on VM
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
           scp  -o StrictHostKeyChecking=no -r ./src/berenice/* root@${{ secrets.STAGING_IP_ADDRESS }}:/var/www/uk-box-office/src/berenice/
-          scp  -o StrictHostKeyChecking=no -r ./src/sophronia/build/* root@${{ secrets.STAGING_IP_ADDRESS }}:/var/www/uk-box-office/src/sophronia/build/
           ssh -o StrictHostKeyChecking=no root@${{ secrets.STAGING_IP_ADDRESS }} << 'ENDSSH'
             cd /var/www/uk-box-office
             source venv/bin/activate
             cd src/berenice
             pip install -r requirements.txt
-            flask db update
+            flask db upgrade
             systemctl restart nginx
             systemctl restart gunicorn
           ENDSSH

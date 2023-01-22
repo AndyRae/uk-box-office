@@ -6,7 +6,7 @@ services:
     build: src/sophronia
     env_file:
       - ./.env
-    command: npm start
+    command: npm run dev
     volumes:
       - ./src/sophronia/:/app
     ports:
@@ -20,7 +20,7 @@ services:
       - ./.env
     environment:
       - FLASK_APP=ukbo:create_app('dev')
-    command: flask run --host=0.0.0.0
+    command: flask --debug run --host=0.0.0.0
     volumes:
       - ./src/berenice/:/app
     ports:
@@ -32,6 +32,8 @@ services:
     image: postgres
     env_file:
       - ./.env
+    ports:
+      - 5432:5432
     volumes:
       - postgres_data:/var/lib/postgresql/data/
 

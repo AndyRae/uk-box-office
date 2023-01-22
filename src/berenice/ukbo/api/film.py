@@ -24,8 +24,8 @@ def all() -> Response:
     return services.film.list(page, limit)
 
 
-@cache.cached()
 @film.route("/<slug>")
+@cache.cached()
 def get(slug: str) -> Response:
     """
     Get one film detail.

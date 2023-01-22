@@ -68,28 +68,6 @@ class Film(PkModel):  # type: ignore
     def __eq__(self, o: object) -> bool:
         return self.name == o
 
-    def as_dict(self, weeks: bool = True) -> Dict[str, Any]:
-        obj = {
-            "id": self.id,
-            "name": self.name,
-            "slug": self.slug,
-            "country": self.serialize_countries(),
-            "distributor": {
-                "name": self.distributor.name,
-                "slug": self.distributor.slug,
-            },
-            "gross": self.gross,
-        }
-        if weeks:
-            obj["weeks"] = self.serialize_weeks()
-        return obj
-
-    def serialize_weeks(self) -> List[Any]:
-        return [item.as_dict() for item in self.weeks]
-
-    def serialize_countries(self) -> List[Any]:
-        return [item.as_dict() for item in self.countries]
-
     @hybrid_property
     def multiple(self) -> float:
         for i in self.weeks:

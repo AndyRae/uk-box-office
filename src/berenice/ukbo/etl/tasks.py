@@ -43,19 +43,7 @@ def run_etl() -> None:
 
         if now >= last_date:
             load_dotenv()
-            source_url = os.environ.get("SOURCE_URL")
-            if source_url is not None:
-                path = extract.get_excel_file(source_url)
-                if path[0] is True:
-                    df = extract.extract_box_office(path[1])
-                    load.load_weeks(df)
-                    current_app.logger.info("Weekly-ETL auto run succesful.")
-                else:
-                    current_app.logger.warning("Weekly-ETL auto run failed.")
-        else:
-            current_app.logger.warning(
-                "ETL fetch failed - website file is pending update."
-            )
+            weekly_etl()
 
 
 @scheduler.task(
@@ -129,7 +117,7 @@ def seed_films(path: str) -> None:
     print("Seeded distributors.")
 
     list_of_films = (
-        archive.groupby(["film", "distributor", "country"])
+        archive.groupby(["film", "distributor", "country"], dropna=False)
         .size()
         .reset_index()
         .rename(columns={0: "count"})
@@ -155,6 +143,35 @@ def seed_box_office(path: str, **kwargs: Any) -> None:
 
 
 @with_appcontext
+def seed_admissions(path: str) -> None:
+    """
+    Seeds admissions data.
+
+    Args:
+        path: Path to the admissions.csv file.
+
+    """
+
+    archive = pd.read_csv(path)
+    archive["date"] = pd.to_datetime(archive["date"], format="%d/%m/%Y")
+    load.load_admissions(archive.to_dict(orient="records"))
+
+
+@with_appcontext
+def update_admissions(year: int, month: int, admissions: int) -> None:
+    """
+    Updates admissions data.
+
+    Args:
+        year: Year of admissions data.
+        month: Month of admissions data.
+        admissions: Number of admissions.
+
+    """
+    services.week.update_admissions(year, month, admissions)
+
+
+@with_appcontext
 def weekly_etl() -> None:
     """
     Manual CLI for the weekly ETL pipeline.
@@ -163,12 +180,10 @@ def weekly_etl() -> None:
     """
     current_app.logger.info("Weekly-etl running manually")
     load_dotenv()
-    source_url = os.environ.get("SOURCE_URL")
-    if source_url is not None:
-        path = extract.get_excel_file(source_url)
-
-        if path[0] is True:
-            df = extract.extract_box_office(path[1])
+    if source_url := os.environ.get("SOURCE_URL"):
+        soup = extract.get_soup(source_url)
+        if path := extract.get_excel_file(soup):
+            df = extract.extract_box_office(path)
             load.load_weeks(df)
             current_app.logger.info("Weekly-ETL manual run succesful.")
         else:
@@ -178,7 +193,7 @@ def weekly_etl() -> None:
 
 
 @with_appcontext
-def backup_etl_command(source_url: str) -> None:
+def backup_etl(source_url: str, date: str) -> None:
     """
     A backup command for the ETL pipeline in case the excel file is not findable.
 
@@ -189,8 +204,10 @@ def backup_etl_command(source_url: str) -> None:
 
     current_app.logger.info("Backup-ETL manual running.")
     if source_url is not None:
-        now = datetime.now().strftime("ETL%Y%m%d%M%H%S")
-        file_path = f"./data/{now}.xls"
+        file_path = f"./data/{date}.xls"
+        opener = urllib.request.build_opener()
+        opener.addheaders = [("User-agent", "Mozilla/5.0")]
+        urllib.request.install_opener(opener)
         urllib.request.urlretrieve(source_url, file_path)
 
         df = extract.extract_box_office(file_path)
@@ -201,7 +218,7 @@ def backup_etl_command(source_url: str) -> None:
 
 
 @with_appcontext
-def rollback_etl_command() -> None:
+def rollback_etl() -> None:
     """
     A command for rolling back the ETL pipeline, and deleting the last week of data.
     Film Weeks and Weeks, but not Films, Distributors or Countries.
@@ -286,7 +303,7 @@ def delete_film(id: int) -> None:
     timezone="UTC",
 )
 @with_appcontext
-def build_archive() -> None:
+def build_archive(path: str = "./data/archive_export.csv") -> None:
     """
     Builds the archive of box office data.
 
@@ -294,6 +311,4 @@ def build_archive() -> None:
 
     """
     archive = services.boxoffice.build_archive()
-    archive.to_csv(
-        "./data/archive_export.csv", index=False, date_format="%Y%m%d"
-    )
+    archive.to_csv(path, index=False, date_format="%Y%m%d")

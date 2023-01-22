@@ -6,6 +6,12 @@ from flask import jsonify
 from flask.wrappers import Response
 from sqlalchemy.sql import func
 from ukbo import models
+from ukbo.dto import (
+    FilmSchema,
+    FilmWeekSchema,
+    FilmWeekSchemaArchive,
+    WeekSchema,
+)
 from ukbo.extensions import db
 
 
@@ -41,11 +47,13 @@ def all(
     next_page = (page + 1) if data.has_next else ""
     previous_page = (page - 1) if data.has_prev else ""
 
+    film_week_schema = FilmWeekSchema()  # type: ignore
+
     return jsonify(
         count=data.total,
         next=next_page,
         previous=previous_page,
-        results=[ix.as_dict() for ix in data.items],
+        results=[film_week_schema.dump(ix) for ix in data.items],
     )
 
 
@@ -65,10 +73,12 @@ def topfilms() -> Response:
     query = query.order_by(func.sum(models.Film_Week.week_gross).desc())
     data = query.limit(50)
 
+    film_schema = FilmSchema()  # type: ignore
+
     return jsonify(
         results=[
             dict(
-                film=row[0].as_dict(weeks=False),
+                film=film_schema.dump(row[0]),
                 gross=row[1],
             )
             for row in data
@@ -99,6 +109,7 @@ def summary(start: str, end: str, limit: int = 0) -> Response:
         func.sum(models.Week.weekend_gross),
         func.sum(models.Week.number_of_releases),
         func.max(models.Week.number_of_cinemas),
+        func.sum(models.Week.admissions),
     ).group_by(func.extract("year", models.Week.date))
 
     if start != end:
@@ -149,6 +160,7 @@ def summary(start: str, end: str, limit: int = 0) -> Response:
                 weekend_gross=row[2],
                 number_of_releases=row[3],
                 number_of_cinemas=row[4],
+                admissions=row[5],
             )
             for row in data
         ]
@@ -178,7 +190,6 @@ def previous(start: str, end: str) -> Response:
         if start is not None:
             s = to_date(start)
             s = s.replace(year=(s.year - 1))
-            print(s)
             query = query.filter(models.Week.date >= s)
 
         if end is not None:
@@ -245,11 +256,13 @@ def topline(
     next_page = (page + 1) if data.has_next else ""
     previous_page = (page - 1) if data.has_prev else ""
 
+    week_schema = WeekSchema()  # type: ignore
+
     return jsonify(
         count=data.total,
         next=next_page,
         previous=previous_page,
-        results=[ix.as_dict() for ix in data.items],
+        results=[week_schema.dump(ix) for ix in data.items],
     )
 
 
@@ -264,16 +277,17 @@ def build_archive() -> pd.DataFrame:
     data = query.order_by(
         models.Film_Week.date.asc(), models.Film_Week.rank.asc()
     ).all()
-    df = pd.DataFrame([ix.as_dict() for ix in data])
+
+    film_week_schema = FilmWeekSchemaArchive()
+
+    df = pd.DataFrame([film_week_schema.dump(ix) for ix in data])
     df["date"] = pd.to_datetime(df["date"])
     df["weekend_gross"] = df["weekend_gross"].astype(float)
     df["week_gross"] = df["week_gross"].astype(float)
     df["number_of_cinemas"] = df["number_of_cinemas"].astype(int)
 
     # Unwrap country objects to their names with seperator.
-    df["country"] = [
-        "/".join([x["name"] for x in list_dict]) for list_dict in df["country"]
-    ]
+    df["country"] = ["/".join(list(ix)) for ix in df["country"]]
 
     order = [
         "date",

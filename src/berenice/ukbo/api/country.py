@@ -24,8 +24,8 @@ def all() -> Response:
     return services.country.list(page, limit)
 
 
-@cache.cached()
 @country.route("/<slug>", methods=["GET"])
+@cache.cached()
 def get(slug: str) -> Response:
     """
     Get one country.

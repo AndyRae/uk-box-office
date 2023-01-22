@@ -17,42 +17,45 @@ def init_db_command() -> None:
 
 
 @click.command("fill-db")
+@click.option("--path", help="Path to archive.csv", type=str)
 @with_appcontext
-def fill_db_command() -> None:
+def fill_db_command(path: str = "./data/archive.csv") -> None:
     """
     Seeds database with archive data.
     """
-    path = "./data/archive.csv"
     tasks.seed_db(path)
     click.echo("Filled the database.")
 
 
 @click.command("test-db")
+@click.option("--path", help="Path to test.csv", type=str)
 @with_appcontext
-def test_db_command() -> None:
+def test_db_command(path: str = "./data/test.csv") -> None:
     """
     Seeds database with test data.
     """
-    path = "./data/test.csv"
     tasks.seed_db(path)
     click.echo("Filled the database with test data.")
 
 
 @click.command("seed-films")
+@click.option("--path", help="Path to archive.csv", type=str)
 @with_appcontext
-def seed_films_command() -> None:
+def seed_films_command(path: str = "./data/archive.csv") -> None:
     """
     Seeds database with countries/distributors/films data.
     """
-    path = "./data/archive.csv"
     tasks.seed_films(path)
     click.echo("Seeded films data.")
 
 
 @click.command("seed-box-office")
 @click.option("--year", help="Year to seed", type=int)
+@click.option("--path", help="Path to archive.csv", type=str)
 @with_appcontext
-def seed_box_office_command(year: int) -> None:
+def seed_box_office_command(
+    year: int, path: str = "./data/archive.csv"
+) -> None:
     """
     Seeds database with box office data.
 
@@ -60,9 +63,38 @@ def seed_box_office_command(year: int) -> None:
         year: Year to seed.
 
     """
-    path = "./data/archive.csv"
     tasks.seed_box_office(path, year=year)
     click.echo("Seeded box office data")
+
+
+@click.command("seed-admissions")
+@click.option("--path", help="Path to admissions.csv", type=str)
+@with_appcontext
+def seed_admissions_command(path: str = "./data/admissions.csv") -> None:
+    """
+    Seeds database with admissions data.
+    """
+    tasks.seed_admissions(path)
+    click.echo("Seeded admissions data")
+
+
+@click.command("update-admissions")
+@click.option("--year", prompt=True, type=int)
+@click.option("--month", prompt=True, type=int)
+@click.option("--admissions", prompt=True, type=int)
+@with_appcontext
+def update_admissions_command(year: int, month: int, admissions: int) -> None:
+    """
+    Updates admissions data for a given month.
+
+    Args:
+        year: Year of admissions data.
+        month: Month of admissions data.
+        admissions: Number of admissions.
+
+    """
+    tasks.update_admissions(year, month, admissions)
+    click.echo("Updated admissions data")
 
 
 @click.command("forecast")
@@ -91,16 +123,18 @@ def weekly_etl_command() -> None:
 
 @click.command("backup-etl")
 @click.argument("source_url")
+@click.argument("date")
 @with_appcontext
-def backup_etl_command(source_url: str) -> None:
+def backup_etl_command(source_url: str, date: str) -> None:
     """
     A backup interface for the ETL pipeline.
 
     Args:
         source_url: URL of the excel file to download.
+        date: Date of the excel file. %d %B %Y format.
 
     """
-    tasks.backup_etl_command(source_url)
+    tasks.backup_etl(source_url, date)
 
 
 @click.command("rollback-etl")
@@ -112,7 +146,7 @@ def rollback_etl_command() -> None:
 
     Actual Films are not deleted.
     """
-    tasks.rollback_etl_command()
+    tasks.rollback_etl()
 
 
 @click.command("rollback-year")
