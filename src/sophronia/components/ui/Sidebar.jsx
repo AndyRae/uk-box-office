@@ -65,7 +65,11 @@ const links = [
 export const Brand = () => {
 	return (
 		<Link href='/' className='flex items-center pl-2.5 mb-5'>
-			<img src='/logo.svg' className='mr-3 h-6 sm:h-7' uk-svg='' />
+			<img
+				src='/logo.svg'
+				className='mr-3 h-6 sm:h-7 w-6 sm:w-7'
+				alt='UK Box Office Logo'
+			/>
 			<span className='self-center text-xl font-semibold whitespace-nowrap dark:text-white'>
 				Box Office Data
 			</span>
@@ -88,7 +92,7 @@ const SidebarContent = () => {
 				<Brand />
 
 				{/* Links */}
-				<ul className='space-y-2'>
+				<nav className='space-y-2'>
 					{links.map((element) => {
 						return (
 							<SideBarLink
@@ -99,7 +103,7 @@ const SidebarContent = () => {
 							/>
 						);
 					})}
-				</ul>
+				</nav>
 
 				<Searchbar />
 
