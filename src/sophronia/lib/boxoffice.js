@@ -12,7 +12,7 @@
 
 import {
 	useBackendApi,
-	useAxiosFetcher,
+	useInfiniteFetcher,
 	getBackendURLClient,
 } from './ApiFetcher';
 import useSWR from 'swr';
@@ -230,5 +230,5 @@ const useProtectedSWRInfinite = (startDate, endDate) => {
 		revalidateOnReconnect: true,
 		suspense: true,
 	};
-	return useSWRInfinite(getNextKey, useAxiosFetcher, revalidationOptions);
+	return useSWRInfinite(getNextKey, useInfiniteFetcher, revalidationOptions);
 };

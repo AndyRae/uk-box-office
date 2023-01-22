@@ -9,7 +9,13 @@
  * @exports calculateNumberOfCinemas
  */
 
-import _ from 'lodash';
+import groupBy from 'lodash/groupBy';
+import sumBy from 'lodash/sumBy';
+import flow from 'lodash/flow';
+import map from 'lodash/map';
+import sortBy from 'lodash/sortBy';
+import countBy from 'lodash/countBy';
+
 import { interpolateColors } from './colorGenerator';
 import { interpolateSpectral } from 'd3-scale-chromatic';
 
@@ -22,17 +28,18 @@ export const groupStackedFilms = (data) => {
 	const filmsLimit = 20; // Limit number of films to display
 
 	// Reduce array to single films with box office
-	const groupedFilms = _(data)
-		.groupBy('film')
-		.map((value, key) => ({
-			film: key,
-			slug: _(value).map('film_slug').first(),
-			weekGross: _.sumBy(value, 'week_gross'),
-			weekendGross: _.sumBy(value, 'weekend_gross'),
-		}))
-		.value()
-		.sort((a, b) => b.weekGross - a.weekGross)
-		.slice(0, filmsLimit);
+	const groupedFilms = flow(
+		(arr) => groupBy(arr, 'film'),
+		(groups) =>
+			map(groups, (group, key) => ({
+				film: key,
+				slug: group[0].film_slug,
+				weekGross: sumBy(group, 'week_gross'),
+				weekendGross: sumBy(group, 'weekend_gross'),
+			})),
+		(arr) => sortBy(arr, 'weekGross').reverse(),
+		(arr) => arr.slice(0, filmsLimit)
+	)(data);
 
 	// Interpolate colors
 	const colorScale = interpolateSpectral;
@@ -127,16 +134,16 @@ export const groupForTable = (data) => {
  * @returns array of grouped data by date.
  */
 export const groupbyDate = (data) => {
-	const results = _(data)
-		.groupBy('date')
-		.map((value, key) => ({
-			date: key,
-			weekGross: _.sumBy(value, 'week_gross'),
-			weekendGross: _.sumBy(value, 'weekend_gross'),
-			newReleases: _.countBy(value, (o) => o.weeks_on_release === 1).true,
-		}))
-		.value()
-		.reverse();
+	const results = flow(
+		(arr) => groupBy(arr, 'date'),
+		(arr) =>
+			map(arr, (value, key) => ({
+				date: key,
+				weekGross: sumBy(value, 'week_gross'),
+				weekendGross: sumBy(value, 'weekend_gross'),
+				newReleases: countBy(value, (o) => o.weeks_on_release === 1).true,
+			})).reverse()
+	)(data);
 
 	return { results };
 };
@@ -147,15 +154,16 @@ export const groupbyDate = (data) => {
  * @returns array of grouped data by month.
  */
 export const groupbyMonth = (data) => {
-	const results = _(data)
-		.groupBy((o) => o.date.substring(0, 7))
-		.map((value, key) => ({
-			date: key,
-			weekGross: _.sumBy(value, 'weekGross'),
-			weekendGross: _.sumBy(value, 'weekendGross'),
-			newReleases: _.sumBy(value, 'newReleases'),
-		}))
-		.value();
+	const results = flow(
+		(arr) => groupBy(arr, (o) => o.date.substring(0, 7)),
+		(arr) =>
+			map(arr, (value, key) => ({
+				date: key,
+				weekGross: sumBy(value, 'weekGross'),
+				weekendGross: sumBy(value, 'weekendGross'),
+				newReleases: sumBy(value, 'newReleases'),
+			}))
+	)(data);
 
 	return { results };
 };
@@ -172,7 +180,6 @@ export const calculateWeek1Releases = (data) => {
 
 /**
  * Calculates the number of unique films in the data.
- * TODO: This is ancient - refactor with lodash.
  * @param {*} data - array of box office data.
  * @returns number of unique films.
  */

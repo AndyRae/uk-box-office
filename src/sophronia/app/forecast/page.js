@@ -8,8 +8,7 @@ import { Card } from 'components/ui/Card';
 async function getForecast(startDate, endDate, limit) {
 	const url = getBackendURL();
 	const res = await fetch(
-		`${url}boxoffice/topline?start=${startDate}&end=${endDate}&limit=${limit}`,
-		{ cache: 'no-store' }
+		`${url}boxoffice/topline?start=${startDate}&end=${endDate}&limit=${limit}`
 	);
 	return res.json();
 }

@@ -100,7 +100,7 @@ export const BaseTable = ({ columns, id, children }) => {
 	return (
 		<div className='overflow-x-auto rounded-lg relative max-h-screen'>
 			<table
-				className='table-auto w-full text-sm text-left text-gray-500 dark:text-gray-400'
+				className='table-auto w-full text-sm text-left text-gray-600 dark:text-gray-400'
 				id={id}
 			>
 				<Thead>

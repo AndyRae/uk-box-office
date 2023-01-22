@@ -40,6 +40,7 @@ export const Searchbar = ({ placeholder = 'Search', value = null }) => {
 					/>
 					<button
 						type='submit'
+						aria-label='Search'
 						className='absolute top-0 right-0 p-2 text-sm font-medium text-white bg-bo-primary rounded-r-lg border-1 border-bo-primary hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-red-300'
 					>
 						<AiOutlineSearch className='h-5 w-5' />
