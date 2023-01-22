@@ -39,7 +39,7 @@ def all(
         query = query.filter(models.Film_Week.date <= to_date(end))
 
     data = query.order_by(models.Film_Week.date.desc()).paginate(
-        page=page, per_page=500, error_out=False
+        page=page, per_page=700, error_out=False
     )
     if data is None:
         return {"none"}

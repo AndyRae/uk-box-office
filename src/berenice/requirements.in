@@ -3,6 +3,7 @@ coverage
 Flask
 Flask-APScheduler
 Flask-Caching
+flask-compress
 flask-cors
 Flask-Limiter
 flask-marshmallow
