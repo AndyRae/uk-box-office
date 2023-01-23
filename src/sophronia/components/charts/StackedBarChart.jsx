@@ -32,7 +32,6 @@ ChartJS.register(
  * <StackedBarChart data={data} height={height} />
  */
 export const StackedBarChart = ({ data, height }) => {
-	// const navigate = useNavigate();
 	const chartRef = useRef(null);
 
 	// Prepare the data for the chart
@@ -45,11 +44,11 @@ export const StackedBarChart = ({ data, height }) => {
 	// Navigate to the film page when a bar is clicked
 	// Disabled for now as it's not a good UX
 	const onClick = (event) => {
-		// var x = getElementAtEvent(chartRef.current, event);
-		// if (x.length > 0) {
-		// 	const slug = data[x[0].datasetIndex].slug;
-		// 	navigate(`/film/${slug}`);
-		// }
+		// 	var x = getElementAtEvent(chartRef.current, event);
+		// 	if (x.length > 0) {
+		// 		const slug = data[x[0].datasetIndex].slug;
+		// 		router.push(`/film/${slug}`);
+		// 	}
 	};
 
 	const d = {

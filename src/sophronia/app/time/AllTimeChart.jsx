@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import { getElementAtEvent } from 'react-chartjs-2';
 import { BarChart } from 'components/charts/BarChart';
 
@@ -13,7 +14,7 @@ import { BarChart } from 'components/charts/BarChart';
  * <AllTimeChart data={data} />
  */
 export const AllTimeChart = ({ data }) => {
-	// const navigate = useNavigate();
+	const router = useRouter();
 
 	const d = {
 		labels: data.map((d) => d.year),
@@ -114,12 +115,13 @@ export const AllTimeChart = ({ data }) => {
 		},
 	};
 
-	// Chart Navigation
+	// Chart Navigation on bar click to year page
 	const chartRef = useRef();
 	const onClick = (event) => {
+		console.log('welp');
 		var x = getElementAtEvent(chartRef.current, event);
 		const year = d.labels[x[0].index];
-		// navigate(`/time/${year}`);
+		router.push(`/time/${year}`);
 	};
 
 	return (

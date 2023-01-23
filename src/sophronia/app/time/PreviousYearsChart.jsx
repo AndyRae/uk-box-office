@@ -1,5 +1,8 @@
+'use client';
+
 import { BarChart } from 'components/charts/BarChart';
 import { useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import { getElementAtEvent } from 'react-chartjs-2';
 
 /**
@@ -11,7 +14,7 @@ import { getElementAtEvent } from 'react-chartjs-2';
  * <PreviousYearsChart data={data} />
  */
 export const PreviousYearsChart = ({ data }) => {
-	// const navigate = useNavigate();
+	const router = useRouter();
 
 	const options = {
 		responsive: true,
@@ -82,7 +85,7 @@ export const PreviousYearsChart = ({ data }) => {
 	const onClick = (event) => {
 		var x = getElementAtEvent(chartRef.current, event);
 		const year = d.labels[x[0].index];
-		// navigate(`/time/${year}`);
+		router.push(`/time/${year}`);
 	};
 
 	return (
