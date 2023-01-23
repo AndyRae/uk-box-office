@@ -66,11 +66,11 @@ export const StructuredTimeData = ({ title, endpoint, time }) => {
 		'@context': 'https://schema.org/',
 		'@type': 'Dataset',
 		name: `${title} Box Office Data`,
-		description: 'UK Cinema Box Office revenue data for: {{ title }}.',
+		description: `UK Cinema Box Office revenue data for: ${title}.`,
 		url: `https://boxofficedata.co.uk${endpoint}`,
 		isBasedOn:
 			'https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures',
-		keywords: ['BOX OFFICE DATA > CINEMA > {{ title }}'],
+		keywords: [`BOX OFFICE DATA > CINEMA > ${title}`],
 		license: 'https://creativecommons.org/licenses/by-sa/4.0/',
 		isAccessibleForFree: true,
 		creator: {
