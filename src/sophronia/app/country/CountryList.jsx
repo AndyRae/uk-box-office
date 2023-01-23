@@ -18,7 +18,7 @@ export const CountryList = ({ countries }) => {
 					{countries.results.map((country, index) => (
 						<Tr key={country.id} index={index}>
 							<Td isHighlight>
-								<Link href={country.slug}>{country.name}</Link>
+								<Link href={`/country/${country.slug}`}>{country.name}</Link>
 							</Td>
 						</Tr>
 					))}
