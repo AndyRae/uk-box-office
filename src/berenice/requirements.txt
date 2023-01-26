@@ -12,6 +12,8 @@ attrs==22.1.0
     # via pytest
 beautifulsoup4==4.11.1
     # via -r src/berenice/requirements.in
+brotli==1.0.9
+    # via flask-compress
 build==0.9.0
     # via pip-tools
 cachelib==0.9.0
@@ -57,6 +59,7 @@ flask==2.2.2
     #   -r src/berenice/requirements.in
     #   flask-apscheduler
     #   flask-caching
+    #   flask-compress
     #   flask-cors
     #   flask-limiter
     #   flask-marshmallow
@@ -65,6 +68,8 @@ flask==2.2.2
 flask-apscheduler==1.12.4
     # via -r src/berenice/requirements.in
 flask-caching==2.0.1
+    # via -r src/berenice/requirements.in
+flask-compress==1.13
     # via -r src/berenice/requirements.in
 flask-cors==3.0.10
     # via -r src/berenice/requirements.in
