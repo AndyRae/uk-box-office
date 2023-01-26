@@ -10,7 +10,7 @@ import { ProgressBar } from 'components/ui/ProgressBar';
 import { Tooltip } from 'components/ui/Tooltip';
 import { Tabs } from 'components/ui/Tabs';
 import { Card } from 'components/ui/Card';
-// import { ExportCSV } from 'components/ui/ExportCSV';
+import { ExportCSV } from 'components/ui/ExportCSV';
 import { StructuredTimeData } from 'components/StructuredData';
 import { DatasourceButton } from 'components/Dashboard/Datasource';
 import { MetricChange } from 'components/charts/MetricChange';
@@ -404,7 +404,7 @@ export const TimePage = ({
 						<>
 							<div className='flex flex-row-reverse mt-3'>
 								<DatasourceButton />
-								{/* <ExportCSV data={tableData} filename={'filmdata.csv'} /> */}
+								<ExportCSV data={tableData} filename={'filmdata.csv'} />
 							</div>
 							<FilmTableDetailed
 								data={tableData}
@@ -418,7 +418,7 @@ export const TimePage = ({
 						<>
 							<div className='flex flex-row-reverse mt-3'>
 								<DatasourceButton />
-								{/* <ExportCSV data={weekData} filename={'timedata.csv'} /> */}
+								<ExportCSV data={weekData} filename={'timedata.csv'} />
 							</div>
 							<WeeksTable data={weekData} />
 						</>
@@ -429,10 +429,10 @@ export const TimePage = ({
 						<>
 							<div className='flex flex-row-reverse mt-3'>
 								<DatasourceButton />
-								{/* <ExportCSV
+								<ExportCSV
 									data={timeComparisonData.results}
 									filename={'historic.csv'}
-								/> */}
+								/>
 							</div>
 							<PreviousTable data={timeComparisonData.results} />
 						</>

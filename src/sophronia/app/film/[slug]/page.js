@@ -5,7 +5,7 @@ import { Card } from 'components/ui/Card';
 import { Date } from 'components/Date';
 import { StructuredTimeData } from 'components/StructuredData';
 import { DatasourceButton } from 'components/Dashboard/Datasource';
-// import { ExportCSV } from 'components/ui/ExportCSV';
+import { ExportCSV } from 'components/ui/ExportCSV';
 import { TimeLineChart } from 'components/Time/TimeLineChart';
 
 import { getFilm } from './getFilm';
@@ -102,7 +102,9 @@ export default async function Page({ params }) {
 
 			<div className='flex flex-row-reverse my-6'>
 				<DatasourceButton />
-				{/* <ExportCSV data={data.weeks} filename={`${data.name}_data.csv`} /> */}
+				{data.weeks && (
+					<ExportCSV data={data.weeks} filename={`${data.name}_data.csv`} />
+				)}
 			</div>
 
 			<BoxOfficeTable data={data} />

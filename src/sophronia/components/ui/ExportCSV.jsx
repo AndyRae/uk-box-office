@@ -2,7 +2,13 @@
 
 import { BsFileEarmarkSpreadsheet } from 'react-icons/bs';
 import { Button } from './Button';
-import { CSVLink } from 'react-csv';
+import dynamic from 'next/dynamic';
+
+// Needs to be a dynamic import to work in NextJS.
+const DynamicCSV = dynamic(
+	() => import('react-csv').then((mod) => mod.CSVLink),
+	{ ssr: false }
+);
 
 /**
  * @file ExportCSV.jsx
@@ -12,7 +18,6 @@ import { CSVLink } from 'react-csv';
  * @returns {JSX.Element}
  * @example
  * <ExportCSV data={data} filename={'TopGunData.csv'} />
- * TODO: Fix this in NextJS
  */
 export const ExportCSV = ({ data, filename }) => {
 	return (
@@ -20,9 +25,11 @@ export const ExportCSV = ({ data, filename }) => {
 			<div className='px-1'>
 				<BsFileEarmarkSpreadsheet />
 			</div>
-			<CSVLink data={data} filename={filename}>
-				Export (.csv)
-			</CSVLink>
+			{data && (
+				<DynamicCSV data={data} filename={filename}>
+					Export (.csv)
+				</DynamicCSV>
+			)}
 		</Button>
 	);
 };

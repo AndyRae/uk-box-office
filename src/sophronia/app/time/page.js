@@ -2,7 +2,7 @@ import { getBackendURL } from 'lib/ApiFetcher';
 
 import { PageTitle } from 'components/ui/PageTitle';
 import { PageContent } from 'components/ui/PageContent';
-// import { ExportCSV } from 'components/ui/ExportCSV';
+import { ExportCSV } from 'components/ui/ExportCSV';
 import { StructuredTimeData } from 'components/StructuredData';
 import { Card } from 'components/ui/Card';
 
@@ -67,7 +67,7 @@ export default async function Page() {
 				</Card>
 			</div>
 
-			{/* <ExportCSV data={data.results} filename={'alltime.csv'} /> */}
+			<ExportCSV data={data.results} filename={'alltime.csv'} />
 			<YearsTable data={data.results} id={'yearstable'} />
 		</>
 	);
