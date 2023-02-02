@@ -183,6 +183,45 @@ def market_share(year: Optional[str] = None) -> Response:
     )
 
 
+def market_share_date(start: str, end: str) -> Response:
+    """
+    Gets the distributor market share for a time period.
+
+    Args:
+        start: Start date.
+        end: End date.
+
+    Returns (JSON): List of distributors and their market share.
+    """
+    query = db.session.query(
+        models.Distributor,
+        func.sum(models.Film_Week.week_gross),
+    )
+
+    query = query.join(models.Distributor)
+    query = query.filter(models.Film_Week.date >= start)
+    query = query.filter(models.Film_Week.date <= end)
+    query = query.group_by(models.Distributor)
+    query = query.order_by(func.sum(models.Film_Week.week_gross).desc())
+
+    data = query.all()
+
+    if data is None:
+        abort(404)
+
+    distributor_schema = DistributorSchema()
+
+    return jsonify(
+        results=[
+            dict(
+                distributor=distributor_schema.dump(row[0]),
+                gross=row[1],
+            )
+            for row in data
+        ]
+    )
+
+
 def spellcheck_distributor(distributor: pd.Series) -> str:
     """
     Spellchecks the distributor against a list of common mistakes

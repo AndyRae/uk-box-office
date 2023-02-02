@@ -140,3 +140,22 @@ def test_market_share_by_year(app, add_test_film):
         assert data["results"][0]["year"] == 2022
         assert data["results"][0]["distributor"]["slug"] == "20th-century-fox"
         assert data["results"][0]["gross"] == 1000
+
+
+def test_market_share_by_date(app, add_test_film):
+    """
+    Test that the market_share() method returns the correct data.
+
+    Args:
+        app: The Flask application
+        add_test_film: Fixture to add a test film to the database
+    """
+    with app.app_context():
+
+        response = services.distributor.market_share_date(
+            "2022-01-01", "2022-12-31"
+        )
+        data = json.loads(response.data)
+
+        assert data["results"][0]["distributor"]["slug"] == "20th-century-fox"
+        assert data["results"][0]["gross"] == 1000
