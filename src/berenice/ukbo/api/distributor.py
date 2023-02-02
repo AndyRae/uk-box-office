@@ -26,12 +26,22 @@ def all() -> Response:
 @cache.cached()
 def market_share() -> Response:
     """
-    Get distributors market share data for all time.
+    Get distributors market share data for a time period
+    If no time period is specified, all data is returned.
+
+    Request Arguments (optional):
+        start (str): Start date to filter by (YYYY-MM-DD).
+        end (str): End date to filter by (YYYY-MM-DD).
 
     Returns:
         JSON response of distributors market share data.
     """
-    return services.distributor.market_share()
+    start = request.args.get("start", None)
+    end = request.args.get("end", None)
+    if None in [start, end]:
+        return services.distributor.market_share()
+
+    return services.distributor.market_share_date(start, end)
 
 
 @distributor.route("/marketshare/<year>", methods=["GET"])
