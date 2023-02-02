@@ -83,6 +83,27 @@ def previous() -> Response:
     return services.boxoffice.previous(start, end)
 
 
+@boxoffice.route("previousyear", methods=["GET"])
+def previous_year() -> Response:
+    """
+    Get only previous year box office statistics for a time period.
+
+    Request arguments are passed to the service layer.
+
+    Request Arguments:
+        start (str): Start date to filter by (YYYY-MM-DD).
+        end (str): End date to filter by (YYYY-MM-DD).
+
+    Returns:
+        JSON response of box office data.
+    """
+    start = request.args.get("start", None)
+    end = request.args.get("end", None)
+    if None in [start, end]:
+        return Response('{"error": "Missing arguments"}', status=400)
+    return services.boxoffice.previous_year(start, end)
+
+
 @boxoffice.route("/topline", methods=["GET"])
 def topline() -> Response:
     """

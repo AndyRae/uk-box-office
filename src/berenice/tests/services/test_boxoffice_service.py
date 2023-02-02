@@ -224,6 +224,25 @@ def test_previous_empty(app, add_test_week):
     assert data["results"] == []
 
 
+def test_previous_year(app, add_test_week):
+    """
+    Test that the previous_year() method returns the correct data.
+
+    Args:
+        app: The Flask application
+        add_test_week: Fixture to add a test week to the database
+    """
+    with app.app_context():
+        response = services.boxoffice.previous_year("2023-01-19", "2023-01-21")
+
+    data = json.loads(response.data)
+
+    assert data["results"][0]["week_gross"] == 1000
+    assert data["results"][0]["weekend_gross"] == 500
+    assert data["results"][0]["number_of_cinemas"] == 700
+    assert data["results"][0]["number_of_releases"] == 10
+
+
 def test_topline(app, add_test_week):
     """
     Test that the topline() method returns the correct data.

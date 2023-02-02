@@ -181,6 +181,27 @@ def test_previous_empty(app, client):
         assert data["results"] == []
 
 
+def test_previous_year(app, client, add_test_week):
+    """
+    Test the boxoffice/previous_year endpoint.
+
+    Args:
+        app: Flask app
+        client: Flask test client
+        add_test_week: Fixture to add a test week
+    """
+    with app.app_context():
+        response = client.get(
+            "/api/boxoffice/previousyear?start=2023-1-19&end=2023-1-20&limit=1"
+        )
+        data = json.loads(response.data)
+        assert response.status_code == 200
+        assert data["results"][0]["week_gross"] == 1000
+        assert data["results"][0]["weekend_gross"] == 500
+        assert data["results"][0]["number_of_releases"] == 10
+        assert data["results"][0]["number_of_cinemas"] == 700
+
+
 def test_topline(app, client, add_test_week):
     """
     Test the boxoffice/topline endpoint.

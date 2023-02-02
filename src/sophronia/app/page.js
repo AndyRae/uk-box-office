@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useBoxOfficeInfinite, useBoxOfficePrevious } from 'lib/boxoffice';
+import { useBoxOfficeInfinite, useBoxOfficePreviousYear } from 'lib/boxoffice';
 import { Button } from 'components/ui/Button';
 import { ButtonGroup } from 'components/ui/ButtonGroup';
 import { Card } from 'components/ui/Card';
@@ -54,7 +54,10 @@ export default function Home() {
 		startDate,
 		endDate
 	);
-	const { data: timeComparisonData } = useBoxOfficePrevious(startDate, endDate);
+	const { data: timeComparisonData } = useBoxOfficePreviousYear(
+		startDate,
+		endDate
+	);
 
 	// Group Data for the charts
 	const { tableData } = groupForTable(results);

@@ -5,6 +5,7 @@
  * @exports useBoxOfficeTopFilms
  * @exports useBoxOfficeSummary
  * @exports useBoxOfficePrevious
+ * @exports useBoxOfficePreviousYear
  * @exports useBoxOfficeTopline
  * @exports useBoxOfficeInfinite
  * @exports useProtectedSWRInfinite
@@ -41,6 +42,8 @@ const fetchKeys = {
 		`boxoffice/summary?start=${start}&end=${end}&limit=${limit}`,
 	boxOfficePrevious: (start, end) =>
 		`boxoffice/previous?start=${start}&end=${end}`,
+	boxOfficePreviousYear: (start, end) =>
+		`boxoffice/previousyear?start=${start}&end=${end}`,
 	boxOfficeTopFilms: () => `boxoffice/topfilms`,
 	boxOfficeTopline: (start, end, limit) =>
 		`boxoffice/topline?start=${start}&end=${end}&limit=${limit}`,
@@ -127,6 +130,21 @@ export const useBoxOfficeSummary = (startDate, endDate, yearLimit) => {
 export const useBoxOfficePrevious = (start, end) => {
 	const apiFetcher = useBackendApi();
 	return useSWR(fetchKeys.boxOfficePrevious(start, end), apiFetcher, {
+		suspense: true,
+	});
+};
+
+/**
+ * Uses the box office ``previousyear`` endpoint
+ * @param {string} start - Start date for the query.
+ * @param {string} end - End date for the query.
+ * @returns boxoffice previous year data from the api.
+ * @example
+ * const { data, error } = useBoxOfficePrevious('2021-01-01', '2021-01-31');
+ */
+export const useBoxOfficePreviousYear = (start, end) => {
+	const apiFetcher = useBackendApi();
+	return useSWR(fetchKeys.boxOfficePreviousYear(start, end), apiFetcher, {
 		suspense: true,
 	});
 };
