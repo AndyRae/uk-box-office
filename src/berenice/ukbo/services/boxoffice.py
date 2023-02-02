@@ -170,6 +170,8 @@ def summary(start: str, end: str, limit: int = 0) -> Response:
 def previous(start: str, end: str) -> Response:
     """
     Gets the previous year of box office data as summary statistics.
+    As this gets multiple years, it cannot be used for time comparison
+    across periods that are not a standard amount of time inside one year.
 
     Args:
         start: Start of time range (YYYY-MM-DD).
@@ -219,6 +221,64 @@ def previous(start: str, end: str) -> Response:
                 weekend_gross=row[2],
                 number_of_releases=row[3],
                 number_of_cinemas=row[4],
+            )
+            for row in data
+        ]
+    )
+
+
+def previous_year(start: str, end: str) -> Response:
+    """
+    Gets only the previous year of box office data as summary statistics.
+    This can be used for time comparison across periods that are not a standard
+    amount of time inside one year.
+
+    Args:
+        start: Start of time range (YYYY-MM-DD).
+        end: End of time range (YYYY-MM-DD).
+
+    Returns:
+        JSON response of the box office data as a list of weeks.
+    """
+    query = db.session.query(
+        func.sum(models.Week.week_gross),
+        func.sum(models.Week.weekend_gross),
+        func.sum(models.Week.number_of_releases),
+        func.max(models.Week.number_of_cinemas),
+    )
+
+    if start != end:
+        if start is not None:
+            s = to_date(start)
+            s = s.replace(year=(s.year - 1))
+            query = query.filter(models.Week.date >= s)
+
+        if end is not None:
+            e = to_date(end)
+            e = e.replace(year=(e.year - 1))
+            query = query.filter(models.Week.date <= e)
+
+    else:
+        # Query for 1 week - so use the week number to filter.
+        s = to_date(start)
+        s = s.replace(year=(s.year - 1))
+        week_number = s.isocalendar()[1]
+        query = query.filter(
+            func.extract("week", models.Week.date) == week_number
+        )
+        query = query.filter(
+            func.extract("year", models.Week.date) >= (s.year)
+        )
+
+    data = query.all()
+
+    return jsonify(
+        results=[
+            dict(
+                week_gross=row[0],
+                weekend_gross=row[1],
+                number_of_releases=row[2],
+                number_of_cinemas=row[3],
             )
             for row in data
         ]
