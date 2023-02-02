@@ -137,3 +137,24 @@ def test_market_share_by_year(app, client, add_test_film):
         assert data["results"][0]["distributor"]["slug"] == "20th-century-fox"
         assert data["results"][0]["gross"] == 1000
         assert data["results"][0]["year"] == 2022
+
+
+def test_market_share_date(app, client, add_test_film):
+    """
+    Test the distributor/marketshare endpoint with a date.
+
+    Args:
+        app: Flask app
+        client: Flask test client
+        add_test_film: Fixture to add a test film
+    """
+    with app.app_context():
+        response = client.get(
+            "/api/distributor/marketshare?start=2022-01-01&end=2022-12-31"
+        )
+        data = json.loads(response.data)
+
+        assert response.status_code == 200
+        assert data["results"][0]["distributor"]["name"] == "20th Century Fox"
+        assert data["results"][0]["distributor"]["slug"] == "20th-century-fox"
+        assert data["results"][0]["gross"] == 1000
