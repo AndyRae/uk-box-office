@@ -1,14 +1,14 @@
-import { FaGlobeEurope } from 'react-icons/fa';
+import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
 import { BiFilm, BiNetworkChart } from 'react-icons/bi';
-import { MdOutlineSpaceDashboard, MdOutlineAutoGraph } from 'react-icons/md';
-import { HiOutlineTicket } from 'react-icons/hi';
+import { BsListOl } from 'react-icons/bs';
+import { FaGlobeEurope } from 'react-icons/fa';
 import { FiDatabase } from 'react-icons/fi';
+import { HiOutlineTicket } from 'react-icons/hi';
+import { MdOutlineSpaceDashboard, MdOutlineAutoGraph } from 'react-icons/md';
 import { Searchbar } from '../Search/Searchbar';
 import { SideBarLink } from './SideBarLink';
-import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
-import { BsListOl } from 'react-icons/bs';
-import { Card } from 'components/ui/Card';
 import { InlineLink } from './InlineLink';
+import { Card } from 'components/ui/Card';
 import Link from 'next/link';
 
 // Quick links to display in the sidebar
