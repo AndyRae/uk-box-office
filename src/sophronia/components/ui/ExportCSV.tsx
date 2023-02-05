@@ -19,7 +19,13 @@ const DynamicCSV = dynamic(
  * @example
  * <ExportCSV data={data} filename={'TopGunData.csv'} />
  */
-export const ExportCSV = ({ data, filename }) => {
+export const ExportCSV = ({
+	data,
+	filename,
+}: {
+	data: any;
+	filename: string;
+}): JSX.Element => {
 	return (
 		<Button>
 			<div className='px-1'>

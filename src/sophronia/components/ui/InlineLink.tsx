@@ -6,7 +6,13 @@ import Link from 'next/link';
  * @param {children} Children to render
  * @returns Link component
  */
-export const InlineLink = ({ to, children }) => (
+export const InlineLink = ({
+	to,
+	children,
+}: {
+	to: string;
+	children: React.ReactNode;
+}): JSX.Element => (
 	<Link href={to} className='text-bo-primary hover:text-red-500'>
 		{children}
 	</Link>
@@ -18,7 +24,13 @@ export const InlineLink = ({ to, children }) => (
  * @param {children} Children to render
  * @returns Link component
  */
-export const ExternalLink = ({ to, children }) => (
+export const ExternalLink = ({
+	to,
+	children,
+}: {
+	to: string;
+	children: React.ReactNode;
+}): JSX.Element => (
 	<a
 		href={to}
 		className='text-bo-primary hover:text-red-500'

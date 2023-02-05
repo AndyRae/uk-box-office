@@ -1,15 +1,17 @@
+type CardProps = {
+	title?: string;
+	subtitle?: string;
+	children?: React.ReactNode;
+	size?: 'sm' | 'md' | 'lg';
+	align?: 'left' | 'center' | 'right';
+	className?: string;
+};
+
 /**
  * @file Card.jsx
  * @description Card component for dashboard
- * @param {String} title - Title of the card
- * @param {String} subtitle - Subtitle of the card
- * @param {JSX.Element} children - Children of the card
- * @param {String} size - Size of the card
- * @param {String} align - Alignment of the card
- * @param {String} className - Additional class name
  * @returns {JSX.Element}
- * @example
- * <Card title="Box Office" subtitle="£ 1,000" size="lg" />
+ * @example <Card title="Box Office" subtitle="£ 1,000" size="lg" />
  */
 export const Card = ({
 	title,
@@ -18,8 +20,8 @@ export const Card = ({
 	size = 'md',
 	align = 'center',
 	className,
-}) => {
-	let cardSize;
+}: CardProps): JSX.Element => {
+	let cardSize: string;
 
 	switch (size) {
 		case 'sm':

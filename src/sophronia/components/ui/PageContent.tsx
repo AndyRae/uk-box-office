@@ -3,7 +3,11 @@
  * @param {children} children
  * @returns {JSX.Element}
  */
-export const PageContent = ({ children }) => {
+export const PageContent = ({
+	children,
+}: {
+	children: JSX.Element;
+}): JSX.Element => {
 	return (
 		<div className='flex flex-col max-w-xl space leading-7 space-between gap-4'>
 			{children}

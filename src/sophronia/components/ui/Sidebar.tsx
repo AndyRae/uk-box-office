@@ -8,7 +8,7 @@ import { MdOutlineSpaceDashboard, MdOutlineAutoGraph } from 'react-icons/md';
 import { Searchbar } from '../Search/Searchbar';
 import { SideBarLink } from './SideBarLink';
 import { InlineLink } from './InlineLink';
-import { Card } from 'components/ui/Card';
+import { Card } from '../../components/ui/Card';
 import Link from 'next/link';
 
 // Quick links to display in the sidebar
@@ -62,7 +62,7 @@ const links = [
  * @example
  * <Brand />
  */
-export const Brand = () => {
+export const Brand = (): JSX.Element => {
 	return (
 		<Link href='/' className='flex items-center pl-2.5 mb-5'>
 			<img
@@ -85,7 +85,7 @@ export const Brand = () => {
  * @description The actual content of the sidebar.
  * @see Sidebar
  */
-const SidebarContent = () => {
+const SidebarContent = (): JSX.Element => {
 	return (
 		<div>
 			<div className='flex flex-col space-y-6'>
@@ -134,7 +134,11 @@ const SidebarContent = () => {
  * @example
  * <Sidebar />
  */
-export const Sidebar = ({ children }) => {
+export const Sidebar = ({
+	children,
+}: {
+	children: React.ReactNode;
+}): JSX.Element => {
 	return (
 		<div className='relative lg:flex'>
 			<style>

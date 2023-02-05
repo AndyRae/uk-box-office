@@ -1,6 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import {
+	JSXElementConstructor,
+	Key,
+	MouseEvent,
+	ReactElement,
+	ReactFragment,
+	ReactPortal,
+	SetStateAction,
+	useState,
+} from 'react';
 
 /**
  * @file Tabs.jsx
@@ -14,10 +23,19 @@ import { useState } from 'react';
  * 	<div>Tab 2 content</div>
  * </Tabs>
  */
-export const Tabs = ({ tabs, children }) => {
+export const Tabs = ({
+	tabs,
+	children,
+}: {
+	tabs: [any];
+	children: any;
+}): JSX.Element => {
 	const [activeTab, setActiveTab] = useState(0);
 
-	const handleTabClick = (e, index) => {
+	const handleTabClick = (
+		_e: MouseEvent<HTMLButtonElement>,
+		index: SetStateAction<number>
+	) => {
 		setActiveTab(index);
 	};
 
@@ -42,7 +60,7 @@ export const Tabs = ({ tabs, children }) => {
 								aria-controls={`panel-${index}`}
 								id={`tab-${index}`}
 								data-tab={index}
-								onClick={(e) => handleTabClick(e, index)}
+								onClick={(e): void => handleTabClick(e, index)}
 							>
 								{child.title}
 							</button>
@@ -55,19 +73,30 @@ export const Tabs = ({ tabs, children }) => {
 				role='tabpanel'
 				aria-labelledby={`tab-${activeTab}`}
 			>
-				{children.map((child, index) => {
-					return (
-						<div
-							key={index}
-							className='rounded-lg'
-							role='presentation'
-							data-tab={index}
-							hidden={activeTab !== index}
-						>
-							{child}
-						</div>
-					);
-				})}
+				{children.map(
+					(
+						child:
+							| string
+							| number
+							| boolean
+							| ReactElement<any, string | JSXElementConstructor<any>>
+							| ReactFragment
+							| ReactPortal,
+						index: Key
+					) => {
+						return (
+							<div
+								key={index}
+								className='rounded-lg'
+								role='presentation'
+								data-tab={index}
+								hidden={activeTab !== index}
+							>
+								{child}
+							</div>
+						);
+					}
+				)}
 			</div>
 		</div>
 	);

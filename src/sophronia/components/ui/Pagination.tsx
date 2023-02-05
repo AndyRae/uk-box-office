@@ -1,3 +1,9 @@
+type PaginationProps = {
+	pages: number[];
+	setPageIndex: (pageIndex: number) => void;
+	pageIndex: number;
+};
+
 /**
  * Pagination component
  * @param {Array} pages - The array of pages numbers.
@@ -7,7 +13,11 @@
  * @example
  * <Pagination pages={pages} setPageIndex={setPageIndex} pageIndex={pageIndex} />
  */
-export const Pagination = ({ pages, setPageIndex, pageIndex }) => {
+export const Pagination = ({
+	pages,
+	setPageIndex,
+	pageIndex,
+}: PaginationProps): JSX.Element => {
 	return (
 		<nav aria-label='Pagination'>
 			<ul className='inline-flex -space-x-px py-5'>

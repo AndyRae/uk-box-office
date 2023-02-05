@@ -3,6 +3,12 @@
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
+type SideBarLinkProps = {
+	name: string;
+	path: string;
+	icon: JSX.Element;
+};
+
 /**
  * Sidebar link component
  * @description The sidebar link, will determine if the link is active.
@@ -14,7 +20,11 @@ import Link from 'next/link';
  * @example
  * <SideBarElement name='Dashboard' path='/' icon={<MdOutlineSpaceDashboard />} />
  */
-export const SideBarLink = ({ name, path, icon, children }) => {
+export const SideBarLink = ({
+	name,
+	path,
+	icon,
+}: SideBarLinkProps): JSX.Element => {
 	const isActive = usePathname() === path;
 	return (
 		<Link

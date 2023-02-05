@@ -6,7 +6,7 @@
  * @example
  * <ProgressBar value={50} />
  */
-export const ProgressBar = ({ value }) => {
+export const ProgressBar = ({ value }: { value: number }): JSX.Element => {
 	return (
 		<div className='w-full bg-gray-200 rounded-full h-1 dark:bg-gray-700'>
 			<div

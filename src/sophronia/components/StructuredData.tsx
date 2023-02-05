@@ -4,7 +4,7 @@ import Script from 'next/script';
  * Very simple JSON-LD component for structured data.
  * @returns JSON-LD structured data for the current page
  */
-export const StructuredSiteData = () => {
+export const StructuredSiteData = (): JSX.Element => {
 	const data = {
 		'@context': 'http://schema.org',
 		'@type': 'WebSite',
@@ -39,18 +39,30 @@ export const StructuredSiteData = () => {
  * @param {time} time period of the page
  * @returns JSON-LD structured data for the current page.
  */
-export const StructuredTimeData = ({ title, endpoint, time }) => {
+export const StructuredTimeData = ({
+	title,
+	endpoint,
+	time,
+}: {
+	title: string;
+	endpoint: string;
+	time: string;
+}): JSX.Element => {
 	const data = {
-		'@context': 'http://schema.org',
-		'@type': 'WebSite',
-		url: 'https://www.boxofficedata.co.uk',
-		name: 'UK Box Office Data',
-		description:
-			'UK Box Office provides detailed cinema box office revenue for the UK film industry.',
 		potentialAction: {
 			'@type': 'SearchAction',
 			target: 'https://boxofficedata.co.uk/search?q={search_term_string}',
 			'query-input': 'required name=search_term_string',
+		},
+		WebPage: {
+			'@type': 'WebPage',
+			'@id': `https://boxofficedata.co.uk${endpoint}`,
+			isPartOf: {
+				'@id': `https://boxofficedata.co.uk${endpoint}`,
+			},
+			breadcrumb: {
+				'@id': `https://boxofficedata.co.uk${endpoint}`,
+			},
 		},
 		'@graph': [
 			{

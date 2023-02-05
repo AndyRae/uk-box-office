@@ -1,5 +1,5 @@
 import { Button } from '../ui/Button';
-import { Card } from 'components/ui/Card';
+import { Card } from '../../components/ui/Card';
 import { RiSeedlingLine } from 'react-icons/ri';
 
 /**
@@ -7,7 +7,7 @@ import { RiSeedlingLine } from 'react-icons/ri';
  * Quick component to add credit where necessary
  * @returns {JSX.Element}
  */
-export const DatasourceCard = () => {
+export const DatasourceCard = (): JSX.Element => {
 	return (
 		<div className='ml-2'>
 			<Card size='sm'>

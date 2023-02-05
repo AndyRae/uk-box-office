@@ -1,3 +1,9 @@
+type ButtonProps = {
+	children: React.ReactNode;
+	onClick?: () => void;
+	isActive?: boolean;
+};
+
 /**
  * @file Button.jsx
  * @description Button component with a branded gradient outline.
@@ -9,7 +15,12 @@
  * @example
  * <Button onClick={() => console.log('Hello World!')}>Hello World!</Button>
  */
-export const Button = ({ children, onClick, isActive, ...props }) => {
+export const Button = ({
+	children,
+	onClick,
+	isActive,
+	...props
+}: ButtonProps): JSX.Element => {
 	return (
 		<button
 			onClick={onClick}

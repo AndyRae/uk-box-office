@@ -4,6 +4,11 @@ import { useForm } from 'react-hook-form';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { useRouter } from 'next/navigation';
 
+type SearchbarProps = {
+	placeholder?: string;
+	value?: string;
+};
+
 /**
  * @description Searchbar component
  * Search is primitive, just redirects to the search page where the api gets the query.
@@ -13,16 +18,19 @@ import { useRouter } from 'next/navigation';
  * @example
  * <Searchbar placeholder='Search' value={null} />
  */
-export const Searchbar = ({ placeholder = 'Search', value = null }) => {
+export const Searchbar = ({
+	placeholder = 'Search',
+	value = null,
+}: SearchbarProps): JSX.Element => {
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 	} = useForm();
-	const onSubmit = (data) => handleSearch(data);
+	const onSubmit = (data: any) => handleSearch(data);
 	const router = useRouter();
 
-	const handleSearch = (data) => {
+	const handleSearch = (data: any) => {
 		router.push(`/search?q=${data.Search}`);
 	};
 

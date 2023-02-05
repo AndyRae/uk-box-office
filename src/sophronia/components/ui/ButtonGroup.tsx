@@ -11,8 +11,12 @@ import { Button } from './Button';
  *  <Button onClick={() => console.log('Hello World!')}>Hello World!</Button>
  * </ButtonGroup>
  */
-export const ButtonGroup = ({ children }) => {
-	// Map over children and add appropriate border radius.
+
+type ButtonGroupProps = {
+	children: React.ReactChild;
+};
+
+export const ButtonGroup = ({ children }: ButtonGroupProps): JSX.Element => {
 	const childrenArray = React.Children.toArray(children);
 
 	return (

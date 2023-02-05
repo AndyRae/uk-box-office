@@ -6,7 +6,11 @@
  * @example
  * <PageTitle>Hello World!</PageTitle>
  */
-export const PageTitle = ({ children }) => {
+export const PageTitle = ({
+	children,
+}: {
+	children: JSX.Element;
+}): JSX.Element => {
 	return (
 		<h1 className='text-4xl capitalize mb-10 font-bold tracking-tight text-gray-900 dark:text-white'>
 			{children}

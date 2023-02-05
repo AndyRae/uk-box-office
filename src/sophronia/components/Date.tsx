@@ -8,7 +8,7 @@ import { parseISO, format } from 'date-fns';
  * @example
  * <Date dateString='2021-01-01' />
  */
-export const Date = ({ dateString }) => {
+export const Date = ({ dateString }: { dateString: string }): JSX.Element => {
 	const date = parseISO(dateString);
 	return (
 		<time suppressHydrationWarning dateTime={dateString}>

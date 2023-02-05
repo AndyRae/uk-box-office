@@ -1,4 +1,4 @@
-import { Card } from 'components/ui/Card';
+import { Card } from '../../components/ui/Card';
 
 /**
  * @file LastUpdated.jsx
@@ -8,15 +8,15 @@ import { Card } from 'components/ui/Card';
  * @example
  * <LastUpdated date="2021-05-01" />
  */
-export const LastUpdated = ({ date }) => {
+export const LastUpdated = ({ date }: { date: string }): JSX.Element => {
 	const today = new Date();
 	const lastUpdated = new Date(date);
 
-	const diffTime = Math.abs(today - lastUpdated);
+	const diffTime = Math.abs(today.getTime() - lastUpdated.getTime());
 	let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
 	if (isNaN(diffDays)) {
-		diffDays = '-';
+		diffDays = 0;
 	}
 
 	return (
