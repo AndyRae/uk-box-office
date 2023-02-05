@@ -1,7 +1,8 @@
-type ButtonProps = {
+export type ButtonProps = {
 	children: React.ReactNode;
 	onClick?: () => void;
 	isActive?: boolean;
+	[x: string]: any;
 };
 
 /**
