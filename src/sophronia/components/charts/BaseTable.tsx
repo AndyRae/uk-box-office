@@ -9,7 +9,7 @@
  * 	</Tr>
  * </Thead>
  */
-const Thead = ({ children }) => {
+const Thead = ({ children }: { children: React.ReactNode }): JSX.Element => {
 	return (
 		<thead className='text-xs text-gray-700 uppercase border-b-2 border-b-gray-500 bg-gray-50 dark:bg-gray-900 dark:text-gray-400'>
 			{children}
@@ -25,7 +25,13 @@ const Thead = ({ children }) => {
  * @example
  * <Th isNumeric>1</Th>
  */
-const Th = ({ isNumeric, children }) => {
+const Th = ({
+	isNumeric,
+	children,
+}: {
+	isNumeric: boolean;
+	children: React.ReactNode;
+}): JSX.Element => {
 	return (
 		<th scope='col' className={`py-3 px-3 ${isNumeric ? 'text-center' : ''}`}>
 			{children}
@@ -44,7 +50,13 @@ const Th = ({ isNumeric, children }) => {
  * 	<Td>2</Td>
  * </Tr>
  */
-export const Tr = ({ index, children }) => {
+export const Tr = ({
+	index,
+	children,
+}: {
+	index?: number;
+	children: React.ReactNode;
+}): JSX.Element => {
 	const alternatingColor = ['bg-white', 'bg-gray-100'];
 	const alternatingDarkColor = ['dark:bg-black', 'dark:bg-gray-900'];
 	return (
@@ -58,6 +70,12 @@ export const Tr = ({ index, children }) => {
 	);
 };
 
+type TdProps = {
+	isNumeric?: boolean;
+	isHighlight?: boolean;
+	children: React.ReactNode;
+	[x: string]: any;
+};
 /**
  * Base Table Data component
  * @param {Boolean} isNumeric - Whether the data is numeric
@@ -67,7 +85,12 @@ export const Tr = ({ index, children }) => {
  * @example
  * <Td isNumeric isHighlight>1</Td>
  */
-export const Td = ({ isNumeric, isHighlight, children, ...rest }) => {
+export const Td = ({
+	isNumeric,
+	isHighlight,
+	children,
+	...rest
+}: TdProps): JSX.Element => {
 	return (
 		<td
 			className={`py-4 px-3 ${
@@ -79,6 +102,15 @@ export const Td = ({ isNumeric, isHighlight, children, ...rest }) => {
 			{children}
 		</td>
 	);
+};
+
+type BaseTableProps = {
+	columns: {
+		label: string;
+		isNumeric?: boolean;
+	}[];
+	id?: string;
+	children: React.ReactNode;
 };
 
 /**
@@ -96,7 +128,11 @@ export const Td = ({ isNumeric, isHighlight, children, ...rest }) => {
  * 	</Tr>
  * </BaseTable>
  */
-export const BaseTable = ({ columns, id, children }) => {
+export const BaseTable = ({
+	columns,
+	id,
+	children,
+}: BaseTableProps): JSX.Element => {
 	return (
 		<div className='overflow-x-auto rounded-lg relative max-h-screen'>
 			<table

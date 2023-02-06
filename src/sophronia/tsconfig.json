@@ -31,7 +31,7 @@
     "**/*.tsx",
     "app/layout.js",
     "app/not-found.js",
-    "app/DefaultTags.js" ],
+    "app/DefaultTags.js", ],
   "exclude": [
     "node_modules"
   ],

@@ -9,7 +9,13 @@ import { MetricChange } from '../charts/MetricChange';
  * @param {Array} comparisonData - Array of films from the previous week
  * @returns {JSX.Element}
  */
-export const FilmTableDetailed = ({ data, comparisonData }) => {
+export const FilmTableDetailed = ({
+	data,
+	comparisonData,
+}: {
+	data: any[];
+	comparisonData: any[];
+}): JSX.Element => {
 	const columns = [
 		{ label: 'rank', isNumeric: true },
 		{ label: 'title' },
@@ -30,7 +36,7 @@ export const FilmTableDetailed = ({ data, comparisonData }) => {
 	return (
 		<BaseTable columns={columns}>
 			{data.map((film, index) => {
-				let change;
+				let change: number;
 				if (comparisonData?.length > 0) {
 					const previousFilm = comparisonData.find(
 						(object) => object.film === film.title

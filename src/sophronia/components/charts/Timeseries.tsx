@@ -25,6 +25,15 @@ ChartJS.register(
 	Tooltip
 );
 
+type TimeseriesProps = {
+	data: any;
+	options: object;
+	id?: string;
+	height?: 'sm' | 'md' | 'lg' | 'xl';
+	chartRef?: any;
+	onClick?: () => void;
+};
+
 /**
  * Base Timeseries component
  * @param {Object} data - Data to be displayed in the chart
@@ -42,7 +51,7 @@ export const Timeseries = ({
 	height = 'lg',
 	chartRef,
 	onClick,
-}) => {
+}: TimeseriesProps): JSX.Element => {
 	var size = 'h-96';
 
 	switch (height) {

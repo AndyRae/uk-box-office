@@ -6,7 +6,7 @@
  * @example
  * <MetricChange value={1} />
  */
-export const MetricChange = ({ value }) => {
+export const MetricChange = ({ value }: { value: number }): JSX.Element => {
 	const isNegative = value < 0;
 	return (
 		<span

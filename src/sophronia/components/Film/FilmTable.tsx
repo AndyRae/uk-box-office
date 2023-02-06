@@ -8,7 +8,7 @@ import { BaseTable, Td, Tr } from '../charts/BaseTable';
  * @example
  * <FilmTable films={films} />
  */
-export const FilmTable = ({ films }) => {
+export const FilmTable = ({ films }: { films: any }) => {
 	const columns = [
 		{ label: 'title' },
 		{ label: 'distributor' },

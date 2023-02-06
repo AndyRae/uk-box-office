@@ -9,7 +9,7 @@ import { Timeseries } from './Timeseries';
  * @example
  * <ForecastChart data={data} />
  */
-export const ForecastChart = ({ data }) => {
+export const ForecastChart = ({ data }: { data: any[] }): JSX.Element => {
 	const reversed = [...data].reverse();
 
 	const d = {
@@ -91,12 +91,12 @@ export const ForecastChart = ({ data }) => {
 				ticks: {
 					autoSkip: true,
 					stepSize: 10000000,
-					callback: function (value, index, values) {
+					callback: function (value: number, index: number, values: number[]) {
 						var ranges = [
 							{ divider: 1e6, suffix: 'M' },
 							{ divider: 1e3, suffix: 'k' },
 						];
-						function formatNumber(n) {
+						function formatNumber(n: number) {
 							for (var i = 0; i < ranges.length; i++) {
 								if (n >= ranges[i].divider) {
 									return (n / ranges[i].divider).toString() + ranges[i].suffix;

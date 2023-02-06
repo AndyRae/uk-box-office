@@ -20,6 +20,13 @@ ChartJS.register(
 	Legend
 );
 
+type BarChartProps = {
+	data: any;
+	options: object;
+	onClick: () => void;
+	chartRef: any;
+};
+
 /**
  * Base BarChart component
  * @param {Object} data - Data to be displayed in the chart
@@ -28,7 +35,12 @@ ChartJS.register(
  * @param {Object} chartRef - Reference to the chart
  * @returns {JSX.Element}
  */
-export const BarChart = ({ data, options, onClick, chartRef }) => {
+export const BarChart = ({
+	data,
+	options,
+	onClick,
+	chartRef,
+}: BarChartProps): JSX.Element => {
 	return (
 		<div className='my-10 h-96'>
 			<Bar
