@@ -1,7 +1,7 @@
 'use client';
 
 import { BarChart } from 'components/charts/BarChart';
-import { useRef } from 'react';
+import { MouseEvent, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { getElementAtEvent } from 'react-chartjs-2';
 
@@ -13,7 +13,7 @@ import { getElementAtEvent } from 'react-chartjs-2';
  * @example
  * <PreviousYearsChart data={data} />
  */
-export const PreviousYearsChart = ({ data }) => {
+export const PreviousYearsChart = ({ data }: { data: any }): JSX.Element => {
 	const router = useRouter();
 
 	const options = {
@@ -27,23 +27,20 @@ export const PreviousYearsChart = ({ data }) => {
 		},
 		scales: {
 			x: {
-				ticks: {
-					maxRotation: 0,
-					minRotation: 0,
-					autoSkip: true,
-				},
 				grid: {
 					display: false,
 				},
 				ticks: {
+					maxRotation: 0,
+					minRotation: 0,
 					autoSkip: true,
 					stepSize: 10000000,
-					callback: function (value, index, values) {
+					callback: function (value: number, index: number, values: any) {
 						var ranges = [
 							{ divider: 1e6, suffix: 'M' },
 							{ divider: 1e3, suffix: 'k' },
 						];
-						function formatNumber(n) {
+						function formatNumber(n: number) {
 							for (var i = 0; i < ranges.length; i++) {
 								if (n >= ranges[i].divider) {
 									return (n / ranges[i].divider).toString() + ranges[i].suffix;
@@ -66,11 +63,11 @@ export const PreviousYearsChart = ({ data }) => {
 	};
 
 	const d = {
-		labels: data.results.map((d) => d.year),
+		labels: data.results.map((d: { year: string }) => d.year),
 		datasets: [
 			{
 				label: 'Box Office',
-				data: data.results.map((d) => d.week_gross),
+				data: data.results.map((d: { week_gross: number }) => d.week_gross),
 				fill: true,
 				backgroundColor: ['#B65078'],
 				borderColor: ['#B65078'],
@@ -82,7 +79,7 @@ export const PreviousYearsChart = ({ data }) => {
 
 	// Chart Navigation
 	const chartRef = useRef();
-	const onClick = (event) => {
+	const onClick = (event: MouseEvent<HTMLCanvasElement>) => {
 		var x = getElementAtEvent(chartRef.current, event);
 		const year = d.labels[x[0].index];
 		router.push(`/time/${year}`);

@@ -6,7 +6,7 @@ import { BaseTable, Td, Tr } from 'components/charts/BaseTable';
  * @param {Array} data - Array of box office data for top films
  * @returns {JSX.Element}
  */
-export const TopFilmsTable = ({ data }) => {
+export const TopFilmsTable = ({ data }: { data: any }): JSX.Element => {
 	const columns = [
 		{ label: 'rank', isNumeric: true },
 		{ label: 'title' },
@@ -16,7 +16,7 @@ export const TopFilmsTable = ({ data }) => {
 
 	return (
 		<BaseTable columns={columns}>
-			{data.map((obj, index) => {
+			{data.map((obj, index: number) => {
 				return (
 					<Tr key={index} index={index}>
 						<Td isNumeric>{index + 1}</Td>

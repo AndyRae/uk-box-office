@@ -9,7 +9,7 @@ import { MetricChange } from 'components/charts/MetricChange';
  * @example
  * <WeeksTable data={data} />
  */
-export const WeeksTable = ({ data }) => {
+export const WeeksTable = ({ data }: { data: any }): JSX.Element => {
 	const columns = [
 		{ label: 'week ending' },
 		{ label: 'weekend box office', isNumeric: true },
@@ -19,7 +19,7 @@ export const WeeksTable = ({ data }) => {
 	];
 	return (
 		<BaseTable columns={columns}>
-			{data.map((week, index) => {
+			{data.map((week, index: number) => {
 				const previousWeek = data[index + 1];
 				const changeWeekend = previousWeek
 					? Math.ceil(
@@ -27,7 +27,7 @@ export const WeeksTable = ({ data }) => {
 								previousWeek.weekendGross) *
 								100
 					  )
-					: '-';
+					: 0;
 				const [year, month, day] = week.date.split('-');
 				return (
 					<Tr key={week.date} index={index}>

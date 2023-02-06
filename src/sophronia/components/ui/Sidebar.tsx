@@ -8,7 +8,7 @@ import { MdOutlineSpaceDashboard, MdOutlineAutoGraph } from 'react-icons/md';
 import { Searchbar } from '../Search/Searchbar';
 import { SideBarLink } from './SideBarLink';
 import { InlineLink } from './InlineLink';
-import { Card } from '../../components/ui/Card';
+import { Card } from 'components/ui/Card';
 import Link from 'next/link';
 
 // Quick links to display in the sidebar

@@ -7,7 +7,7 @@ import { MetricChange } from 'components/charts/MetricChange';
  * @param {Array} data - Array of box office data for years.
  * @returns {JSX.Element}
  */
-export const PreviousTable = ({ data }) => {
+export const PreviousTable = ({ data }: { data: any }): JSX.Element => {
 	const columns = [
 		{ label: 'year', isNumeric: true },
 		{ label: 'total box office', isNumeric: true },

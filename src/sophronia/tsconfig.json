@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "lib": [
       "dom",
       "dom.iterable",
@@ -22,18 +22,23 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "baseUrl": ".",
   },
   "include": [
+    ".",
+    "./**/*.ts",
     "next-env.d.ts",
     ".next/types/**/*.ts",
     "**/*.ts",
-    "**/*.tsx",
-    "app/layout.js",
-    "app/not-found.js",
-    "app/DefaultTags.js", ],
+    "**/*.tsx"
+  ],
   "exclude": [
     "node_modules"
   ],
-  "baseUrl": ".",
+  "paths": {
+    "@/*": [
+      "./*"
+    ]
+  }
 }

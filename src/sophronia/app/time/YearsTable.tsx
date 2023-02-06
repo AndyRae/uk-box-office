@@ -8,7 +8,13 @@ import { MetricChange } from 'components/charts/MetricChange';
  * @param {string} id - ID for table
  * @returns {JSX.Element}
  */
-export const YearsTable = ({ data, id }) => {
+export const YearsTable = ({
+	data,
+	id,
+}: {
+	data: any;
+	id: string;
+}): JSX.Element => {
 	const columns = [
 		{ label: 'year' },
 		{ label: 'weekend box office', isNumeric: true },
@@ -28,7 +34,7 @@ export const YearsTable = ({ data, id }) => {
 								previousYear.weekend_gross) *
 								100
 					  )
-					: '-';
+					: 0;
 				const averageTicketPrice = (year.week_gross / year.admissions).toFixed(
 					2
 				);

@@ -23,7 +23,7 @@ ChartJS.register(
 type BarChartProps = {
 	data: any;
 	options: object;
-	onClick: () => void;
+	onClick: (arg0?: any) => void;
 	chartRef: any;
 };
 
