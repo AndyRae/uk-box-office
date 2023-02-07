@@ -8,7 +8,7 @@ import { BaseTable, Td, Tr } from 'components/charts/BaseTable';
  * @example
  * <MarketShareTable data={data} />
  */
-export const MarketShareTable = ({ data }) => {
+export const MarketShareTable = ({ data }: { data: any }): JSX.Element => {
 	const columns = [
 		{ label: 'distributor' },
 		{ label: 'box office', isNumeric: true },
@@ -16,7 +16,7 @@ export const MarketShareTable = ({ data }) => {
 	];
 	return (
 		<BaseTable columns={columns}>
-			{data.map((row, index) => {
+			{data.map((row, index: number) => {
 				return (
 					<Tr key={index} index={index}>
 						<Td isHighlight>

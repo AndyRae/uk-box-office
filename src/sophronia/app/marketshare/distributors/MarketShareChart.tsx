@@ -8,7 +8,13 @@ import { Timeseries } from 'components/charts/Timeseries';
  * @example
  * <MarketShareChart uniqueYears={uniqueYears} graphData={graphData} />
  */
-export const MarketShareChart = ({ uniqueYears, graphData }) => {
+export const MarketShareChart = ({
+	uniqueYears,
+	graphData,
+}: {
+	uniqueYears: [];
+	graphData: [];
+}): JSX.Element => {
 	const reversed = [...uniqueYears].reverse();
 
 	const d = {

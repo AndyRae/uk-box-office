@@ -10,7 +10,7 @@ import { MetricChange } from 'components/charts/MetricChange';
  * @example
  * <BoxOfficeTable data={data} />
  */
-export const BoxOfficeTable = ({ data }) => {
+export const BoxOfficeTable = ({ data }: { data: any }): JSX.Element => {
 	const columns = [
 		{ label: 'week', isNumeric: true },
 		{ label: 'date' },
@@ -24,7 +24,7 @@ export const BoxOfficeTable = ({ data }) => {
 	];
 	return (
 		<BaseTable columns={columns}>
-			{data.weeks.map((week, index) => {
+			{data.weeks.map((week, index: number) => {
 				const previousWeek = data.weeks[index - 1];
 				const changeWeekend = previousWeek
 					? Math.ceil(

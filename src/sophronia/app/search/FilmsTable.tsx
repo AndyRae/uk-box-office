@@ -8,7 +8,7 @@ import { BaseTable, Tr, Td } from 'components/charts/BaseTable';
  * @example
  * <FilmsTable data={data} />
  */
-export const FilmsTable = ({ data }) => {
+export const FilmsTable = ({ data }: { data: any }): JSX.Element => {
 	const columns = [
 		{ label: 'title' },
 		{ label: 'distributor' },
@@ -18,13 +18,13 @@ export const FilmsTable = ({ data }) => {
 
 	return (
 		<BaseTable columns={columns}>
-			{data.map((film, index) => (
+			{data.map((film, index: number) => (
 				<Tr key={film.id} index={index}>
 					<Td isHighlight>
 						<Link href={`/film/${film.slug}`}>{film.name}</Link>
 					</Td>
 					<Td>{film.distributor.name}</Td>
-					<Td>{film.countries.map((c, index) => `${c.name} `)}</Td>
+					<Td>{film.countries.map((c, index: number) => `${c.name} `)}</Td>
 					<Td isNumeric>£ {film.gross.toLocaleString('en-GB')}</Td>
 				</Tr>
 			))}
