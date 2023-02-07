@@ -13,9 +13,10 @@ import useSWR from 'swr';
  * @property {function} filmList - Film list endpoint.
  * @property {function} film - Film endpoint.
  */
-const fetchKeys = {
-	filmList: (pageIndex, limit) => `film/?page=${pageIndex}&limit=${limit}`,
-	film: (slug) => `film/${slug}`,
+const fetchKeys: any = {
+	filmList: (pageIndex: number, limit: number) =>
+		`film/?page=${pageIndex}&limit=${limit}`,
+	film: (slug: string) => `film/${slug}`,
 };
 
 /**
@@ -26,11 +27,11 @@ const fetchKeys = {
  * @example
  * const { data, error } = useFilmList(1, 10);
  */
-export const useFilmList = (pageIndex = 1, limit = 10) => {
+export const useFilmList = (pageIndex: number = 1, limit: number = 10): any => {
 	const apiFetcher = useBackendApi();
 	return useSWR(
 		fetchKeys.filmList(pageIndex, limit),
-		async (url) => {
+		async (url: string) => {
 			const data = await apiFetcher(url);
 			return data;
 		},
@@ -45,7 +46,7 @@ export const useFilmList = (pageIndex = 1, limit = 10) => {
  * @example
  * const { data, error } = useFilm('uk');
  */
-export const useFilm = (slug) => {
+export const useFilm = (slug: string): any => {
 	const apiFetcher = useBackendApi();
 	return useSWR(fetchKeys.film(slug), apiFetcher, {
 		suspense: true,

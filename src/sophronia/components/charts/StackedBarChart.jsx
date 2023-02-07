@@ -35,7 +35,7 @@ export const StackedBarChart = ({ data, height }) => {
 	const chartRef = useRef(null);
 
 	// Prepare the data for the chart
-	const { stackedData } = groupStackedFilms(data);
+	const stackedData = groupStackedFilms(data);
 	const labels = [...new Set(data.map((d) => d.date))];
 
 	// Only stack the bars if there's more than one date.

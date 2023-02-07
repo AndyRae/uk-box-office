@@ -20,7 +20,6 @@ import useSWR from 'swr';
 import useSWRInfinite from 'swr/infinite';
 import { useMemo } from 'react';
 import { useEffect } from 'react';
-import { getBackendURL } from './ApiFetcher';
 
 /**
  * Fetch keys for boxoffice.
@@ -33,19 +32,24 @@ import { getBackendURL } from './ApiFetcher';
  * @property {function} boxOfficeTopFilms - Boxoffice top films endpoint.
  * @property {function} boxOfficeTopline - Boxoffice topline endpoint.
  */
-const fetchKeys = {
+const fetchKeys: any = {
 	boxOffice: 'boxoffice/all',
-	boxOfficeFiltered: (start, end, page, limit) =>
-		`boxoffice/all?{start=${start}}&end=${end}&page=${page}&limit=${limit}`,
-	boxOfficeAll: (start, limit) => `boxoffice/all?start=${start}&limit=${limit}`,
-	boxOfficeSummary: (start, end, limit) =>
+	boxOfficeFiltered: (
+		start: number,
+		end: number,
+		page: number,
+		limit: number
+	) => `boxoffice/all?{start=${start}}&end=${end}&page=${page}&limit=${limit}`,
+	boxOfficeAll: (start: number, limit: number) =>
+		`boxoffice/all?start=${start}&limit=${limit}`,
+	boxOfficeSummary: (start: number, end: number, limit: number) =>
 		`boxoffice/summary?start=${start}&end=${end}&limit=${limit}`,
-	boxOfficePrevious: (start, end) =>
+	boxOfficePrevious: (start: number, end: number) =>
 		`boxoffice/previous?start=${start}&end=${end}`,
-	boxOfficePreviousYear: (start, end) =>
+	boxOfficePreviousYear: (start: number, end: number) =>
 		`boxoffice/previousyear?start=${start}&end=${end}`,
 	boxOfficeTopFilms: () => `boxoffice/topfilms`,
-	boxOfficeTopline: (start, end, limit) =>
+	boxOfficeTopline: (start: number, end: number, limit: number) =>
 		`boxoffice/topline?start=${start}&end=${end}&limit=${limit}`,
 };
 
@@ -70,11 +74,11 @@ export const useBoxOffice = () => {
  * @example
  * const { data, error } = useBoxOfficeFiltered('2021-01-01', '2021-01-31', 1, 300);
  */
-export const useBoxOfficeFiltered = (
-	startDate,
-	endDate,
-	start = 1,
-	limit = 300
+export const useBoxOfficeFiltered: any = (
+	startDate: string,
+	endDate: string,
+	start: number = 1,
+	limit: number = 300
 ) => {
 	const apiFetcher = useBackendApi();
 	return useSWR(
@@ -92,7 +96,7 @@ export const useBoxOfficeFiltered = (
  * @example
  * const { data, error } = useBoxOfficeTopFilms();
  */
-export const useBoxOfficeTopFilms = () => {
+export const useBoxOfficeTopFilms = (): any => {
 	const apiFetcher = useBackendApi();
 	return useSWR(fetchKeys.boxOfficeTopFilms(), apiFetcher, {
 		suspense: true,
@@ -108,7 +112,11 @@ export const useBoxOfficeTopFilms = () => {
  * @example
  * const { data, error } = useBoxOfficeSummary('2021-01-01', '2021-01-31', 5);
  */
-export const useBoxOfficeSummary = (startDate, endDate, yearLimit) => {
+export const useBoxOfficeSummary = (
+	startDate: string,
+	endDate: string,
+	yearLimit: number
+): any => {
 	const apiFetcher = useBackendApi();
 	return useSWR(
 		fetchKeys.boxOfficeSummary(startDate, endDate, yearLimit),
@@ -127,7 +135,7 @@ export const useBoxOfficeSummary = (startDate, endDate, yearLimit) => {
  * @example
  * const { data, error } = useBoxOfficePrevious('2021-01-01', '2021-01-31');
  */
-export const useBoxOfficePrevious = (start, end) => {
+export const useBoxOfficePrevious = (start: string, end: string): any => {
 	const apiFetcher = useBackendApi();
 	return useSWR(fetchKeys.boxOfficePrevious(start, end), apiFetcher, {
 		suspense: true,
@@ -142,7 +150,7 @@ export const useBoxOfficePrevious = (start, end) => {
  * @example
  * const { data, error } = useBoxOfficePrevious('2021-01-01', '2021-01-31');
  */
-export const useBoxOfficePreviousYear = (start, end) => {
+export const useBoxOfficePreviousYear = (start: string, end: string): any => {
 	const apiFetcher = useBackendApi();
 	return useSWR(fetchKeys.boxOfficePreviousYear(start, end), apiFetcher, {
 		suspense: true,
@@ -158,7 +166,11 @@ export const useBoxOfficePreviousYear = (start, end) => {
  * @example
  * const { data, error } = useBoxOfficeTopline('2021-01-01', '2021-01-31', 1);
  */
-export const useBoxOfficeTopline = (startDate, endDate, page) => {
+export const useBoxOfficeTopline = (
+	startDate: string,
+	endDate: string,
+	page: number
+): any => {
 	const apiFetcher = useBackendApi();
 	return useSWR(
 		fetchKeys.boxOfficeTopline(startDate, endDate, page),
@@ -178,7 +190,7 @@ export const useBoxOfficeTopline = (startDate, endDate, page) => {
  * @example
  * const { data, error } = useBoxOfficeInfinite('2021-01-01', '2021-01-31');
  */
-export function useBoxOfficeInfinite(startDate, endDate) {
+export function useBoxOfficeInfinite(startDate: string, endDate: string): any {
 	const { data, mutate, error, size, setSize } = useProtectedSWRInfinite(
 		startDate,
 		endDate
@@ -186,13 +198,13 @@ export function useBoxOfficeInfinite(startDate, endDate) {
 
 	useEffect(() => {
 		if (data?.[data?.length - 1]?.next) {
-			setSize((size) => size + 1);
+			setSize((size: number) => size + 1);
 		}
 	}, [data, setSize]);
 
 	// Concatenate all pages into one array.
 	const results = useMemo(
-		() => [].concat(...data.map((page) => page.results)),
+		() => [].concat(...data.map((page: { results: any }) => page.results)),
 		[data]
 	);
 
@@ -216,7 +228,7 @@ export function useBoxOfficeInfinite(startDate, endDate) {
  * @param {string} endDate - End date for the query.
  * @returns useSWR hook with boxoffice data from the api with pagination.
  */
-const useProtectedSWRInfinite = (startDate, endDate) => {
+const useProtectedSWRInfinite = (startDate: string, endDate: string): any => {
 	const backendUrl = `${getBackendURLClient()}boxoffice/all`;
 
 	/**

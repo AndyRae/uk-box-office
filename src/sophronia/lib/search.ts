@@ -12,8 +12,8 @@ import useSWR from 'swr';
  * @type {Object}
  * @property {function} search - Search endpoint.
  */
-const fetchKeys = {
-	search: (query) => `search?q=${query}`,
+const fetchKeys: any = {
+	search: (query: string) => `search?q=${query}`,
 };
 
 /**
@@ -23,7 +23,7 @@ const fetchKeys = {
  * @example
  * const { data, error } = useSearch('uk');
  */
-export const useSearch = (query) => {
+export const useSearch = (query: string) => {
 	const apiFetcher = useBackendApi();
 	return useSWR(fetchKeys.search(query), apiFetcher, {
 		suspense: true,

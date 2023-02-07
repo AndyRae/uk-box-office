@@ -16,12 +16,12 @@ import useSWR from 'swr';
  * @property {function} countryFilms - Country films endpoint.
  * @property {function} country - Country endpoint.
  */
-export const fetchKeys = {
-	countryList: (pageIndex, limit) =>
+export const fetchKeys: any = {
+	countryList: (pageIndex: number, limit: number) =>
 		`country/?page=${pageIndex}&limit=${limit}`,
-	countryFilms: (slug, pageIndex, pageLimit) =>
+	countryFilms: (slug: string, pageIndex: number, pageLimit: number) =>
 		`country/${slug}/films?page=${pageIndex}&limit=${pageLimit}`,
-	country: (slug) => `country/${slug}`,
+	country: (slug: string) => `country/${slug}`,
 };
 
 /**
@@ -32,11 +32,14 @@ export const fetchKeys = {
  * @example
  * const { data, error } = useCountryList(1, 10);
  */
-export const useCountryList = (pageIndex = 1, limit = 10) => {
+export const useCountryList = (
+	pageIndex: number = 1,
+	limit: number = 10
+): any => {
 	const apiFetcher = useBackendApi();
 	return useSWR(
 		fetchKeys.countryList(pageIndex, limit),
-		async (url) => {
+		async (url: string) => {
 			const data = await apiFetcher(url);
 			return data;
 		},
@@ -51,7 +54,7 @@ export const useCountryList = (pageIndex = 1, limit = 10) => {
  * @example
  * const { data, error } = useCountry('uk');
  */
-export const useCountry = (slug) => {
+export const useCountry = (slug: string): any => {
 	const apiFetcher = useBackendApi();
 	return useSWR(fetchKeys.country(slug), apiFetcher, {
 		suspense: true,
@@ -67,7 +70,11 @@ export const useCountry = (slug) => {
  * @example
  * const { data, error } = useCountryFilms('uk', 1, 10);
  */
-export const useCountryFilms = (slug, pageIndex, pageLimit) => {
+export const useCountryFilms = (
+	slug: string,
+	pageIndex: number,
+	pageLimit: number
+): any => {
 	const apiFetcher = useBackendApi();
 	return useSWR(
 		fetchKeys.countryFilms(slug, pageIndex, pageLimit),

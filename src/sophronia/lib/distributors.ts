@@ -20,12 +20,12 @@ import useSWR from 'swr';
  * @property {function} marketShare - Distributor market share endpoint.
  */
 const fetchKeys = {
-	distributorList: (pageIndex, pageLimit) =>
+	distributorList: (pageIndex: number, pageLimit: number) =>
 		`distributor/?page=${pageIndex}&limit=${pageLimit}`,
-	distributorFilms: (slug, pageIndex, pageLimit) =>
+	distributorFilms: (slug: string, pageIndex: number, pageLimit: number) =>
 		`distributor/${slug}/films?page=${pageIndex}&limit=${pageLimit}`,
-	distributor: (slug) => `distributor/${slug}`,
-	marketShareYear: (year) => `distributor/marketshare/${year}`,
+	distributor: (slug: string) => `distributor/${slug}`,
+	marketShareYear: (year: number) => `distributor/marketshare/${year}`,
 	marketShare: `distributor/marketshare`,
 };
 
@@ -37,7 +37,10 @@ const fetchKeys = {
  * @example
  * const { data, error } = useDistributorList(1, 10);
  */
-export const useDistributorList = (pageIndex = 1, limit = 10) => {
+export const useDistributorList = (
+	pageIndex: number = 1,
+	limit: number = 10
+): any => {
 	const apiFetcher = useBackendApi();
 	return useSWR(
 		fetchKeys.distributorList(pageIndex, limit),
@@ -56,7 +59,7 @@ export const useDistributorList = (pageIndex = 1, limit = 10) => {
  * @example
  * const { data, error } = useDistributor('mubi');
  */
-export const useDistributor = (slug) => {
+export const useDistributor = (slug: string): any => {
 	const apiFetcher = useBackendApi();
 	return useSWR(fetchKeys.distributor(slug), apiFetcher, {
 		suspense: true,
@@ -72,7 +75,11 @@ export const useDistributor = (slug) => {
  * @example
  * const { data, error } = useDistributorFilms('mubi', 1, 10);
  */
-export const useDistributorFilms = (slug, pageIndex = 1, pageLimit = 10) => {
+export const useDistributorFilms = (
+	slug: string,
+	pageIndex: number = 1,
+	pageLimit: number = 10
+): any => {
 	const apiFetcher = useBackendApi();
 	return useSWR(
 		fetchKeys.distributorFilms(slug, pageIndex, pageLimit),
@@ -89,7 +96,7 @@ export const useDistributorFilms = (slug, pageIndex = 1, pageLimit = 10) => {
  * @example
  * const { data, error } = useDistributorMarketShare();
  */
-export const useDistributorMarketShare = () => {
+export const useDistributorMarketShare = (): any => {
 	const apiFetcher = useBackendApi();
 	return useSWR(fetchKeys.marketShare, apiFetcher, {
 		suspense: true,
@@ -103,7 +110,7 @@ export const useDistributorMarketShare = () => {
  * @example
  * const { data, error } = useDistributorMarketShareYear(2019);
  */
-export const useDistributorMarketShareYear = (year) => {
+export const useDistributorMarketShareYear = (year: number): any => {
 	const apiFetcher = useBackendApi();
 	return useSWR(fetchKeys.marketShareYear(year), apiFetcher, {
 		suspense: true,

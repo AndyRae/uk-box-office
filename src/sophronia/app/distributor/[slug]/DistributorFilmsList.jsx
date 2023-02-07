@@ -1,6 +1,6 @@
 'use client';
 
-import { useDistributorFilms } from '../../../lib/distributors';
+import { useDistributorFilms } from 'lib/distributors';
 import { FilmTable } from 'components/Film/FilmTable';
 import { Pagination } from 'components/ui/Pagination';
 import { paginate } from 'lib/utils/pagination';

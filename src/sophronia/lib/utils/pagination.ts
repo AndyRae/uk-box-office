@@ -8,7 +8,11 @@
  * const pageNumbers = paginate(100, 1, 10);
  * // pageNumbers = [1, 2, 3, 4, 5]
  */
-export const paginate = (count, pageIndex, pageLimit) => {
+export const paginate = (
+	count: number,
+	pageIndex: number,
+	pageLimit: number
+): number[] => {
 	if (count < pageLimit) {
 		return [1];
 	}

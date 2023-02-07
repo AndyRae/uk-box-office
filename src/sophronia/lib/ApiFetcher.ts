@@ -15,7 +15,7 @@ import { useCallback } from 'react';
  * @example
  * returns http://localhost:5000/api/
  */
-export const getBackendURL = () => {
+export const getBackendURL = (): string => {
 	if (process.env.NEXT_PUBLIC_CODESPACE === 'true') {
 		return `https://${process.env.NEXT_PUBLIC_CODESPACE_NAME}-5000.${process.env.NEXT_PUBLIC_GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}/api/`;
 	}
@@ -30,7 +30,7 @@ export const getBackendURL = () => {
 	);
 };
 
-export const getBackendURLClient = () => {
+export const getBackendURLClient = (): string => {
 	if (process.env.NEXT_PUBLIC_CODESPACE === 'true') {
 		return `https://${process.env.NEXT_PUBLIC_CODESPACE_NAME}-5000.${process.env.NEXT_PUBLIC_GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}/api/`;
 	}
@@ -52,7 +52,7 @@ export const getBackendURLClient = () => {
  * @example
  * // returns { "message": "Hello World!" }
  */
-export const useBackendApi = () => {
+export const useBackendApi = (): any => {
 	const getBackendDefaults = () => ({
 		prefixUrl: getBackendURLClient(),
 	});
@@ -60,7 +60,7 @@ export const useBackendApi = () => {
 	const api = ky.create(getBackendDefaults());
 
 	const apiFetcher = useCallback(
-		async (path) => await api.get(path).json(),
+		async (path: string) => await api.get(path).json(),
 		[api]
 	);
 
@@ -74,7 +74,7 @@ export const useBackendApi = () => {
  * @example
  * // returns { "message": "Hello World!" }
  */
-export async function useInfiniteFetcher(url) {
+export async function useInfiniteFetcher(url: string): Promise<any> {
 	try {
 		const response = await fetch(url);
 		if (!response.ok) {
