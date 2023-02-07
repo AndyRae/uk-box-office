@@ -31,19 +31,25 @@ ChartJS.register(
  * @example
  * <StackedBarChart data={data} height={height} />
  */
-export const StackedBarChart = ({ data, height }) => {
+export const StackedBarChart = ({
+	data,
+	height,
+}: {
+	data: any;
+	height?: 'sm' | 'md' | 'lg' | 'xl';
+}): JSX.Element => {
 	const chartRef = useRef(null);
 
 	// Prepare the data for the chart
 	const stackedData = groupStackedFilms(data);
-	const labels = [...new Set(data.map((d) => d.date))];
+	const labels = [...new Set(data.map((d: { date: any }) => d.date))];
 
 	// Only stack the bars if there's more than one date.
 	const isStacked = labels?.length > 1;
 
 	// Navigate to the film page when a bar is clicked
 	// Disabled for now as it's not a good UX
-	const onClick = (event) => {
+	const onClick = (event: any) => {
 		// 	var x = getElementAtEvent(chartRef.current, event);
 		// 	if (x.length > 0) {
 		// 		const slug = data[x[0].datasetIndex].slug;
@@ -101,12 +107,12 @@ export const StackedBarChart = ({ data, height }) => {
 				ticks: {
 					autoSkip: true,
 					stepSize: 10000000,
-					callback: function (value, index, values) {
+					callback: function (value: any, index: number, values: any) {
 						var ranges = [
 							{ divider: 1e6, suffix: 'M' },
 							{ divider: 1e3, suffix: 'k' },
 						];
-						function formatNumber(n) {
+						function formatNumber(n: number) {
 							for (var i = 0; i < ranges.length; i++) {
 								if (n >= ranges[i].divider) {
 									return (n / ranges[i].divider).toString() + ranges[i].suffix;
@@ -140,7 +146,21 @@ export const StackedBarChart = ({ data, height }) => {
 	);
 };
 
-const BarChart = ({ data, options, onClick, chartRef, height = 'lg' }) => {
+type BarChartProps = {
+	data: any;
+	options: any;
+	onClick: any;
+	chartRef: any;
+	height: 'sm' | 'md' | 'lg' | 'xl';
+};
+
+const BarChart = ({
+	data,
+	options,
+	onClick,
+	chartRef,
+	height = 'lg',
+}: BarChartProps): JSX.Element => {
 	var size = 'h-96';
 	switch (height) {
 		case 'sm':

@@ -24,6 +24,12 @@ import { PreviousYearsChart } from './PreviousYearsChart';
 
 import { useBoxOfficeInfinite, useBoxOfficeSummary } from 'lib/boxoffice';
 
+type PillLinkProps = {
+	to: string;
+	children: React.ReactNode;
+	isActive: boolean;
+};
+
 /**
  * Pill Link Component
  * @param {string} to - Link to
@@ -31,7 +37,7 @@ import { useBoxOfficeInfinite, useBoxOfficeSummary } from 'lib/boxoffice';
  * @param {boolean} isActive - Is active
  * @returns {JSX.Element}
  */
-const PillLink = ({ to, children, isActive }) => (
+const PillLink = ({ to, children, isActive }: PillLinkProps) => (
 	<li className='mr-2'>
 		<Link
 			href={to}
@@ -46,6 +52,26 @@ const PillLink = ({ to, children, isActive }) => (
 	</li>
 );
 
+type TimePageProps = {
+	year: number;
+	month: number;
+	day: number;
+	quarter: number;
+	quarterend: number;
+};
+
+declare global {
+	interface Date {
+		addDays(days: number): Date;
+	}
+}
+
+Date.prototype.addDays = function (days: number): Date {
+	var date = new Date(this.valueOf());
+	date.setDate(date.getDate() + days);
+	return date;
+};
+
 /**
  * Time Page
  * @returns {JSX.Element}
@@ -56,7 +82,7 @@ export const TimePage = ({
 	day = null,
 	quarter = null,
 	quarterend = 0,
-}) => {
+}: TimePageProps): JSX.Element => {
 	const pathname = usePathname();
 
 	// Unpack dates to allow flexbility for Month/Day/Quarter being null.
@@ -74,12 +100,6 @@ export const TimePage = ({
 			endMonth = quarter * 3;
 		}
 	}
-
-	Date.prototype.addDays = function (days) {
-		var date = new Date(this.valueOf());
-		date.setDate(date.getDate() + days);
-		return date;
-	};
 
 	function getLastDayofMonth(month = 12) {
 		const d = new Date(year, month, 0);
@@ -164,7 +184,7 @@ export const TimePage = ({
 	const numberOfNewFilms = thisYear.number_of_releases;
 	const admissions = thisYear.admissions;
 	const numberOfCinemas = thisYear.number_of_cinemas;
-	const averageTicketPrice = (boxOffice / admissions).toFixed(2);
+	const averageTicketPrice = parseInt((boxOffice / admissions).toFixed(2));
 	const siteAverage = Math.ceil(boxOffice / numberOfCinemas);
 
 	// Time Comparison Data
@@ -217,10 +237,8 @@ export const TimePage = ({
 				endpoint={pathname}
 				time={pageTitle}
 			/>
-			<PageTitle>UK Box Office {pageTitle}</PageTitle>
-
+			`<PageTitle>UK Box Office {pageTitle}</PageTitle>
 			{isReachedEnd ? '' : <ProgressBar value={percentFetched} />}
-
 			<div className='grid md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5'>
 				<Card
 					title='Total Box Office'
@@ -324,7 +342,6 @@ export const TimePage = ({
 					</Card>
 				)}
 			</div>
-
 			{/* // Charts */}
 			<div
 				className={`grid grid-cols-1 ${gridColumns} gap-3 md:gap-5 mt-3 mb-3 md:mb-5 md:mt-5`}
@@ -349,22 +366,33 @@ export const TimePage = ({
 					{isReachedEnd && <PreviousYearsChart data={timeComparisonData} />}
 				</Card>
 			</div>
-
 			<div className='py-3'>
 				<ul className='flex flex-wrap my-2 text-sm font-medium text-center text-gray-500 dark:text-gray-400'>
 					<PillLink to={`/time/${year}`} isActive={true}>
 						{year}
 					</PillLink>
-					<PillLink to={`/time/${year}/q/1`} isActive={quarter === '1'}>
+					<PillLink
+						to={`/time/${year}/q/1`}
+						isActive={quarter?.toString() === '1'}
+					>
 						Q1
 					</PillLink>
-					<PillLink to={`/time/${year}/q/2`} isActive={quarter === '2'}>
+					<PillLink
+						to={`/time/${year}/q/2`}
+						isActive={quarter?.toString() === '2'}
+					>
 						Q2
 					</PillLink>
-					<PillLink to={`/time/${year}/q/3`} isActive={quarter === '3'}>
+					<PillLink
+						to={`/time/${year}/q/3`}
+						isActive={quarter?.toString() === '3'}
+					>
 						Q3
 					</PillLink>
-					<PillLink to={`/time/${year}/q/4`} isActive={quarter === '4'}>
+					<PillLink
+						to={`/time/${year}/q/4`}
+						isActive={quarter?.toString() === '4'}
+					>
 						Q4
 					</PillLink>
 				</ul>
@@ -375,14 +403,13 @@ export const TimePage = ({
 						<PillLink
 							key={m}
 							to={`/time/${year}/m/${m}`}
-							isActive={m === month}
+							isActive={m === month?.toString()}
 						>
 							{months[m]}
 						</PillLink>
 					))}
 				</ul>
 			</div>
-
 			<Tabs
 				tabs={[
 					{

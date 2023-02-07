@@ -14,7 +14,7 @@ export const FilmTableDetailed = ({
 	comparisonData,
 }: {
 	data: any[];
-	comparisonData: any[];
+	comparisonData?: any[];
 }): JSX.Element => {
 	const columns = [
 		{ label: 'rank', isNumeric: true },

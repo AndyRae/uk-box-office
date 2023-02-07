@@ -1,6 +1,16 @@
 import Link from 'next/link';
 import { BaseTable, Td, Tr } from 'components/charts/BaseTable';
 
+type CountryListProps = {
+	countries: {
+		results: Array<{
+			id: string;
+			name: string;
+			slug: string;
+		}>;
+	};
+};
+
 /**
  * Country List component
  * @param {Object} countries - Countries to be displayed
@@ -8,7 +18,7 @@ import { BaseTable, Td, Tr } from 'components/charts/BaseTable';
  * @example
  * <CountryList countries={countries} />
  */
-export const CountryList = ({ countries }) => {
+export const CountryList = ({ countries }: CountryListProps): JSX.Element => {
 	const columns = [{ label: 'Country' }];
 
 	return (

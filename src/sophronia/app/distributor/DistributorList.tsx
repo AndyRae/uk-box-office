@@ -1,6 +1,10 @@
 import Link from 'next/link';
 import { BaseTable, Td, Tr } from 'components/charts/BaseTable';
 
+type DistributorListProps = {
+	distributors: { results: Array<{ id: string; name: string; slug: string }> };
+};
+
 /**
  * Distributor List component
  * @param {Object} distributors - Distributors to be displayed
@@ -8,7 +12,9 @@ import { BaseTable, Td, Tr } from 'components/charts/BaseTable';
  * @example
  * <DistributorList distributors={distributors} />
  */
-export const DistributorList = ({ distributors }) => {
+export const DistributorList = ({
+	distributors,
+}: DistributorListProps): JSX.Element => {
 	const columns = [{ label: 'Distributor' }];
 
 	return (

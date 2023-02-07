@@ -3,11 +3,11 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 type DatepickersProps = {
-	start: Date;
-	end: Date;
-	setStart: (date: Date) => void;
-	setEnd: (date: Date) => void;
-	minimum: Date;
+	start?: Date;
+	end?: Date;
+	setStart?: (date: Date) => void;
+	setEnd?: (date: Date) => void;
+	minimum?: Date;
 };
 
 /**

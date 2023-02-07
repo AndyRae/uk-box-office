@@ -27,7 +27,7 @@ export const Tabs = ({
 	tabs,
 	children,
 }: {
-	tabs: [any];
+	tabs: any[];
 	children: any;
 }): JSX.Element => {
 	const [activeTab, setActiveTab] = useState(0);

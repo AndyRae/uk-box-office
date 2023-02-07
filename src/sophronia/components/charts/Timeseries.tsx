@@ -31,7 +31,7 @@ type TimeseriesProps = {
 	id?: string;
 	height?: 'sm' | 'md' | 'lg' | 'xl';
 	chartRef?: any;
-	onClick?: () => void;
+	onClick?: (arg0?: any) => void;
 };
 
 /**

@@ -3,10 +3,17 @@
 import { Timeseries } from '../charts/Timeseries';
 import { groupbyMonth, groupbyDate } from 'lib/utils/groupData';
 import { AiOutlineArrowDown } from 'react-icons/ai';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, MouseEvent } from 'react';
 import { Tooltip } from '../ui/Tooltip';
 import { useRouter } from 'next/navigation';
 import { getElementAtEvent } from 'react-chartjs-2';
+
+type TimeLineChartProps = {
+	data: any;
+	height?: 'sm' | 'md' | 'lg' | 'xl';
+	color?: string;
+	allowRollUp?: boolean;
+};
 
 /**
  * @description Time Line Chart component as a line chart.
@@ -24,7 +31,7 @@ export const TimeLineChart = ({
 	height,
 	color = '#B65078',
 	allowRollUp = true,
-}) => {
+}: TimeLineChartProps): JSX.Element => {
 	const router = useRouter();
 
 	const { results: weekData } = groupbyDate(data);
@@ -98,12 +105,12 @@ export const TimeLineChart = ({
 				ticks: {
 					autoSkip: true,
 					stepSize: 10000000,
-					callback: function (value, index, values) {
+					callback: function (value: any, index: number, values: any) {
 						var ranges = [
 							{ divider: 1e6, suffix: 'M' },
 							{ divider: 1e3, suffix: 'k' },
 						];
-						function formatNumber(n) {
+						function formatNumber(n: number) {
 							for (var i = 0; i < ranges.length; i++) {
 								if (n >= ranges[i].divider) {
 									return (n / ranges[i].divider).toString() + ranges[i].suffix;
@@ -140,7 +147,7 @@ export const TimeLineChart = ({
 
 	// Navigation
 	const chartRef = useRef();
-	const onClick = (event) => {
+	const onClick = (event: MouseEvent<HTMLCanvasElement>) => {
 		var x = getElementAtEvent(chartRef.current, event);
 		if (x.length > 0) {
 			const dateString = d.labels[x[0].index].split('-');
@@ -158,7 +165,11 @@ export const TimeLineChart = ({
 					<Tooltip text={isGroupedByMonth ? 'Week' : 'Month'}>
 						<AiOutlineArrowDown
 							className='h-6 w-6 transition-all duration-500'
-							style={!isGroupedByMonth ? { transform: 'rotate(180deg)' } : ''}
+							style={
+								!isGroupedByMonth
+									? { transform: 'rotate(180deg)' }
+									: { transform: 'rotate(0deg)' }
+							}
 							onClick={isGroupedByMonth ? rollDown : rollUp}
 						/>
 					</Tooltip>

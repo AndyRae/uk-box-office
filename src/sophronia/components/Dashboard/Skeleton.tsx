@@ -14,33 +14,33 @@ import { Card } from 'components/ui/Card';
  * @description Skeleton Card loading components for loading state
  * @returns {JSX.Element}
  */
-export const SkeletonCards = () => {
+export const SkeletonCards = (): JSX.Element => {
 	return (
 		<div className='grid animate-pulse md:grid-cols-2 mt-6 lg:grid-cols-4 gap-3 md:gap-5'>
 			<Card title='Total Box Office' subtitle='-'>
 				<Tooltip text='Change from last year'>
-					<MetricChange value='' />{' '}
+					<MetricChange value={0} />{' '}
 				</Tooltip>
 			</Card>
 
 			<Card title='Weekend Box Office' subtitle='-'>
 				<Tooltip text='Change from last year'>
 					{' '}
-					<MetricChange value='' />{' '}
+					<MetricChange value={0} />{' '}
 				</Tooltip>
 			</Card>
 
 			<Card title='New Releases' subtitle='-'>
 				<Tooltip text='Change from last year'>
 					{' '}
-					<MetricChange value='' />{' '}
+					<MetricChange value={0} />{' '}
 				</Tooltip>
 			</Card>
 
 			<Card title='New Releases' subtitle='-'>
 				<Tooltip text='Change from last year'>
 					{' '}
-					<MetricChange value='' />{' '}
+					<MetricChange value={0} />{' '}
 				</Tooltip>
 			</Card>
 		</div>
@@ -51,7 +51,7 @@ export const SkeletonCards = () => {
  * @description Skeleton Film Table loading components for loading state
  * @returns {JSX.Element}
  */
-export const SkeletonCharts = () => {
+export const SkeletonCharts = (): JSX.Element => {
 	return (
 		<div className='grid md:grid-cols-1 lg:grid-cols-2 mt-3 md:mt-6 gap-3 md:gap-5 animate-pulse transition'>
 			<Card title='Box Office'>
@@ -67,13 +67,20 @@ export const SkeletonCharts = () => {
 	);
 };
 
+type SkeletonProps = {
+	children?: React.ReactNode;
+};
+
 /**
  * @description Skeleton loading components for loading state of the dashboard
  * @returns {JSX.Element}
  * @param {JSX.Element} children - Children components
  * @param {Object} props - Props passed to the component
  */
-export const Skeleton = ({ children, ...props }) => {
+export const Skeleton = ({
+	children,
+	...props
+}: SkeletonProps): JSX.Element => {
 	return (
 		<div className='skeleton animate-pulse transition ease-in-out' {...props}>
 			{/* Skeleton Controls */}

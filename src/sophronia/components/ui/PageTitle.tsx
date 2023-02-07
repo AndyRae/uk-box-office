@@ -9,7 +9,7 @@
 export const PageTitle = ({
 	children,
 }: {
-	children: JSX.Element;
+	children: React.ReactNode;
 }): JSX.Element => {
 	return (
 		<h1 className='text-4xl capitalize mb-10 font-bold tracking-tight text-gray-900 dark:text-white'>
