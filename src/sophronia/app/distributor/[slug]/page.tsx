@@ -1,14 +1,17 @@
 import { getDistributor } from './getDistributor';
-
 import { PageTitle } from 'components/ui/PageTitle';
 import { DistributorFilmsList } from './DistributorFilmsList';
 
-export default async function Page({ params }) {
+export default async function Page({
+	params,
+}: {
+	params: { slug: string };
+}): Promise<JSX.Element> {
 	const data = await getDistributor(params.slug);
 
 	return (
 		<div>
-			<PageTitle title={data.name}>{data.name}</PageTitle>
+			<PageTitle>{data.name}</PageTitle>
 			<DistributorFilmsList slug={params.slug} />
 		</div>
 	);
