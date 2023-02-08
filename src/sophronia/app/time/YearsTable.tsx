@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { BaseTable, Td, Tr } from 'components/charts/BaseTable';
 import { MetricChange } from 'components/charts/MetricChange';
+import Time from 'interfaces/Time';
 
 /**
  * @description Years Table component for all time.
@@ -12,7 +13,7 @@ export const YearsTable = ({
 	data,
 	id,
 }: {
-	data: any;
+	data: Time[];
 	id: string;
 }): JSX.Element => {
 	const columns = [

@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { getElementAtEvent } from 'react-chartjs-2';
 import { BarChart } from 'components/charts/BarChart';
 
+import Time from 'interfaces/Time';
+
 /**
  * @description All Time Chart component as a bar chart.
  * Includes chart navigation to the year pages.
@@ -13,7 +15,7 @@ import { BarChart } from 'components/charts/BarChart';
  * @example
  * <AllTimeChart data={data} />
  */
-export const AllTimeChart = ({ data }: { data: any }): JSX.Element => {
+export const AllTimeChart = ({ data }: { data: Time[] }): JSX.Element => {
 	const router = useRouter();
 
 	const d = {

@@ -8,8 +8,24 @@ import { Card } from 'components/ui/Card';
 
 import { AllTimeChart } from './AllTimeChart';
 import { YearsTable } from './YearsTable';
+import Time from 'interfaces/Time';
 
-async function getBoxOfficeSummary(startDate, endDate, limit) {
+type BoxOfficeSummaryResponse = {
+	results: Time[];
+};
+
+/**
+ * Get the box office summary for the given date range.
+ * @param startDate
+ * @param endDate
+ * @param limit
+ * @returns Promise<BoxOfficeSummaryResponse>
+ */
+async function getBoxOfficeSummary(
+	startDate: string,
+	endDate: string,
+	limit: number
+): Promise<BoxOfficeSummaryResponse> {
 	const url = getBackendURL();
 	const res = await fetch(
 		`${url}boxoffice/summary?start=${startDate}&end=${endDate}&limit=${limit}`
@@ -17,7 +33,7 @@ async function getBoxOfficeSummary(startDate, endDate, limit) {
 	return res.json();
 }
 
-export default async function Page() {
+export default async function Page(): Promise<JSX.Element> {
 	// Get the current year.
 	const today = new Date().getFullYear();
 	const startDate = `${today}-${1}-${1}`;
