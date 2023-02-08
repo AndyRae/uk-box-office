@@ -4,8 +4,26 @@ import { ForecastChart } from 'components/charts/ForecastChart';
 import { PageTitle } from 'components/ui/PageTitle';
 import { PageContent } from 'components/ui/PageContent';
 import { Card } from 'components/ui/Card';
+import Forecast from 'interfaces/Forecast';
 
-async function getForecast(startDate, endDate, limit) {
+type ForecastData = {
+	results: Forecast[];
+};
+
+/**
+ * Get the forecast data from the backend
+ * @param {string} startDate
+ * @param {string} endDate
+ * @param {number} limit
+ * @returns {Promise<ForecastData>}
+ * @example
+ * const data = await getForecast();
+ */
+async function getForecast(
+	startDate: string,
+	endDate: string,
+	limit: number = 10
+): Promise<ForecastData> {
 	const url = getBackendURL();
 	const res = await fetch(
 		`${url}boxoffice/topline?start=${startDate}&end=${endDate}&limit=${limit}`
@@ -13,7 +31,7 @@ async function getForecast(startDate, endDate, limit) {
 	return res.json();
 }
 
-export default async function Page() {
+export default async function Page(): Promise<JSX.Element> {
 	Date.prototype.addDays = function (days) {
 		var date = new Date(this.valueOf());
 		date.setDate(date.getDate() + days);

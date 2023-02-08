@@ -2,7 +2,7 @@ import { InlineLink, ExternalLink } from 'components/ui/InlineLink';
 import { PageTitle } from 'components/ui/PageTitle';
 import { PageContent } from 'components/ui/PageContent';
 
-export default function Page() {
+export default function Page(): JSX.Element {
 	return (
 		<>
 			<PageTitle>About</PageTitle>

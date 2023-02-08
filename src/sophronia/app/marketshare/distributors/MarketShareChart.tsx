@@ -12,8 +12,8 @@ export const MarketShareChart = ({
 	uniqueYears,
 	graphData,
 }: {
-	uniqueYears: [];
-	graphData: [];
+	uniqueYears: any[];
+	graphData: any[];
 }): JSX.Element => {
 	const reversed = [...uniqueYears].reverse();
 

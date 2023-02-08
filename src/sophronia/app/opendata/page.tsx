@@ -5,7 +5,7 @@ import { StructuredTimeData } from 'components/StructuredData';
 import { ExternalLink, InlineLink } from 'components/ui/InlineLink';
 import { getBackendURL } from 'lib/ApiFetcher';
 
-export default function Page() {
+export default function Page(): JSX.Element {
 	return (
 		<>
 			<StructuredTimeData

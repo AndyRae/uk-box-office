@@ -21,7 +21,7 @@ import { LastUpdated } from 'components/Dashboard/LastUpdated';
 import { StackedBarChart } from 'components/charts/StackedBarChart';
 import { DatasourceCard } from 'components/Dashboard/Datasource';
 
-export default function Home() {
+export default function Home(): JSX.Element {
 	Date.prototype.addDays = function (days) {
 		var date = new Date(this.valueOf());
 		date.setDate(date.getDate() + days);
@@ -29,7 +29,7 @@ export default function Home() {
 	};
 
 	// Parse dates to YYYY-MM-DD for the API
-	const parseDate = (input) => {
+	const parseDate = (input: Date): string => {
 		return `${input.getFullYear()}-${input.getMonth() + 1}-${input.getDate()}`;
 	};
 
@@ -108,7 +108,7 @@ export default function Home() {
 
 	// Work out the difference between the last two dates
 	// Used to set the active button
-	const diffTime = Math.abs(s - start);
+	const diffTime = Math.abs(s.getTime() - start.getTime());
 	const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
 	return (

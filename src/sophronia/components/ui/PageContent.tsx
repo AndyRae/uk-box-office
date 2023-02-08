@@ -6,7 +6,7 @@
 export const PageContent = ({
 	children,
 }: {
-	children: JSX.Element;
+	children: React.ReactNode;
 }): JSX.Element => {
 	return (
 		<div className='flex flex-col max-w-xl space leading-7 space-between gap-4'>

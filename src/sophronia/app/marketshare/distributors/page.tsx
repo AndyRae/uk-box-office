@@ -9,7 +9,17 @@ import { MarketShareTable } from './MarketShareTable';
 import { interpolateColors } from 'lib/utils/colorGenerator';
 import { interpolateSpectral } from 'd3-scale-chromatic';
 
-export async function getMarketshare() {
+import MarketShare from 'interfaces/MarketShare';
+
+type MarketShareData = {
+	results: MarketShare[];
+};
+
+/**
+ * Get market share data from the backend.
+ * @returns {Promise<MarketShareData>}
+ */
+export async function getMarketshare(): Promise<MarketShareData> {
 	const url = getBackendURL();
 	const res = await fetch(`${url}distributor/marketshare`, {});
 	return res.json();

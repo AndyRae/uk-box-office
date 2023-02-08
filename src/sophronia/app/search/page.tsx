@@ -7,12 +7,22 @@ import { FilmsTable } from './FilmsTable';
 import { Searchbar } from 'components/Search/Searchbar';
 import { PageTitle } from 'components/ui/PageTitle';
 
-export default function Page() {
+import Distributor from 'interfaces/Distributor';
+import Film from 'interfaces/Film';
+import Country from 'interfaces/Country';
+
+interface SearchResults {
+	countries: Country[];
+	distributors: Distributor[];
+	films: Film[];
+}
+
+export default function Page(): JSX.Element {
 	const searchParams = useSearchParams();
 
 	const query = searchParams.get('q');
 
-	const { data, isLoading, isError } = useSearch(query);
+	const { data } = useSearch(query);
 
 	return (
 		<>
@@ -27,7 +37,7 @@ export default function Page() {
 				<div className='leading-10'>
 					<h2 className='text-2xl font-bold py-5 capitalize'>Countries</h2>
 
-					{data.countries.map((country, index) => {
+					{data.countries.map((country: Country, index: number) => {
 						return (
 							<div key={index}>
 								<Link
@@ -47,7 +57,7 @@ export default function Page() {
 				<div className='leading-10'>
 					<h2 className='text-2xl font-bold py-5 capitalize'>Distributors</h2>
 
-					{data.distributors.map((distributor, index) => {
+					{data.distributors.map((distributor: Distributor, index: number) => {
 						return (
 							<div key={index} className=''>
 								<Link

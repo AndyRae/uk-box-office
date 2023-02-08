@@ -12,7 +12,7 @@ import useSWR from 'swr';
  * @type {Object}
  * @property {function} search - Search endpoint.
  */
-const fetchKeys: any = {
+const fetchKeys = {
 	search: (query: string) => `search?q=${query}`,
 };
 

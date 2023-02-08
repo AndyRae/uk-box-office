@@ -1,6 +1,7 @@
 'use client';
 
 import { Timeseries } from './Timeseries';
+import Forecast from 'interfaces/Forecast';
 
 /**
  * ForecastChart
@@ -9,7 +10,7 @@ import { Timeseries } from './Timeseries';
  * @example
  * <ForecastChart data={data} />
  */
-export const ForecastChart = ({ data }: { data: any[] }): JSX.Element => {
+export const ForecastChart = ({ data }: { data: Forecast[] }): JSX.Element => {
 	const reversed = [...data].reverse();
 
 	const d = {

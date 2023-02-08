@@ -1,6 +1,6 @@
 type CardProps = {
 	title?: string;
-	subtitle?: string | JSX.Element;
+	subtitle?: React.ReactNode | JSX.Element;
 	children?: React.ReactNode;
 	size?: 'sm' | 'md' | 'lg';
 	align?: 'left' | 'center' | 'right';
