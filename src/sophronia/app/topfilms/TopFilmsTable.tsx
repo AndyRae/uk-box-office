@@ -1,12 +1,13 @@
 import Link from 'next/link';
 import { BaseTable, Td, Tr } from 'components/charts/BaseTable';
+import { TopFilm } from 'interfaces/TopFilm';
 
 /**
  * @description Top Films Table component
  * @param {Array} data - Array of box office data for top films
  * @returns {JSX.Element}
  */
-export const TopFilmsTable = ({ data }: { data: any }): JSX.Element => {
+export const TopFilmsTable = ({ data }: { data: TopFilm[] }): JSX.Element => {
 	const columns = [
 		{ label: 'rank', isNumeric: true },
 		{ label: 'title' },

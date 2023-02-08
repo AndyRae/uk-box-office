@@ -1,6 +1,6 @@
 import Script from 'next/script';
 
-export function HeadTags() {
+export function HeadTags(): JSX.Element {
 	return (
 		<>
 			<meta name='viewport' content='width=device-width, initial-scale=1' />
@@ -61,7 +61,9 @@ export function HeadTags() {
  */
 export default function DefaultTags({
 	description = 'UK Box Office gets the latest box office revenue and data for the UK film industry. Including dashboards, statistics, reports, and analysis.',
-}) {
+}: {
+	description?: string;
+}): JSX.Element {
 	return (
 		<>
 			<HeadTags />

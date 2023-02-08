@@ -1,13 +1,10 @@
 import Link from 'next/link';
 import { BaseTable, Td, Tr } from 'components/charts/BaseTable';
+import { Country } from 'interfaces/Country';
 
 type CountryListProps = {
 	countries: {
-		results: Array<{
-			id: string;
-			name: string;
-			slug: string;
-		}>;
+		results: Country[];
 	};
 };
 

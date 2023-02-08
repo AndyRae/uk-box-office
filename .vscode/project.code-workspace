@@ -13,5 +13,7 @@
       "path": "../src/sophronia"
     },
   ],
-  "settings": {}
+  "settings": {
+    "typescript.tsdk": "src/sophronia/node_modules/typescript/lib"
+  }
 }

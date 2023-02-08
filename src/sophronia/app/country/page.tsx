@@ -16,7 +16,7 @@ export default function Page() {
 	return (
 		<>
 			<PageTitle>Countries</PageTitle>
-			<CountryList countries={data} pageIndex={pageIndex} />
+			<CountryList countries={data} />
 			<Pagination
 				pages={pageNumbers}
 				setPageIndex={setPageIndex}

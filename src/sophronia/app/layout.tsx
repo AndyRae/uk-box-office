@@ -3,7 +3,11 @@ import './globals.css';
 import { Sidebar } from 'components/ui/Sidebar';
 import { Footer } from 'components/ui/Footer';
 
-export default function RootLayout({ children }) {
+export default function RootLayout({
+	children,
+}: {
+	children: React.ReactNode;
+}): JSX.Element {
 	return (
 		<html lang='en'>
 			<body>
