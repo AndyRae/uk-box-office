@@ -7,7 +7,7 @@ import { CountryList } from './CountryList';
 import { Pagination } from 'components/ui/Pagination';
 import { PageTitle } from 'components/ui/PageTitle';
 
-export default function Page() {
+export default function Page(): JSX.Element {
 	const [pageIndex, setPageIndex] = useState(1);
 	const pageLimit = 15;
 	const { data, error } = useCountryList(pageIndex, pageLimit);

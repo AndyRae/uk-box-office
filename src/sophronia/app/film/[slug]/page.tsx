@@ -10,7 +10,11 @@ import { TimeLineChart } from 'components/Time/TimeLineChart';
 
 import { getFilm } from './getFilm';
 
-export default async function Page({ params }) {
+export default async function Page({
+	params,
+}: {
+	params: { slug: string };
+}): Promise<JSX.Element> {
 	const data = await getFilm(params.slug);
 
 	// Unwrap first week date logic

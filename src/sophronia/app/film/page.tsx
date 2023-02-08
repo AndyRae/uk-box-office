@@ -7,7 +7,7 @@ import { FilmList } from './FilmList';
 import { Pagination } from 'components/ui/Pagination';
 import { PageTitle } from 'components/ui/PageTitle';
 
-export default function Page() {
+export default function Page(): JSX.Element {
 	const [pageIndex, setPageIndex] = useState(1);
 	const pageLimit = 15;
 	const { data, error } = useFilmList(pageIndex, pageLimit);
