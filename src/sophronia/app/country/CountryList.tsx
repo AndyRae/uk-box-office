@@ -1,21 +1,19 @@
 import Link from 'next/link';
 import { BaseTable, Td, Tr } from 'components/charts/BaseTable';
-import { Country } from 'interfaces/Country';
-
-type CountryListProps = {
-	countries: {
-		results: Country[];
-	};
-};
+import { CountryListData } from 'interfaces/Country';
 
 /**
  * Country List component
- * @param {Object} countries - Countries to be displayed
+ * @param {CountryList} countries - Countries to be displayed
  * @returns {JSX.Element}
  * @example
  * <CountryList countries={countries} />
  */
-export const CountryList = ({ countries }: CountryListProps): JSX.Element => {
+export const CountryList = ({
+	countries,
+}: {
+	countries: CountryListData;
+}): JSX.Element => {
 	const columns = [{ label: 'Country' }];
 
 	return (

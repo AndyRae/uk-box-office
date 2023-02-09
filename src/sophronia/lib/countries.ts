@@ -8,6 +8,7 @@
 
 import { useBackendApi } from './ApiFetcher';
 import useSWR from 'swr';
+import { Country, CountryListData, CountryFilmsData } from 'interfaces/Country';
 
 /**
  * Fetch keys for countries.
@@ -35,7 +36,7 @@ export const fetchKeys: any = {
 export const useCountryList = (
 	pageIndex: number = 1,
 	limit: number = 10
-): any => {
+): { data?: CountryListData; error?: any } => {
 	const apiFetcher = useBackendApi();
 	return useSWR(
 		fetchKeys.countryList(pageIndex, limit),
@@ -54,7 +55,7 @@ export const useCountryList = (
  * @example
  * const { data, error } = useCountry('uk');
  */
-export const useCountry = (slug: string): any => {
+export const useCountry = (slug: string): { data?: Country; error?: any } => {
 	const apiFetcher = useBackendApi();
 	return useSWR(fetchKeys.country(slug), apiFetcher, {
 		suspense: true,
@@ -74,7 +75,7 @@ export const useCountryFilms = (
 	slug: string,
 	pageIndex: number,
 	pageLimit: number
-): any => {
+): { data?: CountryFilmsData; error?: any } => {
 	const apiFetcher = useBackendApi();
 	return useSWR(
 		fetchKeys.countryFilms(slug, pageIndex, pageLimit),
