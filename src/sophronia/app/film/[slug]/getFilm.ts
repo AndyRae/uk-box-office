@@ -1,5 +1,5 @@
 import { getBackendURL } from 'lib/ApiFetcher';
-import Film from 'interfaces/Film';
+import { FilmWithWeeks } from 'interfaces/Film';
 
 /**
  * Get a single film.
@@ -8,7 +8,7 @@ import Film from 'interfaces/Film';
  * @example
  * const film = await getFilm('the-dark-knight');
  */
-export async function getFilm(slug: string): Promise<Film> {
+export async function getFilm(slug: string): Promise<FilmWithWeeks> {
 	const url = getBackendURL();
 	const res = await fetch(`${url}film/${slug}`);
 	return res.json();

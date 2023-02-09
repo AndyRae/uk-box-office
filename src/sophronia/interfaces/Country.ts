@@ -1,4 +1,4 @@
-import Film from './Film';
+import { Film } from './Film';
 
 export interface Country {
 	id: string;

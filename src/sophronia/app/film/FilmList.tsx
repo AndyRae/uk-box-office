@@ -1,11 +1,6 @@
 import { FilmTable } from 'components/Film/FilmTable';
+import { FilmListData } from 'interfaces/Film';
 
-export const FilmList = ({
-	films,
-	pageIndex,
-}: {
-	films: [];
-	pageIndex: number;
-}): JSX.Element => {
+export const FilmList = ({ films }: { films: FilmListData }): JSX.Element => {
 	return <div>{films && <FilmTable films={films} />}</div>;
 };

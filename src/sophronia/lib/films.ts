@@ -6,6 +6,7 @@
 
 import { useBackendApi } from './ApiFetcher';
 import useSWR from 'swr';
+import { FilmWithWeeks, FilmListData } from 'interfaces/Film';
 
 /**
  * Fetch keys for films.
@@ -27,7 +28,10 @@ const fetchKeys: any = {
  * @example
  * const { data, error } = useFilmList(1, 10);
  */
-export const useFilmList = (pageIndex: number = 1, limit: number = 10): any => {
+export const useFilmList = (
+	pageIndex: number = 1,
+	limit: number = 10
+): { data?: FilmListData; error?: any } => {
 	const apiFetcher = useBackendApi();
 	return useSWR(
 		fetchKeys.filmList(pageIndex, limit),
@@ -46,7 +50,9 @@ export const useFilmList = (pageIndex: number = 1, limit: number = 10): any => {
  * @example
  * const { data, error } = useFilm('uk');
  */
-export const useFilm = (slug: string): any => {
+export const useFilm = (
+	slug: string
+): { data?: FilmWithWeeks; error?: any } => {
 	const apiFetcher = useBackendApi();
 	return useSWR(fetchKeys.film(slug), apiFetcher, {
 		suspense: true,

@@ -16,7 +16,7 @@ export default function Page(): JSX.Element {
 	return (
 		<>
 			<PageTitle>Films</PageTitle>
-			<FilmList films={data} pageIndex={pageIndex} />
+			<FilmList films={data} />
 			<Pagination
 				pages={pageNumbers}
 				setPageIndex={setPageIndex}

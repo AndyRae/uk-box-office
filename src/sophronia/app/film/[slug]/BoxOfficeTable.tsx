@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Date } from 'components/Date';
 import { BaseTable, Td, Tr } from 'components/charts/BaseTable';
 import { MetricChange } from 'components/charts/MetricChange';
+import { FilmWithWeeks } from 'interfaces/Film';
 
 /**
  * @description Box Office Table component
@@ -10,7 +11,11 @@ import { MetricChange } from 'components/charts/MetricChange';
  * @example
  * <BoxOfficeTable data={data} />
  */
-export const BoxOfficeTable = ({ data }: { data: any }): JSX.Element => {
+export const BoxOfficeTable = ({
+	data,
+}: {
+	data: FilmWithWeeks;
+}): JSX.Element => {
 	const columns = [
 		{ label: 'week', isNumeric: true },
 		{ label: 'date' },
