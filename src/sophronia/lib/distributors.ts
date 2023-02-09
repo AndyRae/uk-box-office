@@ -9,6 +9,11 @@
 
 import { useBackendApi } from './ApiFetcher';
 import useSWR from 'swr';
+import {
+	Distributor,
+	DistributorListData,
+	DistributorFilmsData,
+} from 'interfaces/Distributor';
 
 /**
  * Fetch keys for distributors.
@@ -40,7 +45,7 @@ const fetchKeys = {
 export const useDistributorList = (
 	pageIndex: number = 1,
 	limit: number = 10
-): any => {
+): { data?: DistributorListData; error?: any } => {
 	const apiFetcher = useBackendApi();
 	return useSWR(
 		fetchKeys.distributorList(pageIndex, limit),
@@ -59,7 +64,9 @@ export const useDistributorList = (
  * @example
  * const { data, error } = useDistributor('mubi');
  */
-export const useDistributor = (slug: string): any => {
+export const useDistributor = (
+	slug: string
+): { data?: Distributor; error?: any } => {
 	const apiFetcher = useBackendApi();
 	return useSWR(fetchKeys.distributor(slug), apiFetcher, {
 		suspense: true,
@@ -79,7 +86,7 @@ export const useDistributorFilms = (
 	slug: string,
 	pageIndex: number = 1,
 	pageLimit: number = 10
-): any => {
+): { data?: DistributorFilmsData; error?: any } => {
 	const apiFetcher = useBackendApi();
 	return useSWR(
 		fetchKeys.distributorFilms(slug, pageIndex, pageLimit),

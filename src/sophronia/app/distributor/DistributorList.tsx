@@ -1,20 +1,19 @@
 import Link from 'next/link';
 import { BaseTable, Td, Tr } from 'components/charts/BaseTable';
-
-type DistributorListProps = {
-	distributors: { results: Array<{ id: string; name: string; slug: string }> };
-};
+import { DistributorListData } from 'interfaces/Distributor';
 
 /**
  * Distributor List component
- * @param {Object} distributors - Distributors to be displayed
+ * @param {DistributorListData} distributors - Distributors to be displayed
  * @returns {JSX.Element}
  * @example
  * <DistributorList distributors={distributors} />
  */
 export const DistributorList = ({
 	distributors,
-}: DistributorListProps): JSX.Element => {
+}: {
+	distributors: DistributorListData;
+}): JSX.Element => {
 	const columns = [{ label: 'Distributor' }];
 
 	return (
