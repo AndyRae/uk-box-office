@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { BaseTable, Tr, Td } from 'components/charts/BaseTable';
+import { Film } from 'interfaces/Film';
 
 /**
  * @description Films Table component for search
@@ -8,7 +9,7 @@ import { BaseTable, Tr, Td } from 'components/charts/BaseTable';
  * @example
  * <FilmsTable data={data} />
  */
-export const FilmsTable = ({ data }: { data: any }): JSX.Element => {
+export const FilmsTable = ({ data }: { data: Film[] }): JSX.Element => {
 	const columns = [
 		{ label: 'title' },
 		{ label: 'distributor' },

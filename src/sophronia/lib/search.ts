@@ -6,6 +6,15 @@
 
 import { useBackendApi } from './ApiFetcher';
 import useSWR from 'swr';
+import { Country } from 'interfaces/Country';
+import { Distributor } from 'interfaces/Distributor';
+import { Film } from 'interfaces/Film';
+
+interface SearchResults {
+	countries: Country[];
+	distributors: Distributor[];
+	films: Film[];
+}
 
 /**
  * Fetch keys for search.
@@ -23,7 +32,9 @@ const fetchKeys = {
  * @example
  * const { data, error } = useSearch('uk');
  */
-export const useSearch = (query: string) => {
+export const useSearch = (
+	query: string
+): { data?: SearchResults; error?: any } => {
 	const apiFetcher = useBackendApi();
 	return useSWR(fetchKeys.search(query), apiFetcher, {
 		suspense: true,
