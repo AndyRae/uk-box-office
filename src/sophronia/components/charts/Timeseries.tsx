@@ -26,7 +26,7 @@ ChartJS.register(
 );
 
 type TimeseriesProps = {
-	data: any;
+	data: { datasets: any[]; labels: string[] };
 	options: object;
 	id?: string;
 	height?: 'sm' | 'md' | 'lg' | 'xl';
@@ -36,12 +36,13 @@ type TimeseriesProps = {
 
 /**
  * Base Timeseries component
- * @param {Object} data - Data to be displayed in the chart
- * @param {Object} options - Options for the chart
- * @param {String} id - ID of the chart
- * @param {String} height - Height of the chart
- * @param {Object} chartRef - Reference to the chart
- * @param {Function} onClick - Function to be called when a bar is clicked
+ * @param {Object} props - Props object
+ * @param {Object} props.data - Data to be displayed in the chart
+ * @param {Object} props.options - Options for the chart
+ * @param {String} props.id - ID of the chart
+ * @param {String} props.height - Height of the chart
+ * @param {Object} props.chartRef - Reference to the chart
+ * @param {Function} props.onClick - Function to be called when a bar is clicked
  * @returns {JSX.Element}
  */
 export const Timeseries = ({

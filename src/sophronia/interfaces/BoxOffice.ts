@@ -1,9 +1,14 @@
-export interface Forecast {
+export interface Topline {
 	date: string;
-	forecast_medium: number;
+	admissions: number;
 	forecast_high: number;
+	forecast_medium: number;
 	forecast_low: number;
 	week_gross: number;
+	weekend_gross: number;
+	number_of_cinemas: number;
+	number_of_releases: number;
+	id: number;
 }
 
 export interface BoxOfficeWeek {
@@ -43,3 +48,30 @@ export type StackedFilm = {
 	pointRadius: number;
 	borderRadius: number;
 };
+
+export type TableData = {
+	title: string;
+	filmSlug: string;
+	distributor: string;
+	weeks: number;
+	weekGross: number;
+	weekendGross: any;
+	numberOfCinemas: number;
+	siteAverage: number;
+}[];
+
+export type BoxOfficeGroup = {
+	date: string;
+	weekGross: number;
+	weekendGross: number;
+	newReleases: number;
+};
+
+export interface BoxOfficeSummary {
+	admissions?: number;
+	number_of_cinemas: number;
+	number_of_releases: number;
+	week_gross: number;
+	weekend_gross: number;
+	year: string;
+}

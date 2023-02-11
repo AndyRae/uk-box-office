@@ -21,7 +21,7 @@ ChartJS.register(
 );
 
 type BarChartProps = {
-	data: any;
+	data: { labels: string[]; datasets: any[] };
 	options: object;
 	onClick: (arg0?: any) => void;
 	chartRef: any;
@@ -29,10 +29,11 @@ type BarChartProps = {
 
 /**
  * Base BarChart component
- * @param {Object} data - Data to be displayed in the chart
- * @param {Object} options - Options for the chart
- * @param {Function} onClick - Function to be called when a bar is clicked
- * @param {Object} chartRef - Reference to the chart
+ * @param {Object} props - Props for the component
+ * @param {Object} props.data - Data to be displayed in the chart
+ * @param {Object} props.options - Options for the chart
+ * @param {Function} props.onClick - Function to be called when a bar is clicked
+ * @param {Object} props.chartRef - Reference to the chart
  * @returns {JSX.Element}
  */
 export const BarChart = ({

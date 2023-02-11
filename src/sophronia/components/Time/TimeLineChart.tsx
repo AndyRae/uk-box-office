@@ -7,9 +7,10 @@ import { useState, useEffect, useRef, MouseEvent } from 'react';
 import { Tooltip } from '../ui/Tooltip';
 import { useRouter } from 'next/navigation';
 import { getElementAtEvent } from 'react-chartjs-2';
+import { BoxOfficeWeek } from 'interfaces/BoxOffice';
 
 type TimeLineChartProps = {
-	data: any;
+	data: BoxOfficeWeek[];
 	height?: 'sm' | 'md' | 'lg' | 'xl';
 	color?: string;
 	allowRollUp?: boolean;
@@ -18,10 +19,11 @@ type TimeLineChartProps = {
 /**
  * @description Time Line Chart component as a line chart.
  * Includes chart navigation to the week pages.
- * @param {Array} data - Array of weekly box office data
- * @param {Number} height - Height of the chart
- * @param {String} color - Color of the chart
- * @param {Boolean} allowRollUp - Allow rolling up the data to monthly data.
+ * @param {Object} props - Props object
+ * @param {Array} props.data - Array of weekly box office data
+ * @param {String} props.height - Height of the chart
+ * @param {String} props.color - Color of the chart
+ * @param {Boolean} props.allowRollUp - Allow rolling up the data to monthly data.
  * @returns {JSX.Element}
  * @example
  * <TimeLineChart data={data} height={'lg'} color="#B65078" allowRollUp={true} />

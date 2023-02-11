@@ -20,7 +20,12 @@ import useSWR from 'swr';
 import useSWRInfinite, { SWRInfiniteResponse } from 'swr/infinite';
 import { useMemo } from 'react';
 import { useEffect } from 'react';
-import { BoxOfficeListData, BoxOfficeWeek } from 'interfaces/BoxOffice';
+import {
+	BoxOfficeListData,
+	BoxOfficeWeek,
+	BoxOfficeSummary,
+	Topline,
+} from 'interfaces/BoxOffice';
 
 /**
  * Fetch keys for boxoffice.
@@ -117,7 +122,7 @@ export const useBoxOfficeSummary = (
 	startDate: string,
 	endDate: string,
 	yearLimit: number
-): any => {
+): { data?: { results: BoxOfficeSummary[] }; error?: any } => {
 	const apiFetcher = useBackendApi();
 	return useSWR(
 		fetchKeys.boxOfficeSummary(startDate, endDate, yearLimit),
@@ -136,7 +141,10 @@ export const useBoxOfficeSummary = (
  * @example
  * const { data, error } = useBoxOfficePrevious('2021-01-01', '2021-01-31');
  */
-export const useBoxOfficePrevious = (start: string, end: string): any => {
+export const useBoxOfficePrevious = (
+	start: string,
+	end: string
+): { data?: { results: BoxOfficeSummary[] }; error?: any } => {
 	const apiFetcher = useBackendApi();
 	return useSWR(fetchKeys.boxOfficePrevious(start, end), apiFetcher, {
 		suspense: true,
@@ -151,7 +159,10 @@ export const useBoxOfficePrevious = (start: string, end: string): any => {
  * @example
  * const { data, error } = useBoxOfficePrevious('2021-01-01', '2021-01-31');
  */
-export const useBoxOfficePreviousYear = (start: string, end: string): any => {
+export const useBoxOfficePreviousYear = (
+	start: string,
+	end: string
+): { data?: { results: BoxOfficeSummary[] }; error?: any } => {
 	const apiFetcher = useBackendApi();
 	return useSWR(fetchKeys.boxOfficePreviousYear(start, end), apiFetcher, {
 		suspense: true,
@@ -171,7 +182,7 @@ export const useBoxOfficeTopline = (
 	startDate: string,
 	endDate: string,
 	page: number
-): any => {
+): { data?: { results: Topline[] }; error?: any } => {
 	const apiFetcher = useBackendApi();
 	return useSWR(
 		fetchKeys.boxOfficeTopline(startDate, endDate, page),

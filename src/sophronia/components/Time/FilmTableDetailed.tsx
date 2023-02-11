@@ -1,20 +1,22 @@
 import Link from 'next/link';
 import { BaseTable, Td, Tr } from '../charts/BaseTable';
 import { MetricChange } from '../charts/MetricChange';
+import { BoxOfficeWeek, TableData } from 'interfaces/BoxOffice';
 
 /**
  * @description Film Table component for the time view.
  * Each film is compared to the previous week.
- * @param {Array} data - Array of films
- * @param {Array} comparisonData - Array of films from the previous week
+ * @param {object} props - The props
+ * @param {Array} props.data - Array of films
+ * @param {Array} props.comparisonData - Array of films from the previous week
  * @returns {JSX.Element}
  */
 export const FilmTableDetailed = ({
 	data,
 	comparisonData,
 }: {
-	data: any[];
-	comparisonData?: any[];
+	data: TableData;
+	comparisonData?: BoxOfficeWeek[];
 }): JSX.Element => {
 	const columns = [
 		{ label: 'rank', isNumeric: true },

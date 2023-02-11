@@ -1,7 +1,7 @@
 'use client';
 
 import { Timeseries } from './Timeseries';
-import Forecast from 'interfaces/BoxOffice';
+import { Topline } from 'interfaces/BoxOffice';
 
 /**
  * ForecastChart
@@ -10,7 +10,7 @@ import Forecast from 'interfaces/BoxOffice';
  * @example
  * <ForecastChart data={data} />
  */
-export const ForecastChart = ({ data }: { data: Forecast[] }): JSX.Element => {
+export const ForecastChart = ({ data }: { data: Topline[] }): JSX.Element => {
 	const reversed = [...data].reverse();
 
 	const d = {

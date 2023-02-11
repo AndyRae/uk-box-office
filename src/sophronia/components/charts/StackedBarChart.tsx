@@ -26,11 +26,12 @@ ChartJS.register(
 
 /**
  * Dashboard StackedBarChart component
- * @param {Object} data - Data to be displayed in the chart
- * @param {Number} height - Height of the chart
+ * @param {object} props - The props
+ * @param {BoxOfficeWeek[]} props.data - The data to be displayed in the chart
+ * @param {string} props.height - The height of the chart (sm, md, lg, xl)
  * @returns {JSX.Element}
  * @example
- * <StackedBarChart data={data} height={height} />
+ * <StackedBarChart data={data} height={'sm'} />
  */
 export const StackedBarChart = ({
 	data,
@@ -148,9 +149,9 @@ export const StackedBarChart = ({
 };
 
 type BarChartProps = {
-	data: any;
-	options: any;
-	onClick: any;
+	data: { labels: string[]; datasets: StackedFilm[] };
+	options: Object;
+	onClick: (event: any) => void;
 	chartRef: any;
 	height: 'sm' | 'md' | 'lg' | 'xl';
 };

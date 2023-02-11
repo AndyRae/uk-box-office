@@ -18,7 +18,12 @@ import countBy from 'lodash/countBy';
 
 import { interpolateColors } from './colorGenerator';
 import { interpolateSpectral } from 'd3-scale-chromatic';
-import { BoxOfficeWeek, StackedFilm } from 'interfaces/BoxOffice';
+import {
+	BoxOfficeWeek,
+	StackedFilm,
+	TableData,
+	BoxOfficeGroup,
+} from 'interfaces/BoxOffice';
 
 /**
  * Groups data for a stacked bar chart.
@@ -86,17 +91,6 @@ type FilmType = {
 	cinemas: {};
 };
 
-type TableData = {
-	title: string;
-	filmSlug: string;
-	distributor: string;
-	weeks: number;
-	weekGross: number;
-	weekendGross: any;
-	numberOfCinemas: number;
-	siteAverage: number;
-}[];
-
 /**
  * Groups box office data for tables.
  * @param {BoxOfficeWeek[]} data array of box office data.
@@ -157,20 +151,13 @@ export const groupForTable = (data: BoxOfficeWeek[]): TableData => {
 	return tableData;
 };
 
-type BoxOfficeGroup = {
-	date: string;
-	weekGross: number;
-	weekendGross: number;
-	newReleases: number;
-};
-
 /**
  * Groups box office data by date.
  * @param {*} data array of box office data.
  * @returns array of grouped data by date.
  */
 export const groupbyDate = (
-	data: BoxOfficeWeek[]
+	data: BoxOfficeWeek[] | BoxOfficeGroup[]
 ): { results: BoxOfficeGroup[] } => {
 	const results = flow(
 		(arr) => groupBy(arr, 'date'),
@@ -192,7 +179,7 @@ export const groupbyDate = (
  * @returns array of grouped data by month.
  */
 export const groupbyMonth = (
-	data: BoxOfficeWeek[]
+	data: BoxOfficeWeek[] | BoxOfficeGroup[]
 ): { results: BoxOfficeGroup[] } => {
 	const results = flow(
 		(arr) => groupBy(arr, (o) => o.date.substring(0, 7)),

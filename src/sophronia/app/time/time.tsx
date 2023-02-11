@@ -174,7 +174,7 @@ export const TimePage = ({
 	);
 
 	// Group Data
-	const { tableData } = groupForTable(results);
+	const tableData = groupForTable(results);
 	const { results: weekData } = groupbyDate(results);
 
 	// Get Data for Charts
@@ -237,7 +237,7 @@ export const TimePage = ({
 				endpoint={pathname}
 				time={pageTitle}
 			/>
-			`<PageTitle>UK Box Office {pageTitle}</PageTitle>
+			<PageTitle>UK Box Office {pageTitle}</PageTitle>
 			{isReachedEnd ? '' : <ProgressBar value={percentFetched} />}
 			<div className='grid md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5'>
 				<Card
@@ -363,7 +363,9 @@ export const TimePage = ({
 				</Card>
 
 				<Card title='Previous Years'>
-					{isReachedEnd && <PreviousYearsChart data={timeComparisonData} />}
+					{isReachedEnd && (
+						<PreviousYearsChart data={timeComparisonData.results} />
+					)}
 				</Card>
 			</div>
 			<div className='py-3'>

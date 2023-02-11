@@ -8,7 +8,6 @@ import { Searchbar } from 'components/Search/Searchbar';
 import { PageTitle } from 'components/ui/PageTitle';
 
 import { Distributor } from 'interfaces/Distributor';
-import { Film } from 'interfaces/Film';
 import { Country } from 'interfaces/Country';
 
 export default function Page(): JSX.Element {

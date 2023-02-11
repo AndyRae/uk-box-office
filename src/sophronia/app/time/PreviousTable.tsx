@@ -1,13 +1,18 @@
 import Link from 'next/link';
 import { BaseTable, Td, Tr } from 'components/charts/BaseTable';
 import { MetricChange } from 'components/charts/MetricChange';
+import { BoxOfficeSummary } from 'interfaces/BoxOffice';
 
 /**
  * @description Previous Table component for time.
  * @param {Array} data - Array of box office data for years.
  * @returns {JSX.Element}
  */
-export const PreviousTable = ({ data }: { data: any }): JSX.Element => {
+export const PreviousTable = ({
+	data,
+}: {
+	data: BoxOfficeSummary[];
+}): JSX.Element => {
 	const columns = [
 		{ label: 'year', isNumeric: true },
 		{ label: 'total box office', isNumeric: true },
