@@ -4,7 +4,7 @@ import { ForecastChart } from 'components/charts/ForecastChart';
 import { PageTitle } from 'components/ui/PageTitle';
 import { PageContent } from 'components/ui/PageContent';
 import { Card } from 'components/ui/Card';
-import Forecast from 'interfaces/Forecast';
+import { Forecast } from 'interfaces/BoxOffice';
 
 type ForecastData = {
 	results: Forecast[];

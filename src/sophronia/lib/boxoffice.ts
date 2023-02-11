@@ -17,9 +17,10 @@ import {
 	getBackendURLClient,
 } from './ApiFetcher';
 import useSWR from 'swr';
-import useSWRInfinite from 'swr/infinite';
+import useSWRInfinite, { SWRInfiniteResponse } from 'swr/infinite';
 import { useMemo } from 'react';
 import { useEffect } from 'react';
+import { BoxOfficeListData, BoxOfficeWeek } from 'interfaces/BoxOffice';
 
 /**
  * Fetch keys for boxoffice.
@@ -74,12 +75,12 @@ export const useBoxOffice = () => {
  * @example
  * const { data, error } = useBoxOfficeFiltered('2021-01-01', '2021-01-31', 1, 300);
  */
-export const useBoxOfficeFiltered: any = (
+export const useBoxOfficeFiltered = (
 	startDate: string,
 	endDate: string,
 	start: number = 1,
 	limit: number = 300
-) => {
+): { data?: BoxOfficeListData; error?: any } => {
 	const apiFetcher = useBackendApi();
 	return useSWR(
 		fetchKeys.boxOfficeFiltered(startDate, endDate, start, limit),
@@ -190,7 +191,18 @@ export const useBoxOfficeTopline = (
  * @example
  * const { data, error } = useBoxOfficeInfinite('2021-01-01', '2021-01-31');
  */
-export function useBoxOfficeInfinite(startDate: string, endDate: string): any {
+export function useBoxOfficeInfinite(
+	startDate: string,
+	endDate: string
+): {
+	results: BoxOfficeWeek[];
+	mutate: any;
+	error: any;
+	size: number;
+	setSize: any;
+	isReachedEnd: boolean;
+	percentFetched: number;
+} {
 	const { data, mutate, error, size, setSize } = useProtectedSWRInfinite(
 		startDate,
 		endDate
@@ -228,7 +240,10 @@ export function useBoxOfficeInfinite(startDate: string, endDate: string): any {
  * @param {string} endDate - End date for the query.
  * @returns useSWR hook with boxoffice data from the api with pagination.
  */
-const useProtectedSWRInfinite = (startDate: string, endDate: string): any => {
+const useProtectedSWRInfinite = (
+	startDate: string,
+	endDate: string
+): SWRInfiniteResponse<BoxOfficeListData> => {
 	const backendUrl = `${getBackendURLClient()}boxoffice/all`;
 
 	/**
@@ -237,7 +252,7 @@ const useProtectedSWRInfinite = (startDate: string, endDate: string): any => {
 	 * @param previousPageData Previous page information
 	 * @returns API to the next page
 	 */
-	function getNextKey(pageIndex, previousPageData) {
+	function getNextKey(pageIndex: number, previousPageData: { next: any }) {
 		// Reached the end of the collection
 		if (previousPageData && !previousPageData.next) return null;
 

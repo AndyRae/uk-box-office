@@ -1,4 +1,4 @@
-import Distributor from './Distributor';
+import { Distributor } from './Distributor';
 
 export default interface MarketShare {
 	year: number;

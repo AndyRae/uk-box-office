@@ -18,28 +18,14 @@ import countBy from 'lodash/countBy';
 
 import { interpolateColors } from './colorGenerator';
 import { interpolateSpectral } from 'd3-scale-chromatic';
-
-type stackedData = {
-	label: string;
-	slug: any;
-	data: { x: any; y: any }[];
-	borderColor: string;
-	backgroundColor: string;
-	hoverBackgroundColor: string;
-	hoverBorderColor: string;
-	fill: boolean;
-	tension: number;
-	pointStyle: string;
-	pointRadius: number;
-	borderRadius: number;
-}[];
+import { BoxOfficeWeek, StackedFilm } from 'interfaces/BoxOffice';
 
 /**
  * Groups data for a stacked bar chart.
- * @param {*} data array of box office data.
- * @returns Array of data sets objects for each film.
+ * @param {BoxOfficeWeek[]} data array of box office data.
+ * @returns {StackedFilm[]} Array of data sets objects for each film.
  */
-export const groupStackedFilms = (data: any[]): stackedData => {
+export const groupStackedFilms = (data: BoxOfficeWeek[]): StackedFilm[] => {
 	const filmsLimit = 20; // Limit number of films to display
 
 	// Reduce array to single films with box office
@@ -91,16 +77,7 @@ export const groupStackedFilms = (data: any[]): stackedData => {
 	return stackedData;
 };
 
-type filmItem = {
-	film: string;
-	slug: string;
-	distributor: string;
-	weeks: { [key: string]: number };
-	weekend: { [key: string]: number };
-	cinemas: { [key: string]: number };
-};
-
-type filmType = {
+type FilmType = {
 	film: string;
 	slug: string;
 	distributor: string;
@@ -109,17 +86,30 @@ type filmType = {
 	cinemas: {};
 };
 
+type TableData = {
+	title: string;
+	filmSlug: string;
+	distributor: string;
+	weeks: number;
+	weekGross: number;
+	weekendGross: any;
+	numberOfCinemas: number;
+	siteAverage: number;
+}[];
+
 /**
  * Groups box office data for tables.
- * @param {*} data array of box office data.
- * @returns Array of data sets objects for each film.
+ * @param {BoxOfficeWeek[]} data array of box office data.
+ * @returns {TableData}Array of data sets objects for each film.
  * TODO: Refactor to use lodash - this is ancient.
  */
-export const groupForTable = (data: any[]) => {
+export const groupForTable = (data: BoxOfficeWeek[]): TableData => {
 	// Grouping by film (and slug, distributor) - summing box office, max weeks.
 	var table = data
 		.reduce((acc, curr) => {
-			let item = acc.find((x: { film: any }) => x.film === curr['film']);
+			let item: FilmType = acc.find(
+				(x: { film: any }) => x.film === curr['film']
+			);
 			if (!item) {
 				item = {
 					film: curr['film'],
@@ -140,7 +130,7 @@ export const groupForTable = (data: any[]) => {
 				(item.weekend[curr.number_of_cinemas] || 0) + curr.number_of_cinemas;
 			return acc;
 		}, [])
-		.map((x: filmType) => ({
+		.map((x: FilmType) => ({
 			title: x.film,
 			filmSlug: x.slug,
 			distributor: x.distributor,
@@ -164,7 +154,14 @@ export const groupForTable = (data: any[]) => {
 		return b.weekGross - a.weekGross;
 	});
 
-	return { tableData };
+	return tableData;
+};
+
+type BoxOfficeGroup = {
+	date: string;
+	weekGross: number;
+	weekendGross: number;
+	newReleases: number;
 };
 
 /**
@@ -172,7 +169,9 @@ export const groupForTable = (data: any[]) => {
  * @param {*} data array of box office data.
  * @returns array of grouped data by date.
  */
-export const groupbyDate = (data: any[]): { results: any[] } => {
+export const groupbyDate = (
+	data: BoxOfficeWeek[]
+): { results: BoxOfficeGroup[] } => {
 	const results = flow(
 		(arr) => groupBy(arr, 'date'),
 		(arr) =>
@@ -192,7 +191,9 @@ export const groupbyDate = (data: any[]): { results: any[] } => {
  * @param {*} data
  * @returns array of grouped data by month.
  */
-export const groupbyMonth = (data: any[]): { results: any[] } => {
+export const groupbyMonth = (
+	data: BoxOfficeWeek[]
+): { results: BoxOfficeGroup[] } => {
 	const results = flow(
 		(arr) => groupBy(arr, (o) => o.date.substring(0, 7)),
 		(arr) =>
@@ -212,7 +213,7 @@ export const groupbyMonth = (data: any[]): { results: any[] } => {
  * @param {*} data array of box office data.
  * @returns number of week 1 releases.
  */
-export const calculateWeek1Releases = (data: any[]): number => {
+export const calculateWeek1Releases = (data: BoxOfficeWeek[]): number => {
 	const week1 = data.filter((x) => x.weeks_on_release === 1);
 	return week1.length;
 };
@@ -222,7 +223,7 @@ export const calculateWeek1Releases = (data: any[]): number => {
  * @param {*} data - array of box office data.
  * @returns number of unique films.
  */
-export const calculateNumberOfFilms = (data: any[]): number => {
+export const calculateNumberOfFilms = (data: BoxOfficeWeek[]): number => {
 	const grouped = Array.from(data);
 	const groupedNumber = Array.from(
 		grouped.reduce(
@@ -239,7 +240,7 @@ export const calculateNumberOfFilms = (data: any[]): number => {
  * @param {*} data - array of box office data.
  * @returns total box office.
  */
-export const calculateNumberOfCinemas = (data: any[]): number => {
+export const calculateNumberOfCinemas = (data: BoxOfficeWeek[]): number => {
 	return Math.max.apply(
 		Math,
 		data.map(function (o) {

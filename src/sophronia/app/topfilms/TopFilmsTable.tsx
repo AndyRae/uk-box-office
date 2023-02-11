@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { BaseTable, Td, Tr } from 'components/charts/BaseTable';
-import { TopFilm } from 'interfaces/TopFilm';
+import { TopFilm } from 'interfaces/Film';
 
 /**
  * @description Top Films Table component

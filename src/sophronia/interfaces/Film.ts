@@ -1,5 +1,6 @@
 import { Country } from './Country';
 import { Distributor } from './Distributor';
+import { BoxOfficeWeek } from './BoxOffice';
 
 export interface Film {
 	id: number;
@@ -11,21 +12,7 @@ export interface Film {
 }
 
 export interface FilmWithWeeks extends Film {
-	weeks: {
-		date: string;
-		distributor: string;
-		distributor_slug: string;
-		film: string;
-		film_slug: string;
-		id: number;
-		number_of_cinemas: number;
-		rank: number;
-		site_average: number;
-		total_gross: number;
-		week_gross: number;
-		weekend_gross: number;
-		weeks_on_release: number;
-	}[];
+	weeks: BoxOfficeWeek[];
 }
 
 export interface FilmListData {
@@ -33,4 +20,15 @@ export interface FilmListData {
 	next: number;
 	previous: number;
 	results: Film[];
+}
+
+export interface TopFilm {
+	film: {
+		name: string;
+		slug: string;
+		distributor: {
+			name: string;
+		};
+	};
+	gross: number;
 }

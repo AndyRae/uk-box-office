@@ -60,7 +60,7 @@ export default function Home(): JSX.Element {
 	);
 
 	// Group Data for the charts
-	const { tableData } = groupForTable(results);
+	const tableData = groupForTable(results);
 
 	// Calculate totals
 	const boxOffice = tableData.reduce((acc, curr) => acc + curr.weekGross, 0);

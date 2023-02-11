@@ -12,6 +12,7 @@ import {
 } from 'chart.js';
 import { useRef } from 'react';
 import { groupStackedFilms } from 'lib/utils/groupData';
+import { BoxOfficeWeek, StackedFilm } from 'interfaces/BoxOffice';
 
 ChartJS.register(
 	BarElement,
@@ -35,7 +36,7 @@ export const StackedBarChart = ({
 	data,
 	height,
 }: {
-	data: any;
+	data: BoxOfficeWeek[];
 	height?: 'sm' | 'md' | 'lg' | 'xl';
 }): JSX.Element => {
 	const chartRef = useRef(null);

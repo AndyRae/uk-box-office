@@ -1,7 +1,7 @@
 import { getBackendURL } from 'lib/ApiFetcher';
 import { PageTitle } from 'components/ui/PageTitle';
 import { TopFilmsTable } from './TopFilmsTable';
-import { TopFilm } from 'interfaces/TopFilm';
+import { TopFilm } from 'interfaces/Film';
 
 /**
  * Get the top films from the backend

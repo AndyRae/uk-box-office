@@ -1,7 +1,7 @@
 'use client';
 
 import { Timeseries } from './Timeseries';
-import Forecast from 'interfaces/Forecast';
+import Forecast from 'interfaces/BoxOffice';
 
 /**
  * ForecastChart
