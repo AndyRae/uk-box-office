@@ -29,6 +29,15 @@ const nextConfig = {
 			transform: '@react-icons/md/{{member}}',
 		},
 	},
+	async redirects() {
+		return [
+			{
+				source: '/films/:path*',
+				destination: 'film/:path*',
+				permanent: true,
+			},
+		];
+	},
 };
 
 module.exports = nextConfig;
