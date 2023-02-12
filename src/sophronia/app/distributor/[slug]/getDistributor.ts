@@ -1,5 +1,5 @@
 import { getBackendURL } from 'lib/ApiFetcher';
-import Distributor from 'interfaces/Distributor';
+import { Distributor } from 'interfaces/Distributor';
 
 /**
  * Get a single distributor.
