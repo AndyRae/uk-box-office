@@ -29,7 +29,7 @@ const Th = ({
 	isNumeric,
 	children,
 }: {
-	isNumeric: boolean;
+	isNumeric?: boolean;
 	children: React.ReactNode;
 }): JSX.Element => {
 	return (
@@ -54,7 +54,7 @@ export const Tr = ({
 	index,
 	children,
 }: {
-	index?: number;
+	index: number;
 	children: React.ReactNode;
 }): JSX.Element => {
 	const alternatingColor = ['bg-white', 'bg-gray-100'];
@@ -140,7 +140,7 @@ export const BaseTable = ({
 				id={id}
 			>
 				<Thead>
-					<Tr>
+					<Tr index={1}>
 						{columns.map((column, index) => {
 							return (
 								<Th key={index} isNumeric={column.isNumeric}>

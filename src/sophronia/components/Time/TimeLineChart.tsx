@@ -150,7 +150,7 @@ export const TimeLineChart = ({
 	// Navigation
 	const chartRef = useRef();
 	const onClick = (event: MouseEvent<HTMLCanvasElement>) => {
-		var x = getElementAtEvent(chartRef.current, event);
+		var x = getElementAtEvent(chartRef.current as any, event);
 		if (x.length > 0) {
 			const dateString = d.labels[x[0].index].split('-');
 			const url = `/time/${dateString[0]}${

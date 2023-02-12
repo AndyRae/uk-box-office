@@ -86,9 +86,9 @@ type FilmType = {
 	film: string;
 	slug: string;
 	distributor: string;
-	weeks: { [s: string]: number } | ArrayLike<number>;
-	weekend: { [s: string]: unknown } | ArrayLike<number>;
-	cinemas: {};
+	weeks: { [s: number]: number };
+	weekend: { [s: string]: number };
+	cinemas: { [s: string]: number };
 };
 
 /**
@@ -100,7 +100,8 @@ type FilmType = {
 export const groupForTable = (data: BoxOfficeWeek[]): TableData => {
 	// Grouping by film (and slug, distributor) - summing box office, max weeks.
 	var table = data
-		.reduce((acc, curr) => {
+		.reduce((acc: any[], curr) => {
+			// let item : FilmType;
 			let item: FilmType = acc.find(
 				(x: { film: any }) => x.film === curr['film']
 			);

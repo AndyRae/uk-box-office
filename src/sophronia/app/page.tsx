@@ -78,8 +78,8 @@ export default function Home(): JSX.Element {
 	let changeWeek = 0;
 	let changeCinemas = 0;
 
-	if (timeComparisonData.results.length >= 1) {
-		const lastYear = timeComparisonData.results[0];
+	if (timeComparisonData!.results.length >= 1) {
+		const lastYear = timeComparisonData!.results[0];
 
 		changeNewFilms = Math.ceil(
 			((numberOfNewFilms - lastYear.number_of_releases) /
@@ -101,7 +101,7 @@ export default function Home(): JSX.Element {
 	}
 
 	// Buttons for the date picker
-	const changeDate = async (days) => {
+	const changeDate = async (days: number) => {
 		const today = new Date();
 		setStart(today.addDays(-days));
 	};

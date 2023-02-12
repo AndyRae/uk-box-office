@@ -227,12 +227,12 @@ export function useBoxOfficeInfinite(
 
 	// Concatenate all pages into one array.
 	const results = useMemo(
-		() => [].concat(...data.map((page: { results: any }) => page.results)),
+		() => [].concat(...data!.map((page: { results: any }) => page.results)),
 		[data]
 	);
 
-	const isReachedEnd = results.length === data[0].count;
-	const percentFetched = Math.round((results.length / data[0].count) * 100);
+	const isReachedEnd = results.length === data![0].count;
+	const percentFetched = Math.round((results.length / data![0].count) * 100);
 
 	return {
 		results,

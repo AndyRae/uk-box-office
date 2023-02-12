@@ -20,6 +20,7 @@ type SearchbarProps = {
  */
 export const Searchbar = ({
 	placeholder = 'Search',
+	// @ts-ignore
 	value = null,
 }: SearchbarProps): JSX.Element => {
 	const {

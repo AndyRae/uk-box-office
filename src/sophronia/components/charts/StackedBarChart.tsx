@@ -153,7 +153,7 @@ type BarChartProps = {
 	options: Object;
 	onClick: (event: any) => void;
 	chartRef: any;
-	height: 'sm' | 'md' | 'lg' | 'xl';
+	height?: 'sm' | 'md' | 'lg' | 'xl';
 };
 
 const BarChart = ({

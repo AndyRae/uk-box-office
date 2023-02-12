@@ -38,9 +38,9 @@ export const FilmTableDetailed = ({
 	return (
 		<BaseTable columns={columns}>
 			{data.map((film, index) => {
-				let change: number;
-				if (comparisonData?.length > 0) {
-					const previousFilm = comparisonData.find(
+				let change: number | undefined;
+				if (comparisonData && comparisonData?.length > 0) {
+					const previousFilm = comparisonData!.find(
 						(object) => object.film === film.title
 					);
 					if (previousFilm) {

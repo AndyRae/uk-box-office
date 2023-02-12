@@ -8,7 +8,7 @@ import { Card } from 'components/ui/Card';
  * @example
  * <LastUpdated date="2021-05-01" />
  */
-export const LastUpdated = ({ date }: { date?: string }): JSX.Element => {
+export const LastUpdated = ({ date }: { date: string }): JSX.Element => {
 	const today = new Date();
 	const lastUpdated = new Date(date);
 

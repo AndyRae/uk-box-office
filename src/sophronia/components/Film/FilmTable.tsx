@@ -1,14 +1,20 @@
+import { Film } from 'interfaces/Film';
 import Link from 'next/link';
 import { BaseTable, Td, Tr } from '../charts/BaseTable';
 
 /**
  * @description Film Table component
- * @param {Array} films - Array of films
+ * @param {object} props - The props
+ * @param {Array} props.films - Array of films
  * @returns {JSX.Element}
  * @example
  * <FilmTable films={films} />
  */
-export const FilmTable = ({ films }: { films: any }) => {
+export const FilmTable = ({
+	films,
+}: {
+	films: { results: Film[] };
+}): JSX.Element => {
 	const columns = [
 		{ label: 'title' },
 		{ label: 'distributor' },
