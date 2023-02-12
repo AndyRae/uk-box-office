@@ -1,11 +1,13 @@
 # UK Box Office
 
 UK Box Office data is the most detailed and searchable source for box office data in the UK.
-The backend runs Flask built with Python, the frontend is built with React using chart.js to visualise the data.
+The backend runs Flask built with Python, the frontend is built with Next.js in Typescript, using chart.js for visualisation.
+
+The Next.js app uses the [application directory](https://beta.nextjs.org/docs/getting-started) (beta).
 
 [Use the application.](https://boxofficedata.co.uk)
 
-[Read about the project.](https://rae.li/uk-box-office-data-studio-to-flask.html)
+[Read about the project.](https://rae.li/posts/uk-box-office-data-studio-to-flask)
 
 ## Get Started
 
@@ -46,7 +48,7 @@ It will take a long time to seed the data, so you should try the `--year` flag t
 - `src/berenice/ukbo/api` - API endpoints
 - `src/berenice/ukbo/services` - Services
 - `src/berenice/ukbo/etl` - ETL Pipelines / CLI Tasks
-- `src/sophronia/` - React app
+- `src/sophronia/` - Next.js app
 
 ## Tasks
 
