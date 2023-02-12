@@ -7,4 +7,4 @@ Services are responsible for the business logic of the application.
 
 """
 
-from . import boxoffice, country, distributor, film, forecast, week
+from . import boxoffice, country, distributor, events, film, forecast, week
