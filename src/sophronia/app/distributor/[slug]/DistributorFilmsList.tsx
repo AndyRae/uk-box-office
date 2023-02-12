@@ -24,11 +24,11 @@ export const DistributorFilmsList = ({
 
 	const { data, error } = useDistributorFilms(slug, pageIndex, pageLimit);
 
-	const pageNumbers = paginate(data?.count, pageIndex, pageLimit);
+	const pageNumbers = paginate(data!.count, pageIndex, pageLimit);
 
 	return (
 		<>
-			{data.results && <FilmTable films={data} />}
+			{data && <FilmTable films={data} />}
 			<Pagination
 				pages={pageNumbers}
 				setPageIndex={setPageIndex}

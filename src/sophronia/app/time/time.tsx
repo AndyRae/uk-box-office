@@ -54,10 +54,10 @@ const PillLink = ({ to, children, isActive }: PillLinkProps) => (
 
 type TimePageProps = {
 	year: number;
-	month: number;
-	day: number;
-	quarter: number;
-	quarterend: number;
+	month?: number;
+	day?: number;
+	quarter?: number;
+	quarterend?: number;
 };
 
 declare global {
@@ -78,9 +78,9 @@ Date.prototype.addDays = function (days: number): Date {
  */
 export const TimePage = ({
 	year,
-	month = null,
-	day = null,
-	quarter = null,
+	month = undefined,
+	day = undefined,
+	quarter = undefined,
 	quarterend = 0,
 }: TimePageProps): JSX.Element => {
 	const pathname = usePathname();
@@ -143,7 +143,11 @@ export const TimePage = ({
 		gridColumns = 'md:grid-cols-2';
 	}
 
-	const months = {
+	type MonthsType = {
+		[key: number]: string;
+	};
+
+	const months: MonthsType = {
 		1: 'January',
 		2: 'February',
 		3: 'March',
@@ -178,13 +182,13 @@ export const TimePage = ({
 	const { results: weekData } = groupbyDate(results);
 
 	// Get Data for Charts
-	const thisYear = timeComparisonData.results[0];
+	const thisYear = timeComparisonData!.results[0];
 	const boxOffice = thisYear.week_gross;
 	const weekendBoxOffice = thisYear.weekend_gross;
 	const numberOfNewFilms = thisYear.number_of_releases;
 	const admissions = thisYear.admissions;
 	const numberOfCinemas = thisYear.number_of_cinemas;
-	const averageTicketPrice = parseInt((boxOffice / admissions).toFixed(2));
+	const averageTicketPrice = parseInt((boxOffice / admissions!).toFixed(2));
 	const siteAverage = Math.ceil(boxOffice / numberOfCinemas);
 
 	// Time Comparison Data
@@ -195,7 +199,7 @@ export const TimePage = ({
 	let changeCinemas = 0;
 	let changeAverageTicketPrice = 0;
 
-	if (timeComparisonData.results.length > 1) {
+	if (timeComparisonData && timeComparisonData.results.length > 1) {
 		const lastYear = timeComparisonData.results[1];
 
 		changeNewFilms = Math.ceil(
@@ -211,7 +215,7 @@ export const TimePage = ({
 				100
 		);
 		changeAdmissions = Math.ceil(
-			((admissions - lastYear.admissions) / lastYear.admissions) * 100
+			((admissions! - lastYear.admissions!) / lastYear.admissions!) * 100
 		);
 		changeCinemas = Math.ceil(
 			((numberOfCinemas - lastYear.number_of_cinemas) /
@@ -220,21 +224,21 @@ export const TimePage = ({
 		);
 
 		changeAverageTicketPrice = Math.ceil(
-			((averageTicketPrice - lastYear.week_gross / lastYear.admissions) /
-				(lastYear.week_gross / lastYear.admissions)) *
+			((averageTicketPrice - lastYear.week_gross / lastYear.admissions!) /
+				(lastYear.week_gross / lastYear.admissions!)) *
 				100
 		);
 	}
 
 	const pageTitle = `${day ? day : ''} ${
-		quarter ? `Q${quarter}` : month ? months[month] : ''
+		quarter ? `Q${quarter}` : month ? months[month as keyof MonthsType] : ''
 	}${quarterend ? ` - Q${quarterend}` : ''} ${year}`;
 
 	return (
 		<div>
 			<StructuredTimeData
 				title={`UK Box Office ${pageTitle}`}
-				endpoint={pathname}
+				endpoint={pathname as string}
 				time={pageTitle}
 			/>
 			<PageTitle>UK Box Office {pageTitle}</PageTitle>
@@ -291,7 +295,7 @@ export const TimePage = ({
 
 				<Card title='Box Office Previous Years'>
 					{isReachedEnd &&
-						timeComparisonData.results.slice(1, 4).map((year, index) => {
+						timeComparisonData!.results.slice(1, 4).map((year, index) => {
 							return (
 								<div key={index} className='text-center tabular-nums'>
 									<Link
@@ -364,7 +368,7 @@ export const TimePage = ({
 
 				<Card title='Previous Years'>
 					{isReachedEnd && (
-						<PreviousYearsChart data={timeComparisonData.results} />
+						<PreviousYearsChart data={timeComparisonData!.results} />
 					)}
 				</Card>
 			</div>
@@ -407,7 +411,7 @@ export const TimePage = ({
 							to={`/time/${year}/m/${m}`}
 							isActive={m === month?.toString()}
 						>
-							{months[m]}
+							{months[parseInt(m) as keyof MonthsType]}
 						</PillLink>
 					))}
 				</ul>
@@ -437,7 +441,7 @@ export const TimePage = ({
 							</div>
 							<FilmTableDetailed
 								data={tableData}
-								comparisonData={isWeekView && lastWeekResults}
+								comparisonData={isWeekView ? lastWeekResults : undefined}
 							/>
 						</>
 					)}

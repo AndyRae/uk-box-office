@@ -11,12 +11,12 @@ export default function Page(): JSX.Element {
 	const [pageIndex, setPageIndex] = useState(1);
 	const pageLimit = 15;
 	const { data } = useCountryList(pageIndex, pageLimit);
-	const pageNumbers = paginate(data?.count, pageIndex, pageLimit);
+	const pageNumbers = paginate(data!.count, pageIndex, pageLimit);
 
 	return (
 		<>
 			<PageTitle>Countries</PageTitle>
-			<CountryList countries={data} />
+			{data && <CountryList countries={data} />}
 			<Pagination
 				pages={pageNumbers}
 				setPageIndex={setPageIndex}

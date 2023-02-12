@@ -9,6 +9,7 @@ import { ExportCSV } from 'components/ui/ExportCSV';
 import { TimeLineChart } from 'components/Time/TimeLineChart';
 
 import { getFilm } from './getFilm';
+import { BoxOfficeWeek } from 'interfaces/BoxOffice';
 
 export default async function Page({
 	params,
@@ -26,7 +27,7 @@ export default async function Page({
 	const multiple = (data.gross / weekOne.weekend_gross).toFixed(2);
 
 	// Rename data to make it easy to reuse charts
-	const cumulativeData = data.weeks.map(
+	const cumulativeData: any[] = data.weeks.map(
 		({ total_gross: week_gross, date }) => ({
 			date,
 			week_gross,

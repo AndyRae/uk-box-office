@@ -20,11 +20,11 @@ export const CountryFilmsList = ({ slug }: { slug: string }): JSX.Element => {
 
 	const { data, error } = useCountryFilms(slug, pageIndex, pageLimit);
 
-	const pageNumbers = paginate(data?.count, pageIndex, pageLimit);
+	const pageNumbers = paginate(data!.count, pageIndex, pageLimit);
 
 	return (
 		<>
-			{data.results && <FilmTable films={data} />}
+			{data && <FilmTable films={data} />}
 			<Pagination
 				pages={pageNumbers}
 				setPageIndex={setPageIndex}

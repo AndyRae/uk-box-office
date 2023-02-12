@@ -11,12 +11,12 @@ export default function Page(): JSX.Element {
 	const [pageIndex, setPageIndex] = useState(1);
 	const pageLimit = 15;
 	const { data, error } = useDistributorList(pageIndex, pageLimit);
-	const pageNumbers = paginate(data?.count, pageIndex, pageLimit);
+	const pageNumbers = paginate(data!.count, pageIndex, pageLimit);
 
 	return (
 		<>
 			<PageTitle>Distributors</PageTitle>
-			<DistributorList distributors={data} />
+			{data && <DistributorList distributors={data} />}
 			<Pagination
 				pages={pageNumbers}
 				setPageIndex={setPageIndex}

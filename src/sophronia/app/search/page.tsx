@@ -15,7 +15,7 @@ export default function Page(): JSX.Element {
 
 	const query = searchParams.get('q');
 
-	const { data } = useSearch(query);
+	const { data } = useSearch(query || '');
 
 	return (
 		<>
@@ -26,11 +26,11 @@ export default function Page(): JSX.Element {
 
 			<hr className='my-5'></hr>
 
-			{data.countries.length > 0 ? (
+			{data!.countries.length > 0 ? (
 				<div className='leading-10'>
 					<h2 className='text-2xl font-bold py-5 capitalize'>Countries</h2>
 
-					{data.countries.map((country: Country, index: number) => {
+					{data!.countries.map((country: Country, index: number) => {
 						return (
 							<div key={index}>
 								<Link
@@ -46,11 +46,11 @@ export default function Page(): JSX.Element {
 				</div>
 			) : null}
 
-			{data.distributors.length > 0 ? (
+			{data!.distributors.length > 0 ? (
 				<div className='leading-10'>
 					<h2 className='text-2xl font-bold py-5 capitalize'>Distributors</h2>
 
-					{data.distributors.map((distributor: Distributor, index: number) => {
+					{data!.distributors.map((distributor: Distributor, index: number) => {
 						return (
 							<div key={index} className=''>
 								<Link
@@ -67,11 +67,11 @@ export default function Page(): JSX.Element {
 				</div>
 			) : null}
 
-			{data.films.length > 0 && (
+			{data!.films.length > 0 && (
 				<h2 className='text-2xl font-bold py-5 capitalize'>Films</h2>
 			)}
 
-			{data.films ? <FilmsTable data={data.films} /> : null}
+			{data!.films ? <FilmsTable data={data!.films} /> : null}
 		</>
 	);
 }

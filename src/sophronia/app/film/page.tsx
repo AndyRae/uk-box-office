@@ -11,12 +11,12 @@ export default function Page(): JSX.Element {
 	const [pageIndex, setPageIndex] = useState(1);
 	const pageLimit = 15;
 	const { data, error } = useFilmList(pageIndex, pageLimit);
-	const pageNumbers = paginate(data?.count, pageIndex, pageLimit);
+	const pageNumbers = paginate(data!.count, pageIndex, pageLimit);
 
 	return (
 		<>
 			<PageTitle>Films</PageTitle>
-			<FilmList films={data} />
+			{data && <FilmList films={data} />}
 			<Pagination
 				pages={pageNumbers}
 				setPageIndex={setPageIndex}

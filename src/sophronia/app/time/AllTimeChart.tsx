@@ -121,7 +121,7 @@ export const AllTimeChart = ({ data }: { data: Time[] }): JSX.Element => {
 	const chartRef = useRef();
 	const onClick = (event: MouseEvent<HTMLCanvasElement>) => {
 		console.log('welp');
-		var x = getElementAtEvent(chartRef.current, event);
+		var x = getElementAtEvent(chartRef.current as any, event);
 		const year = d.labels[x[0].index];
 		router.push(`/time/${year}`);
 	};

@@ -86,7 +86,7 @@ export const PreviousYearsChart = ({
 	// Chart Navigation
 	const chartRef = useRef();
 	const onClick = (event: MouseEvent<HTMLCanvasElement>) => {
-		var x = getElementAtEvent(chartRef.current, event);
+		var x = getElementAtEvent(chartRef.current as any, event);
 		const year = d.labels[x[0].index];
 		router.push(`/time/${year}`);
 	};

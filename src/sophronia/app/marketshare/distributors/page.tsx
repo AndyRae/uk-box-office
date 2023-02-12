@@ -32,7 +32,7 @@ export default async function Page() {
 	const uniqueYears = [...new Set(data.results.map((d) => d.year))];
 
 	// the total for each year
-	const yearsTotal = data.results.reduce((acc, curr) => {
+	const yearsTotal = data.results.reduce((acc: any, curr: any) => {
 		if (acc[curr.year]) {
 			acc[curr.year] += curr.gross;
 		} else {
@@ -114,13 +114,15 @@ export default async function Page() {
 			>
 				{uniqueYears.map((year) => {
 					var yearlyData = reducedData
-						.map((d) => {
+						.map((d: any) => {
 							return {
 								name: d.distributor,
 								slug: d.distributor.toLowerCase().replace(/ /g, '-'),
-								marketShare: d.years.find((y) => y.year === year).marketShare,
-								marketPercentage: d.years.find((y) => y.year === year)
-									.marketPercentage,
+								marketShare: d.years.find((y: MarketShare) => y.year === year)
+									.marketShare,
+								marketPercentage: d.years.find(
+									(y: MarketShare) => y.year === year
+								).marketPercentage,
 							};
 						})
 						.sort((a, b) => b.marketShare - a.marketShare)

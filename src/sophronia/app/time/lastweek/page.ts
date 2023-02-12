@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import { getBackendURL } from 'lib/ApiFetcher';
 
-async function getLastWeek() {
+async function getLastWeek(): Promise<{ results: { date: string }[] }> {
 	const url = getBackendURL();
 	const res = await fetch(`${url}boxoffice/all`);
 	return res.json();
@@ -10,7 +10,7 @@ async function getLastWeek() {
 /**
  * Get the last week from the API and redirects to that week.
  */
-export default async function Page() {
+export default async function Page(): Promise<never> {
 	const data = await getLastWeek();
 
 	const lastWeek = data.results[0].date;

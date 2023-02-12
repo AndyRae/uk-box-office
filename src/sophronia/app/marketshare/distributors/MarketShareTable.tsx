@@ -1,6 +1,13 @@
 import Link from 'next/link';
 import { BaseTable, Td, Tr } from 'components/charts/BaseTable';
 
+type MarketShare = {
+	name: string;
+	slug: string;
+	marketShare: number;
+	marketPercentage: number;
+};
+
 /**
  * @description Market Share Table component
  * @param {Array} data - Array of data
@@ -8,7 +15,11 @@ import { BaseTable, Td, Tr } from 'components/charts/BaseTable';
  * @example
  * <MarketShareTable data={data} />
  */
-export const MarketShareTable = ({ data }: { data: any }): JSX.Element => {
+export const MarketShareTable = ({
+	data,
+}: {
+	data: MarketShare[];
+}): JSX.Element => {
 	const columns = [
 		{ label: 'distributor' },
 		{ label: 'box office', isNumeric: true },
