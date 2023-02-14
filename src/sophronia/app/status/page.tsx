@@ -1,10 +1,7 @@
 import { PageTitle } from 'components/ui/PageTitle';
-import { StatusEvent } from 'interfaces/Event';
 import { getEvents } from './getEvents';
-import { Card } from 'components/ui/Card';
 import { EventsTable } from './EventsTable';
-
-import { MdOutlineErrorOutline, MdCheckCircleOutline } from 'react-icons/md';
+import { StatusCard } from './StatusCard';
 
 export default async function Page(): Promise<JSX.Element> {
 	const events = await getEvents();
@@ -24,23 +21,3 @@ export default async function Page(): Promise<JSX.Element> {
 		</>
 	);
 }
-
-const StatusCard = ({ status }: { status: StatusEvent }): JSX.Element => {
-	const icon =
-		status.state.toString() === 'success' ? (
-			<MdCheckCircleOutline />
-		) : (
-			<MdOutlineErrorOutline />
-		);
-
-	return (
-		<Card
-			title={status.area.toString().toUpperCase()}
-			subtitle={status.date}
-			size='lg'
-			status={status.state.toString()}
-		>
-			{icon} {status.message}
-		</Card>
-	);
-};
