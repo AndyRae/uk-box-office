@@ -35,7 +35,7 @@ const StatusCard = ({ status }: { status: StatusEvent }): JSX.Element => {
 
 	return (
 		<Card
-			title={status.area.toString()}
+			title={status.area.toString().toUpperCase()}
 			subtitle={status.date}
 			size='lg'
 			status={status.state.toString()}
