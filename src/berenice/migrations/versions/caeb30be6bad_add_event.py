@@ -1,15 +1,15 @@
 """Add event
 
-Revision ID: b44f4ad55fe0
+Revision ID: caeb30be6bad
 Revises: 186fbac8841e
-Create Date: 2023-02-12 19:22:09.831617
+Create Date: 2023-02-14 22:51:28.180780
 
 """
 import sqlalchemy as sa
 from alembic import op
 
 # revision identifiers, used by Alembic.
-revision = "b44f4ad55fe0"
+revision = "caeb30be6bad"
 down_revision = "186fbac8841e"
 branch_labels = None
 depends_on = None
@@ -21,15 +21,11 @@ def upgrade():
         "event",
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("date", sa.DateTime(), nullable=False),
-        sa.Column(
-            "area",
-            sa.Enum("ETL", "Forecast", "Archive", name="area"),
-            nullable=False,
-        ),
+        sa.Column("area", sa.String(length=160), nullable=False),
         sa.Column("message", sa.Text(), nullable=True),
         sa.Column(
             "state",
-            sa.Enum("Success", "Warning", "Failure", name="state"),
+            sa.Enum("success", "warning", "error", name="state"),
             nullable=False,
         ),
         sa.PrimaryKeyConstraint("id"),

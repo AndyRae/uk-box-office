@@ -10,5 +10,4 @@ class EventSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = models.Event
 
-    area = ma.Enum(models.Area)
     state = ma.Enum(models.State)

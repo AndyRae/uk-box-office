@@ -13,30 +13,14 @@ class State(enum.Enum):
 
     Attributes:
         Success: The event was successful.
-        Warning: The event was a warning.
-        Failure: The event was a failure.
+        Warning: The event raised a warning.
+        Error: The event raised an error and failed.
 
     """
 
-    Success = 1
-    Warning = 2
-    Failure = 3
-
-
-class Area(enum.Enum):
-    """
-    This enum stores the area of an event.
-
-    Attributes:
-        ETL: The event was related to the ETL process.
-        Forecast: The event was related to the Forecast process.
-        Archive: The event was related to the Archive process.
-
-    """
-
-    ETL = 1
-    Forecast = 2
-    Archive = 3
+    success = 1
+    warning = 2
+    error = 3
 
 
 class Event(PkModel):  # type: ignore
@@ -46,7 +30,7 @@ class Event(PkModel):  # type: ignore
 
     Attributes:
         date: Date of the event.
-        area: Area of the event.
+        area: Product area of the event.
         message: Message of the event.
         state: State of the event.
 
@@ -54,7 +38,7 @@ class Event(PkModel):  # type: ignore
 
     __tablename__ = "event"
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    area = db.Column(Enum(Area), nullable=False)
+    area = db.Column(db.String(160), nullable=False)
     message = db.Column(db.Text(), nullable=True)
     state = db.Column(Enum(State), nullable=False)
 

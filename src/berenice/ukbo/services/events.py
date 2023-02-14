@@ -14,21 +14,21 @@ def overview() -> Response:
     """
     ETLState = (
         db.session.query(models.Event)
-        .filter(models.Event.area == models.Area.ETL)
+        .filter(models.Event.area == "etl")
         .order_by(models.Event.date.desc())
         .first()
     )
 
     ForecastState = (
         db.session.query(models.Event)
-        .filter(models.Event.area == models.Area.Forecast)
+        .filter(models.Event.area == "forecast")
         .order_by(models.Event.date.desc())
         .first()
     )
 
     ArchiveState = (
         db.session.query(models.Event)
-        .filter(models.Event.area == models.Area.Archive)
+        .filter(models.Event.area == "archive")
         .order_by(models.Event.date.desc())
         .first()
     )
