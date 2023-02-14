@@ -1,16 +1,16 @@
-export interface EventState {
-	Success: 'Success';
-	Warning: 'Warning';
-	Error: 'Error';
-}
+export type EventState = {
+	Success: 'success';
+	Warning: 'warning';
+	Error: 'error';
+};
 
-export interface Area {
-	ETL: 'ETL';
-	Forecast: 'Forecast';
-	Archive: 'Archive';
-}
+export type Area = {
+	ETL: 'etl';
+	Forecast: 'forecast';
+	Archive: 'archive';
+};
 
-export interface Event {
+export interface StatusEvent {
 	id: number;
 	area: Area;
 	date: string;

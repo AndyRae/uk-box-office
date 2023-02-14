@@ -1,15 +1,15 @@
 import { getBackendURL } from 'lib/ApiFetcher';
-import { Event } from 'interfaces/Event';
+import { StatusEvent } from 'interfaces/Event';
 
 type EventsOverview = {
-	Archived: Event;
-	ETL: Event;
-	Forecast: Event;
+	Archive: StatusEvent;
+	ETL: StatusEvent;
+	Forecast: StatusEvent;
 	latest: {
 		count: number;
 		next: string;
 		previous: string;
-		results: Event[];
+		results: StatusEvent[];
 	};
 };
 
