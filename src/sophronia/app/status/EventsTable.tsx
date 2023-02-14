@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import { BaseTable, Td, Tr } from 'components/charts/BaseTable';
 import { StatusEvent } from 'interfaces/Event';
+import { DateTime } from 'components/Date';
 
 type Status = 'default' | 'warning' | 'success' | 'error' | string;
 const statusStyle: { [key in Status]: string } = {
@@ -40,7 +41,7 @@ export const EventsTable = ({
 			{events.map((event, index: number) => {
 				return (
 					<Tr key={event.id} index={index}>
-						<Td>{event.date}</Td>
+						<Td>{<DateTime dateString={event.date} />}</Td>
 						<Td>{event.area.toString()}</Td>
 						<Td>
 							<StatusTag status={event.state.toString().toLowerCase()} />
