@@ -44,6 +44,11 @@ const Links = [
 		path: '/country',
 		icon: <FaGlobeEurope />,
 	},
+	{
+		name: 'Status',
+		path: '/status',
+		icon: <FaGlobeEurope />,
+	},
 ];
 
 /**
