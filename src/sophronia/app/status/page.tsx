@@ -5,6 +5,7 @@ import { StatusCard } from './StatusCard';
 
 export default async function Page(): Promise<JSX.Element> {
 	const events = await getEvents();
+
 	return (
 		<>
 			<PageTitle>Status</PageTitle>

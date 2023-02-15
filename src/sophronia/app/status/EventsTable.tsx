@@ -41,10 +41,10 @@ export const EventsTable = ({
 			{events.map((event, index: number) => {
 				return (
 					<Tr key={event.id} index={index}>
-						<Td>{<DateTime dateString={event.date} />}</Td>
+						<Td>{event.date && <DateTime dateString={event.date} />}</Td>
 						<Td>{event.area.toString().toLocaleUpperCase()}</Td>
 						<Td>
-							<StatusTag status={event.state.toString().toLowerCase()} />
+							<StatusTag status={event.state?.toString().toLowerCase()} />
 						</Td>
 						<Td>{event.message}</Td>
 					</Tr>

@@ -10,7 +10,7 @@ export const StatusCard = ({
 	status: StatusEvent;
 }): JSX.Element => {
 	const icon =
-		status.state.toString() === 'success' ? (
+		status.state?.toString() === 'success' ? (
 			<MdCheckCircleOutline />
 		) : (
 			<MdOutlineErrorOutline />
@@ -18,10 +18,10 @@ export const StatusCard = ({
 
 	return (
 		<Card
-			title={status.area.toString().toUpperCase()}
-			subtitle={<DateTime dateString={status.date} />}
+			title={status.area?.toString().toUpperCase()}
+			subtitle={status.date && <DateTime dateString={status.date} />}
 			size='lg'
-			status={status.state.toString()}
+			status={status.state?.toString()}
 		>
 			{icon} {status.message}
 		</Card>
