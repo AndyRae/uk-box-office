@@ -71,8 +71,14 @@ def forecast_task() -> None:
     """
 
     print("Running forecast.")
-    f = services.forecast.Forecast()
-    f.run_forecast()
+    try:
+        f = services.forecast.Forecast()
+        f.run_forecast()
+        services.events.create(models.Area.forecast, models.State.success)
+    except Exception:
+        services.events.create(
+            models.Area.forecast, models.State.error, "Forecast run failed."
+        )
 
 
 @with_appcontext

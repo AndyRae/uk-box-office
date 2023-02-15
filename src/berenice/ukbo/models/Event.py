@@ -7,6 +7,22 @@ from ukbo.extensions import db
 from .models import PkModel
 
 
+class Area(enum.Enum):
+    """
+    This enum stores the state of an event.
+
+    Attributes:
+        Success: The event was successful.
+        Warning: The event raised a warning.
+        Error: The event raised an error and failed.
+
+    """
+
+    etl = "etl"
+    forecast = "forecast"
+    archive = "archive"
+
+
 class State(enum.Enum):
     """
     This enum stores the state of an event.

@@ -95,3 +95,26 @@ def get(id: int) -> Response:
     event_schema = EventSchema()  # type: ignore
 
     return event_schema.dump(data)
+
+
+def create(
+    area: models.Area, state: models.State, message: str = ""
+) -> models.Event:
+    """
+    Create a new event and saved to the database.
+
+    Args:
+        area: Area of the event.
+        state: State of the event.
+        message: Message string for the event.
+
+    Returns: The Event object.
+
+    """
+    event = models.Event(area=area.value, state=state, message=message)
+    event.save()
+    try:
+        event.save()
+    except Exception:
+        print(f"Save failed: {Exception}")
+    return event
