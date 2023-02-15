@@ -53,6 +53,11 @@ def check_file_new(excel_title: str) -> bool:
             current_app.logger.warning(
                 "ETL fetch failed - website file is pending update."
             )
+            services.events.create(
+                models.Area.etl,
+                models.State.error,
+                "Source file is pending update.",
+            )
             return False
     return True
 
@@ -117,9 +122,17 @@ def get_excel_file(soup: BeautifulSoup) -> Optional[str]:
         current_app.logger.warning(
             "ETL fetch failed - website file is pending update."
         )
+        services.events.create(
+            models.Area.etl,
+            models.State.error,
+            "Source file is pending update.",
+        )
         return None
 
     current_app.logger.error("ETL fetch failed - couldn't download file.")
+    services.events.create(
+        models.Area.etl, models.State.error, "Download file failed."
+    )
     return None
 
 

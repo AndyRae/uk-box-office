@@ -34,7 +34,6 @@ def run_etl() -> None:
     This task is run every Wednesday.
     """
 
-    print("ETL Pipeline task")
     with scheduler.app.app_context():
 
         # Checks against the last data load
@@ -48,7 +47,15 @@ def run_etl() -> None:
                 click.Command("cmd"), obj={"prop": "A Context"}
             )
             with ctx:
-                weekly_etl()
+                try:
+                    weekly_etl()
+                    services.events.create(
+                        models.Area.etl, models.State.success, "Auto run."
+                    )
+                except Exception:
+                    services.events.create(
+                        models.Area.etl, models.State.error, "Auto run."
+                    )
 
 
 @scheduler.task(
@@ -70,7 +77,6 @@ def forecast_task() -> None:
     This task is run every Wednesday evening after the ETL pipeline.
     """
 
-    print("Running forecast.")
     try:
         f = services.forecast.Forecast()
         f.run_forecast()
@@ -196,11 +202,18 @@ def weekly_etl() -> None:
         if path := extract.get_excel_file(soup):
             df = extract.extract_box_office(path)
             load.load_weeks(df)
-            current_app.logger.info("Weekly-ETL manual run succesful.")
+            current_app.logger.info("Weekly-ETL succesful.")
+            services.events.create(models.Area.etl, models.State.success)
         else:
-            current_app.logger.error("Weekly-ETL manual run failed.")
+            current_app.logger.error("Weekly-ETL run failed.")
+            services.events.create(
+                models.Area.etl, models.State.error, "Soup error."
+            )
     else:
-        current_app.logger.error("Weekly-ETL manual run failed.")
+        current_app.logger.error("Weekly-ETL run failed.")
+        services.events.create(
+            models.Area.etl, models.State.error, "Source url error."
+        )
 
 
 @with_appcontext
@@ -224,8 +237,14 @@ def backup_etl(source_url: str, date: str) -> None:
         df = extract.extract_box_office(file_path)
         load.load_weeks(df)
         current_app.logger.info("Backup-ETL manual run succesful.")
+        services.events.create(
+            models.Area.etl, models.State.success, "Backup manual run."
+        )
     else:
         current_app.logger.error("Backup-ETL manual run failed.")
+        services.events.create(
+            models.Area.etl, models.State.error, "Backup manual run."
+        )
 
 
 @with_appcontext
@@ -321,5 +340,9 @@ def build_archive(path: str = "./data/archive_export.csv") -> None:
     This is run every Wednesday evening after the box office data is updated.
 
     """
-    archive = services.boxoffice.build_archive()
-    archive.to_csv(path, index=False, date_format="%Y%m%d")
+    try:
+        archive = services.boxoffice.build_archive()
+        archive.to_csv(path, index=False, date_format="%Y%m%d")
+        services.events.create(models.Area.archive, models.State.success)
+    except Exception:
+        services.events.create(models.Area.archive, models.State.error)

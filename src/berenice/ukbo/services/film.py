@@ -3,7 +3,7 @@ from typing import List
 import pandas as pd
 from flask import Response, abort, jsonify
 from slugify import slugify  # type: ignore
-from ukbo import models
+from ukbo import models, services
 from ukbo.dto import FilmSchema, FilmSchemaStrict
 from ukbo.extensions import db
 
@@ -90,6 +90,9 @@ def add_film(
     except Exception:
         # Film exists but with a different distributor
         print(f"Duplicate {film}")
+        services.events.create(
+            models.Area.etl, models.State.warning, f"Duplicate - {film}."
+        )
         db.session.rollback()
         slug = slugify(f"{film}-{distributor.name}")
         new.slug = slug
