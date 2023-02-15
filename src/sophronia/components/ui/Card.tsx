@@ -1,10 +1,34 @@
+import clsx from 'clsx';
+
+type Size = 'sm' | 'md' | 'lg';
+const sizeStyle: { [key in Size]: string } = {
+	sm: 'md:py-3 md:px-6',
+	md: 'md:p-6',
+	lg: '',
+};
+
+type Align = 'left' | 'center' | 'right';
+const alignStyle: { [key in Align]: string } = {
+	left: 'text-left',
+	center: 'text-center',
+	right: 'text-right',
+};
+
+type Status = 'default' | 'warning' | 'success' | 'error' | string;
+const statusStyle: { [key in Status]: string } = {
+	default: 'bg-white dark:bg-gray-900',
+	success: 'bg-green-300 dark:bg-green-800/[.5]',
+	warning: 'bg-yellow-300 dark:bg-yellow-500/[.5]',
+	error: 'bg-red-300 dark:bg-red-800/[.5]',
+};
+
 type CardProps = {
 	title?: string;
-	subtitle?: React.ReactNode | JSX.Element;
+	subtitle?: React.ReactNode;
 	children?: React.ReactNode;
-	size?: 'sm' | 'md' | 'lg';
-	align?: 'left' | 'center' | 'right';
-	className?: string;
+	size?: Size;
+	align?: Align;
+	status?: Status;
 };
 
 /**
@@ -19,27 +43,16 @@ export const Card = ({
 	children,
 	size = 'md',
 	align = 'center',
-	className,
+	status = 'default',
 }: CardProps): JSX.Element => {
-	let cardSize: string;
-
-	switch (size) {
-		case 'sm':
-			cardSize = ' md:py-3 md:px-6';
-			break;
-		case 'md':
-			cardSize = ' md:p-6';
-			break;
-		case 'lg':
-			cardSize = '';
-			break;
-		default:
-			cardSize = '';
-	}
-
 	return (
 		<div
-			className={`${className} p-2 ${cardSize} max-w-full text-${align} bg-white rounded-lg shadow-lg  dark:bg-gray-900`}
+			className={clsx(
+				'p-2 max-w-full rounded-lg shadow-lg',
+				sizeStyle[size],
+				alignStyle[align],
+				statusStyle[status]
+			)}
 		>
 			<p className='font-normal text-sm text-gray-700 dark:text-gray-400'>
 				{title}
