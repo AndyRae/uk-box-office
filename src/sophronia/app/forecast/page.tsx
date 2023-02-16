@@ -1,3 +1,5 @@
+// 'use client';
+
 import { getBackendURL } from 'lib/ApiFetcher';
 
 import { ForecastChart } from 'components/charts/ForecastChart';
@@ -31,6 +33,23 @@ async function getForecast(
 	return res.json();
 }
 
+/**
+ * Sets future week_gross box office data to undefined.
+ * Prevents charts and tables from showing 0.
+ * @param data : Topline[] box office data
+ * @returns data array of box office data.
+ */
+function updateWeekGross(data: Topline[]) {
+	const currentDate = new Date();
+	data.forEach((item) => {
+		const itemDate = new Date(item.date);
+		if (itemDate > currentDate) {
+			item.week_gross = undefined;
+		}
+	});
+	return data;
+}
+
 export default async function Page(): Promise<JSX.Element> {
 	Date.prototype.addDays = function (days) {
 		var date = new Date(this.valueOf());
@@ -48,6 +67,9 @@ export default async function Page(): Promise<JSX.Element> {
 	const endDate = `${end.getFullYear()}-${end.getMonth() + 1}-${end.getDate()}`;
 
 	const data = await getForecast(startDate, endDate);
+
+	const filteredFutureData = updateWeekGross(data.results);
+
 	return (
 		<>
 			<PageTitle>Forecast</PageTitle>
@@ -55,7 +77,7 @@ export default async function Page(): Promise<JSX.Element> {
 			<div className='my-10'>
 				{data && (
 					<Card>
-						<ForecastChart data={data.results} />
+						<ForecastChart data={filteredFutureData} />
 					</Card>
 				)}
 			</div>

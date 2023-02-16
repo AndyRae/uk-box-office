@@ -1,6 +1,6 @@
 import { Tooltip } from '../ui/Tooltip';
 import { MetricChange } from '../charts/MetricChange';
-import { TimeLineChart } from '../Time/TimeLineChart';
+import { TimeLineChart } from '../charts/TimeLineChart';
 import { StackedBarChart } from '../charts/StackedBarChart';
 import { Card } from 'components/ui/Card';
 

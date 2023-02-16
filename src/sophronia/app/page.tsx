@@ -13,7 +13,7 @@ import {
 import { MetricChange } from 'components/charts/MetricChange';
 import { Datepickers } from 'components/Dashboard/Datepickers';
 import { FilmTableDetailed } from 'components/Time/FilmTableDetailed';
-import { TimeLineChart } from 'components/Time/TimeLineChart';
+import { TimeLineChart } from 'components/charts/TimeLineChart';
 import { Tooltip } from 'components/ui/Tooltip';
 import { SkeletonCards, SkeletonCharts } from 'components/Dashboard/Skeleton';
 import { StructuredTimeData } from 'components/StructuredData';

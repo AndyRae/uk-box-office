@@ -4,7 +4,7 @@ export interface Topline {
 	forecast_high: number;
 	forecast_medium: number;
 	forecast_low: number;
-	week_gross: number;
+	week_gross?: number;
 	weekend_gross: number;
 	number_of_cinemas: number;
 	number_of_releases: number;

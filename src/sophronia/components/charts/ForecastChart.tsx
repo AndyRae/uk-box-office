@@ -23,7 +23,7 @@ export const ForecastChart = ({ data }: { data: Topline[] }): JSX.Element => {
 				backgroundColor: ['#B65078'],
 				borderColor: ['#B65078'],
 				pointStyle: 'line',
-				tension: 0.3,
+				borderWidth: 1,
 				yAxisID: 'y',
 			},
 			{
@@ -33,7 +33,7 @@ export const ForecastChart = ({ data }: { data: Topline[] }): JSX.Element => {
 				borderColor: ['#6c81d9'],
 				pointStyle: 'line',
 				pointRadius: 4,
-				tension: 0.3,
+				borderWidth: 1,
 				yAxisID: 'y',
 			},
 			{
@@ -43,17 +43,7 @@ export const ForecastChart = ({ data }: { data: Topline[] }): JSX.Element => {
 				borderColor: ['#f197be'],
 				pointStyle: 'line',
 				pointRadius: 4,
-				tension: 0.3,
-				yAxisID: 'y',
-			},
-			{
-				label: 'Lower Bound',
-				data: reversed.map((d) => d.forecast_low),
-				fill: false,
-				borderColor: ['#f197be'],
-				pointStyle: 'line',
-				pointRadius: 4,
-				tension: 0.3,
+				borderWidth: 1,
 				yAxisID: 'y',
 			},
 		],
@@ -61,6 +51,16 @@ export const ForecastChart = ({ data }: { data: Topline[] }): JSX.Element => {
 	const options = {
 		responsive: true,
 		maintainAspectRatio: false,
+		interaction: {
+			intersect: false,
+		},
+		plugins: {
+			legend: {
+				labels: {
+					usePointStyle: true,
+				},
+			},
+		},
 		scales: {
 			x: {
 				type: 'time',
@@ -75,7 +75,7 @@ export const ForecastChart = ({ data }: { data: Topline[] }): JSX.Element => {
 					tooltipFormat: 'dd/MM/yyyy',
 					displayFormats: {
 						week: 'dd MMM',
-						month: 'MMM yy',
+						month: 'MMMM yyyy',
 						quarter: 'MMM dd',
 						year: 'yyyy',
 					},
