@@ -12,6 +12,7 @@ import {
 	Title,
 	TimeScale,
 	Tooltip,
+	Legend,
 } from 'chart.js';
 
 ChartJS.register(
@@ -22,7 +23,8 @@ ChartJS.register(
 	LinearScale,
 	Title,
 	TimeScale,
-	Tooltip
+	Tooltip,
+	Legend
 );
 
 type TimeseriesProps = {

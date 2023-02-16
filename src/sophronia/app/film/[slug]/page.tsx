@@ -6,7 +6,7 @@ import { Date } from 'components/Date';
 import { StructuredTimeData } from 'components/StructuredData';
 import { DatasourceButton } from 'components/Dashboard/Datasource';
 import { ExportCSV } from 'components/ui/ExportCSV';
-import { TimeLineChart } from 'components/Time/TimeLineChart';
+import { TimeLineChart } from 'components/charts/TimeLineChart';
 
 import { getFilm } from './getFilm';
 import { BoxOfficeWeek } from 'interfaces/BoxOffice';

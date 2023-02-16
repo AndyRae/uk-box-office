@@ -29,6 +29,7 @@ export const AllTimeChart = ({ data }: { data: Time[] }): JSX.Element => {
 				borderColor: ['#52A5ED'],
 				pointStyle: 'point',
 				pointRadius: 4,
+				borderWidth: 1,
 				borderRadius: 4,
 				hoverRadius: 10,
 				tension: 0.3,
@@ -120,7 +121,6 @@ export const AllTimeChart = ({ data }: { data: Time[] }): JSX.Element => {
 	// Chart Navigation on bar click to year page
 	const chartRef = useRef();
 	const onClick = (event: MouseEvent<HTMLCanvasElement>) => {
-		console.log('welp');
 		var x = getElementAtEvent(chartRef.current as any, event);
 		const year = d.labels[x[0].index];
 		router.push(`/time/${year}`);

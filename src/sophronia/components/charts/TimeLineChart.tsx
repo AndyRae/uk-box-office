@@ -1,6 +1,6 @@
 'use client';
 
-import { Timeseries } from '../charts/Timeseries';
+import { Timeseries } from './Timeseries';
 import { groupbyMonth, groupbyDate } from 'lib/utils/groupData';
 import { AiOutlineArrowDown } from 'react-icons/ai';
 import { useState, useEffect, useRef, MouseEvent } from 'react';
@@ -58,7 +58,8 @@ export const TimeLineChart = ({
 				borderColor: [color],
 				pointStyle: 'circle',
 				pointRadius: 4,
-				tension: 0.4,
+				borderWidth: 1,
+				tension: 0.1,
 				yAxisID: 'y',
 				hoverRadius: 10,
 			},
