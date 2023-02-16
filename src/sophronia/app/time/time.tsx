@@ -15,7 +15,7 @@ import { StructuredTimeData } from 'components/StructuredData';
 import { DatasourceButton } from 'components/Dashboard/Datasource';
 import { MetricChange } from 'components/charts/MetricChange';
 import { StackedBarChart } from 'components/charts/StackedBarChart';
-import { TimeLineChart } from 'components/Time/TimeLineChart';
+import { TimeLineChart } from 'components/charts/TimeLineChart';
 import { FilmTableDetailed } from 'components/Time/FilmTableDetailed';
 
 import { WeeksTable } from './WeeksTable';
