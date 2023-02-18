@@ -124,7 +124,7 @@ def delete_film(id: int) -> bool:
         return False
 
 
-def search(search_query: str) -> Response:
+def search(search_query: str, limit: int = 15) -> Response:
     """
     Search films by name.
 
@@ -135,7 +135,7 @@ def search(search_query: str) -> Response:
     """
     query = db.session.query(models.Film)
     query = query.filter(models.Film.name.ilike(f"%{search_query}%"))
-    data = query.limit(15).all()
+    data = query.limit(limit).all()
 
     film_schema = FilmSchemaStrict()
 
