@@ -7,6 +7,7 @@ import { getBackendURL } from 'lib/ApiFetcher';
 import AsyncSelect from 'react-select/async';
 import { Grid } from 'components/ui/Grid';
 import { Card } from 'components/ui/Card';
+import { CompareTable } from './CompareTable';
 
 async function SearchFilms(term) {
 	const url = getBackendURL();
@@ -38,15 +39,27 @@ export default function Page() {
 	// array of complete film objects
 	const [filmData, setFilmData] = useState();
 
-	// get film data when added/removed
-	useEffect(() => {
-		let filmData = [];
+	const handleOptionChange = (data) => {
+		setSelectedFilms(data);
+
+		let filmsData = [];
 		selectedFilms?.forEach(async (element) => {
 			const data = await getFilm(element.value);
-			filmData.push(data);
+			filmsData.push(data);
 		});
 
-		setFilmData(filmData);
+		setFilmData(filmsData);
+	};
+
+	// get film data when added/removed
+	useEffect(() => {
+		let filmsData = [];
+		selectedFilms?.forEach(async (element) => {
+			const data = await getFilm(element.value);
+			filmsData.push(data);
+		});
+
+		setFilmData(filmsData);
 	}, [selectedFilms]);
 
 	// compare box office - table?
@@ -58,9 +71,11 @@ export default function Page() {
 				isMulti
 				cacheOptions
 				loadOptions={promiseOptions}
-				onChange={setSelectedFilms}
+				// onChange={setSelectedFilms}
+				onChange={handleOptionChange}
 			/>
 			<Grid></Grid>
+			<CompareTable data={filmData} />
 		</>
 	);
 }
