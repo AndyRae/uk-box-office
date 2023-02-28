@@ -1,3 +1,5 @@
+'use client';
+
 import { BaseTable, Td, Tr } from 'components/charts/BaseTable';
 import { FilmWithWeeks } from 'interfaces/Film';
 import Link from 'next/link';
@@ -24,8 +26,6 @@ export const CompareTable = ({ data }: TableProps): JSX.Element => {
 	return (
 		<BaseTable columns={columns}>
 			{data?.map((film, index: number) => {
-				console.log(film);
-
 				// Unwrap first week date logic
 				const weekOne = film.weeks[0];
 				const releaseDate = weekOne.date;
@@ -35,7 +35,7 @@ export const CompareTable = ({ data }: TableProps): JSX.Element => {
 				const siteAverage = film.gross / cinemas;
 
 				return (
-					<Tr key={film.id} index={index}>
+					<Tr key={film.slug} index={index}>
 						<Td isHighlight>
 							<Link href={`/film/${film.slug}`}>{film.name}</Link>
 						</Td>
