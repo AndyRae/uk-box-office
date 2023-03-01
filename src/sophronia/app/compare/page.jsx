@@ -6,6 +6,7 @@ import { getFilm } from 'app/film/[slug]/getFilm';
 import { getBackendURL } from 'lib/ApiFetcher';
 import AsyncSelect from 'react-select/async';
 import { CompareTable } from './CompareTable';
+import { CompareTotalChart } from './CompareTotalChart';
 
 async function SearchFilms(term) {
 	const url = getBackendURL();
@@ -33,6 +34,8 @@ const promiseOptions = (inputValue) =>
 export default function Page() {
 	// array of complete film objects
 	const [filmData, setFilmData] = useState(null);
+
+	// array of Ids - might not be needed.
 	const [filmIds, setFilmIds] = useState([]);
 
 	const handleOptionChange = async (data) => {
@@ -57,7 +60,10 @@ export default function Page() {
 				loadOptions={promiseOptions}
 				onChange={handleOptionChange}
 			/>
-			{filmData && <CompareTable data={filmData} />}
+			<div className='mt-6'>{filmData && <CompareTable data={filmData} />}</div>
+			<div className='mt-6'>
+				{filmData && <CompareTotalChart data={filmData} />}
+			</div>
 		</>
 	);
 }
