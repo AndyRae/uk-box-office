@@ -7,6 +7,8 @@ import { getBackendURL } from 'lib/ApiFetcher';
 import AsyncSelect from 'react-select/async';
 import { CompareTable } from './CompareTable';
 import { CompareTotalChart } from './CompareTotalChart';
+import { CompareCumulativeChart } from './CompareCumulativeChart';
+import { Card } from 'components/ui/Card';
 
 async function SearchFilms(term) {
 	const url = getBackendURL();
@@ -60,10 +62,19 @@ export default function Page() {
 				loadOptions={promiseOptions}
 				onChange={handleOptionChange}
 			/>
+
 			<div className='mt-6'>{filmData && <CompareTable data={filmData} />}</div>
-			<div className='mt-6'>
-				{filmData && <CompareTotalChart data={filmData} />}
-			</div>
+
+			{filmData && (
+				<div className='grid md:grid-cols-1 lg:grid-cols-2 gap-3 md:gap-5 mt-3 md:mt-6'>
+					<Card title='Weekly Box Office'>
+						<CompareTotalChart data={filmData} />
+					</Card>
+					<Card title='Cumulative Box Office'>
+						<CompareCumulativeChart data={filmData} />
+					</Card>
+				</div>
+			)}
 		</>
 	);
 }
