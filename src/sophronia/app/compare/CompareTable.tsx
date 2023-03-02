@@ -12,11 +12,11 @@ type TableProps = {
 
 export const CompareTable = ({ data }: TableProps): JSX.Element => {
 	const columns = [
+		{ label: '' },
 		{ label: 'title' },
 		{ label: 'release' },
 		{ label: 'distributor' },
 		{ label: 'total box office', isNumeric: true },
-		{ label: 'weekend box office', isNumeric: true },
 		{ label: 'weeks', isNumeric: true },
 		{ label: 'multiple', isNumeric: true },
 		{ label: 'cinemas', isNumeric: true },
@@ -41,11 +41,13 @@ export const CompareTable = ({ data }: TableProps): JSX.Element => {
 
 				return (
 					<Tr key={film.slug} index={index}>
-						<Td isHighlight>
+						<Td>
 							<span
-								className={`flex w-3 h-3 b rounded-full`}
+								className={`flex w-5 h-5 b rounded-full`}
 								style={divStyle}
 							></span>
+						</Td>
+						<Td isHighlight>
 							<Link href={`/film/${film.slug}`}>{film.name}</Link>
 						</Td>
 						<Td>
@@ -53,7 +55,6 @@ export const CompareTable = ({ data }: TableProps): JSX.Element => {
 						</Td>
 						<Td>{film.distributor.name}</Td>
 						<Td isNumeric>£ {film.gross.toLocaleString()}</Td>
-						<Td isNumeric>{0}</Td>
 						<Td isNumeric>{film.weeks.length}</Td>
 						<Td isNumeric>x{multiple}</Td>
 						<Td isNumeric>{cinemas}</Td>
