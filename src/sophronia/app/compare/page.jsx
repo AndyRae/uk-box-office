@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, setState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { PageTitle } from 'components/ui/PageTitle';
-import { getFilm } from 'app/film/[slug]/getFilm';
+import { getFilmId } from 'app/film/[slug]/getFilm';
 import { getBackendURL } from 'lib/ApiFetcher';
 import AsyncSelect from 'react-select/async';
 import { CompareTable } from './CompareTable';
@@ -12,6 +12,7 @@ import { Card } from 'components/ui/Card';
 import { getDefaultColorArray } from 'lib/utils/colorGenerator';
 import { ExportCSV } from 'components/ui/ExportCSV';
 import { DatasourceButton } from 'components/Dashboard/Datasource';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 
 async function SearchFilms(term) {
 	const url = getBackendURL();
@@ -23,8 +24,8 @@ async function FilmsToOptions(term) {
 	const results = await SearchFilms(term);
 
 	const parsed = results.map((film) => ({
-		value: film.slug,
-		label: film.name,
+		value: film.value,
+		label: film.label,
 	}));
 	return parsed;
 }
@@ -37,6 +38,16 @@ const promiseOptions = (inputValue) =>
 	});
 
 export default function Page() {
+	const router = useRouter();
+	const pathName = usePathname();
+	const searchParams = useSearchParams();
+
+	const ids = searchParams.get('id');
+	useEffect(() => {
+		// get data for each id
+		// push it into options.
+	}, []);
+
 	// array of complete film objects
 	const [filmData, setFilmData] = useState([]);
 
@@ -51,12 +62,16 @@ export default function Page() {
 
 		let filmsData = [];
 		for (let i = 0; i < data.length; i++) {
-			const filmresp = await getFilm(data[i].value);
+			const filmresp = await getFilmId(data[i].value);
 			filmresp.color = colors.shift();
 			filmsData.push(filmresp);
 		}
 
 		setFilmData([...filmsData]);
+
+		// Map IDS to url
+		const urlIds = data.map((film) => film.value);
+		router.replace(pathName + `?id=${urlIds}`);
 	};
 
 	return (
