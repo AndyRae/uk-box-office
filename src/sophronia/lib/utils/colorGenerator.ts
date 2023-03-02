@@ -3,6 +3,7 @@
  * @exports interpolateColors
  */
 
+import { interpolateSpectral } from 'd3-scale-chromatic';
 /**
  * A function to generate an array of colors based on the length of the data.
  * @param {number} i - The index of the color.
@@ -46,8 +47,50 @@ export const interpolateColors = (
 
 	for (i = 0; i < dataLength; i++) {
 		colorPoint = calculatePoint(i, intervalSize, colorRangeInfo);
-		colorArray.push(colorScale(colorPoint));
+		var color = colorScale(colorPoint);
+		colorArray.push(rgbToHex(color));
 	}
 
 	return colorArray;
 };
+
+/**
+ * Gets the default array of colours for a given array
+ * @param {number} length - Length of the array needed
+ */
+export const getDefaultColorArray = (length: number): Array<string> => {
+	const colorScale = interpolateSpectral;
+	const colorRangeInfo = {
+		colorStart: 0,
+		colorEnd: 1,
+		useEndAsStart: false,
+	};
+	return interpolateColors(length, colorScale, colorRangeInfo);
+};
+
+/**
+ * Converts a RGB component to its hex value
+ * @param c - R|G|B number
+ * @returns hex string
+ */
+function componentToHex(c: number) {
+	const hex = c.toString(16);
+
+	return hex.length === 1 ? `0${hex}` : hex;
+}
+
+/**
+ * Converts a RGB colour string to hex
+ * e.g rgb(158, 1, 66) => #9e0142
+ * @param rgb - RGB string
+ * @returns - Hex colour
+ */
+function rgbToHex(rgb: string) {
+	const [r, g, b] = rgb
+		.replace('rgb(', '')
+		.replace(')', '')
+		.split(',')
+		.map(Number);
+
+	return '#' + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}

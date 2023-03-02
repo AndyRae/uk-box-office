@@ -13,6 +13,7 @@ export interface Film {
 
 export interface FilmWithWeeks extends Film {
 	weeks: BoxOfficeWeek[];
+	color?: string;
 }
 
 export interface FilmListData {

@@ -34,9 +34,18 @@ export const CompareTable = ({ data }: TableProps): JSX.Element => {
 				const cinemas = calculateNumberOfCinemas(film.weeks);
 				const siteAverage = film.gross / cinemas;
 
+				// Process colors
+				const divStyle = {
+					backgroundColor: film.color,
+				};
+
 				return (
 					<Tr key={film.slug} index={index}>
 						<Td isHighlight>
+							<span
+								className={`flex w-3 h-3 b rounded-full`}
+								style={divStyle}
+							></span>
 							<Link href={`/film/${film.slug}`}>{film.name}</Link>
 						</Td>
 						<Td>

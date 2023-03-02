@@ -9,6 +9,7 @@ import { CompareTable } from './CompareTable';
 import { CompareTotalChart } from './CompareTotalChart';
 import { CompareCumulativeChart } from './CompareCumulativeChart';
 import { Card } from 'components/ui/Card';
+import { getDefaultColorArray } from 'lib/utils/colorGenerator';
 
 async function SearchFilms(term) {
 	const url = getBackendURL();
@@ -43,13 +44,22 @@ export default function Page() {
 	const handleOptionChange = async (data) => {
 		setFilmIds(data);
 
+		// Interpolate colors
+		var colors = getDefaultColorArray(data.length);
+
 		let filmsData = [];
 		for (let i = 0; i < data.length; i++) {
 			const filmresp = await getFilm(data[i].value);
+			filmresp.color = colors.shift();
 			filmsData.push(filmresp);
 		}
 
 		setFilmData([...filmsData]);
+	};
+
+	const classNames = {
+		control: (state) =>
+			state.isFocused ? 'border-red-600' : 'border-grey-300',
 	};
 
 	return (

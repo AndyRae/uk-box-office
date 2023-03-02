@@ -2,8 +2,6 @@
 
 import { Timeseries } from 'components/charts/Timeseries';
 import { FilmWithWeeks } from 'interfaces/Film';
-import { interpolateSpectral } from 'd3-scale-chromatic';
-import { interpolateColors } from 'lib/utils/colorGenerator';
 
 type TimeLineChartProps = {
 	data: FilmWithWeeks[];
@@ -34,24 +32,15 @@ export const CompareTotalChart = ({
 		})
 	);
 
-	// Interpolate colors
-	const colorScale = interpolateSpectral;
-	const colorRangeInfo = {
-		colorStart: 0,
-		colorEnd: 1,
-		useEndAsStart: false,
-	};
-	var colors = interpolateColors(data.length, colorScale, colorRangeInfo);
-
 	const d = {
 		labels: [...Array(labelsNumber).keys()].slice(1),
 		datasets: data.map((film) => {
-			var randomColor = colors.shift();
 			return {
 				label: film.name,
 				data: film.weeks.map((d) => d.week_gross),
 				fill: false,
-				borderColor: randomColor,
+				borderColor: film.color,
+				backgroundColor: film.color,
 				pointStyle: 'circle',
 				pointRadius: 4,
 				borderWidth: 1,
@@ -67,7 +56,7 @@ export const CompareTotalChart = ({
 		maintainAspectRatio: false,
 		plugins: {
 			legend: {
-				display: true,
+				display: false,
 			},
 		},
 		interaction: {
