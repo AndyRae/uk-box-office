@@ -1,3 +1,4 @@
+from marshmallow import fields
 from ukbo import models
 from ukbo.extensions import ma
 
@@ -33,3 +34,16 @@ class FilmSchemaStrict(ma.SQLAlchemyAutoSchema):
     distributor = ma.Nested(DistributorSchema)
     countries = ma.Nested(CountrySchema, many=True)
     gross = ma.Function(lambda obj: obj.gross)
+
+
+class FilmSchemaValues(ma.SQLAlchemyAutoSchema):
+    """
+    Strict film schema for search options.
+    """
+
+    class Meta:
+        model = models.Film
+        exclude = ["name", "id", "slug"]
+
+    label = fields.String(attribute="name")
+    value = fields.String(attribute="id")

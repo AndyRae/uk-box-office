@@ -10,6 +10,6 @@ import { FilmWithWeeks } from 'interfaces/Film';
  */
 export async function getFilm(slug: string): Promise<FilmWithWeeks> {
 	const url = getBackendURL();
-	const res = await fetch(`${url}film/${slug}`);
+	const res = await fetch(`${url}film/slug/${slug}`);
 	return res.json();
 }

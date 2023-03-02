@@ -24,7 +24,7 @@ def all() -> Response:
     return services.film.list(page, limit)
 
 
-@film.route("/<slug>")
+@film.route("slug/<slug>")
 @cache.cached()
 def get(slug: str) -> Response:
     """
@@ -37,3 +37,18 @@ def get(slug: str) -> Response:
         JSON response of a film.
     """
     return jsonify(services.film.get(slug))
+
+
+@film.route("id/<id>")
+@cache.cached()
+def get_id(id: int) -> Response:
+    """
+    Get one film detail.
+
+    Args:
+        slug: Film id to return.
+
+    Returns:
+        JSON response of a film.
+    """
+    return jsonify(services.film.get_by_id(id))
