@@ -57,11 +57,6 @@ export default function Page() {
 		setFilmData([...filmsData]);
 	};
 
-	const classNames = {
-		control: (state) =>
-			state.isFocused ? 'border-red-600' : 'border-grey-300',
-	};
-
 	return (
 		<>
 			<PageTitle>Compare Films</PageTitle>
