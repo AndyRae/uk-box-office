@@ -50,7 +50,7 @@ def film_search() -> Response:
     query = request.args.get("q", None)
 
     return (
-        services.film.search(query, 10)
+        services.film.partial_search(query, 10)
         if query
         else Response('{"error": "Missing arguments"}', status=400)
     )
