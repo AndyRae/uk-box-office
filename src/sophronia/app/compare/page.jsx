@@ -42,21 +42,37 @@ export default function Page() {
 	const pathName = usePathname();
 	const searchParams = useSearchParams();
 
-	const ids = searchParams.get('id');
-	useEffect(() => {
-		// get data for each id
-		// push it into options.
-	}, []);
-
 	// array of complete film objects
 	const [filmData, setFilmData] = useState([]);
 
-	// array of Ids - might not be needed.
+	// array of Ids set by the select.
 	const [filmIds, setFilmIds] = useState([]);
 
-	const handleOptionChange = async (data) => {
-		setFilmIds(data);
+	// array of Id data -
+	const [filmIdData, setFilmIdData] = useState([]);
 
+	// Run on start to set state if film Ids exist.
+	useEffect(() => {
+		const ids = searchParams.get('id')?.split(',');
+
+		let films = [];
+		async function fetchData() {
+			for (let i = 0; i < ids?.length; i++) {
+				const film = await getFilmId(ids[i]);
+				films.push({ value: film.id.toString(), label: film.name });
+			}
+			setFilmIdData(films);
+		}
+		fetchData();
+	}, []);
+
+	// Run if film Ids exist to fetch data
+	useEffect(() => {
+		setFilmIds(filmIdData);
+		getFilmData(filmIdData);
+	}, [filmIdData]);
+
+	async function getFilmData(data) {
 		// Interpolate colors
 		var colors = getDefaultColorArray(data.length);
 
@@ -68,8 +84,14 @@ export default function Page() {
 		}
 
 		setFilmData([...filmsData]);
+	}
 
-		// Map IDS to url
+	// Fetch data when an option is selected
+	const handleOptionChange = async (data) => {
+		setFilmIds(data);
+		getFilmData(data);
+
+		// Add Ids to the url
 		const urlIds = data.map((film) => film.value);
 		router.replace(pathName + `?id=${urlIds}`);
 	};
@@ -80,11 +102,12 @@ export default function Page() {
 			<AsyncSelect
 				isMulti
 				cacheOptions
-				defaultOptions={false}
+				defaultOptions={true}
 				loadOptions={promiseOptions}
 				onChange={handleOptionChange}
 				className='compare-select-container'
 				classNamePrefix='compare-select'
+				value={filmIds}
 			/>
 
 			{filmData.length > 0 && (
