@@ -28,7 +28,7 @@ ChartJS.register(
 );
 
 type TimeseriesProps = {
-	data: { datasets: any[]; labels: string[] };
+	data: { datasets: any[]; labels: any[] };
 	options: object;
 	id?: string;
 	height?: 'sm' | 'md' | 'lg' | 'xl';
