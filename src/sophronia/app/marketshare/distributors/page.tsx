@@ -6,8 +6,7 @@ import { Card } from 'components/ui/Card';
 import { ExportCSV } from 'components/ui/ExportCSV';
 import { MarketShareChart } from './MarketShareChart';
 import { MarketShareTable } from './MarketShareTable';
-import { interpolateColors } from 'lib/utils/colorGenerator';
-import { interpolateSpectral } from 'd3-scale-chromatic';
+import { getDefaultColorArray } from 'lib/utils/colorGenerator';
 
 import MarketShare from 'interfaces/MarketShare';
 
@@ -73,14 +72,7 @@ export default async function Page() {
 		return bTotal - aTotal;
 	});
 
-	// Interpolate colors
-	const colorScale = interpolateSpectral;
-	const colorRangeInfo = {
-		colorStart: 0,
-		colorEnd: 1,
-		useEndAsStart: false,
-	};
-	var colors = interpolateColors(10, colorScale, colorRangeInfo);
+	var colors = getDefaultColorArray(10);
 
 	// construct dataset object for each distributor
 	var graphData = reducedData.slice(0, 10).map((d) => {

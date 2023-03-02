@@ -16,8 +16,7 @@ import map from 'lodash/map';
 import sortBy from 'lodash/sortBy';
 import countBy from 'lodash/countBy';
 
-import { interpolateColors } from './colorGenerator';
-import { interpolateSpectral } from 'd3-scale-chromatic';
+import { getDefaultColorArray } from './colorGenerator';
 import {
 	BoxOfficeWeek,
 	StackedFilm,
@@ -47,14 +46,7 @@ export const groupStackedFilms = (data: BoxOfficeWeek[]): StackedFilm[] => {
 		(arr) => arr.slice(0, filmsLimit)
 	)(data);
 
-	// Interpolate colors
-	const colorScale = interpolateSpectral;
-	const colorRangeInfo = {
-		colorStart: 0,
-		colorEnd: 1,
-		useEndAsStart: false,
-	};
-	var colors = interpolateColors(filmsLimit, colorScale, colorRangeInfo);
+	var colors = getDefaultColorArray(filmsLimit);
 
 	// Create the dataset objects - one for each film
 	const stackedData = groupedFilms.map((film, index: number) => {
