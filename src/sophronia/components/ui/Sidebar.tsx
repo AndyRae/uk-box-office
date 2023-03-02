@@ -18,11 +18,11 @@ const links = [
 		path: '/',
 		icon: <MdOutlineSpaceDashboard />,
 	},
-	{
-		name: 'Last Week',
-		path: '/time/lastweek',
-		icon: <BiFilm />,
-	},
+	// {
+	// 	name: 'Last Week',
+	// 	path: '/time/lastweek',
+	// 	icon: <BiFilm />,
+	// },
 	{
 		name: 'All Time',
 		path: '/time',
