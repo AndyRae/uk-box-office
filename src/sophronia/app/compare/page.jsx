@@ -71,6 +71,8 @@ export default function Page() {
 				defaultOptions={false}
 				loadOptions={promiseOptions}
 				onChange={handleOptionChange}
+				className='compare-select-container'
+				classNamePrefix='compare-select'
 			/>
 
 			<div className='mt-6'>{filmData && <CompareTable data={filmData} />}</div>
