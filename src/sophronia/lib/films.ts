@@ -17,7 +17,7 @@ import { FilmWithWeeks, FilmListData } from 'interfaces/Film';
 const fetchKeys: any = {
 	filmList: (pageIndex: number, limit: number) =>
 		`film/?page=${pageIndex}&limit=${limit}`,
-	film: (slug: string) => `film/${slug}`,
+	film: (slug: string) => `film/slug/${slug}`,
 };
 
 /**
