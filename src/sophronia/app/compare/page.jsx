@@ -10,6 +10,8 @@ import { CompareTotalChart } from './CompareTotalChart';
 import { CompareCumulativeChart } from './CompareCumulativeChart';
 import { Card } from 'components/ui/Card';
 import { getDefaultColorArray } from 'lib/utils/colorGenerator';
+import { ExportCSV } from 'components/ui/ExportCSV';
+import { DatasourceButton } from 'components/Dashboard/Datasource';
 
 async function SearchFilms(term) {
 	const url = getBackendURL();
@@ -36,7 +38,7 @@ const promiseOptions = (inputValue) =>
 
 export default function Page() {
 	// array of complete film objects
-	const [filmData, setFilmData] = useState(null);
+	const [filmData, setFilmData] = useState([]);
 
 	// array of Ids - might not be needed.
 	const [filmIds, setFilmIds] = useState([]);
@@ -70,17 +72,26 @@ export default function Page() {
 				classNamePrefix='compare-select'
 			/>
 
-			<div className='mt-6'>{filmData && <CompareTable data={filmData} />}</div>
+			{filmData.length > 0 && (
+				<>
+					<div className='flex flex-row-reverse my-6'>
+						<DatasourceButton />
+						<ExportCSV data={filmData} filename={'comparison_data.csv'} />
+					</div>
 
-			{filmData && (
-				<div className='grid md:grid-cols-1 lg:grid-cols-2 gap-3 md:gap-5 mt-3 md:mt-6'>
-					<Card title='Weekly Box Office'>
-						<CompareTotalChart data={filmData} />
-					</Card>
-					<Card title='Cumulative Box Office'>
-						<CompareCumulativeChart data={filmData} />
-					</Card>
-				</div>
+					<div className='mt-6'>
+						<CompareTable data={filmData} />
+					</div>
+
+					<div className='grid md:grid-cols-1 lg:grid-cols-2 gap-3 md:gap-5 mt-3 md:mt-6'>
+						<Card title='Weekly Box Office'>
+							<CompareTotalChart data={filmData} />
+						</Card>
+						<Card title='Cumulative Box Office'>
+							<CompareCumulativeChart data={filmData} />
+						</Card>
+					</div>
+				</>
 			)}
 		</>
 	);

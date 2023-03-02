@@ -43,7 +43,7 @@ export const CompareTable = ({ data }: TableProps): JSX.Element => {
 					<Tr key={film.slug} index={index}>
 						<Td>
 							<span
-								className={`flex w-5 h-5 b rounded-full`}
+								className={`flex w-4 h-4 b rounded-full`}
 								style={divStyle}
 							></span>
 						</Td>
