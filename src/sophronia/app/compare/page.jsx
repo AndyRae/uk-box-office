@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, setState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { PageTitle } from 'components/ui/PageTitle';
-import { getFilm } from 'app/film/[slug]/getFilm';
+import { getFilmId } from 'app/film/[slug]/getFilm';
 import { getBackendURL } from 'lib/ApiFetcher';
 import AsyncSelect from 'react-select/async';
 import { CompareTable } from './CompareTable';
@@ -12,6 +12,7 @@ import { Card } from 'components/ui/Card';
 import { getDefaultColorArray } from 'lib/utils/colorGenerator';
 import { ExportCSV } from 'components/ui/ExportCSV';
 import { DatasourceButton } from 'components/Dashboard/Datasource';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 
 async function SearchFilms(term) {
 	const url = getBackendURL();
@@ -23,8 +24,8 @@ async function FilmsToOptions(term) {
 	const results = await SearchFilms(term);
 
 	const parsed = results.map((film) => ({
-		value: film.slug,
-		label: film.name,
+		value: film.value,
+		label: film.label,
 	}));
 	return parsed;
 }
@@ -37,26 +38,62 @@ const promiseOptions = (inputValue) =>
 	});
 
 export default function Page() {
+	const router = useRouter();
+	const pathName = usePathname();
+	const searchParams = useSearchParams();
+
 	// array of complete film objects
 	const [filmData, setFilmData] = useState([]);
 
-	// array of Ids - might not be needed.
+	// array of Ids set by the select.
 	const [filmIds, setFilmIds] = useState([]);
 
-	const handleOptionChange = async (data) => {
-		setFilmIds(data);
+	// array of Id data -
+	const [filmIdData, setFilmIdData] = useState([]);
 
+	// Run on start to set state if film Ids exist.
+	useEffect(() => {
+		const ids = searchParams.get('id')?.split(',');
+
+		let films = [];
+		async function fetchData() {
+			for (let i = 0; i < ids?.length; i++) {
+				const film = await getFilmId(ids[i]);
+				films.push({ value: film.id.toString(), label: film.name });
+			}
+			setFilmIdData(films);
+		}
+		fetchData();
+	}, []);
+
+	// Run if film Ids exist to fetch data
+	useEffect(() => {
+		setFilmIds(filmIdData);
+		getFilmData(filmIdData);
+	}, [filmIdData]);
+
+	async function getFilmData(data) {
 		// Interpolate colors
 		var colors = getDefaultColorArray(data.length);
 
 		let filmsData = [];
 		for (let i = 0; i < data.length; i++) {
-			const filmresp = await getFilm(data[i].value);
+			const filmresp = await getFilmId(data[i].value);
 			filmresp.color = colors.shift();
 			filmsData.push(filmresp);
 		}
 
 		setFilmData([...filmsData]);
+	}
+
+	// Fetch data when an option is selected
+	const handleOptionChange = async (data) => {
+		setFilmIds(data);
+		getFilmData(data);
+
+		// Add Ids to the url
+		const urlIds = data.map((film) => film.value);
+		router.replace(pathName + `?id=${urlIds}`);
 	};
 
 	return (
@@ -65,11 +102,12 @@ export default function Page() {
 			<AsyncSelect
 				isMulti
 				cacheOptions
-				defaultOptions={false}
+				defaultOptions={true}
 				loadOptions={promiseOptions}
 				onChange={handleOptionChange}
 				className='compare-select-container'
 				classNamePrefix='compare-select'
+				value={filmIds}
 			/>
 
 			{filmData.length > 0 && (
