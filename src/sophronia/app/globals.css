@@ -25,6 +25,10 @@
     @apply text-black dark:text-neutral-200 bg-neutral-100 hover:bg-neutral-200 dark:bg-slate-900 dark:hover:bg-slate-700;
   }
 
+  .compare-select-container .compare-select__option--is-focused {
+    @apply text-white bg-bo-primary hover:bg-bo-primary;
+  }
+
   .compare-select-container .compare-select__indicator-separator {
     @apply bg-neutral-400;
   }
