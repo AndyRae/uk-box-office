@@ -100,11 +100,9 @@ export default function Page(): JSX.Element {
 
 		// Add Ids to the url
 		const urlIds = data.map((film: FilmOption) => film.value);
-		// router.replace(pathName + `?id=${urlIds}`, { shallow: true });
-		router.push(pathName + `?id=${urlIds}`, {
+		router.replace(pathName + `?id=${urlIds}`, {
 			forceOptimisticNavigation: false,
 		});
-		// router.push('/?counter=10', { forceOptimisticNavigation: true });
 	};
 
 	return (
