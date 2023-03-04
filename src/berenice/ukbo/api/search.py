@@ -5,7 +5,7 @@ from ukbo import services
 search = Blueprint("search", __name__)
 
 
-@search.route("")
+@search.route("/", methods=["GET"])
 def all() -> Response:
     """
     Search everything (films, distributors, countries).
@@ -33,4 +33,24 @@ def all() -> Response:
         films=films,
         distributors=distributors,
         countries=countries,
+    )
+
+
+@search.route("/film", methods=["GET"])
+def film_search() -> Response:
+    """
+    Search endpoint for films.
+
+    Request Arguments(optional):
+        q (str): Search query.
+
+    Returns:
+        JSON response of search results.
+    """
+    query = request.args.get("q", None)
+
+    return (
+        services.film.partial_search(query, 10)
+        if query
+        else Response('{"error": "Missing arguments"}', status=400)
     )

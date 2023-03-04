@@ -4,7 +4,7 @@ import pandas as pd
 from flask import Response, abort, jsonify
 from slugify import slugify  # type: ignore
 from ukbo import models, services
-from ukbo.dto import FilmSchema, FilmSchemaStrict
+from ukbo.dto import FilmSchema, FilmSchemaStrict, FilmSchemaValues
 from ukbo.extensions import db
 
 
@@ -50,6 +50,26 @@ def get(slug: str) -> Response:
     """
     query = db.session.query(models.Film)
     query = query.filter(models.Film.slug == slug)
+    data = query.first()
+
+    if data is None:
+        abort(404)
+
+    film_schema = FilmSchema()
+    return film_schema.dump(data)
+
+
+def get_by_id(id: int) -> Response:
+    """
+    Get one film based on its Id.
+
+    Args:
+        id: Id of the film to get.
+
+    Returns (JSON): Film data.
+    """
+    query = db.session.query(models.Film)
+    query = query.filter(models.Film.id == id)
     data = query.first()
 
     if data is None:
@@ -124,7 +144,7 @@ def delete_film(id: int) -> bool:
         return False
 
 
-def search(search_query: str) -> Response:
+def search(search_query: str, limit: int = 15) -> Response:
     """
     Search films by name.
 
@@ -135,9 +155,27 @@ def search(search_query: str) -> Response:
     """
     query = db.session.query(models.Film)
     query = query.filter(models.Film.name.ilike(f"%{search_query}%"))
-    data = query.limit(15).all()
+    data = query.limit(limit).all()
 
     film_schema = FilmSchemaStrict()
+
+    return [] if data is None else [film_schema.dump(ix) for ix in data]
+
+
+def partial_search(search_query: str, limit: int = 15) -> Response:
+    """
+    Search films by name.
+
+    Args:
+        search_query: Search query.
+
+    Returns (JSON): List of partial films.
+    """
+    query = db.session.query(models.Film)
+    query = query.filter(models.Film.name.ilike(f"%{search_query}%"))
+    data = query.limit(limit).all()
+
+    film_schema = FilmSchemaValues()
 
     return [] if data is None else [film_schema.dump(ix) for ix in data]
 
