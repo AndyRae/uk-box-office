@@ -24,7 +24,7 @@ type MarketShareData = {
  * Get market share data from the backend.
  * @returns {Promise<MarketShareData>}
  */
-export async function getMarketshare(): Promise<MarketShareData> {
+async function getMarketshare(): Promise<MarketShareData> {
 	const url = getBackendURL();
 	const res = await fetch(`${url}distributor/marketshare`, {});
 	return res.json();
