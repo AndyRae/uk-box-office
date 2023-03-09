@@ -11,6 +11,49 @@ import { TimeLineChart } from 'components/charts/TimeLineChart';
 import { getFilm } from './getFilm';
 import { BoxOfficeWeek } from 'interfaces/BoxOffice';
 
+export async function generateMetadata({
+	params,
+}: {
+	params: { slug: string };
+}) {
+	const data = await getFilm(params.slug);
+
+	const year = data.weeks[0].date.split('-')[0];
+
+	const description = `${data.name} (${year}) was released in the UK on ${
+		data.weeks[0].date
+	}, and grossed £${data.gross.toLocaleString()} at the UK Box Office.`;
+
+	const title = `${data.name} ${year} | Box Office Data`;
+
+	return {
+		title: title,
+		description: description,
+		twitter: {
+			title: title,
+			description: description,
+			card: 'summary',
+			creator: '@AndyRae_',
+			images: ['/icons/1.png'],
+		},
+		openGraph: {
+			title: title,
+			description: description,
+			url: 'https://boxofficedata.co.uk',
+			siteName: title,
+			images: [
+				{
+					url: 'icons/1.png',
+					width: 800,
+					height: 600,
+				},
+			],
+			locale: 'en-GB',
+			type: 'website',
+		},
+	};
+}
+
 export default async function Page({
 	params,
 }: {

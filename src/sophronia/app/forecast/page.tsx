@@ -1,5 +1,3 @@
-// 'use client';
-
 import { getBackendURL } from 'lib/ApiFetcher';
 
 import { ForecastChart } from 'components/charts/ForecastChart';
@@ -7,6 +5,13 @@ import { PageTitle } from 'components/ui/PageTitle';
 import { PageContent } from 'components/ui/PageContent';
 import { Card } from 'components/ui/Card';
 import { Topline } from 'interfaces/BoxOffice';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+	title: 'Forecast | Box Office Data',
+	description:
+		'UK Box Office forecast of the next 12 months of UK cinema box office revenue.',
+};
 
 type ForecastData = {
 	results: Topline[];

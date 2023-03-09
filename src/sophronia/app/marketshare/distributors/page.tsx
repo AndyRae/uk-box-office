@@ -9,6 +9,12 @@ import { MarketShareTable } from './MarketShareTable';
 import { getDefaultColorArray } from 'lib/utils/colorGenerator';
 
 import MarketShare from 'interfaces/MarketShare';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+	title: 'Distributor Market Share | Box Office Data',
+	description: 'UK Box Office market share for Distributors.',
+};
 
 type MarketShareData = {
 	results: MarketShare[];
