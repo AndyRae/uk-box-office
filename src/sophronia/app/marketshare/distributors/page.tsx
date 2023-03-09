@@ -9,6 +9,12 @@ import { MarketShareTable } from './MarketShareTable';
 import { getDefaultColorArray } from 'lib/utils/colorGenerator';
 
 import MarketShare from 'interfaces/MarketShare';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+	title: 'Distributor Market Share | Box Office Data',
+	description: 'UK Box Office market share for Distributors.',
+};
 
 type MarketShareData = {
 	results: MarketShare[];
@@ -18,7 +24,7 @@ type MarketShareData = {
  * Get market share data from the backend.
  * @returns {Promise<MarketShareData>}
  */
-export async function getMarketshare(): Promise<MarketShareData> {
+async function getMarketshare(): Promise<MarketShareData> {
 	const url = getBackendURL();
 	const res = await fetch(`${url}distributor/marketshare`, {});
 	return res.json();

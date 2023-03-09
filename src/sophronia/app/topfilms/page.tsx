@@ -2,6 +2,13 @@ import { getBackendURL } from 'lib/ApiFetcher';
 import { PageTitle } from 'components/ui/PageTitle';
 import { TopFilmsTable } from './TopFilmsTable';
 import { TopFilm } from 'interfaces/Film';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+	title: 'All Time Top Films | Box Office Data',
+	description:
+		'Top 50 films of all time at the UK box office. Including dashboards, statistics, reports, and analysis.',
+};
 
 /**
  * Get the top films from the backend

@@ -1,6 +1,11 @@
 import { ExternalLink } from 'components/ui/InlineLink';
 import { PageTitle } from 'components/ui/PageTitle';
 import { PageContent } from 'components/ui/PageContent';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+	title: 'Contact | Box Office Data',
+};
 
 export default function Page(): JSX.Element {
 	return (

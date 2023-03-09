@@ -4,6 +4,11 @@ import { PageContent } from 'components/ui/PageContent';
 import { StructuredTimeData } from 'components/StructuredData';
 import { ExternalLink, InlineLink } from 'components/ui/InlineLink';
 import { getBackendURL } from 'lib/ApiFetcher';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+	title: 'Open Data | Box Office Data',
+};
 
 export default function Page(): JSX.Element {
 	return (
