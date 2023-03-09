@@ -2,6 +2,11 @@ import { PageTitle } from 'components/ui/PageTitle';
 import { getEvents } from './getEvents';
 import { EventsTable } from './EventsTable';
 import { StatusCard } from './StatusCard';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+	title: 'Status | Box Office Data',
+};
 
 export default async function Page(): Promise<JSX.Element> {
 	const events = await getEvents();
