@@ -9,6 +9,13 @@ import { Card } from 'components/ui/Card';
 import { AllTimeChart } from './AllTimeChart';
 import { YearsTable } from './YearsTable';
 import Time from 'interfaces/Time';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+	title: 'All Time Box Office 2001 - 2023 | Box Office Data',
+	description:
+		'Get all time box office data for the UK film industry. Including dashboards, statistics, reports, and analysis.',
+};
 
 type BoxOfficeSummaryResponse = {
 	results: Time[];
