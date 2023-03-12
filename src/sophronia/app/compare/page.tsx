@@ -26,13 +26,16 @@ async function SearchFilms(term: string): Promise<FilmOption[]> {
 }
 
 async function FilmsToOptions(term: string): Promise<FilmOption[]> {
-	const results = await SearchFilms(term);
-
-	const parsed = results.map((film) => ({
-		value: film.value,
-		label: film.label,
-	}));
-	return parsed;
+	// Param Id can be present but empty.
+	if (term != '') {
+		const results = await SearchFilms(term);
+		const parsed = results.map((film) => ({
+			value: film.value,
+			label: film.label,
+		}));
+		return parsed;
+	}
+	return [];
 }
 
 const promiseOptions = (input: string): any =>
@@ -58,7 +61,7 @@ export default function Page(): JSX.Element {
 
 	// Run on start to set state if film Ids exist.
 	useEffect(() => {
-		const ids = searchParams.get('id')?.split(',');
+		const ids = searchParams.get('id')?.split(',').filter(Boolean);
 
 		let films: FilmOption[] = [];
 		async function fetchData() {
@@ -109,12 +112,13 @@ export default function Page(): JSX.Element {
 			<AsyncSelect
 				isMulti
 				cacheOptions
-				defaultOptions={true}
 				loadOptions={promiseOptions}
 				onChange={handleOptionChange}
 				className='compare-select-container'
 				classNamePrefix='compare-select'
 				value={filmIds}
+				inputId='compare-select'
+				instanceId='compare-select'
 			/>
 
 			{filmData.length > 0 && (
