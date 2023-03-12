@@ -33,7 +33,7 @@ export const ButtonGroup = ({ children }: ButtonGroupProps): JSX.Element => {
 								${index === 0 ? 'rounded-l-lg' : ''} ${
 									index === childrenArray.length - 1 ? 'rounded-r-lg' : ''
 								}
-								group bg-gradient-to-br from-pink-500 to-bo-primary group-hover:from-pink-500 group-hover:to-orange-400
+								group bg-gradient-to-br from-bo-primary to-cyan-500 group-hover:from-pink-500 group-hover:to-orange-400
 								hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800`}
 						>
 							{child.props.children}
