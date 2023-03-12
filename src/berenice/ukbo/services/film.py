@@ -172,7 +172,7 @@ def partial_search(search_query: str, limit: int = 15) -> Response:
     Returns (JSON): List of partial films.
     """
     query = db.session.query(models.Film)
-    query = query.filter(models.Film.name.ilike(f"%{search_query}%"))
+    query = query.filter(models.Film.name.ilike(f"{search_query}%"))
     data = query.limit(limit).all()
 
     film_schema = FilmSchemaValues()

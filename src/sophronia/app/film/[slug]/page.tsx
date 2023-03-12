@@ -121,6 +121,9 @@ export default async function Page({
 						})}
 					</ul>
 				</Card>
+				<Card title='Compare'>
+					<Link href={`/compare?id=${data.id}`}>{data.name}</Link>
+				</Card>
 
 				<Card title='Distributor'>
 					<Link href={`/distributor/${data.distributor.slug}`}>
