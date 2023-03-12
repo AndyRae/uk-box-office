@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { PageTitle } from 'components/ui/PageTitle';
 import { getFilmId } from 'app/film/[slug]/getFilm';
 import { getBackendURL } from 'lib/ApiFetcher';
@@ -13,33 +13,38 @@ import { getDefaultColorArray } from 'lib/utils/colorGenerator';
 import { ExportCSV } from 'components/ui/ExportCSV';
 import { DatasourceButton } from 'components/Dashboard/Datasource';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import debounce from 'lodash/debounce';
 
 type FilmOption = {
 	value: string;
 	label: string;
 };
 
+// Make the options search request
 async function SearchFilms(term: string): Promise<FilmOption[]> {
 	const url = getBackendURL();
 	const res = await fetch(`${url}search/film?q=${term}`);
 	return res.json();
 }
 
+// For parsing the options request response.
 async function FilmsToOptions(term: string): Promise<FilmOption[]> {
-	const results = await SearchFilms(term);
-
-	const parsed = results.map((film) => ({
-		value: film.value,
-		label: film.label,
-	}));
-	return parsed;
+	// Param Id can be present but empty.
+	if (term != '') {
+		const results = await SearchFilms(term);
+		const parsed = results.map((film) => ({
+			value: film.value,
+			label: film.label,
+		}));
+		return parsed;
+	}
+	return [];
 }
 
+// Construct the promise for options.
 const promiseOptions = (input: string): any =>
 	new Promise((resolve) => {
-		setTimeout(() => {
-			resolve(FilmsToOptions(input));
-		}, 100);
+		setTimeout(resolve, 250, FilmsToOptions(input));
 	});
 
 export default function Page(): JSX.Element {
@@ -56,9 +61,19 @@ export default function Page(): JSX.Element {
 	// array of Id data -
 	const [filmIdData, setFilmIdData] = useState<FilmOption[]>([]);
 
+	// debounce for the options search
+	const loadOptions = useCallback(
+		debounce((inputText, callback) => {
+			promiseOptions(inputText).then((options: FilmOption[]) =>
+				callback(options)
+			);
+		}, 300),
+		[]
+	);
+
 	// Run on start to set state if film Ids exist.
 	useEffect(() => {
-		const ids = searchParams.get('id')?.split(',');
+		const ids = searchParams.get('id')?.split(',').filter(Boolean);
 
 		let films: FilmOption[] = [];
 		async function fetchData() {
@@ -109,12 +124,15 @@ export default function Page(): JSX.Element {
 			<AsyncSelect
 				isMulti
 				cacheOptions
-				defaultOptions={true}
-				loadOptions={promiseOptions}
+				// loadOptions={promiseOptions}
+				loadOptions={loadOptions}
 				onChange={handleOptionChange}
 				className='compare-select-container'
 				classNamePrefix='compare-select'
 				value={filmIds}
+				inputId='compare-select'
+				instanceId='compare-select'
+				noOptionsMessage={() => 'Search for films...'}
 			/>
 
 			{filmData.length > 0 && (

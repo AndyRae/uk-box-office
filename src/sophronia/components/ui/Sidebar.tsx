@@ -1,10 +1,14 @@
 import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
-import { BiFilm, BiNetworkChart } from 'react-icons/bi';
+import { BiNetworkChart } from 'react-icons/bi';
 import { BsListOl } from 'react-icons/bs';
 import { FaGlobeEurope } from 'react-icons/fa';
 import { FiDatabase } from 'react-icons/fi';
 import { HiOutlineTicket } from 'react-icons/hi';
-import { MdOutlineSpaceDashboard, MdOutlineAutoGraph } from 'react-icons/md';
+import {
+	MdOutlineSpaceDashboard,
+	MdOutlineAutoGraph,
+	MdCompareArrows,
+} from 'react-icons/md';
 import { Searchbar } from '../Search/Searchbar';
 import { SideBarLink } from './SideBarLink';
 import { InlineLink } from './InlineLink';
@@ -18,15 +22,15 @@ const links = [
 		path: '/',
 		icon: <MdOutlineSpaceDashboard />,
 	},
-	// {
-	// 	name: 'Last Week',
-	// 	path: '/time/lastweek',
-	// 	icon: <BiFilm />,
-	// },
 	{
 		name: 'All Time',
 		path: '/time',
 		icon: <HiOutlineTicket />,
+	},
+	{
+		name: 'Compare',
+		path: '/compare',
+		icon: <MdCompareArrows />,
 	},
 	{
 		name: 'Forecast',
