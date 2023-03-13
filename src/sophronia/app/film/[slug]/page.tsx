@@ -7,6 +7,7 @@ import { StructuredTimeData } from 'components/StructuredData';
 import { DatasourceButton } from 'components/Dashboard/Datasource';
 import { ExportCSV } from 'components/ui/ExportCSV';
 import { TimeLineChart } from 'components/charts/TimeLineChart';
+import { toTitleCase } from 'lib/utils/toTitleCase';
 
 import { getFilm } from './getFilm';
 import { BoxOfficeWeek } from 'interfaces/BoxOffice';
@@ -20,11 +21,13 @@ export async function generateMetadata({
 
 	const year = data.weeks[0].date.split('-')[0];
 
-	const description = `${data.name} (${year}) was released in the UK on ${
+	const description = `${toTitleCase(
+		data.name
+	)} (${year}) was released in the UK on ${
 		data.weeks[0].date
 	}, and grossed £${data.gross.toLocaleString()} at the UK Box Office.`;
 
-	const title = `${data.name} ${year} | Box Office Data`;
+	const title = `${toTitleCase(data.name)} ${year} | Box Office Data`;
 
 	return {
 		title: title,
@@ -53,6 +56,26 @@ export async function generateMetadata({
 		},
 	};
 }
+
+const ListItem = ({ title, text }: { title: string; text: any }) => {
+	return (
+		<div className='flex flex-col pb-3'>
+			<dt className='mb-1 text-gray-500 dark:text-gray-400'>{title}</dt>
+			<dd className='font-semibold'>{text}</dd>
+		</div>
+	);
+};
+
+const BadgeLink = ({ text, link }: { text: string; link: string }) => {
+	return (
+		<Link
+			href={link}
+			className='bg-blue-100 hover:bg-blue-200 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400'
+		>
+			{text}
+		</Link>
+	);
+};
 
 export default async function Page({
 	params,
@@ -85,78 +108,85 @@ export default async function Page({
 				time={releaseDate}
 			/>
 
-			<PageTitle>
-				{data.name} {isFirstWeek && `(${releaseDate.split('-')[0]})`}
-			</PageTitle>
+			<div className='grid grid-cols-5 gap-3 md:gap-5'>
+				<div className='col-span-2'>
+					<PageTitle>
+						{toTitleCase(data.name)}{' '}
+						{isFirstWeek && `(${releaseDate.split('-')[0]})`}
+					</PageTitle>
 
-			<div className='grid md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5'>
-				<Card
-					title='Total Box Office'
-					subtitle={`£ ${data.gross.toLocaleString('en-GB')}`}
-				/>
-
-				{isFirstWeek && (
-					<Card
-						title='Release Date'
-						subtitle={<Date dateString={releaseDate} />}
-					/>
-				)}
-
-				<Card title='Multiple' subtitle={`x${multiple}`} />
-
-				<Card title={data.countries.length > 1 ? 'Countries' : 'Country'}>
-					<ul className='flex flex-wrap justify-center'>
-						{data.countries.map((country) => {
-							return (
-								<li key={country.id} className='mr-2'>
-									<Link
-										key={country.name}
-										href={`/country/${country.slug}`}
-										className='text'
-									>
-										{country.name}
-									</Link>
-								</li>
-							);
-						})}
-					</ul>
-				</Card>
-				<Card title='Compare'>
-					<Link href={`/compare?id=${data.id}`}>{data.name}</Link>
-				</Card>
-
-				<Card title='Distributor'>
-					<Link href={`/distributor/${data.distributor.slug}`}>
-						<h5 className='mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white'>
-							{data.distributor.name}
-						</h5>
-					</Link>
-				</Card>
-			</div>
-
-			<div className='grid md:grid-cols-1 lg:grid-cols-2 gap-3 md:gap-5 mt-3 md:mt-6'>
-				{data.weeks.length >= 2 && (
-					<Card title='Weekly Box Office'>
-						<TimeLineChart data={data.weeks} />
-					</Card>
-				)}
-				{data.weeks.length >= 2 && (
-					<Card title='Cumulative Box Office'>
-						<TimeLineChart
-							data={cumulativeData}
-							color='#1E3A8A'
-							allowRollUp={false}
+					<dl className='max-w-md text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700 mb-4'>
+						<ListItem
+							title={'Release Date'}
+							text={<Date dateString={releaseDate} />}
 						/>
-					</Card>
+						<ListItem
+							title={'Total Box Office'}
+							text={`£ ${data.gross.toLocaleString('en-GB')}`}
+						/>
+						<ListItem title={'Multiple'} text={`x${multiple}`} />
+						<ListItem
+							title={'Distributor'}
+							text={
+								<BadgeLink
+									text={toTitleCase(data.distributor.name)}
+									link={`/distributor/${data.distributor.slug}`}
+								/>
+							}
+						/>
+						<ListItem
+							title={'Country'}
+							text={data.countries.map((country) => {
+								return (
+									<BadgeLink
+										key={country.id}
+										text={country.name}
+										link={`/country/${country.slug}`}
+									/>
+								);
+							})}
+						/>
+						<ListItem
+							title={'Compare'}
+							text={
+								<BadgeLink text={'Compare'} link={`/compare?id=${data.id}`} />
+							}
+						/>
+					</dl>
+
+					<DatasourceButton />
+					{data.weeks && (
+						<ExportCSV data={data.weeks} filename={`${data.name}_data.csv`} />
+					)}
+				</div>
+
+				{/* Charts */}
+				{data.weeks.length >= 2 && (
+					<div className='col-span-3'>
+						<div className='flex flex-col gap-4 divide-y divide-gray-200 dark:divide-gray-700'>
+							<div className=''>
+								<p className='font-normal text-sm text-gray-700 dark:text-gray-400'>
+									Weekly Box Office
+								</p>
+								<TimeLineChart data={data.weeks} />
+							</div>
+
+							<div className=''>
+								<p className='font-normal text-sm text-gray-700 dark:text-gray-400'>
+									Cumulative Box Office
+								</p>
+								<TimeLineChart
+									data={cumulativeData}
+									color='#1E3A8A'
+									allowRollUp={false}
+								/>
+							</div>
+						</div>
+					</div>
 				)}
 			</div>
 
-			<div className='flex flex-row-reverse my-6'>
-				<DatasourceButton />
-				{data.weeks && (
-					<ExportCSV data={data.weeks} filename={`${data.name}_data.csv`} />
-				)}
-			</div>
+			<div className='flex flex-row-reverse my-6'></div>
 
 			<BoxOfficeTable data={data} />
 		</div>
