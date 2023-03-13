@@ -58,6 +58,7 @@ export const TimeLineChart = ({
 				borderColor: [color],
 				pointStyle: 'circle',
 				pointRadius: 4,
+				pointBackgroundColor: '#06b6d4',
 				borderWidth: 1,
 				tension: 0.1,
 				yAxisID: 'y',
