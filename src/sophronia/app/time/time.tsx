@@ -273,20 +273,27 @@ export const TimePage = ({
 							</Tooltip>
 						</ListItem>
 
-						<ListItem title={'Admissions'} text={admissions?.toLocaleString()}>
-							<Tooltip text='Change from last year'>
-								<MetricChange value={changeAdmissions} />
-							</Tooltip>
-						</ListItem>
+						{admissions && (
+							<ListItem
+								title={'Admissions'}
+								text={admissions?.toLocaleString()}
+							>
+								<Tooltip text='Change from last year'>
+									<MetricChange value={changeAdmissions} />
+								</Tooltip>
+							</ListItem>
+						)}
 
-						<ListItem
-							title={'Average Ticket Price'}
-							text={`£ ${averageTicketPrice.toLocaleString()}`}
-						>
-							<Tooltip text='Change from last year'>
-								<MetricChange value={changeAverageTicketPrice} />
-							</Tooltip>
-						</ListItem>
+						{admissions && (
+							<ListItem
+								title={'Average Ticket Price'}
+								text={`£ ${averageTicketPrice.toLocaleString()}`}
+							>
+								<Tooltip text='Change from last year'>
+									<MetricChange value={changeAverageTicketPrice} />
+								</Tooltip>
+							</ListItem>
+						)}
 
 						<ListItem
 							title={'Site Average'}
