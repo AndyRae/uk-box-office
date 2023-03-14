@@ -243,7 +243,6 @@ export const TimePage = ({
 				endpoint={pathname as string}
 				time={pageTitle}
 			/>
-			{isReachedEnd ? '' : <ProgressBar value={percentFetched} />}
 
 			<div className='grid grid-cols-1 md:grid-cols-5 gap-3 md:gap-5'>
 				<div className='col-span-2'>
@@ -301,38 +300,36 @@ export const TimePage = ({
 					</DescriptionList>
 				</div>
 
-				{isReachedEnd && (
-					<div className='col-span-3 flex flex-col gap-4 divide-y divide-gray-200 dark:divide-gray-700'>
-						{weekData &&
-							!isWeekView &&
-							(isReachedEnd ? (
+				<div className='col-span-3 flex flex-col gap-4 divide-y divide-gray-200 dark:divide-gray-700'>
+					{!isReachedEnd ? (
+						<ProgressBar value={percentFetched} />
+					) : (
+						<>
+							{!isWeekView && (
 								<div className='my-4'>
 									<p className='font-bold text-sm text-gray-700 dark:text-gray-400'>
 										Box Office
 									</p>
 									<TimeLineChart data={results} />
 								</div>
-							) : (
-								<Card title='Box Office' status='transparent'>
-									<TimeLineChart data={[]} />
-								</Card>
-							))}
+							)}
 
-						<div className='my-4'>
-							<p className='font-bold text-sm text-gray-700 dark:text-gray-400 mt-4'>
-								Films
-							</p>
-							<StackedBarChart data={results} />
-						</div>
+							<div className='my-4'>
+								<p className='font-bold text-sm text-gray-700 dark:text-gray-400 mt-4'>
+									Films
+								</p>
+								<StackedBarChart data={results} />
+							</div>
 
-						<div className='my-4'>
-							<p className='font-bold text-sm text-gray-700 dark:text-gray-400 mt-4'>
-								Previous Years
-							</p>
-							<PreviousYearsChart data={timeComparisonData!.results} />
-						</div>
-					</div>
-				)}
+							<div className='my-4'>
+								<p className='font-bold text-sm text-gray-700 dark:text-gray-400 mt-4'>
+									Previous Years
+								</p>
+								<PreviousYearsChart data={timeComparisonData!.results} />
+							</div>
+						</>
+					)}
+				</div>
 			</div>
 
 			<div className='py-3'>
