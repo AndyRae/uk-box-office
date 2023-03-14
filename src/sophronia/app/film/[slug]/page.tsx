@@ -1,7 +1,7 @@
-import Link from 'next/link';
 import { BoxOfficeTable } from './BoxOfficeTable';
 import { PageTitle } from 'components/ui/PageTitle';
-import { Card } from 'components/ui/Card';
+import { BadgeLink } from 'components/ui/BadgeLink';
+import { ListItem } from 'components/ui/ListItem';
 import { Date } from 'components/Date';
 import { StructuredTimeData } from 'components/StructuredData';
 import { DatasourceButton } from 'components/Dashboard/Datasource';
@@ -10,7 +10,6 @@ import { TimeLineChart } from 'components/charts/TimeLineChart';
 import { toTitleCase } from 'lib/utils/toTitleCase';
 
 import { getFilm } from './getFilm';
-import { BoxOfficeWeek } from 'interfaces/BoxOffice';
 
 export async function generateMetadata({
 	params,
@@ -56,26 +55,6 @@ export async function generateMetadata({
 		},
 	};
 }
-
-const ListItem = ({ title, text }: { title: string; text: any }) => {
-	return (
-		<div className='flex flex-col pb-3'>
-			<dt className='mb-1 text-gray-500 dark:text-gray-400'>{title}</dt>
-			<dd className='font-semibold'>{text}</dd>
-		</div>
-	);
-};
-
-const BadgeLink = ({ text, link }: { text: string; link: string }) => {
-	return (
-		<Link
-			href={link}
-			className='text-bo-primary text-sm font-semibold mr-2 px-2.5 py-1 rounded-lg dark:bg-black dark:text-bo-primary border border-bo-primary bg-gradient-to-br from-transparent to-transparent hover:from-bo-primary hover:to-cyan-500 hover:text-white'
-		>
-			{text}
-		</Link>
-	);
-};
 
 export default async function Page({
 	params,
