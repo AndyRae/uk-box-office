@@ -5,6 +5,7 @@ import { FilmWithWeeks } from 'interfaces/Film';
 import Link from 'next/link';
 import { calculateNumberOfCinemas } from 'lib/utils/groupData';
 import { Date } from 'components/Date';
+import { toTitleCase } from '../../lib/utils/toTitleCase';
 
 type TableProps = {
 	data: FilmWithWeeks[];
@@ -48,12 +49,12 @@ export const CompareTable = ({ data }: TableProps): JSX.Element => {
 							></span>
 						</Td>
 						<Td isHighlight>
-							<Link href={`/film/${film.slug}`}>{film.name}</Link>
+							<Link href={`/film/${film.slug}`}>{toTitleCase(film.name)}</Link>
 						</Td>
 						<Td>
 							<Date dateString={releaseDate} />
 						</Td>
-						<Td>{film.distributor.name}</Td>
+						<Td>{toTitleCase(film.distributor.name)}</Td>
 						<Td isNumeric>£ {film.gross.toLocaleString()}</Td>
 						<Td isNumeric>{film.weeks.length}</Td>
 						<Td isNumeric>x{multiple}</Td>
