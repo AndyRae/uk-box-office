@@ -1,4 +1,5 @@
 import { BoxOfficeTable } from './BoxOfficeTable';
+import { DescriptionList } from 'components/ui/DescriptionList';
 import { PageTitle } from 'components/ui/PageTitle';
 import { BadgeLink } from 'components/ui/BadgeLink';
 import { ListItem } from 'components/ui/ListItem';
@@ -94,16 +95,19 @@ export default async function Page({
 						{isFirstWeek && `(${releaseDate.split('-')[0]})`}
 					</PageTitle>
 
-					<dl className='max-w-md text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700 mb-4'>
+					<DescriptionList>
 						<ListItem
 							title={'Release Date'}
 							text={<Date dateString={releaseDate} />}
 						/>
+
 						<ListItem
 							title={'Total Box Office'}
 							text={`£ ${data.gross.toLocaleString('en-GB')}`}
 						/>
+
 						<ListItem title={'Multiple'} text={`x${multiple}`} />
+
 						<ListItem
 							title={'Distributor'}
 							text={
@@ -113,6 +117,7 @@ export default async function Page({
 								/>
 							}
 						/>
+
 						<ListItem
 							title={'Country'}
 							text={data.countries.map((country) => {
@@ -125,13 +130,14 @@ export default async function Page({
 								);
 							})}
 						/>
+
 						<ListItem
 							title={'Compare'}
 							text={
 								<BadgeLink text={'Compare'} link={`/compare?id=${data.id}`} />
 							}
 						/>
-					</dl>
+					</DescriptionList>
 
 					<DatasourceButton />
 					{data.weeks && (

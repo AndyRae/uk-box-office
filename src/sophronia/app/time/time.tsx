@@ -11,6 +11,8 @@ import { Tooltip } from 'components/ui/Tooltip';
 import { Tabs } from 'components/ui/Tabs';
 import { Card } from 'components/ui/Card';
 import { ExportCSV } from 'components/ui/ExportCSV';
+import { ListItem } from 'components/ui/ListItem';
+import { DescriptionList } from 'components/ui/DescriptionList';
 import { StructuredTimeData } from 'components/StructuredData';
 import { DatasourceButton } from 'components/Dashboard/Datasource';
 import { MetricChange } from 'components/charts/MetricChange';
@@ -235,153 +237,104 @@ export const TimePage = ({
 	}${quarterend ? ` - Q${quarterend}` : ''} ${year}`;
 
 	return (
-		<div>
+		<>
 			<StructuredTimeData
 				title={`UK Box Office ${pageTitle}`}
 				endpoint={pathname as string}
 				time={pageTitle}
 			/>
-			<PageTitle>UK Box Office {pageTitle}</PageTitle>
 			{isReachedEnd ? '' : <ProgressBar value={percentFetched} />}
-			<div className='grid md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5'>
-				<Card
-					title='Total Box Office'
-					subtitle={isReachedEnd && `£${boxOffice.toLocaleString()}`}
-					status='transparent'
-				>
-					{isReachedEnd && (
-						<Tooltip text='Change from last year'>
-							<MetricChange value={changeWeek} />{' '}
-						</Tooltip>
-					)}
-				</Card>
 
-				<Card
-					title='Weekend Box Office'
-					subtitle={isReachedEnd && `£${weekendBoxOffice.toLocaleString()}`}
-					status='transparent'
-				>
-					{isReachedEnd && (
-						<Tooltip text='Change from last year'>
-							{' '}
-							<MetricChange value={changeWeekend} />{' '}
-						</Tooltip>
-					)}
-				</Card>
+			<div className='grid grid-cols-1 md:grid-cols-5 gap-3 md:gap-5'>
+				<div className='col-span-2'>
+					<PageTitle>UK Box Office {pageTitle}</PageTitle>
 
-				<Card
-					title='New Releases'
-					subtitle={isReachedEnd && `${numberOfNewFilms}`}
-					status='transparent'
-				>
-					{isReachedEnd && (
-						<Tooltip text='Change from last year'>
-							{' '}
-							<MetricChange value={changeNewFilms} />{' '}
-						</Tooltip>
-					)}
-				</Card>
-
-				{!isWeekView && admissions && (
-					<Card
-						title='Admissions'
-						subtitle={isReachedEnd && `${admissions.toLocaleString()}`}
-						status='transparent'
-					>
-						{isReachedEnd && (
+					<DescriptionList>
+						<ListItem
+							title={'Total Box Office'}
+							text={`£ ${boxOffice.toLocaleString()}`}
+						>
 							<Tooltip text='Change from last year'>
-								{' '}
-								<MetricChange value={changeAdmissions} />{' '}
+								<MetricChange value={changeWeek} />
 							</Tooltip>
-						)}
-					</Card>
-				)}
+						</ListItem>
 
-				<Card title='Box Office Previous Years' status='transparent'>
-					{isReachedEnd &&
-						timeComparisonData!.results.slice(1, 4).map((year, index) => {
-							return (
-								<div key={index} className='text-center tabular-nums'>
-									<Link
-										href={`/time/${year.year}${
-											quarter ? '/q/' + quarter : month ? '/m/' + month : ''
-										}${quarterend ? '/' + quarterend : ''}`}
-										className='font-bold text-left'
-									>
-										{year.year}
-									</Link>
-									: {`£${year.week_gross.toLocaleString()}`}
+						<ListItem
+							title={'Weekend Box Office'}
+							text={`£ ${weekendBoxOffice.toLocaleString()}`}
+						>
+							<Tooltip text='Change from last year'>
+								<MetricChange value={changeWeekend} />
+							</Tooltip>
+						</ListItem>
+
+						<ListItem title={'New Releases'} text={numberOfNewFilms}>
+							<Tooltip text='Change from last year'>
+								<MetricChange value={changeNewFilms} />
+							</Tooltip>
+						</ListItem>
+
+						<ListItem title={'Admissions'} text={admissions?.toLocaleString()}>
+							<Tooltip text='Change from last year'>
+								<MetricChange value={changeAdmissions} />
+							</Tooltip>
+						</ListItem>
+
+						<ListItem
+							title={'Average Ticket Price'}
+							text={`£ ${averageTicketPrice.toLocaleString()}`}
+						>
+							<Tooltip text='Change from last year'>
+								<MetricChange value={changeAverageTicketPrice} />
+							</Tooltip>
+						</ListItem>
+
+						<ListItem
+							title={'Site Average'}
+							text={`£ ${siteAverage.toLocaleString()}`}
+						/>
+						<ListItem title={'Cinemas'} text={numberOfCinemas}>
+							<Tooltip text='Change from last year'>
+								<MetricChange value={changeCinemas} />
+							</Tooltip>
+						</ListItem>
+					</DescriptionList>
+				</div>
+
+				{isReachedEnd && (
+					<div className='col-span-3 flex flex-col gap-4 divide-y divide-gray-200 dark:divide-gray-700'>
+						{weekData &&
+							!isWeekView &&
+							(isReachedEnd ? (
+								<div className='my-4'>
+									<p className='font-bold text-sm text-gray-700 dark:text-gray-400'>
+										Box Office
+									</p>
+									<TimeLineChart data={results} />
 								</div>
-							);
-						})}
-				</Card>
+							) : (
+								<Card title='Box Office' status='transparent'>
+									<TimeLineChart data={[]} />
+								</Card>
+							))}
 
-				{!isWeekView && admissions && (
-					<Card
-						title='Average Ticket Price'
-						subtitle={
-							isReachedEnd && `£ ${averageTicketPrice.toLocaleString()}`
-						}
-						status='transparent'
-					>
-						{isReachedEnd && (
-							<Tooltip text='Change from last year'>
-								{' '}
-								<MetricChange value={changeAverageTicketPrice} />{' '}
-							</Tooltip>
-						)}
-					</Card>
-				)}
+						<div className='my-4'>
+							<p className='font-bold text-sm text-gray-700 dark:text-gray-400 mt-4'>
+								Films
+							</p>
+							<StackedBarChart data={results} />
+						</div>
 
-				{!isWeekView && admissions && (
-					<Card
-						title='Site Average'
-						subtitle={isReachedEnd && `£ ${siteAverage.toLocaleString()}`}
-						status='transparent'
-					></Card>
-				)}
-
-				{!isWeekView && admissions && (
-					<Card
-						title='Cinemas'
-						subtitle={isReachedEnd && `${numberOfCinemas}`}
-						status='transparent'
-					>
-						{isReachedEnd && (
-							<Tooltip text='Change from last year'>
-								{' '}
-								<MetricChange value={changeCinemas} />{' '}
-							</Tooltip>
-						)}
-					</Card>
+						<div className='my-4'>
+							<p className='font-bold text-sm text-gray-700 dark:text-gray-400 mt-4'>
+								Previous Years
+							</p>
+							<PreviousYearsChart data={timeComparisonData!.results} />
+						</div>
+					</div>
 				)}
 			</div>
-			{/* // Charts */}
-			<div
-				className={`grid grid-cols-1 ${gridColumns} gap-3 md:gap-5 mt-3 mb-3 md:mb-5 md:mt-5`}
-			>
-				{weekData &&
-					!isWeekView &&
-					(isReachedEnd ? (
-						<Card title='Box Office' status='transparent'>
-							<TimeLineChart data={results} />
-						</Card>
-					) : (
-						<Card title='Box Office' status='transparent'>
-							<TimeLineChart data={[]} />
-						</Card>
-					))}
 
-				<Card title='Films' status='transparent'>
-					{isReachedEnd && <StackedBarChart data={results} />}
-				</Card>
-
-				<Card title='Previous Years' status='transparent'>
-					{isReachedEnd && (
-						<PreviousYearsChart data={timeComparisonData!.results} />
-					)}
-				</Card>
-			</div>
 			<div className='py-3'>
 				<ul className='flex flex-wrap my-2 text-sm font-medium text-center text-gray-500 dark:text-gray-400'>
 					<PillLink to={`/time/${year}`} isActive={true}>
@@ -482,6 +435,6 @@ export const TimePage = ({
 					)}
 				</div>
 			</Tabs>
-		</div>
+		</>
 	);
 };
