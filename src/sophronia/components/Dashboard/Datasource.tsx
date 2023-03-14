@@ -10,7 +10,7 @@ import { RiSeedlingLine } from 'react-icons/ri';
 export const DatasourceCard = (): JSX.Element => {
 	return (
 		<div className='ml-2'>
-			<Card size='sm'>
+			<Card size='sm' status='transparent'>
 				<div className='text-xs italic text-gray-700 dark:text-gray-400'>
 					<a
 						href='https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures'

@@ -247,6 +247,7 @@ export const TimePage = ({
 				<Card
 					title='Total Box Office'
 					subtitle={isReachedEnd && `£${boxOffice.toLocaleString()}`}
+					status='transparent'
 				>
 					{isReachedEnd && (
 						<Tooltip text='Change from last year'>
@@ -258,6 +259,7 @@ export const TimePage = ({
 				<Card
 					title='Weekend Box Office'
 					subtitle={isReachedEnd && `£${weekendBoxOffice.toLocaleString()}`}
+					status='transparent'
 				>
 					{isReachedEnd && (
 						<Tooltip text='Change from last year'>
@@ -270,6 +272,7 @@ export const TimePage = ({
 				<Card
 					title='New Releases'
 					subtitle={isReachedEnd && `${numberOfNewFilms}`}
+					status='transparent'
 				>
 					{isReachedEnd && (
 						<Tooltip text='Change from last year'>
@@ -283,6 +286,7 @@ export const TimePage = ({
 					<Card
 						title='Admissions'
 						subtitle={isReachedEnd && `${admissions.toLocaleString()}`}
+						status='transparent'
 					>
 						{isReachedEnd && (
 							<Tooltip text='Change from last year'>
@@ -293,7 +297,7 @@ export const TimePage = ({
 					</Card>
 				)}
 
-				<Card title='Box Office Previous Years'>
+				<Card title='Box Office Previous Years' status='transparent'>
 					{isReachedEnd &&
 						timeComparisonData!.results.slice(1, 4).map((year, index) => {
 							return (
@@ -318,6 +322,7 @@ export const TimePage = ({
 						subtitle={
 							isReachedEnd && `£ ${averageTicketPrice.toLocaleString()}`
 						}
+						status='transparent'
 					>
 						{isReachedEnd && (
 							<Tooltip text='Change from last year'>
@@ -332,11 +337,16 @@ export const TimePage = ({
 					<Card
 						title='Site Average'
 						subtitle={isReachedEnd && `£ ${siteAverage.toLocaleString()}`}
+						status='transparent'
 					></Card>
 				)}
 
 				{!isWeekView && admissions && (
-					<Card title='Cinemas' subtitle={isReachedEnd && `${numberOfCinemas}`}>
+					<Card
+						title='Cinemas'
+						subtitle={isReachedEnd && `${numberOfCinemas}`}
+						status='transparent'
+					>
 						{isReachedEnd && (
 							<Tooltip text='Change from last year'>
 								{' '}
