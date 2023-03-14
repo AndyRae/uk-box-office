@@ -353,20 +353,20 @@ export const TimePage = ({
 				{weekData &&
 					!isWeekView &&
 					(isReachedEnd ? (
-						<Card title='Box Office'>
+						<Card title='Box Office' status='transparent'>
 							<TimeLineChart data={results} />
 						</Card>
 					) : (
-						<Card title='Box Office'>
+						<Card title='Box Office' status='transparent'>
 							<TimeLineChart data={[]} />
 						</Card>
 					))}
 
-				<Card title='Films'>
+				<Card title='Films' status='transparent'>
 					{isReachedEnd && <StackedBarChart data={results} />}
 				</Card>
 
-				<Card title='Previous Years'>
+				<Card title='Previous Years' status='transparent'>
 					{isReachedEnd && (
 						<PreviousYearsChart data={timeComparisonData!.results} />
 					)}

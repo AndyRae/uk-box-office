@@ -14,12 +14,19 @@ const alignStyle: { [key in Align]: string } = {
 	right: 'text-right',
 };
 
-type Status = 'default' | 'warning' | 'success' | 'error' | string;
+type Status =
+	| 'default'
+	| 'transparent'
+	| 'warning'
+	| 'success'
+	| 'error'
+	| string;
 const statusStyle: { [key in Status]: string } = {
-	default: 'bg-white dark:bg-gray-900',
-	success: 'bg-green-300 dark:bg-green-800/[.5]',
-	warning: 'bg-yellow-300 dark:bg-yellow-500/[.5]',
-	error: 'bg-red-300 dark:bg-red-800/[.5]',
+	default: 'bg-gray-100 dark:bg-gray-900 shadow-lg',
+	transparent: 'bg-white dark:bg-black',
+	success: 'bg-green-300 dark:bg-green-800/[.5] shadow-lg',
+	warning: 'bg-yellow-300 dark:bg-yellow-500/[.5] shadow-lg',
+	error: 'bg-red-300 dark:bg-red-800/[.5] shadow-lg',
 };
 
 type CardProps = {
@@ -48,7 +55,7 @@ export const Card = ({
 	return (
 		<div
 			className={clsx(
-				'p-2 max-w-full rounded-lg shadow-lg',
+				'p-2 max-w-full rounded-lg',
 				sizeStyle[size],
 				alignStyle[align],
 				statusStyle[status]

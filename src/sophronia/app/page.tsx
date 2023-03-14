@@ -199,11 +199,11 @@ export default function Home(): JSX.Element {
 			{/* Charts */}
 			{isReachedEnd ? (
 				<div className='grid md:grid-cols-1 mt-3 md:mt-6 lg:grid-cols-2 gap-3 md:gap-5'>
-					<Card title='Box Office'>
+					<Card title='Box Office' status='transparent'>
 						{isReachedEnd && <TimeLineChart data={results} height='md' />}
 					</Card>
 
-					<Card title='Films'>
+					<Card title='Films' status='transparent'>
 						{isReachedEnd && (
 							<div className='mt-6'>
 								<StackedBarChart data={results} height='md' />
