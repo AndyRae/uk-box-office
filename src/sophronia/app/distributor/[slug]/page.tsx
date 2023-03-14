@@ -1,6 +1,7 @@
 import { getDistributor } from './getDistributor';
 import { PageTitle } from 'components/ui/PageTitle';
 import { DistributorFilmsList } from './DistributorFilmsList';
+import { toTitleCase } from 'lib/utils/toTitleCase';
 
 export async function generateMetadata({
 	params,
@@ -49,7 +50,7 @@ export default async function Page({
 
 	return (
 		<div>
-			<PageTitle>{data.name}</PageTitle>
+			<PageTitle>{toTitleCase(data.name)}</PageTitle>
 			<DistributorFilmsList slug={params.slug} />
 		</div>
 	);

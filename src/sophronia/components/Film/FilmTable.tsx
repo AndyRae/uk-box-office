@@ -1,6 +1,7 @@
 import { Film } from 'interfaces/Film';
 import Link from 'next/link';
 import { BaseTable, Td, Tr } from '../charts/BaseTable';
+import { toTitleCase } from 'lib/utils/toTitleCase';
 
 /**
  * @description Film Table component
@@ -25,9 +26,9 @@ export const FilmTable = ({
 			{films.results.map((film, index) => (
 				<Tr key={film.id} index={index}>
 					<Td isHighlight>
-						<Link href={`/film/${film.slug}`}>{film.name}</Link>
+						<Link href={`/film/${film.slug}`}>{toTitleCase(film.name)}</Link>
 					</Td>
-					<Td>{film.distributor.name}</Td>
+					<Td>{toTitleCase(film.distributor.name)}</Td>
 					<Td isNumeric>£ {film.gross.toLocaleString('en-GB')}</Td>
 				</Tr>
 			))}

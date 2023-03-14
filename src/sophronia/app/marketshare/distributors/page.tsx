@@ -98,9 +98,7 @@ export default async function Page() {
 
 			<div className='my-10'>
 				{data && (
-					<Card>
-						<MarketShareChart uniqueYears={uniqueYears} graphData={graphData} />
-					</Card>
+					<MarketShareChart uniqueYears={uniqueYears} graphData={graphData} />
 				)}
 			</div>
 
