@@ -9,7 +9,7 @@ export const PageContent = ({
 	children: React.ReactNode;
 }): JSX.Element => {
 	return (
-		<div className='flex flex-col max-w-xl space leading-7 space-between gap-4'>
+		<div className='flex flex-col max-w-xl space leading-7 font-bold text-lg space-between gap-4'>
 			{children}
 		</div>
 	);

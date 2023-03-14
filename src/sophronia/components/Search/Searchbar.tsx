@@ -43,14 +43,14 @@ export const Searchbar = ({
 						type='search'
 						id='search'
 						placeholder={placeholder}
-						className='block p-2 w-full text-sm text-gray-900 bg-white rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+						className='block p-2 w-full text-sm text-gray-900 bg-gray-100 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
 						{...register('Search', {})}
 						required
 					/>
 					<button
 						type='submit'
 						aria-label='Search'
-						className='absolute top-0 right-0 p-2 text-sm font-medium text-white bg-bo-primary rounded-r-lg border-1 border-bo-primary hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-red-300'
+						className='absolute top-0 right-0 p-2 text-sm font-medium text-white bg-bo-primary rounded-r-lg border-1 border-bo-primary bg-gradient-to-br from-bo-primary to-cyan-500 focus:ring-4 focus:outline-none focus:ring-red-300'
 					>
 						<AiOutlineSearch className='h-5 w-5' />
 					</button>

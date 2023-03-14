@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { BaseTable, Td, Tr } from '../charts/BaseTable';
 import { MetricChange } from '../charts/MetricChange';
 import { BoxOfficeWeek, TableData } from 'interfaces/BoxOffice';
+import { toTitleCase } from 'lib/utils/toTitleCase';
 
 /**
  * @description Film Table component for the time view.
@@ -56,9 +57,11 @@ export const FilmTableDetailed = ({
 					<Tr key={film.filmSlug} index={index}>
 						<Td isNumeric>{index + 1}</Td>
 						<Td isHighlight>
-							<Link href={`/film/${film.filmSlug}`}>{film.title}</Link>
+							<Link href={`/film/${film.filmSlug}`}>
+								{toTitleCase(film.title)}
+							</Link>
 						</Td>
-						<Td>{film.distributor}</Td>
+						<Td>{toTitleCase(film.distributor)}</Td>
 						<Td isNumeric>£ {film.weekendGross.toLocaleString('en-GB')}</Td>
 						<Td isNumeric>£ {film.weekGross.toLocaleString('en-GB')}</Td>
 						{comparisonData && (

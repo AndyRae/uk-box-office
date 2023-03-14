@@ -124,7 +124,6 @@ export default function Page(): JSX.Element {
 			<AsyncSelect
 				isMulti
 				cacheOptions
-				// loadOptions={promiseOptions}
 				loadOptions={loadOptions}
 				onChange={handleOptionChange}
 				className='compare-select-container'
@@ -147,10 +146,10 @@ export default function Page(): JSX.Element {
 					</div>
 
 					<div className='grid md:grid-cols-1 lg:grid-cols-2 gap-3 md:gap-5 mt-3 md:mt-6'>
-						<Card title='Weekly Box Office'>
+						<Card title='Weekly Box Office' status='transparent'>
 							<CompareTotalChart data={filmData} />
 						</Card>
-						<Card title='Cumulative Box Office'>
+						<Card title='Cumulative Box Office' status='transparent'>
 							<CompareCumulativeChart data={filmData} />
 						</Card>
 					</div>

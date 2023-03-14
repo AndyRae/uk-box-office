@@ -19,7 +19,7 @@ type TimeLineChartProps = {
  * @param {Boolean} props.allowRollUp - Allow rolling up the data to monthly data.
  * @returns {JSX.Element}
  * @example
- * <TimeLineChart data={data} height={'lg'} color="#B65078" allowRollUp={true} />
+ * <TimeLineChart data={data} height={'lg'} color="#10b981" allowRollUp={true} />
  */
 export const CompareCumulativeChart = ({
 	data,

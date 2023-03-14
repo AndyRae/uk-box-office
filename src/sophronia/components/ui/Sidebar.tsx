@@ -81,6 +81,24 @@ export const Brand = (): JSX.Element => {
 	);
 };
 
+const Announcement = (): JSX.Element => {
+	return (
+		<Card align='left' size='sm'>
+			<div className='flex  mb-3'>
+				<span className='bg-bo-primary text-gray-50 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded'>
+					Beta
+				</span>
+			</div>
+			<p className='mb-3 text-sm text-gray-900 dark:text-gray-50'>
+				This is a beta version of the Box Office Data dashboard.
+				<br></br>
+				I'm always still working on it and would love to{' '}
+				<InlineLink to='/contact'>get your feedback</InlineLink>.
+			</p>
+		</Card>
+	);
+};
+
 /**
  * SidebarContent component
  * @returns {JSX.Element}
@@ -110,20 +128,6 @@ const SidebarContent = (): JSX.Element => {
 				</nav>
 
 				<Searchbar />
-
-				<Card align='left' size='sm'>
-					<div className='flex  mb-3'>
-						<span className='bg-bo-primary text-gray-50 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded'>
-							Beta
-						</span>
-					</div>
-					<p className='mb-3 text-sm text-gray-900 dark:text-gray-50'>
-						This is a beta version of the Box Office Data dashboard.
-						<br></br>
-						I'm always still working on it and would love to{' '}
-						<InlineLink to='/contact'>get your feedback</InlineLink>.
-					</p>
-				</Card>
 			</div>
 		</div>
 	);
@@ -179,7 +183,7 @@ export const Sidebar = ({
 			<input type='checkbox' id='menu-open' className='hidden' />
 
 			{/* Mobile menu */}
-			<header className='bg-white dark:bg-gray-900 dark:text-gray-100 flex sticky top-0 justify-between lg:hidden z-10'>
+			<header className='bg-white dark:bg-black dark:text-gray-100 flex sticky top-0 justify-between lg:hidden z-10'>
 				<div className='mt-6 px-3'>
 					<Brand />
 				</div>
@@ -197,7 +201,7 @@ export const Sidebar = ({
 			{/* Sidebar */}
 			<aside
 				id='sidebar'
-				className='bg-bo-grey dark:bg-black h-screen fixed lg:sticky dark:text-gray-100 w-72 grow-0 space-y-6 pt-6 px-3 inset-y-0 left-0 transform  lg:translate-x-0 transition duration-150 ease-in-out lg:flex-none overflow-y-auto'
+				className='bg-bo-white dark:bg-black h-screen fixed lg:sticky dark:text-gray-100 w-72 grow-0 space-y-6 pt-6 px-3 inset-y-0 left-0 transform  lg:translate-x-0 transition duration-150 ease-in-out lg:flex-none overflow-y-auto'
 			>
 				<SidebarContent />
 			</aside>

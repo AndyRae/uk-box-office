@@ -21,7 +21,7 @@ export const LastUpdated = ({ date }: { date: string }): JSX.Element => {
 
 	return (
 		<div className='md:ml-auto'>
-			<Card size='sm'>
+			<Card size='sm' status='transparent'>
 				<div
 					className='text-xs italic text-gray-700 dark:text-gray-400'
 					suppressHydrationWarning

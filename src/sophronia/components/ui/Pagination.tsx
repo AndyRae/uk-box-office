@@ -25,7 +25,7 @@ export const Pagination = ({
 					<li>
 						<button
 							onClick={() => setPageIndex(pageIndex - 1)}
-							className='py-2 px-3 ml-0 leading-tight rounded-l-lg border border-gray-300 hover:bg-bo-primary hover:text-white dark:border-gray-700 transition-all duration-300'
+							className='py-2 px-3 ml-0 leading-tight rounded-l-lg border border-gray-300 bg-gradient-to-br from-transparent to-transparent hover:from-bo-primary hover:to-cyan-500 hover:text-white dark:border-gray-700 transition-all duration-300'
 						>
 							Previous
 						</button>
@@ -37,8 +37,10 @@ export const Pagination = ({
 						<li key={index}>
 							<button
 								onClick={() => setPageIndex(page)}
-								className={`py-2 px-3 leading-tight border border-gray-300 hover:bg-bo-primary hover:text-white dark:border-gray-700 transition-all duration-300 ${
-									isActive ? 'bg-bo-primary text-white' : ''
+								className={`py-2 px-3 leading-tight border border-gray-300 bg-gradient-to-br  hover:from-bo-primary hover:to-cyan-500 hover:text-white dark:border-gray-700 transition-all duration-300 ${
+									isActive
+										? 'from-bo-primary to-cyan-500 text-white'
+										: 'from-transparent to-transparent'
 								}`}
 							>
 								{page}
@@ -50,7 +52,7 @@ export const Pagination = ({
 					<li>
 						<button
 							onClick={() => setPageIndex(pageIndex + 1)}
-							className='py-2 px-3 leading-tight rounded-r-lg border border-gray-300 hover:bg-bo-primary hover:text-white dark:border-gray-700 transition-all duration-300'
+							className='py-2 px-3 leading-tight rounded-r-lg border border-gray-300 bg-gradient-to-br from-transparent to-transparent hover:from-bo-primary hover:to-cyan-500 hover:text-white dark:border-gray-700 transition-all duration-300'
 						>
 							Next
 						</button>

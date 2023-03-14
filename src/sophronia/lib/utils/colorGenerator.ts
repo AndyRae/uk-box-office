@@ -3,7 +3,7 @@
  * @exports interpolateColors
  */
 
-import { interpolateSpectral } from 'd3-scale-chromatic';
+import { interpolateCool } from 'd3-scale-chromatic';
 /**
  * A function to generate an array of colors based on the length of the data.
  * @param {number} i - The index of the color.
@@ -59,9 +59,9 @@ export const interpolateColors = (
  * @param {number} length - Length of the array needed
  */
 export const getDefaultColorArray = (length: number): Array<string> => {
-	const colorScale = interpolateSpectral;
+	const colorScale = interpolateCool;
 	const colorRangeInfo = {
-		colorStart: 0,
+		colorStart: 0.2,
 		colorEnd: 1,
 		useEndAsStart: false,
 	};

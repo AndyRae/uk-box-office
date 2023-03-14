@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { BaseTable, Td, Tr } from 'components/charts/BaseTable';
 import { TopFilm } from 'interfaces/Film';
+import { toTitleCase } from 'lib/utils/toTitleCase';
 
 /**
  * @description Top Films Table component
@@ -22,9 +23,11 @@ export const TopFilmsTable = ({ data }: { data: TopFilm[] }): JSX.Element => {
 					<Tr key={index} index={index}>
 						<Td isNumeric>{index + 1}</Td>
 						<Td isHighlight>
-							<Link href={`/film/${obj.film.slug}`}>{obj.film.name}</Link>
+							<Link href={`/film/${obj.film.slug}`}>
+								{toTitleCase(obj.film.name)}
+							</Link>
 						</Td>
-						<Td>{obj.film.distributor.name}</Td>
+						<Td>{toTitleCase(obj.film.distributor.name)}</Td>
 						<Td isNumeric>£ {obj.gross.toLocaleString('en-GB')}</Td>
 					</Tr>
 				);
