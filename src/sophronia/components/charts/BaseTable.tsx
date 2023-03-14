@@ -11,7 +11,7 @@
  */
 const Thead = ({ children }: { children: React.ReactNode }): JSX.Element => {
 	return (
-		<thead className='text-xs text-gray-700 uppercase border-b-2 border-b-gray-500 bg-gray-50 dark:bg-gray-900 dark:text-gray-400'>
+		<thead className='text-xs text-gray-700 capitalize border-b-2 border-b-gray-500 bg-gray-50 dark:bg-gray-900 dark:text-gray-400'>
 			{children}
 		</thead>
 	);
@@ -58,7 +58,7 @@ export const Tr = ({
 	children: React.ReactNode;
 }): JSX.Element => {
 	const alternatingColor = ['bg-white', 'bg-gray-100'];
-	const alternatingDarkColor = ['dark:bg-black', 'dark:bg-gray-900'];
+	const alternatingDarkColor = ['dark:bg-black', 'dark:bg-bo-black'];
 	return (
 		<tr
 			className={`${alternatingColor[index % alternatingColor.length]} ${

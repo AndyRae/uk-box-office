@@ -70,7 +70,7 @@ const BadgeLink = ({ text, link }: { text: string; link: string }) => {
 	return (
 		<Link
 			href={link}
-			className='bg-blue-100 hover:bg-blue-200 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400'
+			className='text-bo-primary text-sm font-semibold mr-2 px-2.5 py-1 rounded-lg dark:bg-black dark:text-bo-primary border border-bo-primary bg-gradient-to-br from-transparent to-transparent hover:from-bo-primary hover:to-cyan-500 hover:text-white'
 		>
 			{text}
 		</Link>
@@ -108,7 +108,7 @@ export default async function Page({
 				time={releaseDate}
 			/>
 
-			<div className='grid grid-cols-5 gap-3 md:gap-5'>
+			<div className='grid grid-cols-1 md:grid-cols-5 gap-3 md:gap-5'>
 				<div className='col-span-2'>
 					<PageTitle>
 						{toTitleCase(data.name)}{' '}
@@ -162,31 +162,27 @@ export default async function Page({
 
 				{/* Charts */}
 				{data.weeks.length >= 2 && (
-					<div className='col-span-3'>
-						<div className='flex flex-col gap-4 divide-y divide-gray-200 dark:divide-gray-700'>
-							<div className=''>
-								<p className='font-normal text-sm text-gray-700 dark:text-gray-400'>
-									Weekly Box Office
-								</p>
-								<TimeLineChart data={data.weeks} />
-							</div>
+					<div className='col-span-3 flex flex-col gap-4 divide-y divide-gray-200 dark:divide-gray-700'>
+						<div className='my-4'>
+							<p className='font-bold text-sm text-gray-700 dark:text-gray-400'>
+								Weekly Box Office
+							</p>
+							<TimeLineChart data={data.weeks} />
+						</div>
 
-							<div className=''>
-								<p className='font-normal text-sm text-gray-700 dark:text-gray-400'>
-									Cumulative Box Office
-								</p>
-								<TimeLineChart
-									data={cumulativeData}
-									color='#1E3A8A'
-									allowRollUp={false}
-								/>
-							</div>
+						<div className='mb-8'>
+							<p className='font-bold text-sm text-gray-700 dark:text-gray-400 mt-4'>
+								Cumulative Box Office
+							</p>
+							<TimeLineChart
+								data={cumulativeData}
+								color='#1E3A8A'
+								allowRollUp={false}
+							/>
 						</div>
 					</div>
 				)}
 			</div>
-
-			<div className='flex flex-row-reverse my-6'></div>
 
 			<BoxOfficeTable data={data} />
 		</div>
