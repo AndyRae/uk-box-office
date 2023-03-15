@@ -23,7 +23,7 @@ type Status =
 	| string;
 const statusStyle: { [key in Status]: string } = {
 	default: 'bg-gray-100 dark:bg-gray-900 shadow-lg',
-	transparent: 'bg-white dark:bg-black',
+	transparent: 'bg-white dark:bg-black border border-white',
 	success: 'bg-green-300 dark:bg-green-800/[.5] shadow-lg',
 	warning: 'bg-yellow-300 dark:bg-yellow-500/[.5] shadow-lg',
 	error: 'bg-red-300 dark:bg-red-800/[.5] shadow-lg',
