@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { BaseTable, Td, Tr } from 'components/charts/BaseTable';
 import { DistributorListData } from 'interfaces/Distributor';
+import { toTitleCase } from 'lib/utils/toTitleCase';
 
 /**
  * Distributor List component
@@ -24,7 +25,7 @@ export const DistributorList = ({
 						<Tr key={distributor.id} index={index}>
 							<Td isHighlight>
 								<Link href={`distributor/${distributor.slug}`}>
-									{distributor.name}
+									{toTitleCase(distributor.name)}
 								</Link>
 							</Td>
 						</Tr>

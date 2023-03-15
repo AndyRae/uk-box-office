@@ -5,7 +5,7 @@ import { FilmWithWeeks } from 'interfaces/Film';
 import Link from 'next/link';
 import { calculateNumberOfCinemas } from 'lib/utils/groupData';
 import { Date } from 'components/Date';
-import { toTitleCase } from '../../lib/utils/toTitleCase';
+import { toTitleCase } from 'lib/utils/toTitleCase';
 
 type TableProps = {
 	data: FilmWithWeeks[];

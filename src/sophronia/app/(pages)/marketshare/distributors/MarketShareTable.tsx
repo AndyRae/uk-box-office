@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { BaseTable, Td, Tr } from 'components/charts/BaseTable';
+import { toTitleCase } from 'lib/utils/toTitleCase';
 
 type MarketShare = {
 	name: string;
@@ -31,7 +32,9 @@ export const MarketShareTable = ({
 				return (
 					<Tr key={index} index={index}>
 						<Td isHighlight>
-							<Link href={`/distributor/${row.slug}`}>{row.name}</Link>
+							<Link href={`/distributor/${row.slug}`}>
+								{toTitleCase(row.name)}
+							</Link>
 						</Td>
 						<Td isNumeric>£ {row.marketShare.toLocaleString('en-GB')}</Td>
 						<Td isNumeric>{Math.ceil(row.marketPercentage * 100)}%</Td>
