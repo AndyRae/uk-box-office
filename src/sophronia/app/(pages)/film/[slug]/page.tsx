@@ -2,13 +2,14 @@ import { BoxOfficeTable } from './BoxOfficeTable';
 import { DescriptionList } from 'components/ui/DescriptionList';
 import { PageTitle } from 'components/ui/PageTitle';
 import { BadgeLink } from 'components/ui/BadgeLink';
-import { ListItem } from 'components/ui/ListItem';
+import { DescriptionItem } from 'components/ui/DescriptionItem';
 import { Date } from 'components/Date';
 import { StructuredTimeData } from 'components/StructuredData';
 import { DatasourceButton } from 'components/Dashboard/Datasource';
 import { ExportCSV } from 'components/ui/ExportCSV';
 import { TimeLineChart } from 'components/charts/TimeLineChart';
 import { toTitleCase } from 'lib/utils/toTitleCase';
+import { ChartWrapper } from 'components/charts/ChartWrapper';
 
 import { getFilm } from './getFilm';
 
@@ -96,19 +97,19 @@ export default async function Page({
 					</PageTitle>
 
 					<DescriptionList>
-						<ListItem
+						<DescriptionItem
 							title={'Release Date'}
 							text={<Date dateString={releaseDate} />}
 						/>
 
-						<ListItem
+						<DescriptionItem
 							title={'Total Box Office'}
 							text={`£ ${data.gross.toLocaleString('en-GB')}`}
 						/>
 
-						<ListItem title={'Multiple'} text={`x${multiple}`} />
+						<DescriptionItem title={'Multiple'} text={`x${multiple}`} />
 
-						<ListItem
+						<DescriptionItem
 							title={'Distributor'}
 							text={
 								<BadgeLink
@@ -118,7 +119,7 @@ export default async function Page({
 							}
 						/>
 
-						<ListItem
+						<DescriptionItem
 							title={'Country'}
 							text={data.countries.map((country) => {
 								return (
@@ -131,7 +132,7 @@ export default async function Page({
 							})}
 						/>
 
-						<ListItem
+						<DescriptionItem
 							title={'Compare'}
 							text={
 								<BadgeLink text={'Compare'} link={`/compare?id=${data.id}`} />
@@ -148,23 +149,17 @@ export default async function Page({
 				{/* Charts */}
 				{data.weeks.length >= 2 && (
 					<div className='col-span-3 flex flex-col gap-4 divide-y divide-gray-200 dark:divide-gray-700'>
-						<div className='my-4'>
-							<p className='font-bold text-sm text-gray-700 dark:text-gray-400'>
-								Weekly Box Office
-							</p>
+						<ChartWrapper title='Weekly Box Office' className='mb-4'>
 							<TimeLineChart data={data.weeks} />
-						</div>
+						</ChartWrapper>
 
-						<div className='mb-8'>
-							<p className='font-bold text-sm text-gray-700 dark:text-gray-400 mt-4'>
-								Cumulative Box Office
-							</p>
+						<ChartWrapper title='Cumulative Box Office' className='py-4 mb-8'>
 							<TimeLineChart
 								data={cumulativeData}
 								color='#1E3A8A'
 								allowRollUp={false}
 							/>
-						</div>
+						</ChartWrapper>
 					</div>
 				)}
 			</div>

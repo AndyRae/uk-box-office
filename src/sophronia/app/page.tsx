@@ -20,6 +20,7 @@ import { StructuredTimeData } from 'components/StructuredData';
 import { LastUpdated } from 'components/Dashboard/LastUpdated';
 import { StackedBarChart } from 'components/charts/StackedBarChart';
 import { DatasourceCard } from 'components/Dashboard/Datasource';
+import { ChartWrapper } from '../components/charts/ChartWrapper';
 
 export default function Home(): JSX.Element {
 	Date.prototype.addDays = function (days) {
@@ -211,23 +212,15 @@ export default function Home(): JSX.Element {
 			)}
 
 			{/* Charts */}
-			{isReachedEnd ? (
-				<div className='grid md:grid-cols-1 mt-3 md:mt-6 lg:grid-cols-2 gap-3 md:gap-5'>
-					<Card title='Box Office' status='transparent'>
-						{isReachedEnd && <TimeLineChart data={results} height='md' />}
-					</Card>
+			<div className='grid md:grid-cols-1 mt-3 md:mt-6 lg:grid-cols-2 gap-3 md:gap-5'>
+				<ChartWrapper title='Box Office'>
+					<TimeLineChart data={isReachedEnd ? results : []} height='md' />
+				</ChartWrapper>
 
-					<Card title='Films' status='transparent'>
-						{isReachedEnd && (
-							<div className='mt-6'>
-								<StackedBarChart data={results} height='md' />
-							</div>
-						)}
-					</Card>
-				</div>
-			) : (
-				<SkeletonCharts />
-			)}
+				<ChartWrapper title='Films' chartClassName='mt-6'>
+					<StackedBarChart data={isReachedEnd ? results : []} height='md' />
+				</ChartWrapper>
+			</div>
 
 			{/* Table */}
 			<div className='mt-3 md:mt-6'>
