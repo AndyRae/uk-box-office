@@ -1,4 +1,4 @@
-export const ListItem = ({
+export const DescriptionItem = ({
 	title,
 	text,
 	children,

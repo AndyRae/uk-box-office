@@ -11,7 +11,7 @@ import { Tooltip } from 'components/ui/Tooltip';
 import { Tabs } from 'components/ui/Tabs';
 import { Card } from 'components/ui/Card';
 import { ExportCSV } from 'components/ui/ExportCSV';
-import { ListItem } from 'components/ui/ListItem';
+import { DescriptionItem } from 'components/ui/DescriptionItem';
 import { DescriptionList } from 'components/ui/DescriptionList';
 import { StructuredTimeData } from 'components/StructuredData';
 import { DatasourceButton } from 'components/Dashboard/Datasource';
@@ -249,61 +249,61 @@ export const TimePage = ({
 					<PageTitle>UK Box Office {pageTitle}</PageTitle>
 
 					<DescriptionList>
-						<ListItem
+						<DescriptionItem
 							title={'Total Box Office'}
 							text={`£ ${boxOffice.toLocaleString()}`}
 						>
 							<Tooltip text='Change from last year'>
 								<MetricChange value={changeWeek} />
 							</Tooltip>
-						</ListItem>
+						</DescriptionItem>
 
-						<ListItem
+						<DescriptionItem
 							title={'Weekend Box Office'}
 							text={`£ ${weekendBoxOffice.toLocaleString()}`}
 						>
 							<Tooltip text='Change from last year'>
 								<MetricChange value={changeWeekend} />
 							</Tooltip>
-						</ListItem>
+						</DescriptionItem>
 
-						<ListItem title={'New Releases'} text={numberOfNewFilms}>
+						<DescriptionItem title={'New Releases'} text={numberOfNewFilms}>
 							<Tooltip text='Change from last year'>
 								<MetricChange value={changeNewFilms} />
 							</Tooltip>
-						</ListItem>
+						</DescriptionItem>
 
 						{admissions && (
-							<ListItem
+							<DescriptionItem
 								title={'Admissions'}
 								text={admissions?.toLocaleString()}
 							>
 								<Tooltip text='Change from last year'>
 									<MetricChange value={changeAdmissions} />
 								</Tooltip>
-							</ListItem>
+							</DescriptionItem>
 						)}
 
 						{admissions && (
-							<ListItem
+							<DescriptionItem
 								title={'Average Ticket Price'}
 								text={`£ ${averageTicketPrice.toLocaleString()}`}
 							>
 								<Tooltip text='Change from last year'>
 									<MetricChange value={changeAverageTicketPrice} />
 								</Tooltip>
-							</ListItem>
+							</DescriptionItem>
 						)}
 
-						<ListItem
+						<DescriptionItem
 							title={'Site Average'}
 							text={`£ ${siteAverage.toLocaleString()}`}
 						/>
-						<ListItem title={'Cinemas'} text={numberOfCinemas}>
+						<DescriptionItem title={'Cinemas'} text={numberOfCinemas}>
 							<Tooltip text='Change from last year'>
 								<MetricChange value={changeCinemas} />
 							</Tooltip>
-						</ListItem>
+						</DescriptionItem>
 					</DescriptionList>
 				</div>
 
