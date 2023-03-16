@@ -155,6 +155,7 @@ export default function Home(): JSX.Element {
 						title='Total Box Office'
 						subtitle={`£${boxOffice.toLocaleString()}`}
 						status='transparent'
+						className='border border-black dark:border-white'
 					>
 						{timeComparisonData && (
 							<Tooltip text='Change from last year'>
@@ -167,6 +168,7 @@ export default function Home(): JSX.Element {
 						title='Weekend Box Office'
 						subtitle={`£${weekendBoxOffice.toLocaleString()}`}
 						status='transparent'
+						className='border border-black dark:border-white'
 					>
 						{timeComparisonData && (
 							<Tooltip text='Change from last year'>
@@ -180,6 +182,7 @@ export default function Home(): JSX.Element {
 						title='New Releases'
 						subtitle={numberOfNewFilms}
 						status='transparent'
+						className='border border-black dark:border-white'
 					>
 						{timeComparisonData && (
 							<Tooltip text='Change from last year'>
@@ -189,7 +192,12 @@ export default function Home(): JSX.Element {
 						)}
 					</Card>
 
-					<Card title='Cinemas' subtitle={numberOfCinemas} status='transparent'>
+					<Card
+						title='Cinemas'
+						subtitle={numberOfCinemas}
+						status='transparent'
+						className='border border-black dark:border-white'
+					>
 						{timeComparisonData && (
 							<Tooltip text='Change from last year'>
 								{' '}

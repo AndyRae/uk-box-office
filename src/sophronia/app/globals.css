@@ -10,19 +10,19 @@
   /* .compare-select-container {
   } */
   .compare-select-container .compare-select__control {
-    @apply bg-white dark:bg-slate-900;
+    @apply bg-white dark:bg-black;
   }
 
   .compare-select-container .compare-select__control--is-focused {
-    @apply border-blue-500 shadow-none;
+    @apply border-bo-primary border shadow-none;
   }
 
   .compare-select-container .compare-select__menu {
-    @apply bg-neutral-100 dark:bg-slate-900;
+    @apply bg-neutral-100 dark:bg-black border border-bo-primary;
   }
 
   .compare-select-container .compare-select__option {
-    @apply text-black dark:text-neutral-200 bg-neutral-100 hover:bg-neutral-200 dark:bg-slate-900 dark:hover:bg-slate-700;
+    @apply text-black dark:text-neutral-200 bg-neutral-100 hover:bg-neutral-200 dark:bg-black dark:hover:bg-slate-700;
   }
 
   .compare-select-container .compare-select__option--is-focused {
