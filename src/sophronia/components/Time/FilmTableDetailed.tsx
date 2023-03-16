@@ -24,7 +24,7 @@ export const FilmTableDetailed = ({
 		{ label: 'title' },
 		{ label: 'distributor' },
 		{ label: 'weekend box office', isNumeric: true },
-		{ label: 'week box office', isNumeric: true },
+		{ label: 'total box office', isNumeric: true },
 		{ label: 'change weekend', isNumeric: true },
 		{ label: 'weeks', isNumeric: true },
 		{ label: 'cinemas', isNumeric: true },
