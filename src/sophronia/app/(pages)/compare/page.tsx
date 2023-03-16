@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { PageTitle } from 'components/ui/PageTitle';
-import { getFilmId } from 'app/film/[slug]/getFilm';
+import { getFilmId } from 'app/(pages)/film/[slug]/getFilm';
 import { getBackendURL } from 'lib/ApiFetcher';
 import AsyncSelect from 'react-select/async';
 import { CompareTable } from './CompareTable';

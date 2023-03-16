@@ -29,14 +29,14 @@ const statusStyle: { [key in Status]: string } = {
 	error: 'bg-red-300 dark:bg-red-800/[.5] shadow-lg',
 };
 
-type CardProps = {
+interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 	title?: string;
 	subtitle?: React.ReactNode;
 	children?: React.ReactNode;
 	size?: Size;
 	align?: Align;
 	status?: Status;
-};
+}
 
 /**
  * @file Card.jsx
@@ -48,6 +48,7 @@ export const Card = ({
 	title,
 	subtitle,
 	children,
+	className,
 	size = 'md',
 	align = 'center',
 	status = 'default',
@@ -58,7 +59,8 @@ export const Card = ({
 				'p-2 max-w-full rounded-lg',
 				sizeStyle[size],
 				alignStyle[align],
-				statusStyle[status]
+				statusStyle[status],
+				className
 			)}
 		>
 			<p className='font-normal text-sm text-gray-700 dark:text-gray-400'>

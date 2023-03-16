@@ -20,7 +20,7 @@ export const Tooltip = ({
 }: TooltipProps): JSX.Element => {
 	return (
 		<div className='group' {...props}>
-			<span className='tooltip-text text-sm font-medium shadow-md bg-slate-50 dark:bg-black dark:text-white p-1 -mt-12 -mr-10 rounded-lg hidden group-hover:block absolute text-center py-2 px-4 z-50'>
+			<span className='tooltip-text text-sm font-medium shadow-md bg-slate-50 dark:bg-black dark:text-white p-1 -mt-12 -mr-10 rounded-lg hidden group-hover:block absolute text-center py-2 px-4 z-50 border border-black dark:border-white'>
 				{text}
 			</span>
 			{children}
