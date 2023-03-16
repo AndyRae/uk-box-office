@@ -212,19 +212,15 @@ export default function Home(): JSX.Element {
 			)}
 
 			{/* Charts */}
-			{isReachedEnd ? (
-				<div className='grid md:grid-cols-1 mt-3 md:mt-6 lg:grid-cols-2 gap-3 md:gap-5'>
-					<ChartWrapper title='Box Office'>
-						<TimeLineChart data={results} height='md' />
-					</ChartWrapper>
+			<div className='grid md:grid-cols-1 mt-3 md:mt-6 lg:grid-cols-2 gap-3 md:gap-5'>
+				<ChartWrapper title='Box Office'>
+					<TimeLineChart data={isReachedEnd ? results : []} height='md' />
+				</ChartWrapper>
 
-					<ChartWrapper title='Films' chartClassName='mt-6'>
-						<StackedBarChart data={results} height='md' />
-					</ChartWrapper>
-				</div>
-			) : (
-				<SkeletonCharts />
-			)}
+				<ChartWrapper title='Films' chartClassName='mt-6'>
+					<StackedBarChart data={isReachedEnd ? results : []} height='md' />
+				</ChartWrapper>
+			</div>
 
 			{/* Table */}
 			<div className='mt-3 md:mt-6'>
