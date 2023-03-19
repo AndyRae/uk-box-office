@@ -1,6 +1,6 @@
 import { Button } from 'components/ui/button';
 import { Card } from 'components/ui/card';
-import { RiSeedlingLine } from 'react-icons/ri';
+import { Icons } from 'components/icons';
 
 /**
  * Datasource Card component
@@ -31,10 +31,11 @@ export const DatasourceCard = (): JSX.Element => {
  * @returns {JSX.Element}
  */
 export const DatasourceButton = () => {
+	const Icon = Icons['seedling'];
 	return (
 		<Button>
 			<div className='px-1'>
-				<RiSeedlingLine />
+				<Icon />
 			</div>
 			<a
 				href='https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures'

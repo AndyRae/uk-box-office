@@ -2,11 +2,12 @@
 
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { Icons } from 'components/icons';
 
 type SideBarLinkProps = {
 	name: string;
 	path: string;
-	icon: JSX.Element;
+	icon: keyof typeof Icons;
 };
 
 /**
@@ -14,7 +15,7 @@ type SideBarLinkProps = {
  * @description The sidebar link, will determine if the link is active.
  * @param {string} name - The name of the link.
  * @param {string} path - The path of the link.
- * @param {JSX.Element} icon - The icon of the link.
+ * @param {string} icon - The icon of the link.
  * @param {boolean} isActive - Whether the link is active.
  * @returns {JSX.Element}
  * @example
@@ -26,6 +27,7 @@ export const SideBarLink = ({
 	icon,
 }: SideBarLinkProps): JSX.Element => {
 	const isActive = usePathname() === path;
+	const Icon = Icons[icon];
 	return (
 		<Link
 			href={path}
@@ -33,7 +35,7 @@ export const SideBarLink = ({
 				isActive ? 'from-bo-primary to-cyan-500' : ''
 			}`}
 		>
-			{icon}
+			<Icon />
 			<span className='ml-3'>{name}</span>
 		</Link>
 	);

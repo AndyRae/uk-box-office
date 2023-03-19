@@ -1,8 +1,8 @@
 'use client';
 
-import { BsFileEarmarkSpreadsheet } from 'react-icons/bs';
 import { Button } from './button';
 import dynamic from 'next/dynamic';
+import { Icons } from 'components/icons';
 
 // Needs to be a dynamic import to work in NextJS.
 const DynamicCSV = dynamic(
@@ -26,10 +26,11 @@ export const ExportCSV = ({
 	data: any;
 	filename: string;
 }): JSX.Element => {
+	const Icon = Icons['spreadsheet'];
 	return (
 		<Button>
 			<div className='px-1'>
-				<BsFileEarmarkSpreadsheet />
+				<Icon />
 			</div>
 			{data && (
 				<DynamicCSV data={data} filename={filename}>

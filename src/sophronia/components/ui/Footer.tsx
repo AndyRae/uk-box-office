@@ -1,55 +1,5 @@
 import Link from 'next/link';
-import {
-	FaNetworkWired,
-	FaInfoCircle,
-	FaEnvelope,
-	FaFilm,
-	FaGlobeEurope,
-} from 'react-icons/fa';
-
-// Quick links to display in the footer
-const Links = [
-	{
-		name: 'Data Source',
-		path: 'https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures',
-		icon: <FaInfoCircle />,
-	},
-	{
-		name: 'Github',
-		path: 'https://github.com/andyrae/uk-box-office',
-		icon: <FaInfoCircle />,
-	},
-	{
-		name: 'About',
-		path: '/about',
-		icon: <FaInfoCircle />,
-	},
-	{
-		name: 'Contact',
-		path: '/contact',
-		icon: <FaEnvelope />,
-	},
-	{
-		name: 'Films',
-		path: '/film',
-		icon: <FaFilm />,
-	},
-	{
-		name: 'Distributors',
-		path: '/distributor',
-		icon: <FaNetworkWired />,
-	},
-	{
-		name: 'Countries',
-		path: '/country',
-		icon: <FaGlobeEurope />,
-	},
-	{
-		name: 'Status',
-		path: '/status',
-		icon: <FaGlobeEurope />,
-	},
-];
+import { footerConfig } from 'config/footer';
 
 /**
  * @file Footer.jsx
@@ -67,15 +17,12 @@ export const Footer = (): JSX.Element => {
 				</a>
 			</span>
 			<ul className='flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0'>
-				{Links.map((link) => {
-					const isLocalUrl = (link: {
-						name?: string;
-						path: string;
-						icon?: JSX.Element;
-					}) => link.path.startsWith('/');
+				{footerConfig.map((link) => {
+					const isLocalUrl = (link: string) => link.startsWith('/');
+
 					return (
 						<li key={link.name} className='mr-4 hover:underline md:mr-6'>
-							{isLocalUrl(link) ? (
+							{isLocalUrl(link.path) ? (
 								<Link href={link.path} className='mr-4 hover:underline md:mr-6'>
 									{link.name}
 								</Link>

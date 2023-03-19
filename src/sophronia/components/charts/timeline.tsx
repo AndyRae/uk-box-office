@@ -2,12 +2,12 @@
 
 import { Timeseries } from './timeseries';
 import { groupbyMonth, groupbyDate } from 'lib/utils/groupData';
-import { AiOutlineArrowDown } from 'react-icons/ai';
 import { useState, useEffect, useRef, MouseEvent } from 'react';
-import { Tooltip } from '../ui/tooltip';
+import { Tooltip } from 'components/ui/tooltip';
 import { useRouter } from 'next/navigation';
 import { getElementAtEvent } from 'react-chartjs-2';
 import { BoxOfficeWeek } from 'interfaces/BoxOffice';
+import { Icons } from 'components/icons';
 
 type TimeLineChartProps = {
 	data: BoxOfficeWeek[];
@@ -162,12 +162,14 @@ export const TimeLineChart = ({
 		}
 	};
 
+	const ArrowIcon = Icons['arrowDown'];
+
 	return (
 		<>
 			<div className='flex flex-row-reverse'>
 				{allowRollUp ? (
 					<Tooltip text={isGroupedByMonth ? 'Week' : 'Month'}>
-						<AiOutlineArrowDown
+						<ArrowIcon
 							className='h-6 w-6 transition-all duration-500'
 							style={
 								!isGroupedByMonth

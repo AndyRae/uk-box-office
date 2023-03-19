@@ -1,20 +1,15 @@
 import { StatusEvent } from 'interfaces/Event';
 import { Card } from 'components/ui/card';
 import { DateTime } from 'components/date';
-
-import { MdOutlineErrorOutline, MdCheckCircleOutline } from 'react-icons/md';
+import { Icons } from 'components/icons';
 
 export const StatusCard = ({
 	status,
 }: {
 	status: StatusEvent;
 }): JSX.Element => {
-	const icon =
-		status.state?.toString() === 'success' ? (
-			<MdCheckCircleOutline />
-		) : (
-			<MdOutlineErrorOutline />
-		);
+	const Icon =
+		status.state?.toString() === 'success' ? Icons['success'] : Icons['error'];
 
 	return (
 		<Card
@@ -23,7 +18,7 @@ export const StatusCard = ({
 			size='lg'
 			status={status.state?.toString()}
 		>
-			{icon} {status.message}
+			<Icon /> {status.message}
 		</Card>
 	);
 };

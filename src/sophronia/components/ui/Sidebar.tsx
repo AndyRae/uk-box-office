@@ -1,63 +1,10 @@
-import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
-import { BiNetworkChart } from 'react-icons/bi';
-import { BsListOl } from 'react-icons/bs';
-import { FaGlobeEurope } from 'react-icons/fa';
-import { FiDatabase } from 'react-icons/fi';
-import { HiOutlineTicket } from 'react-icons/hi';
-import {
-	MdOutlineSpaceDashboard,
-	MdOutlineAutoGraph,
-	MdCompareArrows,
-} from 'react-icons/md';
-import { Searchbar } from '../search';
+import { Searchbar } from 'components/search';
 import { SideBarLink } from './sidebar-link';
 import { InlineLink } from './inline-link';
 import { Card } from 'components/ui/card';
 import Link from 'next/link';
-
-// Quick links to display in the sidebar
-const links = [
-	{
-		name: 'Dashboard',
-		path: '/',
-		icon: <MdOutlineSpaceDashboard />,
-	},
-	{
-		name: 'All Time',
-		path: '/time',
-		icon: <HiOutlineTicket />,
-	},
-	{
-		name: 'Compare',
-		path: '/compare',
-		icon: <MdCompareArrows />,
-	},
-	{
-		name: 'Forecast',
-		path: '/forecast',
-		icon: <MdOutlineAutoGraph />,
-	},
-	{
-		name: 'Market Share',
-		path: '/marketshare/distributors',
-		icon: <BiNetworkChart />,
-	},
-	{
-		name: 'Top Films',
-		path: '/topfilms',
-		icon: <BsListOl />,
-	},
-	{
-		name: 'Open Data',
-		path: '/opendata',
-		icon: <FiDatabase />,
-	},
-	{
-		name: 'About',
-		path: '/about',
-		icon: <FaGlobeEurope />,
-	},
-];
+import { Icons } from 'components/icons';
+import { sidebarConfig } from 'config/sidebar';
 
 /**
  * Brand component
@@ -115,7 +62,7 @@ const SidebarContent = (): JSX.Element => {
 
 				{/* Links */}
 				<nav className='space-y-2'>
-					{links.map((element) => {
+					{sidebarConfig.map((element) => {
 						return (
 							<SideBarLink
 								key={element.name}
@@ -147,6 +94,8 @@ export const Sidebar = ({
 }: {
 	children: React.ReactNode;
 }): JSX.Element => {
+	const MenuIcon = Icons['menu'];
+	const CloseIcon = Icons['close'];
 	return (
 		<div className='relative lg:flex'>
 			<style>
@@ -193,8 +142,8 @@ export const Sidebar = ({
 					id='mobile-menu-button'
 					className='m-4 p-2 focus:outline-none hover:text-white hover:bg-gray-700 rounded-md'
 				>
-					<AiOutlineMenu className='h-6 w-6' id='menu-open-icon' />
-					<AiOutlineClose className='h-6 w-6' id='menu-close-icon' />
+					<MenuIcon className='h-6 w-6' id='menu-open-icon' />
+					<CloseIcon className='h-6 w-6' id='menu-close-icon' />
 				</label>
 			</header>
 

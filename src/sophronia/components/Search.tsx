@@ -1,8 +1,8 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { AiOutlineSearch } from 'react-icons/ai';
 import { useRouter } from 'next/navigation';
+import { Icons } from 'components/icons';
 
 type SearchbarProps = {
 	placeholder?: string;
@@ -35,6 +35,8 @@ export const Searchbar = ({
 		router.push(`/search?q=${data.Search}`);
 	};
 
+	const Icon = Icons['search'];
+
 	return (
 		<form onSubmit={handleSubmit(onSubmit)}>
 			<div className='flex mt-2.5'>
@@ -52,7 +54,7 @@ export const Searchbar = ({
 						aria-label='Search'
 						className='absolute top-0 right-0 p-2 text-sm font-medium text-white rounded-r-lg'
 					>
-						<AiOutlineSearch className='h-5 w-5' />
+						<Icon className='h-5 w-5' />
 					</button>
 				</div>
 			</div>
