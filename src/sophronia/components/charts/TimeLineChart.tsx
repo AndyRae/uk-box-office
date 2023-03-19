@@ -26,12 +26,12 @@ type TimeLineChartProps = {
  * @param {Boolean} props.allowRollUp - Allow rolling up the data to monthly data.
  * @returns {JSX.Element}
  * @example
- * <TimeLineChart data={data} height={'lg'} color="#B65078" allowRollUp={true} />
+ * <TimeLineChart data={data} height={'lg'} color="#10b981" allowRollUp={true} />
  */
 export const TimeLineChart = ({
 	data,
 	height,
-	color = '#B65078',
+	color = '#10b981',
 	allowRollUp = true,
 }: TimeLineChartProps): JSX.Element => {
 	const router = useRouter();
@@ -58,6 +58,7 @@ export const TimeLineChart = ({
 				borderColor: [color],
 				pointStyle: 'circle',
 				pointRadius: 4,
+				pointBackgroundColor: '#06b6d4',
 				borderWidth: 1,
 				tension: 0.1,
 				yAxisID: 'y',

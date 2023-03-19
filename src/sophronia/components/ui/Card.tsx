@@ -14,22 +14,29 @@ const alignStyle: { [key in Align]: string } = {
 	right: 'text-right',
 };
 
-type Status = 'default' | 'warning' | 'success' | 'error' | string;
+type Status =
+	| 'default'
+	| 'transparent'
+	| 'warning'
+	| 'success'
+	| 'error'
+	| string;
 const statusStyle: { [key in Status]: string } = {
-	default: 'bg-white dark:bg-gray-900',
-	success: 'bg-green-300 dark:bg-green-800/[.5]',
-	warning: 'bg-yellow-300 dark:bg-yellow-500/[.5]',
-	error: 'bg-red-300 dark:bg-red-800/[.5]',
+	default: 'bg-gray-100 dark:bg-gray-900 shadow-lg',
+	transparent: 'bg-white dark:bg-black',
+	success: 'bg-green-300 dark:bg-green-800/[.5] shadow-lg',
+	warning: 'bg-yellow-300 dark:bg-yellow-500/[.5] shadow-lg',
+	error: 'bg-red-300 dark:bg-red-800/[.5] shadow-lg',
 };
 
-type CardProps = {
+interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 	title?: string;
 	subtitle?: React.ReactNode;
 	children?: React.ReactNode;
 	size?: Size;
 	align?: Align;
 	status?: Status;
-};
+}
 
 /**
  * @file Card.jsx
@@ -41,6 +48,7 @@ export const Card = ({
 	title,
 	subtitle,
 	children,
+	className,
 	size = 'md',
 	align = 'center',
 	status = 'default',
@@ -48,10 +56,11 @@ export const Card = ({
 	return (
 		<div
 			className={clsx(
-				'p-2 max-w-full rounded-lg shadow-lg',
+				'p-2 max-w-full rounded-lg',
 				sizeStyle[size],
 				alignStyle[align],
-				statusStyle[status]
+				statusStyle[status],
+				className
 			)}
 		>
 			<p className='font-normal text-sm text-gray-700 dark:text-gray-400'>

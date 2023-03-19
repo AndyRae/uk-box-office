@@ -29,8 +29,8 @@ export const SideBarLink = ({
 	return (
 		<Link
 			href={path}
-			className={`flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900 ${
-				isActive ? 'bg-gray-200 dark:bg-bo-primary' : ''
+			className={`flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white bg-gradient-to-br from-transparent to-transparent hover:from-bo-primary hover:to-cyan-500 ${
+				isActive ? 'from-bo-primary to-cyan-500' : ''
 			}`}
 		>
 			{icon}

@@ -20,6 +20,7 @@ import { StructuredTimeData } from 'components/StructuredData';
 import { LastUpdated } from 'components/Dashboard/LastUpdated';
 import { StackedBarChart } from 'components/charts/StackedBarChart';
 import { DatasourceCard } from 'components/Dashboard/Datasource';
+import { ChartWrapper } from '../components/charts/ChartWrapper';
 
 export default function Home(): JSX.Element {
 	Date.prototype.addDays = function (days) {
@@ -154,6 +155,8 @@ export default function Home(): JSX.Element {
 					<Card
 						title='Total Box Office'
 						subtitle={`£${boxOffice.toLocaleString()}`}
+						status='transparent'
+						className='border border-black dark:border-white'
 					>
 						{timeComparisonData && (
 							<Tooltip text='Change from last year'>
@@ -165,6 +168,8 @@ export default function Home(): JSX.Element {
 					<Card
 						title='Weekend Box Office'
 						subtitle={`£${weekendBoxOffice.toLocaleString()}`}
+						status='transparent'
+						className='border border-black dark:border-white'
 					>
 						{timeComparisonData && (
 							<Tooltip text='Change from last year'>
@@ -174,7 +179,12 @@ export default function Home(): JSX.Element {
 						)}
 					</Card>
 
-					<Card title='New Releases' subtitle={numberOfNewFilms}>
+					<Card
+						title='New Releases'
+						subtitle={numberOfNewFilms}
+						status='transparent'
+						className='border border-black dark:border-white'
+					>
 						{timeComparisonData && (
 							<Tooltip text='Change from last year'>
 								{' '}
@@ -183,7 +193,12 @@ export default function Home(): JSX.Element {
 						)}
 					</Card>
 
-					<Card title='Cinemas' subtitle={numberOfCinemas}>
+					<Card
+						title='Cinemas'
+						subtitle={numberOfCinemas}
+						status='transparent'
+						className='border border-black dark:border-white'
+					>
 						{timeComparisonData && (
 							<Tooltip text='Change from last year'>
 								{' '}
@@ -197,23 +212,15 @@ export default function Home(): JSX.Element {
 			)}
 
 			{/* Charts */}
-			{isReachedEnd ? (
-				<div className='grid md:grid-cols-1 mt-3 md:mt-6 lg:grid-cols-2 gap-3 md:gap-5'>
-					<Card title='Box Office'>
-						{isReachedEnd && <TimeLineChart data={results} height='md' />}
-					</Card>
+			<div className='grid md:grid-cols-1 mt-3 md:mt-6 lg:grid-cols-2 gap-3 md:gap-5'>
+				<ChartWrapper title='Box Office'>
+					<TimeLineChart data={isReachedEnd ? results : []} height='md' />
+				</ChartWrapper>
 
-					<Card title='Films'>
-						{isReachedEnd && (
-							<div className='mt-6'>
-								<StackedBarChart data={results} height='md' />
-							</div>
-						)}
-					</Card>
-				</div>
-			) : (
-				<SkeletonCharts />
-			)}
+				<ChartWrapper title='Films' chartClassName='mt-6'>
+					<StackedBarChart data={isReachedEnd ? results : []} height='md' />
+				</ChartWrapper>
+			</div>
 
 			{/* Table */}
 			<div className='mt-3 md:mt-6'>

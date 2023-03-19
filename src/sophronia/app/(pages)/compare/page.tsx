@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { PageTitle } from 'components/ui/PageTitle';
-import { getFilmId } from 'app/film/[slug]/getFilm';
+import { getFilmId } from 'app/(pages)/film/[slug]/getFilm';
 import { getBackendURL } from 'lib/ApiFetcher';
 import AsyncSelect from 'react-select/async';
 import { CompareTable } from './CompareTable';
@@ -12,6 +12,7 @@ import { Card } from 'components/ui/Card';
 import { getDefaultColorArray } from 'lib/utils/colorGenerator';
 import { ExportCSV } from 'components/ui/ExportCSV';
 import { DatasourceButton } from 'components/Dashboard/Datasource';
+import { ChartWrapper } from 'components/charts/ChartWrapper';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import debounce from 'lodash/debounce';
 
@@ -124,7 +125,6 @@ export default function Page(): JSX.Element {
 			<AsyncSelect
 				isMulti
 				cacheOptions
-				// loadOptions={promiseOptions}
 				loadOptions={loadOptions}
 				onChange={handleOptionChange}
 				className='compare-select-container'
@@ -147,12 +147,13 @@ export default function Page(): JSX.Element {
 					</div>
 
 					<div className='grid md:grid-cols-1 lg:grid-cols-2 gap-3 md:gap-5 mt-3 md:mt-6'>
-						<Card title='Weekly Box Office'>
+						<ChartWrapper title='Weekly Box Office'>
 							<CompareTotalChart data={filmData} />
-						</Card>
-						<Card title='Cumulative Box Office'>
+						</ChartWrapper>
+
+						<ChartWrapper title='Cumulative Box Office'>
 							<CompareCumulativeChart data={filmData} />
-						</Card>
+						</ChartWrapper>
 					</div>
 				</>
 			)}

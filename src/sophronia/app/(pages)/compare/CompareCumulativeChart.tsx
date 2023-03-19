@@ -19,9 +19,9 @@ type TimeLineChartProps = {
  * @param {Boolean} props.allowRollUp - Allow rolling up the data to monthly data.
  * @returns {JSX.Element}
  * @example
- * <TimeLineChart data={data} height={'lg'} color="#B65078" allowRollUp={true} />
+ * <TimeLineChart data={data} height={'lg'} color="#10b981" allowRollUp={true} />
  */
-export const CompareTotalChart = ({
+export const CompareCumulativeChart = ({
 	data,
 	height,
 }: TimeLineChartProps): JSX.Element => {
@@ -37,7 +37,7 @@ export const CompareTotalChart = ({
 		datasets: data.map((film) => {
 			return {
 				label: film.name,
-				data: film.weeks.map((d) => d.week_gross),
+				data: film.weeks.map((d) => d.total_gross),
 				fill: false,
 				borderColor: film.color,
 				backgroundColor: film.color,

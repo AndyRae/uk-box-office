@@ -31,7 +31,7 @@ export default function RootLayout({
 					`}
 				</Script>
 				<Sidebar>
-					<div className='px-4 pb-4 bg-bo-grey dark:bg-black dark:text-white'>
+					<div className='px-4 pb-4 bg-white dark:bg-black dark:text-white'>
 						<div className='h-max min-h-screen py-6'>{children}</div>
 						<Footer />
 					</div>
