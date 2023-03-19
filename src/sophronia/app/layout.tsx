@@ -1,5 +1,5 @@
 // These styles apply to every route in the application
-import './globals.css';
+import 'styles/globals.css';
 import { Sidebar } from 'components/ui/sidebar';
 import { Footer } from 'components/ui/footer';
 import { Metadata } from 'next';
