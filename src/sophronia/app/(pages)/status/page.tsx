@@ -1,7 +1,7 @@
 import { PageTitle } from 'components/ui/PageTitle';
 import { getEvents } from './getEvents';
-import { EventsTable } from './EventsTable';
-import { StatusCard } from './StatusCard';
+import { EventsTable } from 'components/tables/EventsTable';
+import { StatusCard } from 'components/StatusCard';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

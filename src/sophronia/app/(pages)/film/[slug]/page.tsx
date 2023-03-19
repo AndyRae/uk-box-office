@@ -1,11 +1,11 @@
-import { BoxOfficeTable } from './BoxOfficeTable';
+import { BoxOfficeTable } from 'components/tables/BoxOfficeTable';
 import { DescriptionList } from 'components/ui/DescriptionList';
 import { PageTitle } from 'components/ui/PageTitle';
 import { BadgeLink } from 'components/ui/BadgeLink';
 import { DescriptionItem } from 'components/ui/DescriptionItem';
 import { Date } from 'components/Date';
 import { StructuredTimeData } from 'components/StructuredData';
-import { DatasourceButton } from 'components/Dashboard/Datasource';
+import { DatasourceButton } from 'components/Datasource';
 import { ExportCSV } from 'components/ui/ExportCSV';
 import { TimeLineChart } from 'components/charts/TimeLineChart';
 import { toTitleCase } from 'lib/utils/toTitleCase';

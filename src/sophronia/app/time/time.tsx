@@ -9,20 +9,19 @@ import { PageTitle } from 'components/ui/PageTitle';
 import { ProgressBar } from 'components/ui/ProgressBar';
 import { Tooltip } from 'components/ui/Tooltip';
 import { Tabs } from 'components/ui/Tabs';
-import { Card } from 'components/ui/Card';
 import { ExportCSV } from 'components/ui/ExportCSV';
 import { DescriptionItem } from 'components/ui/DescriptionItem';
 import { DescriptionList } from 'components/ui/DescriptionList';
 import { StructuredTimeData } from 'components/StructuredData';
-import { DatasourceButton } from 'components/Dashboard/Datasource';
+import { DatasourceButton } from 'components/Datasource';
 import { MetricChange } from 'components/charts/MetricChange';
 import { StackedBarChart } from 'components/charts/StackedBarChart';
 import { TimeLineChart } from 'components/charts/TimeLineChart';
-import { FilmTableDetailed } from 'components/Time/FilmTableDetailed';
+import { FilmTableDetailed } from 'components/tables/FilmTableDetailed';
 
-import { WeeksTable } from './WeeksTable';
-import { PreviousTable } from './PreviousTable';
-import { PreviousYearsChart } from './PreviousYearsChart';
+import { WeeksTable } from 'components/tables/WeeksTable';
+import { PreviousTable } from 'components/tables/PreviousTable';
+import { PreviousYearsChart } from 'components/charts/PreviousYearsChart';
 
 import { useBoxOfficeInfinite, useBoxOfficeSummary } from 'lib/boxoffice';
 

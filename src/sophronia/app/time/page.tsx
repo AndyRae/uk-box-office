@@ -6,8 +6,8 @@ import { ExportCSV } from 'components/ui/ExportCSV';
 import { StructuredTimeData } from 'components/StructuredData';
 import { Card } from 'components/ui/Card';
 
-import { AllTimeChart } from './AllTimeChart';
-import { YearsTable } from './YearsTable';
+import { AllTimeChart } from 'components/charts/AllTimeChart';
+import { YearsTable } from 'components/tables/YearsTable';
 import Time from 'interfaces/Time';
 import { Metadata } from 'next';
 

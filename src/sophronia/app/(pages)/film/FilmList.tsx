@@ -1,4 +1,4 @@
-import { FilmTable } from 'components/Film/FilmTable';
+import { FilmTable } from 'components/tables/FilmTable';
 import { FilmListData } from 'interfaces/Film';
 
 export const FilmList = ({ films }: { films: FilmListData }): JSX.Element => {

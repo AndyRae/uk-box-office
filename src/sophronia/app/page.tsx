@@ -11,16 +11,16 @@ import {
 	calculateWeek1Releases,
 } from 'lib/utils/groupData';
 import { MetricChange } from 'components/charts/MetricChange';
-import { Datepickers } from 'components/Dashboard/Datepickers';
-import { FilmTableDetailed } from 'components/Time/FilmTableDetailed';
+import { Datepickers } from 'components/Datepickers';
+import { FilmTableDetailed } from 'components/tables/FilmTableDetailed';
 import { TimeLineChart } from 'components/charts/TimeLineChart';
 import { Tooltip } from 'components/ui/Tooltip';
-import { SkeletonCards, SkeletonCharts } from 'components/Dashboard/Skeleton';
+import { SkeletonCards } from 'components/Skeleton';
 import { StructuredTimeData } from 'components/StructuredData';
-import { LastUpdated } from 'components/Dashboard/LastUpdated';
+import { LastUpdated } from 'components/LastUpdated';
 import { StackedBarChart } from 'components/charts/StackedBarChart';
-import { DatasourceCard } from 'components/Dashboard/Datasource';
-import { ChartWrapper } from '../components/charts/ChartWrapper';
+import { DatasourceCard } from 'components/Datasource';
+import { ChartWrapper } from 'components/charts/ChartWrapper';
 
 export default function Home(): JSX.Element {
 	Date.prototype.addDays = function (days) {

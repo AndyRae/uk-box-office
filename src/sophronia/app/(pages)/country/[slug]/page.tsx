@@ -1,5 +1,5 @@
 import { PageTitle } from 'components/ui/PageTitle';
-import { CountryFilmsList } from './CountryFilmsList';
+import { CountryFilmsTable } from 'components/tables/CountryFilmsTable';
 import { getCountry } from './getCountry';
 
 export async function generateMetadata({
@@ -50,7 +50,7 @@ export default async function Page({
 	return (
 		<div>
 			<PageTitle>{data.name}</PageTitle>
-			<CountryFilmsList slug={params.slug} />
+			<CountryFilmsTable slug={params.slug} />
 		</div>
 	);
 }

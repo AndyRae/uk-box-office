@@ -9,7 +9,7 @@ import {
 	MdOutlineAutoGraph,
 	MdCompareArrows,
 } from 'react-icons/md';
-import { Searchbar } from '../Search/Searchbar';
+import { Searchbar } from '../Search';
 import { SideBarLink } from './SideBarLink';
 import { InlineLink } from './InlineLink';
 import { Card } from 'components/ui/Card';
