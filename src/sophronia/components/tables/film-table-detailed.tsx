@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { BaseTable, Td, Tr } from '../charts/BaseTable';
-import { MetricChange } from '../charts/MetricChange';
+import { BaseTable, Td, Tr } from './base-table';
+import { MetricChange } from '../metric-change';
 import { BoxOfficeWeek, TableData } from 'interfaces/BoxOffice';
 import { toTitleCase } from 'lib/utils/toTitleCase';
 

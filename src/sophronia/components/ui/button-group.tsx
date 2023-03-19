@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button } from './Button';
-import { ButtonProps } from './Button';
+import { Button } from './button';
+import { ButtonProps } from './button';
 
 /**
  * @file ButtonGroup.jsx

@@ -1,6 +1,6 @@
 import { getBackendURL } from 'lib/ApiFetcher';
-import { PageTitle } from 'components/ui/PageTitle';
-import { TopFilmsTable } from 'components/tables/TopFilmsTable';
+import { PageTitle } from 'components/ui/page-title';
+import { TopFilmsTable } from 'components/tables/top-films-table';
 import { TopFilm } from 'interfaces/Film';
 import { Metadata } from 'next';
 

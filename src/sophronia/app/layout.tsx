@@ -1,7 +1,7 @@
 // These styles apply to every route in the application
 import './globals.css';
-import { Sidebar } from 'components/ui/Sidebar';
-import { Footer } from 'components/ui/Footer';
+import { Sidebar } from 'components/ui/sidebar';
+import { Footer } from 'components/ui/footer';
 import { Metadata } from 'next';
 import Script from 'next/script';
 

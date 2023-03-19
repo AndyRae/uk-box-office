@@ -1,7 +1,7 @@
 'use client';
 
 import { BsFileEarmarkSpreadsheet } from 'react-icons/bs';
-import { Button } from './Button';
+import { Button } from './button';
 import dynamic from 'next/dynamic';
 
 // Needs to be a dynamic import to work in NextJS.

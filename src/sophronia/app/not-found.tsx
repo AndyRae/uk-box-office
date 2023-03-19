@@ -1,5 +1,5 @@
-import { PageTitle } from 'components/ui/PageTitle';
-import { Searchbar } from 'components/Search';
+import { PageTitle } from 'components/ui/page-title';
+import { Searchbar } from 'components/search';
 
 export default function NotFound(): JSX.Element {
 	return (

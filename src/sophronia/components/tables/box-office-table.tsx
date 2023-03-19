@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import { Date } from 'components/Date';
-import { BaseTable, Td, Tr } from 'components/charts/BaseTable';
-import { MetricChange } from 'components/charts/MetricChange';
+import { Date } from 'components/date';
+import { BaseTable, Td, Tr } from 'components/tables/base-table';
+import { MetricChange } from 'components/metric-change';
 import { FilmWithWeeks } from 'interfaces/Film';
 
 /**

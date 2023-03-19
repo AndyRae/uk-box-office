@@ -1,10 +1,10 @@
 'use client';
 
-import { Timeseries } from './Timeseries';
+import { Timeseries } from './timeseries';
 import { groupbyMonth, groupbyDate } from 'lib/utils/groupData';
 import { AiOutlineArrowDown } from 'react-icons/ai';
 import { useState, useEffect, useRef, MouseEvent } from 'react';
-import { Tooltip } from '../ui/Tooltip';
+import { Tooltip } from '../ui/tooltip';
 import { useRouter } from 'next/navigation';
 import { getElementAtEvent } from 'react-chartjs-2';
 import { BoxOfficeWeek } from 'interfaces/BoxOffice';

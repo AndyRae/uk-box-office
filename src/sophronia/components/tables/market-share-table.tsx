@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { BaseTable, Td, Tr } from 'components/charts/BaseTable';
+import { BaseTable, Td, Tr } from 'components/tables/base-table';
 import { toTitleCase } from 'lib/utils/toTitleCase';
 
 type MarketShare = {

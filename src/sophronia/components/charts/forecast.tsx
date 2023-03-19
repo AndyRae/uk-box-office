@@ -1,6 +1,6 @@
 'use client';
 
-import { Timeseries } from './Timeseries';
+import { Timeseries } from './timeseries';
 import { Topline } from 'interfaces/BoxOffice';
 
 /**

@@ -1,6 +1,6 @@
 import { StatusEvent } from 'interfaces/Event';
-import { Card } from 'components/ui/Card';
-import { DateTime } from 'components/Date';
+import { Card } from 'components/ui/card';
+import { DateTime } from 'components/date';
 
 import { MdOutlineErrorOutline, MdCheckCircleOutline } from 'react-icons/md';
 

@@ -1,9 +1,9 @@
-import { Tooltip } from 'components/ui/Tooltip';
-import { MetricChange } from 'components/charts/MetricChange';
-import { TimeLineChart } from 'components/charts/TimeLineChart';
-import { StackedBarChart } from 'components/charts/StackedBarChart';
-import { Card } from 'components/ui/Card';
-import { ChartWrapper } from 'components/charts/ChartWrapper';
+import { Tooltip } from 'components/ui/tooltip';
+import { MetricChange } from 'components/metric-change';
+import { TimeLineChart } from 'components/charts/timeline';
+import { StackedBarChart } from 'components/charts/stacked-bar';
+import { Card } from 'components/ui/card';
+import { ChartWrapper } from 'components/charts/chart-wrapper';
 
 /**
  * @description Skeleton Card loading components for loading state

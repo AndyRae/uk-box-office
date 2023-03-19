@@ -1,6 +1,6 @@
 import { Film } from 'interfaces/Film';
 import Link from 'next/link';
-import { BaseTable, Td, Tr } from '../charts/BaseTable';
+import { BaseTable, Td, Tr } from './base-table';
 import { toTitleCase } from 'lib/utils/toTitleCase';
 
 /**

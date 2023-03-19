@@ -1,6 +1,6 @@
 import { getDistributor } from './getDistributor';
-import { PageTitle } from 'components/ui/PageTitle';
-import { DistributorFilmsTable } from 'components/tables/DistributorFilmsTable';
+import { PageTitle } from 'components/ui/page-title';
+import { DistributorFilmsTable } from 'components/tables/distributor-films-table';
 import { toTitleCase } from 'lib/utils/toTitleCase';
 
 export async function generateMetadata({

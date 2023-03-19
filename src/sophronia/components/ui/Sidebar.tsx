@@ -9,10 +9,10 @@ import {
 	MdOutlineAutoGraph,
 	MdCompareArrows,
 } from 'react-icons/md';
-import { Searchbar } from '../Search';
-import { SideBarLink } from './SideBarLink';
-import { InlineLink } from './InlineLink';
-import { Card } from 'components/ui/Card';
+import { Searchbar } from '../search';
+import { SideBarLink } from './sidebar-link';
+import { InlineLink } from './inline-link';
+import { Card } from 'components/ui/card';
 import Link from 'next/link';
 
 // Quick links to display in the sidebar

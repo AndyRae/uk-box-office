@@ -3,9 +3,9 @@
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useSearch } from 'lib/search';
-import { FilmsTable } from 'components/tables/FilmsTable';
-import { Searchbar } from 'components/Search';
-import { PageTitle } from 'components/ui/PageTitle';
+import { FilmsTable } from 'components/tables/films-table';
+import { Searchbar } from 'components/search';
+import { PageTitle } from 'components/ui/page-title';
 
 import { Distributor } from 'interfaces/Distributor';
 import { Country } from 'interfaces/Country';
