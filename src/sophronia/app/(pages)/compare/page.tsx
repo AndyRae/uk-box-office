@@ -1,18 +1,17 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { PageTitle } from 'components/ui/PageTitle';
+import { PageTitle } from 'components/ui/page-title';
 import { getFilmId } from 'app/(pages)/film/[slug]/getFilm';
 import { getBackendURL } from 'lib/ApiFetcher';
 import AsyncSelect from 'react-select/async';
-import { CompareTable } from './CompareTable';
-import { CompareTotalChart } from './CompareTotalChart';
-import { CompareCumulativeChart } from './CompareCumulativeChart';
-import { Card } from 'components/ui/Card';
+import { CompareTable } from 'components/tables/compare-table';
+import { CompareTotalChart } from 'components/charts/compare-total';
+import { CompareCumulativeChart } from 'components/charts/compare-cumulative';
 import { getDefaultColorArray } from 'lib/utils/colorGenerator';
-import { ExportCSV } from 'components/ui/ExportCSV';
-import { DatasourceButton } from 'components/Dashboard/Datasource';
-import { ChartWrapper } from 'components/charts/ChartWrapper';
+import { ExportCSV } from 'components/ui/export-csv';
+import { DatasourceButton } from 'components/datasource';
+import { ChartWrapper } from 'components/charts/chart-wrapper';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import debounce from 'lodash/debounce';
 

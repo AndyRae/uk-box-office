@@ -2,25 +2,25 @@
 
 import { useState, useEffect } from 'react';
 import { useBoxOfficeInfinite, useBoxOfficePreviousYear } from 'lib/boxoffice';
-import { Button } from 'components/ui/Button';
-import { ButtonGroup } from 'components/ui/ButtonGroup';
-import { Card } from 'components/ui/Card';
+import { Button } from 'components/ui/button';
+import { ButtonGroup } from 'components/ui/button-group';
+import { Card } from 'components/ui/card';
 import {
 	groupForTable,
 	calculateNumberOfCinemas,
 	calculateWeek1Releases,
 } from 'lib/utils/groupData';
-import { MetricChange } from 'components/charts/MetricChange';
-import { Datepickers } from 'components/Dashboard/Datepickers';
-import { FilmTableDetailed } from 'components/Time/FilmTableDetailed';
-import { TimeLineChart } from 'components/charts/TimeLineChart';
-import { Tooltip } from 'components/ui/Tooltip';
-import { SkeletonCards, SkeletonCharts } from 'components/Dashboard/Skeleton';
-import { StructuredTimeData } from 'components/StructuredData';
-import { LastUpdated } from 'components/Dashboard/LastUpdated';
-import { StackedBarChart } from 'components/charts/StackedBarChart';
-import { DatasourceCard } from 'components/Dashboard/Datasource';
-import { ChartWrapper } from '../components/charts/ChartWrapper';
+import { MetricChange } from 'components/metric-change';
+import { Datepickers } from 'components/datepickers';
+import { FilmTableDetailed } from 'components/tables/film-table-detailed';
+import { TimeLineChart } from 'components/charts/timeline';
+import { Tooltip } from 'components/ui/tooltip';
+import { SkeletonCards } from 'components/skeleton';
+import { StructuredTimeData } from 'components/structured-data';
+import { LastUpdated } from 'components/last-updated';
+import { StackedBarChart } from 'components/charts/stacked-bar';
+import { DatasourceCard } from 'components/datasource';
+import { ChartWrapper } from 'components/charts/chart-wrapper';
 
 export default function Home(): JSX.Element {
 	Date.prototype.addDays = function (days) {

@@ -5,24 +5,23 @@ import { usePathname } from 'next/navigation';
 
 import { groupForTable, groupbyDate } from 'lib/utils/groupData';
 
-import { PageTitle } from 'components/ui/PageTitle';
-import { ProgressBar } from 'components/ui/ProgressBar';
-import { Tooltip } from 'components/ui/Tooltip';
-import { Tabs } from 'components/ui/Tabs';
-import { Card } from 'components/ui/Card';
-import { ExportCSV } from 'components/ui/ExportCSV';
-import { DescriptionItem } from 'components/ui/DescriptionItem';
-import { DescriptionList } from 'components/ui/DescriptionList';
-import { StructuredTimeData } from 'components/StructuredData';
-import { DatasourceButton } from 'components/Dashboard/Datasource';
-import { MetricChange } from 'components/charts/MetricChange';
-import { StackedBarChart } from 'components/charts/StackedBarChart';
-import { TimeLineChart } from 'components/charts/TimeLineChart';
-import { FilmTableDetailed } from 'components/Time/FilmTableDetailed';
+import { PageTitle } from 'components/ui/page-title';
+import { ProgressBar } from 'components/ui/progress-bar';
+import { Tooltip } from 'components/ui/tooltip';
+import { Tabs } from 'components/ui/tabs';
+import { ExportCSV } from 'components/ui/export-csv';
+import { DescriptionItem } from 'components/ui/description-item';
+import { DescriptionList } from 'components/ui/description-list';
+import { StructuredTimeData } from 'components/structured-data';
+import { DatasourceButton } from 'components/datasource';
+import { MetricChange } from 'components/metric-change';
+import { StackedBarChart } from 'components/charts/stacked-bar';
+import { TimeLineChart } from 'components/charts/timeline';
+import { FilmTableDetailed } from 'components/tables/film-table-detailed';
 
-import { WeeksTable } from './WeeksTable';
-import { PreviousTable } from './PreviousTable';
-import { PreviousYearsChart } from './PreviousYearsChart';
+import { WeeksTable } from 'components/tables/weeks-table';
+import { PreviousTable } from 'components/tables/previous-years-table';
+import { PreviousYearsChart } from 'components/charts/previous-years';
 
 import { useBoxOfficeInfinite, useBoxOfficeSummary } from 'lib/boxoffice';
 

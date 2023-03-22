@@ -4,8 +4,8 @@ import { useDistributorList } from 'lib/distributors';
 import { useState } from 'react';
 import { paginate } from 'lib/utils/pagination';
 import { DistributorList } from './DistributorList';
-import { Pagination } from 'components/ui/Pagination';
-import { PageTitle } from 'components/ui/PageTitle';
+import { Pagination } from 'components/ui/pagination';
+import { PageTitle } from 'components/ui/page-title';
 
 export default function Page(): JSX.Element {
 	const [pageIndex, setPageIndex] = useState(1);

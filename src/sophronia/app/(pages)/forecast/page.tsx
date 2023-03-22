@@ -1,9 +1,9 @@
 import { getBackendURL } from 'lib/ApiFetcher';
 
-import { ForecastChart } from 'components/charts/ForecastChart';
-import { PageTitle } from 'components/ui/PageTitle';
-import { PageContent } from 'components/ui/PageContent';
-import { Card } from 'components/ui/Card';
+import { ForecastChart } from 'components/charts/forecast';
+import { PageTitle } from 'components/ui/page-title';
+import { PageContent } from 'components/ui/page-content';
+import { Card } from 'components/ui/card';
 import { Topline } from 'interfaces/BoxOffice';
 import { Metadata } from 'next';
 
