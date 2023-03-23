@@ -1,4 +1,4 @@
-import { getApi } from 'lib/api';
+import { getApi } from 'lib/fetch/api';
 
 import { PageTitle } from 'components/ui/page-title';
 import { Tabs } from 'components/ui/tabs';

@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { PageTitle } from 'components/ui/page-title';
-import { getFilmId } from 'lib/films';
-import { getApi } from 'lib/api';
+import { getFilmId } from 'lib/fetch/films';
+import { getApi } from 'lib/fetch/api';
 import AsyncSelect from 'react-select/async';
 import { CompareTable } from 'components/tables/compare-table';
 import { CompareTotalChart } from 'components/charts/compare-total';

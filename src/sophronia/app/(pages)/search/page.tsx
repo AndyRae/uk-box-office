@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { useSearch } from 'lib/search';
+import { useSearch } from 'lib/fetch/search';
 import { FilmsTable } from 'components/tables/films-table';
 import { Searchbar } from 'components/search';
 import { PageTitle } from 'components/ui/page-title';

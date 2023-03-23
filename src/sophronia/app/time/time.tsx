@@ -23,7 +23,7 @@ import { WeeksTable } from 'components/tables/weeks-table';
 import { PreviousTable } from 'components/tables/previous-years-table';
 import { PreviousYearsChart } from 'components/charts/previous-years';
 
-import { useBoxOfficeInfinite, useBoxOfficeSummary } from 'lib/boxoffice';
+import { useBoxOfficeInfinite, useBoxOfficeSummary } from 'lib/fetch/boxoffice';
 
 type PillLinkProps = {
 	to: string;

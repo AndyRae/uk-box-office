@@ -1,4 +1,4 @@
-import { useCountryFilms } from 'lib/countries';
+import { useCountryFilms } from 'lib/fetch/countries';
 import { FilmTable } from 'components/tables/film-table';
 import { Pagination } from 'components/ui/pagination';
 import { paginate } from 'lib/utils/pagination';

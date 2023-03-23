@@ -1,4 +1,4 @@
-import { getApi } from 'lib/api';
+import { getApi } from 'lib/fetch/api';
 import { StatusEvent } from 'interfaces/Event';
 
 type EventsOverview = {

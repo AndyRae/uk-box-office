@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
-import { getApi } from 'lib/api';
+import { getApi } from 'lib/fetch/api';
 
 async function getLastWeek(): Promise<{ results: { date: string }[] }> {
 	const url = getApi();

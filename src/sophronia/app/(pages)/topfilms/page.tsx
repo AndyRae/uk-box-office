@@ -1,4 +1,4 @@
-import { getApi } from 'lib/api';
+import { getApi } from 'lib/fetch/api';
 import { PageTitle } from 'components/ui/page-title';
 import { TopFilmsTable } from 'components/tables/top-films-table';
 import { TopFilm } from 'interfaces/Film';

@@ -1,4 +1,4 @@
-import { useDistributorList } from 'lib/distributors';
+import { useDistributorList } from 'lib/fetch/distributors';
 import { paginate } from 'lib/utils/pagination';
 import { Pagination } from 'components/ui/pagination';
 import { PageTitle } from 'components/ui/page-title';

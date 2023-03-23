@@ -1,6 +1,6 @@
 import { PageTitle } from 'components/ui/page-title';
 import { CountryFilmsTable } from 'components/tables/country-films-table';
-import { getCountry } from 'lib/countries';
+import { getCountry } from 'lib/fetch/countries';
 
 export async function generateMetadata({
 	params,

@@ -1,4 +1,4 @@
-import { getDistributor } from 'lib/distributors';
+import { getDistributor } from 'lib/fetch/distributors';
 import { PageTitle } from 'components/ui/page-title';
 import { DistributorFilmsTable } from 'components/tables/distributor-films-table';
 import { toTitleCase } from 'lib/utils/toTitleCase';

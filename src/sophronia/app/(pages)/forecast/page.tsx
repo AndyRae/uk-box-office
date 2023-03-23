@@ -1,4 +1,4 @@
-import { getApi } from 'lib/api';
+import { getApi } from 'lib/fetch/api';
 
 import { ForecastChart } from 'components/charts/forecast';
 import { PageTitle } from 'components/ui/page-title';

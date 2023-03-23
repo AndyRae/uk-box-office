@@ -1,4 +1,4 @@
-import { useCountryList } from 'lib/countries';
+import { useCountryList } from 'lib/fetch/countries';
 import { paginate } from 'lib/utils/pagination';
 import { CountryTable } from 'components/tables/country-table';
 import { Pagination } from 'components/ui/pagination';
