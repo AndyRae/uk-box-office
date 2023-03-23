@@ -1,4 +1,4 @@
-import { getBackendURL } from 'lib/ApiFetcher';
+import { getApi } from 'lib/fetch/api';
 import { StatusEvent } from 'interfaces/Event';
 
 type EventsOverview = {
@@ -20,7 +20,7 @@ type EventsOverview = {
  * const events = await getEvents());
  */
 export async function getEvents(): Promise<EventsOverview> {
-	const url = getBackendURL();
-	const res = await fetch(`${url}events`);
+	const url = getApi();
+	const res = await fetch(`${url}/events`);
 	return res.json();
 }

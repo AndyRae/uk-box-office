@@ -33,5 +33,5 @@ export const paginate = (
 	for (let i = startPage; i <= endPage; i++) {
 		pageNumbers.push(i);
 	}
-	return pageNumbers;
+	return pageNumbers.slice(0, 5);
 };

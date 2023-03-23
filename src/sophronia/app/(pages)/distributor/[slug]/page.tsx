@@ -1,6 +1,6 @@
-import { getDistributor } from './getDistributor';
-import { PageTitle } from 'components/ui/PageTitle';
-import { DistributorFilmsList } from './DistributorFilmsList';
+import { getDistributor } from 'lib/fetch/distributors';
+import { PageTitle } from 'components/ui/page-title';
+import { DistributorFilmsTable } from 'components/tables/distributor-films-table';
 import { toTitleCase } from 'lib/utils/toTitleCase';
 
 export async function generateMetadata({
@@ -43,15 +43,19 @@ export async function generateMetadata({
 
 export default async function Page({
 	params,
+	searchParams,
 }: {
 	params: { slug: string };
+	searchParams: { p?: number };
 }): Promise<JSX.Element> {
+	let pageIndex = searchParams?.p ?? 1;
 	const data = await getDistributor(params.slug);
 
 	return (
 		<div>
 			<PageTitle>{toTitleCase(data.name)}</PageTitle>
-			<DistributorFilmsList slug={params.slug} />
+			{/* @ts-expect-error Server Component */}
+			<DistributorFilmsTable slug={params.slug} pageIndex={pageIndex} />
 		</div>
 	);
 }

@@ -1,17 +1,16 @@
-import { BoxOfficeTable } from './BoxOfficeTable';
-import { DescriptionList } from 'components/ui/DescriptionList';
-import { PageTitle } from 'components/ui/PageTitle';
-import { BadgeLink } from 'components/ui/BadgeLink';
-import { DescriptionItem } from 'components/ui/DescriptionItem';
-import { Date } from 'components/Date';
-import { StructuredTimeData } from 'components/StructuredData';
-import { DatasourceButton } from 'components/Dashboard/Datasource';
-import { ExportCSV } from 'components/ui/ExportCSV';
-import { TimeLineChart } from 'components/charts/TimeLineChart';
+import { BoxOfficeTable } from 'components/tables/box-office-table';
+import { DescriptionList } from 'components/ui/description-list';
+import { PageTitle } from 'components/ui/page-title';
+import { BadgeLink } from 'components/ui/badge-link';
+import { DescriptionItem } from 'components/ui/description-item';
+import { Date } from 'components/date';
+import { StructuredTimeData } from 'components/structured-data';
+import { DatasourceButton } from 'components/datasource';
+import { ExportCSV } from 'components/ui/export-csv';
+import { TimeLineChart } from 'components/charts/timeline';
 import { toTitleCase } from 'lib/utils/toTitleCase';
-import { ChartWrapper } from 'components/charts/ChartWrapper';
-
-import { getFilm } from './getFilm';
+import { ChartWrapper } from 'components/charts/chart-wrapper';
+import { getFilm } from 'lib/fetch/films';
 
 export async function generateMetadata({
 	params,

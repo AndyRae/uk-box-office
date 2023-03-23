@@ -1,11 +1,10 @@
-import { getBackendURL } from 'lib/ApiFetcher';
+import { getApi } from 'lib/fetch/api';
 
-import { PageTitle } from 'components/ui/PageTitle';
-import { Tabs } from 'components/ui/Tabs';
-import { Card } from 'components/ui/Card';
-import { ExportCSV } from 'components/ui/ExportCSV';
-import { MarketShareChart } from './MarketShareChart';
-import { MarketShareTable } from './MarketShareTable';
+import { PageTitle } from 'components/ui/page-title';
+import { Tabs } from 'components/ui/tabs';
+import { ExportCSV } from 'components/ui/export-csv';
+import { MarketShareChart } from 'components/charts/market-share';
+import { MarketShareTable } from 'components/tables/market-share-table';
 import { getDefaultColorArray } from 'lib/utils/colorGenerator';
 
 import MarketShare from 'interfaces/MarketShare';
@@ -25,8 +24,8 @@ type MarketShareData = {
  * @returns {Promise<MarketShareData>}
  */
 async function getMarketshare(): Promise<MarketShareData> {
-	const url = getBackendURL();
-	const res = await fetch(`${url}distributor/marketshare`, {});
+	const url = getApi();
+	const res = await fetch(`${url}/distributor/marketshare`, {});
 	return res.json();
 }
 

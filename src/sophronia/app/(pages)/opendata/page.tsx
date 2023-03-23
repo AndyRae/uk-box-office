@@ -1,9 +1,9 @@
-import { Button } from 'components/ui/Button';
-import { PageTitle } from 'components/ui/PageTitle';
-import { PageContent } from 'components/ui/PageContent';
-import { StructuredTimeData } from 'components/StructuredData';
-import { ExternalLink, InlineLink } from 'components/ui/InlineLink';
-import { getBackendURL } from 'lib/ApiFetcher';
+import { Button } from 'components/ui/button';
+import { PageTitle } from 'components/ui/page-title';
+import { PageContent } from 'components/ui/page-content';
+import { StructuredTimeData } from 'components/structured-data';
+import { ExternalLink, InlineLink } from 'components/ui/inline-link';
+import { getApi } from 'lib/fetch/api';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -45,7 +45,7 @@ export default function Page(): JSX.Element {
 					what you do with it.
 				</p>
 				<Button>
-					<a href={`${getBackendURL()}boxoffice/archive`}>
+					<a href={`${getApi()}/boxoffice/archive`}>
 						All Time Box Office Data (.csv)
 					</a>
 				</Button>
