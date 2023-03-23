@@ -4,8 +4,7 @@
  * @exports useFilm
  */
 
-import { useBackendApi } from './ApiFetcher';
-import useSWR from 'swr';
+import { getBackendURL } from './ApiFetcher';
 import { FilmWithWeeks, FilmListData } from 'interfaces/Film';
 
 /**
@@ -16,8 +15,9 @@ import { FilmWithWeeks, FilmListData } from 'interfaces/Film';
  */
 const fetchKeys: any = {
 	filmList: (pageIndex: number, limit: number) =>
-		`film/?page=${pageIndex}&limit=${limit}`,
-	film: (slug: string) => `film/slug/${slug}`,
+		`${getBackendURL()}film/?page=${pageIndex}&limit=${limit}`,
+	filmSlug: (slug: string) => `${getBackendURL()}film/slug/${slug}`,
+	filmId: (slug: string) => `${getBackendURL()}film/id/${slug}`,
 };
 
 /**
@@ -28,33 +28,34 @@ const fetchKeys: any = {
  * @example
  * const { data, error } = useFilmList(1, 10);
  */
-export const useFilmList = (
+export const useFilmList = async (
 	pageIndex: number = 1,
 	limit: number = 10
-): { data?: FilmListData; error?: any } => {
-	const apiFetcher = useBackendApi();
-	return useSWR(
-		fetchKeys.filmList(pageIndex, limit),
-		async (url: string) => {
-			const data = await apiFetcher(url);
-			return data;
-		},
-		{ suspense: true }
-	);
+): Promise<FilmListData> => {
+	const res = await fetch(fetchKeys.filmList(pageIndex, limit));
+	return res.json();
 };
 
 /**
- * Get a single film by slug.
+ * Get a single film.
  * @param {string} slug - Film slug.
  * @returns a single film from the api.
  * @example
- * const { data, error } = useFilm('uk');
+ * const film = await getFilm('the-dark-knight');
  */
-export const useFilm = (
-	slug: string
-): { data?: FilmWithWeeks; error?: any } => {
-	const apiFetcher = useBackendApi();
-	return useSWR(fetchKeys.film(slug), apiFetcher, {
-		suspense: true,
-	});
-};
+export async function getFilm(slug: string): Promise<FilmWithWeeks> {
+	const res = await fetch(fetchKeys.filmSlug(slug));
+	return res.json();
+}
+
+/**
+ * Get a single film.
+ * @param {string} id - Film id.
+ * @returns a single film from the api.
+ * @example
+ * const film = await getFilm(100);
+ */
+export async function getFilmId(id: number): Promise<FilmWithWeeks> {
+	const res = await fetch(fetchKeys.filmId(id));
+	return res.json();
+}
