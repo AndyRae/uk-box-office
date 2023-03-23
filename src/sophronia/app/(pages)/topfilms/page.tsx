@@ -1,4 +1,4 @@
-import { getBackendURL } from 'lib/ApiFetcher';
+import { getApi } from 'lib/api';
 import { PageTitle } from 'components/ui/page-title';
 import { TopFilmsTable } from 'components/tables/top-films-table';
 import { TopFilm } from 'interfaces/Film';
@@ -15,8 +15,8 @@ export const metadata: Metadata = {
  * @returns {Promise<{ results: TopFilm[] }>}
  */
 async function getTopFilms(): Promise<{ results: TopFilm[] }> {
-	const url = getBackendURL();
-	const res = await fetch(`${url}boxoffice/topfilms`);
+	const url = getApi();
+	const res = await fetch(`${url}/boxoffice/topfilms`);
 	return res.json();
 }
 

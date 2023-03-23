@@ -4,7 +4,7 @@
  * @exports useFilm
  */
 
-import { getBackendURL } from './ApiFetcher';
+import { getApi } from './api';
 import { FilmWithWeeks, FilmListData } from 'interfaces/Film';
 
 /**
@@ -15,9 +15,9 @@ import { FilmWithWeeks, FilmListData } from 'interfaces/Film';
  */
 const fetchKeys: any = {
 	filmList: (pageIndex: number, limit: number) =>
-		`${getBackendURL()}film/?page=${pageIndex}&limit=${limit}`,
-	filmSlug: (slug: string) => `${getBackendURL()}film/slug/${slug}`,
-	filmId: (slug: string) => `${getBackendURL()}film/id/${slug}`,
+		`${getApi()}/film/?page=${pageIndex}&limit=${limit}`,
+	filmSlug: (slug: string) => `${getApi()}/film/slug/${slug}`,
+	filmId: (slug: string) => `${getApi()}/film/id/${slug}`,
 };
 
 /**

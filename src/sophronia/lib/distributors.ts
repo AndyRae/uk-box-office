@@ -7,7 +7,7 @@
  * @exports useDistributorMarketShareYear
  */
 
-import { getBackendURL } from './ApiFetcher';
+import { getApi } from './api';
 import {
 	Distributor,
 	DistributorListData,
@@ -25,10 +25,10 @@ import {
  */
 const fetchKeys = {
 	distributorList: (pageIndex: number, pageLimit: number) =>
-		`${getBackendURL()}distributor/?page=${pageIndex}&limit=${pageLimit}`,
+		`${getApi()}/distributor/?page=${pageIndex}&limit=${pageLimit}`,
 	distributorFilms: (slug: string, pageIndex: number, pageLimit: number) =>
-		`${getBackendURL()}distributor/${slug}/films?page=${pageIndex}&limit=${pageLimit}`,
-	distributor: (slug: string) => `${getBackendURL()}distributor/${slug}`,
+		`${getApi()}/distributor/${slug}/films?page=${pageIndex}&limit=${pageLimit}`,
+	distributor: (slug: string) => `${getApi()}/distributor/${slug}`,
 };
 
 /**

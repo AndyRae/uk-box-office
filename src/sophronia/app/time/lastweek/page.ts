@@ -1,9 +1,9 @@
 import { redirect } from 'next/navigation';
-import { getBackendURL } from 'lib/ApiFetcher';
+import { getApi } from 'lib/api';
 
 async function getLastWeek(): Promise<{ results: { date: string }[] }> {
-	const url = getBackendURL();
-	const res = await fetch(`${url}boxoffice/all`);
+	const url = getApi();
+	const res = await fetch(`${url}/boxoffice/all`);
 	return res.json();
 }
 

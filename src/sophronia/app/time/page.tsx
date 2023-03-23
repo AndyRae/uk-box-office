@@ -1,11 +1,9 @@
-import { getBackendURL } from 'lib/ApiFetcher';
+import { getApi } from 'lib/api';
 
 import { PageTitle } from 'components/ui/page-title';
 import { PageContent } from 'components/ui/page-content';
 import { ExportCSV } from 'components/ui/export-csv';
 import { StructuredTimeData } from 'components/structured-data';
-import { Card } from 'components/ui/card';
-
 import { AllTimeChart } from 'components/charts/all-time';
 import { YearsTable } from 'components/tables/years-table';
 import Time from 'interfaces/Time';
@@ -33,9 +31,9 @@ async function getBoxOfficeSummary(
 	endDate: string,
 	limit: number
 ): Promise<BoxOfficeSummaryResponse> {
-	const url = getBackendURL();
+	const url = getApi();
 	const res = await fetch(
-		`${url}boxoffice/summary?start=${startDate}&end=${endDate}&limit=${limit}`
+		`${url}/boxoffice/summary?start=${startDate}&end=${endDate}&limit=${limit}`
 	);
 	return res.json();
 }

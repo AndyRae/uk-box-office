@@ -6,7 +6,7 @@
  * @exports useCountryFilms
  */
 
-import { getBackendURL } from './ApiFetcher';
+import { getApi } from './api';
 import { Country, CountryListData, CountryFilmsData } from 'interfaces/Country';
 
 /**
@@ -18,10 +18,10 @@ import { Country, CountryListData, CountryFilmsData } from 'interfaces/Country';
  */
 export const fetchKeys: any = {
 	countryList: (pageIndex: number, limit: number) =>
-		`${getBackendURL()}country/?page=${pageIndex}&limit=${limit}`,
+		`${getApi()}/country/?page=${pageIndex}&limit=${limit}`,
 	countryFilms: (slug: string, pageIndex: number, pageLimit: number) =>
-		`${getBackendURL()}country/${slug}/films?page=${pageIndex}&limit=${pageLimit}`,
-	country: (slug: string) => `${getBackendURL()}country/${slug}`,
+		`${getApi()}/country/${slug}/films?page=${pageIndex}&limit=${pageLimit}`,
+	country: (slug: string) => `${getApi()}/country/${slug}`,
 };
 
 /**
@@ -48,7 +48,7 @@ export const useCountryList = async (
  * const country = await getCountry('united-kingdom');
  */
 export async function getCountry(slug: string): Promise<Country> {
-	const url = getBackendURL();
+	const url = getApi();
 	const res = await fetch(`${url}country/${slug}`);
 	return res.json();
 }

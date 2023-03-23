@@ -1,4 +1,4 @@
-import { getBackendURL } from 'lib/ApiFetcher';
+import { getApi } from 'lib/api';
 
 import { PageTitle } from 'components/ui/page-title';
 import { Tabs } from 'components/ui/tabs';
@@ -24,8 +24,8 @@ type MarketShareData = {
  * @returns {Promise<MarketShareData>}
  */
 async function getMarketshare(): Promise<MarketShareData> {
-	const url = getBackendURL();
-	const res = await fetch(`${url}distributor/marketshare`, {});
+	const url = getApi();
+	const res = await fetch(`${url}/distributor/marketshare`, {});
 	return res.json();
 }
 

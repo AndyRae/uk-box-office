@@ -1,6 +1,6 @@
 /**
  * @fileoverview This file contains the functions used to fetch data from the backend
- * @exports getBackendURL
+ * @exports getApi
  * @exports useBackendApi
  * @exports useInfiniteFetcher
  *
@@ -15,18 +15,17 @@ import { useCallback } from 'react';
  * @example
  * returns http://localhost:5000/api/
  */
-export const getBackendURL = (): string => {
+export const getApi = (): string => {
 	if (process.env.NEXT_PUBLIC_CODESPACE === 'true') {
-		return `https://${process.env.NEXT_PUBLIC_CODESPACE_NAME}-5000.${process.env.NEXT_PUBLIC_GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}/api/`;
+		return `https://${process.env.NEXT_PUBLIC_CODESPACE_NAME}-5000.${process.env.NEXT_PUBLIC_GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}/api`;
 	}
 
 	if (process.env.NODE_ENV === 'development') {
-		return 'http://localhost:5000/api/';
+		return 'http://localhost:5000/api';
 	}
 
 	return (
-		process.env.NEXT_PUBLIC_BACKEND_URL ||
-		'https://api.boxofficedata.co.uk/api/'
+		process.env.NEXT_PUBLIC_BACKEND_URL || 'https://api.boxofficedata.co.uk/api'
 	);
 };
 

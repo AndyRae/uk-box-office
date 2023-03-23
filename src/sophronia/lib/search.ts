@@ -4,7 +4,7 @@
  * @exports useSearch
  */
 
-import { getBackendURL } from './ApiFetcher';
+import { getApi } from './api';
 import { Country } from 'interfaces/Country';
 import { Distributor } from 'interfaces/Distributor';
 import { Film } from 'interfaces/Film';
@@ -21,7 +21,7 @@ interface SearchResults {
  * @property {function} search - Search endpoint.
  */
 const fetchKeys = {
-	search: (query: string) => `${getBackendURL()}search?q=${query}`,
+	search: (query: string) => `${getApi()}/search?q=${query}`,
 };
 
 /**

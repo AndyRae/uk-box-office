@@ -1,4 +1,4 @@
-import { getBackendURL } from 'lib/ApiFetcher';
+import { getApi } from 'lib/api';
 
 import { ForecastChart } from 'components/charts/forecast';
 import { PageTitle } from 'components/ui/page-title';
@@ -31,9 +31,9 @@ async function getForecast(
 	endDate: string,
 	limit: number = 10
 ): Promise<ForecastData> {
-	const url = getBackendURL();
+	const url = getApi();
 	const res = await fetch(
-		`${url}boxoffice/topline?start=${startDate}&end=${endDate}&limit=${limit}`
+		`${url}/boxoffice/topline?start=${startDate}&end=${endDate}&limit=${limit}`
 	);
 	return res.json();
 }
