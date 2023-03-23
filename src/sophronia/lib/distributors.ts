@@ -7,8 +7,7 @@
  * @exports useDistributorMarketShareYear
  */
 
-import { useBackendApi } from './ApiFetcher';
-import useSWR from 'swr';
+import { getBackendURL } from './ApiFetcher';
 import {
 	Distributor,
 	DistributorListData,
@@ -26,12 +25,10 @@ import {
  */
 const fetchKeys = {
 	distributorList: (pageIndex: number, pageLimit: number) =>
-		`distributor/?page=${pageIndex}&limit=${pageLimit}`,
+		`${getBackendURL()}distributor/?page=${pageIndex}&limit=${pageLimit}`,
 	distributorFilms: (slug: string, pageIndex: number, pageLimit: number) =>
-		`distributor/${slug}/films?page=${pageIndex}&limit=${pageLimit}`,
-	distributor: (slug: string) => `distributor/${slug}`,
-	marketShareYear: (year: number) => `distributor/marketshare/${year}`,
-	marketShare: `distributor/marketshare`,
+		`${getBackendURL()}distributor/${slug}/films?page=${pageIndex}&limit=${pageLimit}`,
+	distributor: (slug: string) => `${getBackendURL()}distributor/${slug}`,
 };
 
 /**
@@ -42,19 +39,12 @@ const fetchKeys = {
  * @example
  * const { data, error } = useDistributorList(1, 10);
  */
-export const useDistributorList = (
+export const useDistributorList = async (
 	pageIndex: number = 1,
 	limit: number = 10
-): { data?: DistributorListData; error?: any } => {
-	const apiFetcher = useBackendApi();
-	return useSWR(
-		fetchKeys.distributorList(pageIndex, limit),
-		async (url) => {
-			const data = await apiFetcher(url);
-			return data;
-		},
-		{ suspense: true }
-	);
+): Promise<DistributorListData> => {
+	const res = await fetch(fetchKeys.distributorList(pageIndex, limit));
+	return res.json();
 };
 
 /**
@@ -62,16 +52,12 @@ export const useDistributorList = (
  * @param {string} slug - Distributor slug.
  * @returns a single distributor from the api.
  * @example
- * const { data, error } = useDistributor('mubi');
+ * const distributor = await getDistributor('warner-bros');
  */
-export const useDistributor = (
-	slug: string
-): { data?: Distributor; error?: any } => {
-	const apiFetcher = useBackendApi();
-	return useSWR(fetchKeys.distributor(slug), apiFetcher, {
-		suspense: true,
-	});
-};
+export async function getDistributor(slug: string): Promise<Distributor> {
+	const res = await fetch(fetchKeys.distributor(slug));
+	return res.json();
+}
 
 /**
  * Get a single distributor films.
@@ -82,44 +68,13 @@ export const useDistributor = (
  * @example
  * const { data, error } = useDistributorFilms('mubi', 1, 10);
  */
-export const useDistributorFilms = (
+export const useDistributorFilms = async (
 	slug: string,
 	pageIndex: number = 1,
 	pageLimit: number = 10
-): { data?: DistributorFilmsData; error?: any } => {
-	const apiFetcher = useBackendApi();
-	return useSWR(
-		fetchKeys.distributorFilms(slug, pageIndex, pageLimit),
-		apiFetcher,
-		{
-			suspense: true,
-		}
+): Promise<DistributorFilmsData> => {
+	const res = await fetch(
+		fetchKeys.distributorFilms(slug, pageIndex, pageLimit)
 	);
-};
-
-/**
- * Get market share data for distributors.
- * @returns Market share data for distributors.
- * @example
- * const { data, error } = useDistributorMarketShare();
- */
-export const useDistributorMarketShare = (): any => {
-	const apiFetcher = useBackendApi();
-	return useSWR(fetchKeys.marketShare, apiFetcher, {
-		suspense: true,
-	});
-};
-
-/**
- * Get market share data for distributors for a year.
- * @param {number} year - Year to get market share data for.
- * @returns Market share data for distributors.
- * @example
- * const { data, error } = useDistributorMarketShareYear(2019);
- */
-export const useDistributorMarketShareYear = (year: number): any => {
-	const apiFetcher = useBackendApi();
-	return useSWR(fetchKeys.marketShareYear(year), apiFetcher, {
-		suspense: true,
-	});
+	return res.json();
 };

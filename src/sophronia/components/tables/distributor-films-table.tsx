@@ -1,10 +1,7 @@
-'use client';
-
 import { useDistributorFilms } from 'lib/distributors';
 import { FilmTable } from 'components/tables/film-table';
 import { Pagination } from 'components/ui/pagination';
 import { paginate } from 'lib/utils/pagination';
-import { useState } from 'react';
 
 /**
  * @description Distributor Films List component
@@ -14,26 +11,23 @@ import { useState } from 'react';
  * @example
  * <DistributorFilmsList slug={slug} />
  */
-export const DistributorFilmsTable = ({
+export const DistributorFilmsTable = async ({
 	slug,
+	pageIndex,
 }: {
 	slug: string;
-}): JSX.Element => {
-	const [pageIndex, setPageIndex] = useState(1);
+	pageIndex: number;
+}): Promise<JSX.Element> => {
 	const pageLimit = 15;
 
-	const { data, error } = useDistributorFilms(slug, pageIndex, pageLimit);
+	const data = await useDistributorFilms(slug, pageIndex, pageLimit);
 
-	const pageNumbers = paginate(data!.count, pageIndex, pageLimit);
+	const pageNumbers = paginate(data.count, pageIndex, pageLimit);
 
 	return (
 		<>
 			{data && <FilmTable films={data} />}
-			<Pagination
-				pages={pageNumbers}
-				setPageIndex={setPageIndex}
-				pageIndex={pageIndex}
-			/>
+			<Pagination pages={pageNumbers} pageIndex={pageIndex} />
 		</>
 	);
 };
