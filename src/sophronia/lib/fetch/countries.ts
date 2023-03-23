@@ -6,8 +6,7 @@
  * @exports useCountryFilms
  */
 
-import { useBackendApi } from './ApiFetcher';
-import useSWR from 'swr';
+import { getApi } from './api';
 import { Country, CountryListData, CountryFilmsData } from 'interfaces/Country';
 
 /**
@@ -19,10 +18,10 @@ import { Country, CountryListData, CountryFilmsData } from 'interfaces/Country';
  */
 export const fetchKeys: any = {
 	countryList: (pageIndex: number, limit: number) =>
-		`country/?page=${pageIndex}&limit=${limit}`,
+		`${getApi()}/country/?page=${pageIndex}&limit=${limit}`,
 	countryFilms: (slug: string, pageIndex: number, pageLimit: number) =>
-		`country/${slug}/films?page=${pageIndex}&limit=${pageLimit}`,
-	country: (slug: string) => `country/${slug}`,
+		`${getApi()}/country/${slug}/films?page=${pageIndex}&limit=${pageLimit}`,
+	country: (slug: string) => `${getApi()}/country/${slug}`,
 };
 
 /**
@@ -33,19 +32,12 @@ export const fetchKeys: any = {
  * @example
  * const { data, error } = useCountryList(1, 10);
  */
-export const useCountryList = (
+export const useCountryList = async (
 	pageIndex: number = 1,
 	limit: number = 10
-): { data?: CountryListData; error?: any } => {
-	const apiFetcher = useBackendApi();
-	return useSWR(
-		fetchKeys.countryList(pageIndex, limit),
-		async (url: string) => {
-			const data = await apiFetcher(url);
-			return data;
-		},
-		{ suspense: true }
-	);
+): Promise<CountryListData> => {
+	const res = await fetch(fetchKeys.countryList(pageIndex, limit));
+	return res.json();
 };
 
 /**
@@ -53,14 +45,13 @@ export const useCountryList = (
  * @param {string} slug - Country slug.
  * @returns a single country from the api.
  * @example
- * const { data, error } = useCountry('uk');
+ * const country = await getCountry('united-kingdom');
  */
-export const useCountry = (slug: string): { data?: Country; error?: any } => {
-	const apiFetcher = useBackendApi();
-	return useSWR(fetchKeys.country(slug), apiFetcher, {
-		suspense: true,
-	});
-};
+export async function getCountry(slug: string): Promise<Country> {
+	const url = getApi();
+	const res = await fetch(`${url}country/${slug}`);
+	return res.json();
+}
 
 /**
  * Get a single countries and its films paginated.
@@ -71,17 +62,11 @@ export const useCountry = (slug: string): { data?: Country; error?: any } => {
  * @example
  * const { data, error } = useCountryFilms('uk', 1, 10);
  */
-export const useCountryFilms = (
+export const useCountryFilms = async (
 	slug: string,
 	pageIndex: number,
 	pageLimit: number
-): { data?: CountryFilmsData; error?: any } => {
-	const apiFetcher = useBackendApi();
-	return useSWR(
-		fetchKeys.countryFilms(slug, pageIndex, pageLimit),
-		apiFetcher,
-		{
-			suspense: true,
-		}
-	);
+): Promise<CountryFilmsData> => {
+	const res = await fetch(fetchKeys.countryFilms(slug, pageIndex, pageLimit));
+	return res.json();
 };

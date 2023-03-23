@@ -11,11 +11,7 @@
  * @exports useProtectedSWRInfinite
  */
 
-import {
-	useBackendApi,
-	useInfiniteFetcher,
-	getBackendURLClient,
-} from './ApiFetcher';
+import { useBackendApi, useInfiniteFetcher, getBackendURLClient } from './api';
 import useSWR from 'swr';
 import useSWRInfinite, { SWRInfiniteResponse } from 'swr/infinite';
 import { useMemo } from 'react';

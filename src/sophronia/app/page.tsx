@@ -1,7 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useBoxOfficeInfinite, useBoxOfficePreviousYear } from 'lib/boxoffice';
+import {
+	useBoxOfficeInfinite,
+	useBoxOfficePreviousYear,
+} from 'lib/fetch/boxoffice';
 import { Button } from 'components/ui/button';
 import { ButtonGroup } from 'components/ui/button-group';
 import { Card } from 'components/ui/card';

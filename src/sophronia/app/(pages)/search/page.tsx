@@ -1,8 +1,5 @@
-'use client';
-
-import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { useSearch } from 'lib/search';
+import { useSearch } from 'lib/fetch/search';
 import { FilmsTable } from 'components/tables/films-table';
 import { Searchbar } from 'components/search';
 import { PageTitle } from 'components/ui/page-title';
@@ -10,12 +7,13 @@ import { PageTitle } from 'components/ui/page-title';
 import { Distributor } from 'interfaces/Distributor';
 import { Country } from 'interfaces/Country';
 
-export default function Page(): JSX.Element {
-	const searchParams = useSearchParams();
-
-	const query = searchParams.get('q');
-
-	const { data } = useSearch(query || '');
+export default async function Page({
+	searchParams,
+}: {
+	searchParams: { q?: string };
+}): Promise<JSX.Element> {
+	const query = searchParams?.q ?? '';
+	const data = await useSearch(query || '');
 
 	return (
 		<>

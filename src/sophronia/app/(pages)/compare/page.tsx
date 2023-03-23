@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { PageTitle } from 'components/ui/page-title';
-import { getFilmId } from 'app/(pages)/film/[slug]/getFilm';
-import { getBackendURL } from 'lib/ApiFetcher';
+import { getFilmId } from 'lib/fetch/films';
+import { getApi } from 'lib/fetch/api';
 import AsyncSelect from 'react-select/async';
 import { CompareTable } from 'components/tables/compare-table';
 import { CompareTotalChart } from 'components/charts/compare-total';
@@ -22,8 +22,8 @@ type FilmOption = {
 
 // Make the options search request
 async function SearchFilms(term: string): Promise<FilmOption[]> {
-	const url = getBackendURL();
-	const res = await fetch(`${url}search/film?q=${term}`);
+	const url = getApi();
+	const res = await fetch(`${url}/search/film?q=${term}`);
 	return res.json();
 }
 

@@ -4,8 +4,7 @@
  * @exports useSearch
  */
 
-import { useBackendApi } from './ApiFetcher';
-import useSWR from 'swr';
+import { getApi } from './api';
 import { Country } from 'interfaces/Country';
 import { Distributor } from 'interfaces/Distributor';
 import { Film } from 'interfaces/Film';
@@ -22,7 +21,7 @@ interface SearchResults {
  * @property {function} search - Search endpoint.
  */
 const fetchKeys = {
-	search: (query: string) => `search?q=${query}`,
+	search: (query: string) => `${getApi()}/search?q=${query}`,
 };
 
 /**
@@ -32,11 +31,7 @@ const fetchKeys = {
  * @example
  * const { data, error } = useSearch('uk');
  */
-export const useSearch = (
-	query: string
-): { data?: SearchResults; error?: any } => {
-	const apiFetcher = useBackendApi();
-	return useSWR(fetchKeys.search(query), apiFetcher, {
-		suspense: true,
-	});
+export const useSearch = async (query: string): Promise<SearchResults> => {
+	const res = await fetch(fetchKeys.search(query));
+	return res.json();
 };

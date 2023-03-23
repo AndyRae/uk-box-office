@@ -1,6 +1,9 @@
+'use client';
+import { useRouter, usePathname } from 'next/navigation';
+
 type PaginationProps = {
 	pages: number[];
-	setPageIndex: (pageIndex: number) => void;
+	// setPageIndex: (pageIndex: number) => void;
 	pageIndex: number;
 };
 
@@ -15,9 +18,16 @@ type PaginationProps = {
  */
 export const Pagination = ({
 	pages,
-	setPageIndex,
+	// setPageIndex,
 	pageIndex,
 }: PaginationProps): JSX.Element => {
+	const router = useRouter();
+	const pathName = usePathname();
+
+	const setPageIndex = (pageNumber: number) => {
+		router.push(pathName + `?p=${pageNumber}`);
+	};
+
 	return (
 		<nav aria-label='Pagination'>
 			<ul className='inline-flex -space-x-px py-5'>

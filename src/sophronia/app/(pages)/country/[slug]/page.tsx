@@ -1,6 +1,6 @@
 import { PageTitle } from 'components/ui/page-title';
 import { CountryFilmsTable } from 'components/tables/country-films-table';
-import { getCountry } from './getCountry';
+import { getCountry } from 'lib/fetch/countries';
 
 export async function generateMetadata({
 	params,
@@ -42,15 +42,19 @@ export async function generateMetadata({
 
 export default async function Page({
 	params,
+	searchParams,
 }: {
 	params: { slug: string };
+	searchParams: { p?: number };
 }): Promise<JSX.Element> {
+	let pageIndex = searchParams?.p ?? 1;
 	const data = await getCountry(params.slug);
 
 	return (
 		<div>
 			<PageTitle>{data.name}</PageTitle>
-			<CountryFilmsTable slug={params.slug} />
+			{/* @ts-expect-error Server Component */}
+			<CountryFilmsTable slug={params.slug} pageIndex={pageIndex} />
 		</div>
 	);
 }

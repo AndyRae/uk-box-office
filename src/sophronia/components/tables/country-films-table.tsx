@@ -1,10 +1,7 @@
-'use client';
-
-import { useCountryFilms } from 'lib/countries';
+import { useCountryFilms } from 'lib/fetch/countries';
 import { FilmTable } from 'components/tables/film-table';
 import { Pagination } from 'components/ui/pagination';
 import { paginate } from 'lib/utils/pagination';
-import { useState } from 'react';
 
 /**
  * @description Country Films List component
@@ -14,22 +11,23 @@ import { useState } from 'react';
  * @example
  * <CountryFilmsTable slug={slug} />
  */
-export const CountryFilmsTable = ({ slug }: { slug: string }): JSX.Element => {
-	const [pageIndex, setPageIndex] = useState(1);
+export const CountryFilmsTable = async ({
+	slug,
+	pageIndex,
+}: {
+	slug: string;
+	pageIndex: number;
+}): Promise<JSX.Element> => {
 	const pageLimit = 15;
 
-	const { data, error } = useCountryFilms(slug, pageIndex, pageLimit);
+	const data = await useCountryFilms(slug, pageIndex, pageLimit);
 
 	const pageNumbers = paginate(data!.count, pageIndex, pageLimit);
 
 	return (
 		<>
 			{data && <FilmTable films={data} />}
-			<Pagination
-				pages={pageNumbers}
-				setPageIndex={setPageIndex}
-				pageIndex={pageIndex}
-			/>
+			<Pagination pages={pageNumbers} pageIndex={pageIndex} />
 		</>
 	);
 };

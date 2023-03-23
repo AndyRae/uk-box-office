@@ -8,9 +8,9 @@ import { toTitleCase } from 'lib/utils/toTitleCase';
  * @param {DistributorListData} distributors - Distributors to be displayed
  * @returns {JSX.Element}
  * @example
- * <DistributorList distributors={distributors} />
+ * <DistributorTable distributors={distributors} />
  */
-export const DistributorList = ({
+export const DistributorTable = ({
 	distributors,
 }: {
 	distributors: DistributorListData;
