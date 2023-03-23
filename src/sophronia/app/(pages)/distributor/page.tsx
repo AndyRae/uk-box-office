@@ -1,8 +1,8 @@
 import { useDistributorList } from 'lib/distributors';
 import { paginate } from 'lib/utils/pagination';
-import { DistributorList } from './DistributorList';
 import { Pagination } from 'components/ui/pagination';
 import { PageTitle } from 'components/ui/page-title';
+import { DistributorTable } from 'components/tables/distributor-table';
 
 type Props = {
 	params?: {
@@ -24,7 +24,7 @@ export default async function Page({
 	return (
 		<>
 			<PageTitle>Distributors</PageTitle>
-			{data && <DistributorList distributors={data} />}
+			{data && <DistributorTable distributors={data} />}
 			<Pagination pages={pageNumbers} pageIndex={pageIndex} />
 		</>
 	);

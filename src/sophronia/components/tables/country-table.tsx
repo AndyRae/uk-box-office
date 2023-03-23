@@ -7,9 +7,9 @@ import { CountryListData } from 'interfaces/Country';
  * @param {CountryList} countries - Countries to be displayed
  * @returns {JSX.Element}
  * @example
- * <CountryList countries={countries} />
+ * <CountryTable countries={countries} />
  */
-export const CountryList = ({
+export const CountryTable = ({
 	countries,
 }: {
 	countries: CountryListData;
