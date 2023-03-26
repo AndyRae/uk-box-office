@@ -21,7 +21,7 @@ export const Brand = (): JSX.Element => {
 				className='mr-3 h-6 sm:h-7 w-6 sm:w-7'
 				alt='UK Box Office Logo'
 			/>
-			<span className='self-center text-xl font-semibold whitespace-nowrap dark:text-white'>
+			<span className='self-center text-xl font-semibold whitespace-nowrap text-transparent bg-clip-text bg-gradient-to-br from-black to-black dark:from-white dark:to-white hover:from-bo-primary hover:to-cyan-500'>
 				Box Office Data
 			</span>
 		</Link>

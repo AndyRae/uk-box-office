@@ -24,6 +24,7 @@ import {
 	MdCheckCircleOutline,
 } from 'react-icons/md';
 import { RiSeedlingLine } from 'react-icons/ri';
+import { TbActivityHeartbeat } from 'react-icons/tb';
 
 export type Icon = IconType;
 
@@ -48,4 +49,5 @@ export const Icons = {
 	info: FaInfoCircle,
 	envelope: FaEnvelope,
 	film: FaFilm,
+	status: TbActivityHeartbeat,
 };
