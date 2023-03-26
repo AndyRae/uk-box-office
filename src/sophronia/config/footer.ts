@@ -1,7 +1,7 @@
 // Quick links to display in the footer
 import { Icons } from 'components/icons';
 
-type footerLink = {
+export type footerLink = {
 	name: string;
 	path: string;
 	icon: keyof typeof Icons;
@@ -11,7 +11,7 @@ export const footerConfig: footerLink[] = [
 	{
 		name: 'Data Source',
 		path: 'https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures',
-		icon: 'info',
+		icon: 'seedling',
 	},
 	{
 		name: 'Github',
@@ -46,6 +46,6 @@ export const footerConfig: footerLink[] = [
 	{
 		name: 'Status',
 		path: '/status',
-		icon: 'globe',
+		icon: 'status',
 	},
 ];
