@@ -17,7 +17,7 @@ export const Footer = (): JSX.Element => {
 			<ul className='flex flex-col flex-wrap md:flex-row-reverse mt-3 text-sm sm:mt-0'>
 				{footerConfig
 					.map((link) => {
-						return <FooterLink link={link} />;
+						return <FooterLink link={link} key={link.name} />;
 					})
 					.reverse()}
 			</ul>
@@ -30,10 +30,7 @@ const FooterLink = ({ link }: { link: footerLink }) => {
 	const Icon = Icons[link.icon];
 
 	return (
-		<li
-			key={link.name}
-			className='mr-4 md:mr-6 leading-7 text-gray-500 dark:text-gray-400 hover:text-bo-primary'
-		>
+		<li className='mr-4 md:mr-6 leading-7 text-gray-500 dark:text-gray-400 hover:text-bo-primary'>
 			{isLocalUrl(link.path) ? (
 				<Link href={link.path} className='flex items-center'>
 					<Icon className='mr-2' />
