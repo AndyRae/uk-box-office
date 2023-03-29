@@ -3,7 +3,6 @@ import { getApi } from 'lib/fetch/api';
 import { ForecastChart } from 'components/charts/forecast';
 import { PageTitle } from 'components/ui/page-title';
 import { PageContent } from 'components/ui/page-content';
-import { Card } from 'components/ui/card';
 import { Topline } from 'interfaces/BoxOffice';
 import { Metadata } from 'next';
 
@@ -33,7 +32,8 @@ async function getForecast(
 ): Promise<ForecastData> {
 	const url = getApi();
 	const res = await fetch(
-		`${url}/boxoffice/topline?start=${startDate}&end=${endDate}&limit=${limit}`
+		`${url}/boxoffice/topline?start=${startDate}&end=${endDate}&limit=${limit}`,
+		{ next: { revalidate: 60 } }
 	);
 	return res.json();
 }
