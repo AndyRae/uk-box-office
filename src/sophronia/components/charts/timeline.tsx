@@ -3,7 +3,12 @@
 import { Timeseries } from './timeseries';
 import { groupbyMonth, groupbyDate } from 'lib/utils/groupData';
 import { useState, useEffect, useRef, MouseEvent } from 'react';
-import { Tooltip } from 'components/ui/tooltip';
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from 'components/ui/tooltip';
 import { useRouter } from 'next/navigation';
 import { getElementAtEvent } from 'react-chartjs-2';
 import { BoxOfficeWeek } from 'interfaces/BoxOffice';
@@ -168,17 +173,24 @@ export const TimeLineChart = ({
 		<>
 			<div className='flex flex-row-reverse'>
 				{allowRollUp ? (
-					<Tooltip text={isGroupedByMonth ? 'Week' : 'Month'}>
-						<ArrowIcon
-							className='h-6 w-6 transition-all duration-500'
-							style={
-								!isGroupedByMonth
-									? { transform: 'rotate(180deg)' }
-									: { transform: 'rotate(0deg)' }
-							}
-							onClick={isGroupedByMonth ? rollDown : rollUp}
-						/>
-					</Tooltip>
+					<TooltipProvider>
+						<Tooltip>
+							<TooltipTrigger>
+								<ArrowIcon
+									className='h-6 w-6 transition-all duration-500'
+									style={
+										!isGroupedByMonth
+											? { transform: 'rotate(180deg)' }
+											: { transform: 'rotate(0deg)' }
+									}
+									onClick={isGroupedByMonth ? rollDown : rollUp}
+								/>
+							</TooltipTrigger>
+							<TooltipContent>
+								<p>{isGroupedByMonth ? 'Week' : 'Month'}</p>
+							</TooltipContent>
+						</Tooltip>
+					</TooltipProvider>
 				) : (
 					<div className='mt-6'></div>
 				)}

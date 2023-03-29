@@ -17,7 +17,12 @@ import { MetricChange } from 'components/metric-change';
 import { Datepickers } from 'components/datepickers';
 import { FilmTableDetailed } from 'components/tables/film-table-detailed';
 import { TimeLineChart } from 'components/charts/timeline';
-import { Tooltip } from 'components/ui/tooltip';
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from 'components/ui/tooltip';
 import { SkeletonCards } from 'components/skeleton';
 import { StructuredTimeData } from 'components/structured-data';
 import { LastUpdated } from 'components/last-updated';
@@ -162,9 +167,16 @@ export default function Home(): JSX.Element {
 						className='border border-black dark:border-white'
 					>
 						{timeComparisonData && (
-							<Tooltip text='Change from last year'>
-								<MetricChange value={changeWeek} />{' '}
-							</Tooltip>
+							<TooltipProvider>
+								<Tooltip>
+									<TooltipTrigger>
+										<MetricChange value={changeWeek} />
+									</TooltipTrigger>
+									<TooltipContent>
+										<p>Change from last year</p>
+									</TooltipContent>
+								</Tooltip>
+							</TooltipProvider>
 						)}
 					</Card>
 
@@ -175,10 +187,16 @@ export default function Home(): JSX.Element {
 						className='border border-black dark:border-white'
 					>
 						{timeComparisonData && (
-							<Tooltip text='Change from last year'>
-								{' '}
-								<MetricChange value={changeWeekend} />{' '}
-							</Tooltip>
+							<TooltipProvider>
+								<Tooltip>
+									<TooltipTrigger>
+										<MetricChange value={changeWeekend} />
+									</TooltipTrigger>
+									<TooltipContent>
+										<p>Change from last year</p>
+									</TooltipContent>
+								</Tooltip>
+							</TooltipProvider>
 						)}
 					</Card>
 
@@ -189,10 +207,16 @@ export default function Home(): JSX.Element {
 						className='border border-black dark:border-white'
 					>
 						{timeComparisonData && (
-							<Tooltip text='Change from last year'>
-								{' '}
-								<MetricChange value={changeNewFilms} />{' '}
-							</Tooltip>
+							<TooltipProvider>
+								<Tooltip>
+									<TooltipTrigger>
+										<MetricChange value={changeNewFilms} />
+									</TooltipTrigger>
+									<TooltipContent>
+										<p>Change from last year</p>
+									</TooltipContent>
+								</Tooltip>
+							</TooltipProvider>
 						)}
 					</Card>
 
@@ -203,10 +227,16 @@ export default function Home(): JSX.Element {
 						className='border border-black dark:border-white'
 					>
 						{timeComparisonData && (
-							<Tooltip text='Change from last year'>
-								{' '}
-								<MetricChange value={changeCinemas} />{' '}
-							</Tooltip>
+							<TooltipProvider>
+								<Tooltip>
+									<TooltipTrigger>
+										<MetricChange value={changeCinemas} />
+									</TooltipTrigger>
+									<TooltipContent>
+										<p>Change from last year</p>
+									</TooltipContent>
+								</Tooltip>
+							</TooltipProvider>
 						)}
 					</Card>
 				</div>
