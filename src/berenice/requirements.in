@@ -12,6 +12,7 @@ marshmallow-sqlalchemy
 Flask-SQLAlchemy
 gunicorn
 mypy
+openpyxl
 pandas
 pip-tools
 pre-commit
