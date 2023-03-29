@@ -3,7 +3,7 @@ import { getApi } from 'lib/fetch/api';
 
 async function getLastWeek(): Promise<{ results: { date: string }[] }> {
 	const url = getApi();
-	const res = await fetch(`${url}/boxoffice/all`);
+	const res = await fetch(`${url}/boxoffice/all`, { cache: 'no-store' });
 	return res.json();
 }
 
