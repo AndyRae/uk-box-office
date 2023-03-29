@@ -2,12 +2,6 @@ import { InlineLink, ExternalLink } from 'components/ui/inline-link';
 import { PageTitle } from 'components/ui/page-title';
 import { PageContent } from 'components/ui/page-content';
 import { Metadata } from 'next';
-import {
-	Tabs,
-	TabsList,
-	TabsTrigger,
-	TabsContent,
-} from 'components/ui/radix-tabs';
 
 export const metadata: Metadata = {
 	title: 'About | Box Office Data',
@@ -17,15 +11,6 @@ export default function Page(): JSX.Element {
 	return (
 		<>
 			<PageTitle>About</PageTitle>
-
-			<Tabs>
-				<TabsList>
-					<TabsTrigger value='tab1'>One</TabsTrigger>
-					<TabsTrigger value='tab2'>Two</TabsTrigger>
-				</TabsList>
-				<TabsContent value='tab1'>One content</TabsContent>
-				<TabsContent value='tab2'>Two content</TabsContent>
-			</Tabs>
 
 			<PageContent>
 				<p>

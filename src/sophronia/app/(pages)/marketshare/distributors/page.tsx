@@ -1,10 +1,10 @@
 import { getApi } from 'lib/fetch/api';
 
 import { PageTitle } from 'components/ui/page-title';
-import { Tabs } from 'components/ui/tabs';
 import { ExportCSV } from 'components/ui/export-csv';
 import { MarketShareChart } from 'components/charts/market-share';
 import { MarketShareTable } from 'components/tables/market-share-table';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from 'components/ui/tabs';
 import { getDefaultColorArray } from 'lib/utils/colorGenerator';
 
 import MarketShare from 'interfaces/MarketShare';
@@ -103,12 +103,13 @@ export default async function Page() {
 				)}
 			</div>
 
-			<Tabs
-				tabs={uniqueYears.map((year, index) => ({
-					title: year,
-					id: index,
-				}))}
-			>
+			<Tabs>
+				<TabsList>
+					{uniqueYears.map((year) => {
+						return <TabsTrigger value={year.toString()}>{year}</TabsTrigger>;
+					})}
+				</TabsList>
+
 				{uniqueYears.map((year) => {
 					var yearlyData = reducedData
 						.map((d: any) => {
@@ -126,7 +127,7 @@ export default async function Page() {
 						.slice(0, 10);
 
 					return (
-						<div key={year}>
+						<TabsContent value={year.toString()}>
 							<div className='flex flex-row-reverse mt-3'>
 								<ExportCSV
 									data={yearlyData}
@@ -134,7 +135,7 @@ export default async function Page() {
 								/>
 							</div>
 							<MarketShareTable data={yearlyData} />
-						</div>
+						</TabsContent>
 					);
 				})}
 			</Tabs>
