@@ -25,7 +25,9 @@ type MarketShareData = {
  */
 async function getMarketshare(): Promise<MarketShareData> {
 	const url = getApi();
-	const res = await fetch(`${url}/distributor/marketshare`, {});
+	const res = await fetch(`${url}/distributor/marketshare`, {
+		next: { revalidate: 60 },
+	});
 	return res.json();
 }
 

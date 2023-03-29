@@ -32,6 +32,6 @@ const fetchKeys = {
  * const { data, error } = useSearch('uk');
  */
 export const useSearch = async (query: string): Promise<SearchResults> => {
-	const res = await fetch(fetchKeys.search(query));
+	const res = await fetch(fetchKeys.search(query), { cache: 'no-store' });
 	return res.json();
 };
