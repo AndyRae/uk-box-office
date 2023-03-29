@@ -21,6 +21,6 @@ type EventsOverview = {
  */
 export async function getEvents(): Promise<EventsOverview> {
 	const url = getApi();
-	const res = await fetch(`${url}/events`);
+	const res = await fetch(`${url}/events`, { cache: 'no-store' });
 	return res.json();
 }

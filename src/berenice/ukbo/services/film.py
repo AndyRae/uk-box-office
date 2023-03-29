@@ -109,11 +109,11 @@ def add_film(
         new.save()
     except Exception:
         # Film exists but with a different distributor
+        db.session.rollback()
         print(f"Duplicate {film}")
         services.events.create(
             models.Area.etl, models.State.warning, f"Duplicate - {film}."
         )
-        db.session.rollback()
         slug = slugify(f"{film}-{distributor.name}")
         new.slug = slug
         new.save()

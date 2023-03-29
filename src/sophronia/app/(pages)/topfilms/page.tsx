@@ -16,7 +16,9 @@ export const metadata: Metadata = {
  */
 async function getTopFilms(): Promise<{ results: TopFilm[] }> {
 	const url = getApi();
-	const res = await fetch(`${url}/boxoffice/topfilms`);
+	const res = await fetch(`${url}/boxoffice/topfilms`, {
+		next: { revalidate: 60 },
+	});
 	return res.json();
 }
 
