@@ -11,6 +11,7 @@ export default function Page(): JSX.Element {
 	return (
 		<>
 			<PageTitle>About</PageTitle>
+
 			<PageContent>
 				<p>
 					UK Box Office data is the most detailed and searchable source for box

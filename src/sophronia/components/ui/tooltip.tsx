@@ -1,29 +1,30 @@
-type TooltipProps = {
-	text: string;
-	children: React.ReactNode;
-};
+'use client';
 
-/**
- * @file Tooltip.jsx
- * @description Simple Tooltip component to display a tooltip on hover.
- * @param {string} text - The text to display inside the tooltip
- * @returns {JSX.Element}
- * @example
- * <Tooltip text='Tooltip text'>
- * 	<span>Hover me</span>
- * </Tooltip>
- */
-export const Tooltip = ({
-	children,
-	text,
-	...props
-}: TooltipProps): JSX.Element => {
-	return (
-		<div className='group' {...props}>
-			<span className='tooltip-text text-sm font-medium shadow-md bg-slate-50 dark:bg-black dark:text-white p-1 -mt-12 -mr-10 rounded-lg hidden group-hover:block absolute text-center py-2 px-4 z-50 border border-black dark:border-white'>
-				{text}
-			</span>
-			{children}
-		</div>
-	);
-};
+import * as React from 'react';
+import * as TooltipPrimitive from '@radix-ui/react-tooltip';
+import clsx from 'clsx';
+
+const TooltipProvider = TooltipPrimitive.Provider;
+
+const Tooltip = ({ ...props }) => <TooltipPrimitive.Root {...props} />;
+Tooltip.displayName = TooltipPrimitive.Tooltip.displayName;
+
+const TooltipTrigger = TooltipPrimitive.Trigger;
+
+const TooltipContent = React.forwardRef<
+	React.ElementRef<typeof TooltipPrimitive.Content>,
+	React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>
+>(({ className, sideOffset = 4, ...props }, ref) => (
+	<TooltipPrimitive.Content
+		ref={ref}
+		sideOffset={sideOffset}
+		className={clsx(
+			'z-50 overflow-hidden rounded-md border border-slate-100 bg-white px-3 py-1.5 text-sm text-slate-700 shadow-md animate-in fade-in-50 data-[side=bottom]:slide-in-from-top-1 data-[side=top]:slide-in-from-bottom-1 data-[side=left]:slide-in-from-right-1 data-[side=right]:slide-in-from-left-1 dark:border-slate-800 dark:bg-slate-800 dark:text-slate-400',
+			className
+		)}
+		{...props}
+	/>
+));
+TooltipContent.displayName = TooltipPrimitive.Content.displayName;
+
+export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider };

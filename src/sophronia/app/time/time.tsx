@@ -7,18 +7,22 @@ import { groupForTable, groupbyDate } from 'lib/utils/groupData';
 
 import { PageTitle } from 'components/ui/page-title';
 import { ProgressBar } from 'components/ui/progress-bar';
-import { Tooltip } from 'components/ui/tooltip';
-import { Tabs } from 'components/ui/tabs';
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from 'components/ui/tooltip';
 import { ExportCSV } from 'components/ui/export-csv';
 import { DescriptionItem } from 'components/ui/description-item';
 import { DescriptionList } from 'components/ui/description-list';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from 'components/ui/tabs';
 import { StructuredTimeData } from 'components/structured-data';
 import { DatasourceButton } from 'components/datasource';
 import { MetricChange } from 'components/metric-change';
 import { StackedBarChart } from 'components/charts/stacked-bar';
 import { TimeLineChart } from 'components/charts/timeline';
 import { FilmTableDetailed } from 'components/tables/film-table-detailed';
-
 import { WeeksTable } from 'components/tables/weeks-table';
 import { PreviousTable } from 'components/tables/previous-years-table';
 import { PreviousYearsChart } from 'components/charts/previous-years';
@@ -252,24 +256,45 @@ export const TimePage = ({
 							title={'Total Box Office'}
 							text={`£ ${boxOffice.toLocaleString()}`}
 						>
-							<Tooltip text='Change from last year'>
-								<MetricChange value={changeWeek} />
-							</Tooltip>
+							<TooltipProvider>
+								<Tooltip>
+									<TooltipTrigger>
+										<MetricChange value={changeWeek} />
+									</TooltipTrigger>
+									<TooltipContent>
+										<p>Change from last year</p>
+									</TooltipContent>
+								</Tooltip>
+							</TooltipProvider>
 						</DescriptionItem>
 
 						<DescriptionItem
 							title={'Weekend Box Office'}
 							text={`£ ${weekendBoxOffice.toLocaleString()}`}
 						>
-							<Tooltip text='Change from last year'>
-								<MetricChange value={changeWeekend} />
-							</Tooltip>
+							<TooltipProvider>
+								<Tooltip>
+									<TooltipTrigger>
+										<MetricChange value={changeWeekend} />
+									</TooltipTrigger>
+									<TooltipContent>
+										<p>Change from last year</p>
+									</TooltipContent>
+								</Tooltip>
+							</TooltipProvider>
 						</DescriptionItem>
 
 						<DescriptionItem title={'New Releases'} text={numberOfNewFilms}>
-							<Tooltip text='Change from last year'>
-								<MetricChange value={changeNewFilms} />
-							</Tooltip>
+							<TooltipProvider>
+								<Tooltip>
+									<TooltipTrigger>
+										<MetricChange value={changeNewFilms} />
+									</TooltipTrigger>
+									<TooltipContent>
+										<p>Change from last year</p>
+									</TooltipContent>
+								</Tooltip>
+							</TooltipProvider>
 						</DescriptionItem>
 
 						{admissions && (
@@ -277,9 +302,16 @@ export const TimePage = ({
 								title={'Admissions'}
 								text={admissions?.toLocaleString()}
 							>
-								<Tooltip text='Change from last year'>
-									<MetricChange value={changeAdmissions} />
-								</Tooltip>
+								<TooltipProvider>
+									<Tooltip>
+										<TooltipTrigger>
+											<MetricChange value={changeAdmissions} />
+										</TooltipTrigger>
+										<TooltipContent>
+											<p>Change from last year</p>
+										</TooltipContent>
+									</Tooltip>
+								</TooltipProvider>
 							</DescriptionItem>
 						)}
 
@@ -288,9 +320,16 @@ export const TimePage = ({
 								title={'Average Ticket Price'}
 								text={`£ ${averageTicketPrice.toLocaleString()}`}
 							>
-								<Tooltip text='Change from last year'>
-									<MetricChange value={changeAverageTicketPrice} />
-								</Tooltip>
+								<TooltipProvider>
+									<Tooltip>
+										<TooltipTrigger>
+											<MetricChange value={changeAverageTicketPrice} />
+										</TooltipTrigger>
+										<TooltipContent>
+											<p>Change from last year</p>
+										</TooltipContent>
+									</Tooltip>
+								</TooltipProvider>
 							</DescriptionItem>
 						)}
 
@@ -299,9 +338,16 @@ export const TimePage = ({
 							text={`£ ${siteAverage.toLocaleString()}`}
 						/>
 						<DescriptionItem title={'Cinemas'} text={numberOfCinemas}>
-							<Tooltip text='Change from last year'>
-								<MetricChange value={changeCinemas} />
-							</Tooltip>
+							<TooltipProvider>
+								<Tooltip>
+									<TooltipTrigger>
+										<MetricChange value={changeCinemas} />
+									</TooltipTrigger>
+									<TooltipContent>
+										<p>Change from last year</p>
+									</TooltipContent>
+								</Tooltip>
+							</TooltipProvider>
 						</DescriptionItem>
 					</DescriptionList>
 				</div>
@@ -382,23 +428,14 @@ export const TimePage = ({
 					))}
 				</ul>
 			</div>
-			<Tabs
-				tabs={[
-					{
-						id: '1',
-						title: 'Films',
-					},
-					{
-						id: '2',
-						title: 'Weeks',
-					},
-					{
-						id: '3',
-						title: 'Previous Years',
-					},
-				]}
-			>
-				<div>
+
+			<Tabs defaultValue='tab1'>
+				<TabsList>
+					<TabsTrigger value='tab1'>Films</TabsTrigger>
+					<TabsTrigger value='tab2'>Weeks</TabsTrigger>
+					<TabsTrigger value='tab3'>Previous Years</TabsTrigger>
+				</TabsList>
+				<TabsContent value='tab1'>
 					{results && (
 						<>
 							<div className='flex flex-row-reverse mt-3'>
@@ -411,8 +448,8 @@ export const TimePage = ({
 							/>
 						</>
 					)}
-				</div>
-				<div>
+				</TabsContent>
+				<TabsContent value='tab2'>
 					{weekData && (
 						<>
 							<div className='flex flex-row-reverse mt-3'>
@@ -422,8 +459,8 @@ export const TimePage = ({
 							<WeeksTable data={weekData} />
 						</>
 					)}
-				</div>
-				<div>
+				</TabsContent>
+				<TabsContent value='tab3'>
 					{timeComparisonData && (
 						<>
 							<div className='flex flex-row-reverse mt-3'>
@@ -436,7 +473,7 @@ export const TimePage = ({
 							<PreviousTable data={timeComparisonData.results} />
 						</>
 					)}
-				</div>
+				</TabsContent>
 			</Tabs>
 		</>
 	);

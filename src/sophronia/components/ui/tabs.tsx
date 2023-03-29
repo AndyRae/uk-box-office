@@ -1,103 +1,47 @@
 'use client';
 
-import {
-	JSXElementConstructor,
-	Key,
-	MouseEvent,
-	ReactElement,
-	ReactFragment,
-	ReactPortal,
-	SetStateAction,
-	useState,
-} from 'react';
+import * as React from 'react';
+import clsx from 'clsx';
 
-/**
- * @file Tabs.jsx
- * @description Tabs component to display content in tabs.
- * @param {array} tabs - The array of tab names
- * @param {array} children - The array of tab content
- * @returns {JSX.Element}
- * @example
- * <Tabs tabs={[{ title: 'Tab 1' }, { title: 'Tab 2' }]}>
- * 	<div>Tab 1 content</div>
- * 	<div>Tab 2 content</div>
- * </Tabs>
- */
-export const Tabs = ({
-	tabs,
-	children,
-}: {
-	tabs: any[];
-	children: any;
-}): JSX.Element => {
-	const [activeTab, setActiveTab] = useState(0);
+import * as TabsPrimitive from '@radix-ui/react-tabs';
 
-	const handleTabClick = (
-		_e: MouseEvent<HTMLButtonElement>,
-		index: SetStateAction<number>
-	) => {
-		setActiveTab(index);
-	};
+export const Tabs = TabsPrimitive.Root;
 
-	return (
-		<div className='tabs'>
-			<ul
-				className='border-b flex flex-wrap -mb-px text-sm font-medium text-center'
-				role='tablist'
-				aria-label='Tabs'
-			>
-				{tabs.map((child, index) => {
-					return (
-						<li key={index} className='tabs__item' role='presentation'>
-							<button
-								className={`inline-block p-4 rounded-t-lg border-b-2 ${
-									activeTab === index
-										? 'bg-gray-100 dark:bg-gray-900'
-										: 'border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'
-								}`}
-								role='tab'
-								aria-selected={activeTab === index ? 'true' : 'false'}
-								aria-controls={`panel-${index}`}
-								id={`tab-${index}`}
-								data-tab={index}
-								onClick={(e): void => handleTabClick(e, index)}
-							>
-								{child.title}
-							</button>
-						</li>
-					);
-				})}
-			</ul>
-			<div
-				className='my-8 rounded-lg'
-				role='tabpanel'
-				aria-labelledby={`tab-${activeTab}`}
-			>
-				{children.map(
-					(
-						child:
-							| string
-							| number
-							| boolean
-							| ReactElement<any, string | JSXElementConstructor<any>>
-							| ReactFragment
-							| ReactPortal,
-						index: Key
-					) => {
-						return (
-							<div
-								key={index}
-								className='rounded-lg'
-								role='presentation'
-								data-tab={index}
-								hidden={activeTab !== index}
-							>
-								{child}
-							</div>
-						);
-					}
-				)}
-			</div>
-		</div>
-	);
-};
+export const TabsList = React.forwardRef<
+	React.ElementRef<typeof TabsPrimitive.List>,
+	React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>
+>(({ className, ...props }, ref) => (
+	<TabsPrimitive.List
+		ref={ref}
+		className={clsx('flex flex-wrap border-b', className)}
+		{...props}
+	/>
+));
+TabsList.displayName = TabsPrimitive.List.displayName;
+
+export const TabsTrigger = React.forwardRef<
+	React.ElementRef<typeof TabsPrimitive.Trigger>,
+	React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>
+>(({ className, ...props }, ref) => (
+	<TabsPrimitive.Trigger
+		className={clsx(
+			'inline-flex min-w-[100px] items-center justify-center rounded-t-lg px-3 py-3 text-sm font-medium text-slate-700 transition-all disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-slate-900 data-[state=active]:shadow-sm dark:text-slate-200 dark:data-[state=active]:bg-slate-900 dark:data-[state=active]:text-slate-100 data-[state=active]:border-b-2',
+			className
+		)}
+		{...props}
+		ref={ref}
+	/>
+));
+TabsTrigger.displayName = TabsPrimitive.Trigger.displayName;
+
+export const TabsContent = React.forwardRef<
+	React.ElementRef<typeof TabsPrimitive.Content>,
+	React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
+>(({ className, ...props }, ref) => (
+	<TabsPrimitive.Content
+		className={clsx('mt-2', className)}
+		{...props}
+		ref={ref}
+	/>
+));
+TabsContent.displayName = TabsPrimitive.Content.displayName;

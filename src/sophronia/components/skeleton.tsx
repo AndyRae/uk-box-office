@@ -1,4 +1,3 @@
-import { Tooltip } from 'components/ui/tooltip';
 import { MetricChange } from 'components/metric-change';
 import { TimeLineChart } from 'components/charts/timeline';
 import { StackedBarChart } from 'components/charts/stacked-bar';
@@ -18,9 +17,7 @@ export const SkeletonCards = (): JSX.Element => {
 				status='transparent'
 				className='border border-black dark:border-white'
 			>
-				<Tooltip text='Change from last year'>
-					<MetricChange value={0} />{' '}
-				</Tooltip>
+				<MetricChange value={0} />{' '}
 			</Card>
 
 			<Card
@@ -29,10 +26,7 @@ export const SkeletonCards = (): JSX.Element => {
 				status='transparent'
 				className='border border-black dark:border-white'
 			>
-				<Tooltip text='Change from last year'>
-					{' '}
-					<MetricChange value={0} />{' '}
-				</Tooltip>
+				<MetricChange value={0} />{' '}
 			</Card>
 
 			<Card
@@ -41,10 +35,7 @@ export const SkeletonCards = (): JSX.Element => {
 				status='transparent'
 				className='border border-black dark:border-white'
 			>
-				<Tooltip text='Change from last year'>
-					{' '}
-					<MetricChange value={0} />{' '}
-				</Tooltip>
+				<MetricChange value={0} />{' '}
 			</Card>
 
 			<Card
@@ -53,10 +44,7 @@ export const SkeletonCards = (): JSX.Element => {
 				status='transparent'
 				className='border border-black dark:border-white'
 			>
-				<Tooltip text='Change from last year'>
-					{' '}
-					<MetricChange value={0} />{' '}
-				</Tooltip>
+				<MetricChange value={0} />{' '}
 			</Card>
 		</div>
 	);
