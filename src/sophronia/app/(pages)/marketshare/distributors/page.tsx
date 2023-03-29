@@ -103,7 +103,7 @@ export default async function Page() {
 				)}
 			</div>
 
-			<Tabs>
+			<Tabs defaultValue={uniqueYears[0].toString()}>
 				<TabsList>
 					{uniqueYears.map((year) => {
 						return <TabsTrigger value={year.toString()}>{year}</TabsTrigger>;

@@ -382,7 +382,7 @@ export const TimePage = ({
 				</ul>
 			</div>
 
-			<Tabs>
+			<Tabs defaultValue='tab1'>
 				<TabsList>
 					<TabsTrigger value='tab1'>Films</TabsTrigger>
 					<TabsTrigger value='tab2'>Weeks</TabsTrigger>
