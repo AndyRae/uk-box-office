@@ -36,7 +36,9 @@ export const useCountryList = async (
 	pageIndex: number = 1,
 	limit: number = 10
 ): Promise<CountryListData> => {
-	const res = await fetch(fetchKeys.countryList(pageIndex, limit));
+	const res = await fetch(fetchKeys.countryList(pageIndex, limit), {
+		next: { revalidate: 60 },
+	});
 	return res.json();
 };
 
@@ -49,7 +51,9 @@ export const useCountryList = async (
  */
 export async function getCountry(slug: string): Promise<Country> {
 	const url = getApi();
-	const res = await fetch(`${url}country/${slug}`);
+	const res = await fetch(`${url}country/${slug}`, {
+		next: { revalidate: 60 },
+	});
 	return res.json();
 }
 
@@ -67,6 +71,8 @@ export const useCountryFilms = async (
 	pageIndex: number,
 	pageLimit: number
 ): Promise<CountryFilmsData> => {
-	const res = await fetch(fetchKeys.countryFilms(slug, pageIndex, pageLimit));
+	const res = await fetch(fetchKeys.countryFilms(slug, pageIndex, pageLimit), {
+		next: { revalidate: 60 },
+	});
 	return res.json();
 };

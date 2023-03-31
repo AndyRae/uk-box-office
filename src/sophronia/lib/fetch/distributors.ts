@@ -43,7 +43,9 @@ export const useDistributorList = async (
 	pageIndex: number = 1,
 	limit: number = 10
 ): Promise<DistributorListData> => {
-	const res = await fetch(fetchKeys.distributorList(pageIndex, limit));
+	const res = await fetch(fetchKeys.distributorList(pageIndex, limit), {
+		next: { revalidate: 60 },
+	});
 	return res.json();
 };
 
@@ -55,7 +57,9 @@ export const useDistributorList = async (
  * const distributor = await getDistributor('warner-bros');
  */
 export async function getDistributor(slug: string): Promise<Distributor> {
-	const res = await fetch(fetchKeys.distributor(slug));
+	const res = await fetch(fetchKeys.distributor(slug), {
+		next: { revalidate: 60 },
+	});
 	return res.json();
 }
 
@@ -74,7 +78,8 @@ export const useDistributorFilms = async (
 	pageLimit: number = 10
 ): Promise<DistributorFilmsData> => {
 	const res = await fetch(
-		fetchKeys.distributorFilms(slug, pageIndex, pageLimit)
+		fetchKeys.distributorFilms(slug, pageIndex, pageLimit),
+		{ next: { revalidate: 60 } }
 	);
 	return res.json();
 };
