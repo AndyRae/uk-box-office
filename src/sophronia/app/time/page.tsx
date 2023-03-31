@@ -33,7 +33,8 @@ async function getBoxOfficeSummary(
 ): Promise<BoxOfficeSummaryResponse> {
 	const url = getApi();
 	const res = await fetch(
-		`${url}/boxoffice/summary?start=${startDate}&end=${endDate}&limit=${limit}`
+		`${url}/boxoffice/summary?start=${startDate}&end=${endDate}&limit=${limit}`,
+		{ next: { revalidate: 60 } }
 	);
 	return res.json();
 }

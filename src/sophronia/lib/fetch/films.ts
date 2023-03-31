@@ -32,7 +32,9 @@ export const useFilmList = async (
 	pageIndex: number = 1,
 	limit: number = 10
 ): Promise<FilmListData> => {
-	const res = await fetch(fetchKeys.filmList(pageIndex, limit));
+	const res = await fetch(fetchKeys.filmList(pageIndex, limit), {
+		next: { revalidate: 60 },
+	});
 	return res.json();
 };
 
@@ -44,7 +46,9 @@ export const useFilmList = async (
  * const film = await getFilm('the-dark-knight');
  */
 export async function getFilm(slug: string): Promise<FilmWithWeeks> {
-	const res = await fetch(fetchKeys.filmSlug(slug));
+	const res = await fetch(fetchKeys.filmSlug(slug), {
+		next: { revalidate: 60 },
+	});
 	return res.json();
 }
 
@@ -56,6 +60,6 @@ export async function getFilm(slug: string): Promise<FilmWithWeeks> {
  * const film = await getFilm(100);
  */
 export async function getFilmId(id: number): Promise<FilmWithWeeks> {
-	const res = await fetch(fetchKeys.filmId(id));
+	const res = await fetch(fetchKeys.filmId(id), { next: { revalidate: 60 } });
 	return res.json();
 }
