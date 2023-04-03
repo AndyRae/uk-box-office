@@ -1,7 +1,7 @@
 'use client';
 
-import React, { Suspense } from 'react';
-import { usePathname, useSearchParams } from 'next/navigation';
+import React from 'react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
 export function Breadcrumbs() {
