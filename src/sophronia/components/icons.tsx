@@ -14,7 +14,7 @@ import {
 	FaFilm,
 	FaGlobeEurope,
 } from 'react-icons/fa';
-import { FiDatabase } from 'react-icons/fi';
+import { FiChevronDown, FiDatabase } from 'react-icons/fi';
 import { HiOutlineTicket } from 'react-icons/hi';
 import {
 	MdOutlineSpaceDashboard,
@@ -50,4 +50,5 @@ export const Icons = {
 	envelope: FaEnvelope,
 	film: FaFilm,
 	status: TbActivityHeartbeat,
+	chevronDown: FiChevronDown,
 };
