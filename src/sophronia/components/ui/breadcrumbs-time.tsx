@@ -29,6 +29,13 @@ export function BreadcrumbsTime({
 				Dashboard
 			</Link>
 			<span className='text-gray-600 px-2'>/</span>
+			<Link
+				href={'/time'}
+				className='animate-[highlight_1s_ease-in-out_1] capitalize py-0.5  text-gray-500 dark:text-gray-500'
+			>
+				Time
+			</Link>
+			<span className='text-gray-600 px-2'>/</span>
 			<BreadcrumbsYears year={year} />
 			<span className='text-gray-600 px-2'>/</span>
 			<BreadcrumbsQuarters year={year} month={month} />

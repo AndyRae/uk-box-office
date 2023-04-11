@@ -7,6 +7,11 @@ import Link from 'next/link';
 export function Breadcrumbs() {
 	const pathname = usePathname();
 
+	// Escape for the complex time breadcrumbs
+	if (pathname.includes('time/')) {
+		return <></>;
+	}
+
 	function generateBreadcrumbs() {
 		// Remove any query parameters, as those aren't included in breadcrumbs
 		const asPathWithoutQuery = pathname.split('?')[0];
