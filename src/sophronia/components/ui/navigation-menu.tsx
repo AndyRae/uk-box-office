@@ -61,7 +61,7 @@ const NavigationMenuContent = React.forwardRef<
 	<NavigationMenuPrimitive.Content
 		ref={ref}
 		className={clsx(
-			'top-0 w-full data-[motion^=from-]:animate-in data-[motion^=to-]:animate-out data-[motion^=from-]:fade-in data-[motion^=to-]:fade-out data-[motion=to-start]:slide-out-to-left-52 data-[motion=to-end]:slide-out-to-right-52 data-[motion=from-start]:slide-in-from-left-52 data-[motion=from-end]:slide-in-from-right-52 absolute md:w-auto ',
+			'top-0 w-full md:w-auto data-[motion^=from-]:animate-in data-[motion^=to-]:animate-out data-[motion^=from-]:fade-in data-[motion^=to-]:fade-out data-[motion=to-start]:slide-out-to-left-52 data-[motion=to-end]:slide-out-to-right-52 data-[motion=from-start]:slide-in-from-left-52 data-[motion=from-end]:slide-in-from-right-52 absolute',
 			className
 		)}
 		{...props}
@@ -75,7 +75,7 @@ const NavigationMenuViewport = React.forwardRef<
 	React.ElementRef<typeof NavigationMenuPrimitive.Viewport>,
 	React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Viewport>
 >(({ className, ...props }, ref) => (
-	<div className={clsx('absolute left-0 top-full flex justify-center')}>
+	<div className={clsx('absolute left-0 top-full w-full flex justify-center')}>
 		<NavigationMenuPrimitive.Viewport
 			className={clsx(
 				'origin-top-center relative mt-1.5 h-[var(--radix-navigation-menu-viewport-height)] w-full overflow-hidden rounded-md border border-slate-200 bg-white shadow-lg data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:zoom-in-90 data-[state=closed]:zoom-out-95 dark:border-white dark:bg-black md:w-[var(--radix-navigation-menu-viewport-width)]',

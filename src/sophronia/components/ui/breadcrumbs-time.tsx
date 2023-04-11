@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import Link from 'next/link';
 import {
@@ -81,7 +79,6 @@ export function BreadcrumbsQuarters({
 	month: number;
 }) {
 	// get the quarter
-	const today = new Date();
 	const quarter = Math.floor((month - 1) / 3 + 1);
 
 	const quarters = [1, 2, 3, 4];
@@ -92,7 +89,7 @@ export function BreadcrumbsQuarters({
 				<NavigationMenuItem>
 					<NavigationMenuTrigger>Q{quarter}</NavigationMenuTrigger>
 					<NavigationMenuContent>
-						<ul className='md:w-[80px] lg:w-[80px]'>
+						<ul className='w-[80px]'>
 							{quarters.map((q) => {
 								return (
 									<li className={listItemStyle}>
