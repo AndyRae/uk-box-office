@@ -1,11 +1,16 @@
 'use client';
 
-import React, { Suspense } from 'react';
-import { usePathname, useSearchParams } from 'next/navigation';
+import React from 'react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
 export function Breadcrumbs() {
 	const pathname = usePathname();
+
+	// Escape for the complex time breadcrumbs
+	if (pathname.includes('time/')) {
+		return <></>;
+	}
 
 	function generateBreadcrumbs() {
 		// Remove any query parameters, as those aren't included in breadcrumbs
@@ -42,7 +47,7 @@ export function Breadcrumbs() {
 						{breadcrumbs.map((segment, index) => {
 							return (
 								<React.Fragment key={segment.title}>
-									{index > 0 && <span className='text-gray-600 px-2'>/</span>}
+									{index > 0 && <span className='text-gray-600 px-1.5'>/</span>}
 									<span>
 										<Link
 											key={segment.title}
