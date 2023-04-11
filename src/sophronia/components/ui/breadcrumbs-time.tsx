@@ -1,0 +1,165 @@
+'use client';
+
+import React from 'react';
+import Link from 'next/link';
+import {
+	NavigationMenu,
+	NavigationMenuList,
+	NavigationMenuItem,
+	NavigationMenuContent,
+	NavigationMenuTrigger,
+	NavigationMenuLink,
+	NavigationMenuViewport,
+} from './navigation-menu';
+
+const listItemStyle =
+	'block items-center justify-center border-gray-400 border-b py-2 px-2 w-auto text-sm font-medium bg-gradient-to-br from-transparent to-transparent hover:from-bo-primary hover:to-cyan-500';
+
+export function BreadcrumbsTime({
+	year = 2022,
+	month = 1,
+}: {
+	year?: number;
+	month?: number;
+}) {
+	return (
+		<div className='flex gap-3 justify-start gap-x-1 text-sm font-medium my-5 py-3.5 lg:py-3'>
+			<Link
+				href={'/'}
+				className='animate-[highlight_1s_ease-in-out_1] capitalize py-0.5  text-gray-500 dark:text-gray-500'
+			>
+				Dashboard
+			</Link>
+			<span className='text-gray-600 px-2'>/</span>
+			<BreadcrumbsYears year={year} />
+			<span className='text-gray-600 px-2'>/</span>
+			<BreadcrumbsQuarters year={year} month={month} />
+			<span className='text-gray-600 px-2'>/</span>
+			<BreadcrumbsMonths year={year} month={month} />
+		</div>
+	);
+}
+
+export function BreadcrumbsYears({ year }: { year: number }) {
+	// List of the years
+	const currentYear = new Date().getFullYear();
+	const years = Array.from(
+		Array(currentYear - 2001 + 1).keys(),
+		(_, i) => currentYear - i
+	);
+
+	return (
+		<NavigationMenu>
+			<NavigationMenuList>
+				<NavigationMenuItem>
+					<NavigationMenuTrigger>{year}</NavigationMenuTrigger>
+					<NavigationMenuContent>
+						<ul className='md:w-[80px] lg:w-[80px]'>
+							{years.map((y) => {
+								return (
+									<li className={listItemStyle}>
+										<NavigationMenuLink key={y}>
+											<Link href={`/time/${y}`}>{y}</Link>
+										</NavigationMenuLink>
+									</li>
+								);
+							})}
+						</ul>
+					</NavigationMenuContent>
+				</NavigationMenuItem>
+			</NavigationMenuList>
+			<NavigationMenuViewport />
+		</NavigationMenu>
+	);
+}
+
+export function BreadcrumbsQuarters({
+	year,
+	month,
+}: {
+	year: number;
+	month: number;
+}) {
+	// get the quarter
+	const today = new Date();
+	const quarter = Math.floor((month - 1) / 3 + 1);
+
+	const quarters = [1, 2, 3, 4];
+
+	return (
+		<NavigationMenu>
+			<NavigationMenuList>
+				<NavigationMenuItem>
+					<NavigationMenuTrigger>Q{quarter}</NavigationMenuTrigger>
+					<NavigationMenuContent>
+						<ul className='md:w-[80px] lg:w-[80px]'>
+							{quarters.map((q) => {
+								return (
+									<li className={listItemStyle}>
+										<NavigationMenuLink key={q}>
+											<Link href={`/time/${year}/q/${q}`}>Q{q}</Link>
+										</NavigationMenuLink>
+									</li>
+								);
+							})}
+						</ul>
+					</NavigationMenuContent>
+				</NavigationMenuItem>
+			</NavigationMenuList>
+			<NavigationMenuViewport />
+		</NavigationMenu>
+	);
+}
+
+export function BreadcrumbsMonths({
+	year,
+	month = 1,
+}: {
+	year: number;
+	month?: number;
+}) {
+	type MonthsType = {
+		[key: number]: string;
+	};
+
+	const months: MonthsType = {
+		1: 'January',
+		2: 'February',
+		3: 'March',
+		4: 'April',
+		5: 'May',
+		6: 'June',
+		7: 'July',
+		8: 'August',
+		9: 'September',
+		10: 'October',
+		11: 'November',
+		12: 'December',
+	};
+
+	return (
+		<NavigationMenu>
+			<NavigationMenuList>
+				<NavigationMenuItem>
+					<NavigationMenuTrigger>{months[month]}</NavigationMenuTrigger>
+					<NavigationMenuContent>
+						<ul>
+							{Object.keys(months).map((m) => {
+								return (
+									<li className={listItemStyle}>
+										<NavigationMenuLink>
+											<Link key={m} href={`/time/${year}/m/${m}`}>
+												{months[parseInt(m)]}
+											</Link>
+										</NavigationMenuLink>
+									</li>
+								);
+							})}
+						</ul>
+					</NavigationMenuContent>
+				</NavigationMenuItem>
+			</NavigationMenuList>
+			<NavigationMenuViewport />
+		</NavigationMenu>
+	);
+}
