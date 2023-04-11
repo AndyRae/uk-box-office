@@ -47,7 +47,7 @@ export function Breadcrumbs() {
 						{breadcrumbs.map((segment, index) => {
 							return (
 								<React.Fragment key={segment.title}>
-									{index > 0 && <span className='text-gray-600 px-2'>/</span>}
+									{index > 0 && <span className='text-gray-600 px-1.5'>/</span>}
 									<span>
 										<Link
 											key={segment.title}

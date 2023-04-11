@@ -21,26 +21,28 @@ export function BreadcrumbsTime({
 	month?: number;
 }) {
 	return (
-		<div className='flex gap-3 justify-start gap-x-1 text-sm font-medium my-5 py-3.5 lg:py-3'>
-			<Link
-				href={'/'}
-				className='animate-[highlight_1s_ease-in-out_1] capitalize py-0.5  text-gray-500 dark:text-gray-500'
-			>
-				Dashboard
-			</Link>
-			<span className='text-gray-600 px-2'>/</span>
-			<Link
-				href={'/time'}
-				className='animate-[highlight_1s_ease-in-out_1] capitalize py-0.5  text-gray-500 dark:text-gray-500'
-			>
-				Time
-			</Link>
-			<span className='text-gray-600 px-2'>/</span>
-			<BreadcrumbsYears year={year} />
-			<span className='text-gray-600 px-2'>/</span>
-			<BreadcrumbsQuarters year={year} month={month} />
-			<span className='text-gray-600 px-2'>/</span>
-			<BreadcrumbsMonths year={year} month={month} />
+		<div className='flex items-center gap-x-2 my-5 py-3.5 lg:py-3'>
+			<div className='flex justify-start gap-x-1 text-sm font-medium'>
+				<Link
+					href={'/'}
+					className='animate-[highlight_1s_ease-in-out_1] capitalize py-0.5  text-gray-500 dark:text-gray-500'
+				>
+					Dashboard
+				</Link>
+				<span className='text-gray-600 px-1.5'>/</span>
+				<Link
+					href={'/time'}
+					className='animate-[highlight_1s_ease-in-out_1] capitalize py-0.5  text-gray-500 dark:text-gray-500'
+				>
+					Time
+				</Link>
+				<span className='text-gray-600 px-1.5'>/</span>
+				<BreadcrumbsYears year={year} />
+				<span className='text-gray-600 px-1.5'>/</span>
+				<BreadcrumbsQuarters year={year} month={month} />
+				<span className='text-gray-600 px-1.5'>/</span>
+				<BreadcrumbsMonths year={year} month={month} />
+			</div>
 		</div>
 	);
 }
