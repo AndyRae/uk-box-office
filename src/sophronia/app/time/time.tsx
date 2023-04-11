@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { groupForTable, groupbyDate } from 'lib/utils/groupData';
@@ -29,34 +28,6 @@ import { PreviousTable } from 'components/tables/previous-years-table';
 import { PreviousYearsChart } from 'components/charts/previous-years';
 
 import { useBoxOfficeInfinite, useBoxOfficeSummary } from 'lib/fetch/boxoffice';
-
-type PillLinkProps = {
-	to: string;
-	children: React.ReactNode;
-	isActive: boolean;
-};
-
-/**
- * Pill Link Component
- * @param {string} to - Link to
- * @param {JSX.Element} children - Children
- * @param {boolean} isActive - Is active
- * @returns {JSX.Element}
- */
-const PillLink = ({ to, children, isActive }: PillLinkProps) => (
-	<li className='mr-2'>
-		<Link
-			href={to}
-			className={`inline-block py-3 px-4 rounded-lg hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white ${
-				isActive
-					? 'text-gray-900 bg-gray-100 dark:bg-gray-900 dark:text-white'
-					: ''
-			}`}
-		>
-			{children}
-		</Link>
-	</li>
-);
 
 type TimePageProps = {
 	year: number;
@@ -384,51 +355,6 @@ export const TimePage = ({
 						</>
 					)}
 				</div>
-			</div>
-
-			<div className='py-3'>
-				<ul className='flex flex-wrap my-2 text-sm font-medium text-center text-gray-500 dark:text-gray-400'>
-					<PillLink to={`/time/${year}`} isActive={true}>
-						{year}
-					</PillLink>
-					<PillLink
-						to={`/time/${year}/q/1`}
-						isActive={quarter?.toString() === '1'}
-					>
-						Q1
-					</PillLink>
-					<PillLink
-						to={`/time/${year}/q/2`}
-						isActive={quarter?.toString() === '2'}
-					>
-						Q2
-					</PillLink>
-					<PillLink
-						to={`/time/${year}/q/3`}
-						isActive={quarter?.toString() === '3'}
-					>
-						Q3
-					</PillLink>
-					<PillLink
-						to={`/time/${year}/q/4`}
-						isActive={quarter?.toString() === '4'}
-					>
-						Q4
-					</PillLink>
-				</ul>
-
-				{/* Months */}
-				<ul className='flex flex-wrap lg:flex-nowrap flex- text-sm font-medium text-center text-gray-500 dark:text-gray-400'>
-					{Object.keys(months).map((m) => (
-						<PillLink
-							key={m}
-							to={`/time/${year}/m/${m}`}
-							isActive={m === month?.toString()}
-						>
-							{months[parseInt(m) as keyof MonthsType]}
-						</PillLink>
-					))}
-				</ul>
 			</div>
 
 			<Tabs defaultValue='tab1'>
