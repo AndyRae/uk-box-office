@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 
 import { groupForTable, groupbyDate } from 'lib/utils/groupData';
 
+import { BreadcrumbsTime } from 'components/ui/breadcrumbs-time';
 import { PageTitle } from 'components/ui/page-title';
 import { ProgressBar } from 'components/ui/progress-bar';
 import {
@@ -246,6 +247,7 @@ export const TimePage = ({
 				endpoint={pathname as string}
 				time={pageTitle}
 			/>
+			<BreadcrumbsTime year={year} month={month} />
 
 			<div className='grid grid-cols-1 md:grid-cols-5 gap-3 md:gap-5'>
 				<div className='col-span-2'>
