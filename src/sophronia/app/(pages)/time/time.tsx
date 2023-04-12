@@ -78,7 +78,7 @@ export const TimePage = ({
 				endpoint={'/time'}
 				time={pageTitle}
 			/>
-			<BreadcrumbsTime year={year} month={month} />
+			<BreadcrumbsTime year={year} month={month} quarter={quarter} />
 
 			<div className='grid grid-cols-1 md:grid-cols-5 gap-3 md:gap-5'>
 				<div className='col-span-2'>
