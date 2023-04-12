@@ -155,6 +155,7 @@ def extract_box_office(path: str) -> pd.DataFrame:
     df = df.iloc[1:]
     df.columns = header
 
+    df["Rank"] = pd.to_numeric(df["Rank"], errors="coerce").dropna()
     df = df.dropna(subset=["Rank"])
     df = df.dropna(axis=1, thresh=5)
 
