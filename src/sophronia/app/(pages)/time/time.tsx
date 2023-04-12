@@ -21,6 +21,7 @@ import { FilmTableDetailed } from 'components/tables/film-table-detailed';
 import { WeeksTable } from 'components/tables/weeks-table';
 import { PreviousTable } from 'components/tables/previous-years-table';
 import { PreviousYearsChart } from 'components/charts/previous-years';
+import { ChartWrapper } from 'components/charts/chart-wrapper';
 import { BoxOfficeWeek, BoxOfficeSummary } from 'interfaces/BoxOffice';
 
 type TimePageProps = {
@@ -99,6 +100,31 @@ export const TimePage = ({
 	);
 };
 
+const TimeMetric = ({
+	title,
+	text,
+	metricChange,
+}: {
+	title: string;
+	text: any;
+	metricChange: number;
+}) => {
+	return (
+		<DescriptionItem title={title} text={text}>
+			<TooltipProvider>
+				<Tooltip>
+					<TooltipTrigger>
+						<MetricChange value={metricChange} />
+					</TooltipTrigger>
+					<TooltipContent>
+						<p>Change from last year</p>
+					</TooltipContent>
+				</Tooltip>
+			</TooltipProvider>
+		</DescriptionItem>
+	);
+};
+
 const TimeMetrics = ({
 	timeComparisonData,
 }: {
@@ -157,103 +183,45 @@ const TimeMetrics = ({
 
 	return (
 		<DescriptionList>
-			<DescriptionItem
+			<TimeMetric
 				title={'Total Box Office'}
 				text={`£ ${boxOffice.toLocaleString()}`}
-			>
-				<TooltipProvider>
-					<Tooltip>
-						<TooltipTrigger>
-							<MetricChange value={changeWeek} />
-						</TooltipTrigger>
-						<TooltipContent>
-							<p>Change from last year</p>
-						</TooltipContent>
-					</Tooltip>
-				</TooltipProvider>
-			</DescriptionItem>
+				metricChange={changeWeek}
+			/>
 
-			<DescriptionItem
+			<TimeMetric
 				title={'Weekend Box Office'}
 				text={`£ ${weekendBoxOffice.toLocaleString()}`}
-			>
-				<TooltipProvider>
-					<Tooltip>
-						<TooltipTrigger>
-							<MetricChange value={changeWeekend} />
-						</TooltipTrigger>
-						<TooltipContent>
-							<p>Change from last year</p>
-						</TooltipContent>
-					</Tooltip>
-				</TooltipProvider>
-			</DescriptionItem>
+				metricChange={changeWeekend}
+			/>
 
-			<DescriptionItem title={'New Releases'} text={numberOfNewFilms}>
-				<TooltipProvider>
-					<Tooltip>
-						<TooltipTrigger>
-							<MetricChange value={changeNewFilms} />
-						</TooltipTrigger>
-						<TooltipContent>
-							<p>Change from last year</p>
-						</TooltipContent>
-					</Tooltip>
-				</TooltipProvider>
-			</DescriptionItem>
+			<TimeMetric
+				title={'New Releases'}
+				text={numberOfNewFilms}
+				metricChange={changeNewFilms}
+			/>
 
 			{hasAdmissions && (
-				<DescriptionItem
+				<TimeMetric
 					title={'Admissions'}
 					text={admissions?.toLocaleString()}
-				>
-					<TooltipProvider>
-						<Tooltip>
-							<TooltipTrigger>
-								<MetricChange value={changeAdmissions} />
-							</TooltipTrigger>
-							<TooltipContent>
-								<p>Change from last year</p>
-							</TooltipContent>
-						</Tooltip>
-					</TooltipProvider>
-				</DescriptionItem>
+					metricChange={changeAdmissions}
+				/>
 			)}
 
 			{hasAdmissions && (
-				<DescriptionItem
+				<TimeMetric
 					title={'Average Ticket Price'}
 					text={`£ ${averageTicketPrice.toLocaleString()}`}
-				>
-					<TooltipProvider>
-						<Tooltip>
-							<TooltipTrigger>
-								<MetricChange value={changeAverageTicketPrice} />
-							</TooltipTrigger>
-							<TooltipContent>
-								<p>Change from last year</p>
-							</TooltipContent>
-						</Tooltip>
-					</TooltipProvider>
-				</DescriptionItem>
+					metricChange={changeAverageTicketPrice}
+				/>
 			)}
 
-			<DescriptionItem
-				title={'Site Average'}
-				text={`£ ${siteAverage.toLocaleString()}`}
+			<TimeMetric
+				title={'Cinemas'}
+				text={numberOfCinemas}
+				metricChange={changeCinemas}
 			/>
-			<DescriptionItem title={'Cinemas'} text={numberOfCinemas}>
-				<TooltipProvider>
-					<Tooltip>
-						<TooltipTrigger>
-							<MetricChange value={changeCinemas} />
-						</TooltipTrigger>
-						<TooltipContent>
-							<p>Change from last year</p>
-						</TooltipContent>
-					</Tooltip>
-				</TooltipProvider>
-			</DescriptionItem>
 		</DescriptionList>
 	);
 };
@@ -273,27 +241,18 @@ const TimeCharts = ({
 	return (
 		<div className='col-span-3 flex flex-col gap-4 divide-y divide-gray-200 dark:divide-gray-700'>
 			{!isWeekView && (
-				<div className='my-4'>
-					<p className='font-bold text-sm text-gray-700 dark:text-gray-400'>
-						Box Office
-					</p>
+				<ChartWrapper title='Box Office' className='my-4'>
 					<TimeLineChart data={results} />
-				</div>
+				</ChartWrapper>
 			)}
 
-			<div className='my-4'>
-				<p className='font-bold text-sm text-gray-700 dark:text-gray-400 mt-4'>
-					Films
-				</p>
+			<ChartWrapper title='Films' className='my-4'>
 				<StackedBarChart data={results} />
-			</div>
+			</ChartWrapper>
 
-			<div className='my-4'>
-				<p className='font-bold text-sm text-gray-700 dark:text-gray-400 mt-4'>
-					Previous Years
-				</p>
+			<ChartWrapper title='Previous Years' className='my-4'>
 				<PreviousYearsChart data={timeComparisonData} />
-			</div>
+			</ChartWrapper>
 		</div>
 	);
 };
