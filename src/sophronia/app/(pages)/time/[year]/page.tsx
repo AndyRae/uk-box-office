@@ -1,4 +1,5 @@
-import { TimePage } from '../time';
+import { TimePage } from 'app/(pages)/time/time';
+import { fetchBoxOfficeInfinite, fetchBoxOfficeSummary } from 'lib/fetch/box';
 
 export async function generateMetadata({
 	params,
@@ -35,10 +36,33 @@ export async function generateMetadata({
 	};
 }
 
-export default function Page({ params }: { params: { year: number } }) {
+export default async function Page({ params }: { params: { year: number } }) {
+	// Build Dates based on existing params or defaults.
+	const start = new Date(params.year, 1, 1);
+	const end = new Date(params.year, 11, 31);
+
+	// Build Date Strings for API
+	const startDate = `${start.getFullYear()}-${
+		start.getMonth() + 1
+	}-${start.getDate()}`;
+	const endDate = `${end.getFullYear()}-${end.getMonth() + 1}-${end.getDate()}`;
+
+	// Fetch data
+	const { results, isReachedEnd, percentFetched } =
+		await fetchBoxOfficeInfinite(startDate, endDate);
+	const timeComparisonData = await fetchBoxOfficeSummary(
+		startDate,
+		endDate,
+		25 // Years to go back.
+	);
+
 	return (
 		<>
-			<TimePage year={params.year} />
+			<TimePage
+				year={params.year}
+				results={results}
+				timeComparisonData={timeComparisonData.results}
+			/>
 		</>
 	);
 }

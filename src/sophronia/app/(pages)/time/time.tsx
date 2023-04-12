@@ -30,7 +30,7 @@ type TimePageProps = {
 	quarter?: number;
 	quarterend?: number;
 	results: BoxOfficeWeek[];
-	lastWeekResults: BoxOfficeWeek[];
+	lastWeekResults?: BoxOfficeWeek[];
 	timeComparisonData: BoxOfficeSummary[];
 };
 
@@ -300,7 +300,7 @@ const TimeTabs = ({
 }: {
 	results: BoxOfficeWeek[];
 	timeComparisonData: BoxOfficeSummary[];
-	lastWeekResults: BoxOfficeWeek[];
+	lastWeekResults?: BoxOfficeWeek[];
 }) => {
 	// Group Data
 	const tableData = groupForTable(results);
@@ -324,7 +324,7 @@ const TimeTabs = ({
 						</div>
 						<FilmTableDetailed
 							data={tableData}
-							comparisonData={isWeekView ? lastWeekResults : undefined}
+							comparisonData={lastWeekResults ? lastWeekResults : undefined}
 						/>
 					</>
 				)}
