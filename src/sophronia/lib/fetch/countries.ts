@@ -50,8 +50,7 @@ export const useCountryList = async (
  * const country = await getCountry('united-kingdom');
  */
 export async function getCountry(slug: string): Promise<Country> {
-	const url = getApi();
-	const res = await fetch(`${url}country/${slug}`, {
+	const res = await fetch(fetchKeys.country(slug), {
 		next: { revalidate: 60 },
 	});
 	return res.json();
