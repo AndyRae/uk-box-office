@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import {
@@ -16,9 +18,11 @@ const listItemStyle =
 export function BreadcrumbsTime({
 	year = 2022,
 	month = 1,
+	quarter,
 }: {
 	year?: number;
 	month?: number;
+	quarter?: number;
 }) {
 	return (
 		<div className='flex items-center gap-x-2 my-5 py-3.5 lg:py-3'>
@@ -39,7 +43,7 @@ export function BreadcrumbsTime({
 				<span className='text-gray-600 px-1.5'>/</span>
 				<BreadcrumbsYears year={year} />
 				<span className='text-gray-600 px-1.5'>/</span>
-				<BreadcrumbsQuarters year={year} month={month} />
+				<BreadcrumbsQuarters year={year} month={month} quarter={quarter} />
 				<span className='text-gray-600 px-1.5'>/</span>
 				<BreadcrumbsMonths year={year} month={month} />
 			</div>
@@ -61,7 +65,7 @@ export function BreadcrumbsYears({ year }: { year: number }) {
 				<NavigationMenuItem>
 					<NavigationMenuTrigger>{year}</NavigationMenuTrigger>
 					<NavigationMenuContent>
-						<ul className='md:w-[80px] lg:w-[80px]'>
+						<ul className='md:w-[60px] lg:w-[80px]'>
 							{years.map((y) => {
 								return (
 									<li className={listItemStyle}>
@@ -83,12 +87,14 @@ export function BreadcrumbsYears({ year }: { year: number }) {
 export function BreadcrumbsQuarters({
 	year,
 	month,
+	quarter,
 }: {
 	year: number;
-	month: number;
+	month?: number;
+	quarter?: number;
 }) {
 	// get the quarter
-	const quarter = Math.floor((month - 1) / 3 + 1);
+	const qt = quarter ? quarter : Math.floor((month! - 1) / 3 + 1);
 
 	const quarters = [1, 2, 3, 4];
 
@@ -96,9 +102,9 @@ export function BreadcrumbsQuarters({
 		<NavigationMenu>
 			<NavigationMenuList>
 				<NavigationMenuItem>
-					<NavigationMenuTrigger>Q{quarter}</NavigationMenuTrigger>
+					<NavigationMenuTrigger>Q{qt}</NavigationMenuTrigger>
 					<NavigationMenuContent>
-						<ul className='w-[80px]'>
+						<ul className='w-[40px]'>
 							{quarters.map((q) => {
 								return (
 									<li className={listItemStyle}>

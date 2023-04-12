@@ -11,7 +11,12 @@
  * @exports useProtectedSWRInfinite
  */
 
-import { useBackendApi, useInfiniteFetcher, getBackendURLClient } from './api';
+import {
+	getApi,
+	useBackendApi,
+	useInfiniteFetcher,
+	getBackendURLClient,
+} from './api';
 import useSWR from 'swr';
 import useSWRInfinite, { SWRInfiniteResponse } from 'swr/infinite';
 import { useMemo } from 'react';
@@ -35,13 +40,6 @@ import {
  * @property {function} boxOfficeTopline - Boxoffice topline endpoint.
  */
 const fetchKeys: any = {
-	boxOffice: 'boxoffice/all',
-	boxOfficeFiltered: (
-		start: number,
-		end: number,
-		page: number,
-		limit: number
-	) => `boxoffice/all?{start=${start}}&end=${end}&page=${page}&limit=${limit}`,
 	boxOfficeAll: (start: number, limit: number) =>
 		`boxoffice/all?start=${start}&limit=${limit}`,
 	boxOfficeSummary: (start: number, end: number, limit: number) =>
@@ -53,56 +51,6 @@ const fetchKeys: any = {
 	boxOfficeTopFilms: () => `boxoffice/topfilms`,
 	boxOfficeTopline: (start: number, end: number, limit: number) =>
 		`boxoffice/topline?start=${start}&end=${end}&limit=${limit}`,
-};
-
-/**
- * Get all boxoffice data.
- * @returns all boxoffice data from the api with pagination.
- */
-export const useBoxOffice = () => {
-	const apiFetcher = useBackendApi();
-	return useSWR(fetchKeys.boxOffice, apiFetcher, {
-		suspense: true,
-	});
-};
-
-/**
- * Get filtered boxoffice data with pagination.
- * @param {string} startDate - Start date for the query.
- * @param {string} endDate - End date for the query.
- * @param {number} start - Page number to start from.
- * @param {number} limit - Number of results per page.
- * @returns filtered boxoffice data from the api with pagination.
- * @example
- * const { data, error } = useBoxOfficeFiltered('2021-01-01', '2021-01-31', 1, 300);
- */
-export const useBoxOfficeFiltered = (
-	startDate: string,
-	endDate: string,
-	start: number = 1,
-	limit: number = 300
-): { data?: BoxOfficeListData; error?: any } => {
-	const apiFetcher = useBackendApi();
-	return useSWR(
-		fetchKeys.boxOfficeFiltered(startDate, endDate, start, limit),
-		apiFetcher,
-		{
-			suspense: true,
-		}
-	);
-};
-
-/**
- * Get top films boxoffice data.
- * @returns top films boxoffice data from the api.
- * @example
- * const { data, error } = useBoxOfficeTopFilms();
- */
-export const useBoxOfficeTopFilms = (): any => {
-	const apiFetcher = useBackendApi();
-	return useSWR(fetchKeys.boxOfficeTopFilms(), apiFetcher, {
-		suspense: true,
-	});
 };
 
 /**
@@ -130,24 +78,6 @@ export const useBoxOfficeSummary = (
 };
 
 /**
- * Uses the box office ``previous`` endpoint
- * @param {string} start - Start date for the query.
- * @param {string} end - End date for the query.
- * @returns boxoffice previous data from the api.
- * @example
- * const { data, error } = useBoxOfficePrevious('2021-01-01', '2021-01-31');
- */
-export const useBoxOfficePrevious = (
-	start: string,
-	end: string
-): { data?: { results: BoxOfficeSummary[] }; error?: any } => {
-	const apiFetcher = useBackendApi();
-	return useSWR(fetchKeys.boxOfficePrevious(start, end), apiFetcher, {
-		suspense: true,
-	});
-};
-
-/**
  * Uses the box office ``previousyear`` endpoint
  * @param {string} start - Start date for the query.
  * @param {string} end - End date for the query.
@@ -163,30 +93,6 @@ export const useBoxOfficePreviousYear = (
 	return useSWR(fetchKeys.boxOfficePreviousYear(start, end), apiFetcher, {
 		suspense: true,
 	});
-};
-
-/**
- * Uses the box office topline endpoint.
- * @param {string} startDate - Start date for the query.
- * @param {string} endDate - End date for the query.
- * @param {number} page - Page number to start from.
- * @returns boxoffice topline data from the api.
- * @example
- * const { data, error } = useBoxOfficeTopline('2021-01-01', '2021-01-31', 1);
- */
-export const useBoxOfficeTopline = (
-	startDate: string,
-	endDate: string,
-	page: number
-): { data?: { results: Topline[] }; error?: any } => {
-	const apiFetcher = useBackendApi();
-	return useSWR(
-		fetchKeys.boxOfficeTopline(startDate, endDate, page),
-		apiFetcher,
-		{
-			suspense: true,
-		}
-	);
 };
 
 /**

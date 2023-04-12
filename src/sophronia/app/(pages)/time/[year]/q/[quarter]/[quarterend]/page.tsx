@@ -1,4 +1,6 @@
-import { TimePage } from '../../../../time';
+import { TimePage } from 'app/(pages)/time/time';
+import { fetchBoxOfficeInfinite, fetchBoxOfficeSummary } from 'lib/fetch/box';
+import { getLastDayofMonth } from 'lib/utils/dates';
 
 export async function generateMetadata({
 	params,
@@ -35,18 +37,40 @@ export async function generateMetadata({
 	};
 }
 
-export default function Page({
+export default async function Page({
 	params,
 }: {
 	params: { year: number; quarter: number; quarterend: number };
 }) {
+	// Build Dates based on existing params or defaults.
+	const month = params.quarter * 3 - 2;
+	const endMonth = params.quarterend * 3;
+
+	const start = new Date(params.year, month - 1, 1);
+	const end = new Date(params.year, endMonth - 1, getLastDayofMonth(endMonth));
+
+	// Build Date Strings for API
+	const startDate = `${start.getFullYear()}-${
+		start.getMonth() + 1
+	}-${start.getDate()}`;
+	const endDate = `${end.getFullYear()}-${end.getMonth() + 1}-${end.getDate()}`;
+
+	// Fetch data
+	const { results, isReachedEnd, percentFetched } =
+		await fetchBoxOfficeInfinite(startDate, endDate);
+	const timeComparisonData = await fetchBoxOfficeSummary(
+		startDate,
+		endDate,
+		25 // Years to go back.
+	);
+
 	return (
-		<>
-			<TimePage
-				year={params.year}
-				quarter={params.quarter}
-				quarterend={params.quarterend}
-			/>
-		</>
+		<TimePage
+			year={params.year}
+			quarter={params.quarter}
+			quarterend={params.quarterend}
+			results={results}
+			timeComparisonData={timeComparisonData.results}
+		/>
 	);
 }
