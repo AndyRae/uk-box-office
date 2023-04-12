@@ -11,7 +11,12 @@
  * @exports useProtectedSWRInfinite
  */
 
-import { useBackendApi, useInfiniteFetcher, getBackendURLClient } from './api';
+import {
+	getApi,
+	useBackendApi,
+	useInfiniteFetcher,
+	getBackendURLClient,
+} from './api';
 import useSWR from 'swr';
 import useSWRInfinite, { SWRInfiniteResponse } from 'swr/infinite';
 import { useMemo } from 'react';
@@ -284,3 +289,37 @@ const useProtectedSWRInfinite = (
 	};
 	return useSWRInfinite(getNextKey, useInfiniteFetcher, revalidationOptions);
 };
+
+export async function fetchBoxOfficeInfinite(
+	startDate: string,
+	endDate: string
+) {
+	const backendUrl = `${getApi()}/boxoffice/all`;
+	const allData: BoxOfficeWeek[] = [];
+
+	let nextPage = 1;
+	let isLastPage = false;
+	let totalCount = 0;
+	while (!isLastPage) {
+		const response = await fetch(
+			`${backendUrl}?start=${startDate}&end=${endDate}&page=${nextPage}`
+		);
+		if (!response.ok) {
+			throw new Error('Failed to fetch box office data');
+		}
+		const data = await response.json();
+		allData.push(...data.results);
+		totalCount = data.count;
+		isLastPage = !data.next;
+		nextPage++;
+	}
+
+	const isReachedEnd = allData.length === totalCount;
+	const percentFetched = Math.round((allData.length / totalCount) * 100);
+
+	return {
+		results: allData,
+		isReachedEnd,
+		percentFetched,
+	};
+}
