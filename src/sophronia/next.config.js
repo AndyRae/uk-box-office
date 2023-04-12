@@ -33,7 +33,7 @@ const nextConfig = {
 		return [
 			{
 				source: '/films/:path*',
-				destination: 'film/:path*',
+				destination: '/film/:path*',
 				permanent: true,
 			},
 		];

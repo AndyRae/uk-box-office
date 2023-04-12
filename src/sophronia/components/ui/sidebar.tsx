@@ -150,7 +150,7 @@ export const Sidebar = ({
 			{/* Sidebar */}
 			<aside
 				id='sidebar'
-				className='bg-bo-white dark:bg-black h-screen fixed lg:sticky dark:text-gray-100 w-72 grow-0 space-y-6 pt-6 px-3 inset-y-0 left-0 transform  lg:translate-x-0 transition duration-150 ease-in-out lg:flex-none overflow-y-auto'
+				className='bg-white dark:bg-black h-screen fixed lg:sticky dark:text-gray-100 w-72 grow-0 space-y-6 pt-6 px-3 inset-y-0 left-0 transform  lg:translate-x-0 transition duration-150 ease-in-out lg:flex-none overflow-y-auto'
 			>
 				<SidebarContent />
 			</aside>
