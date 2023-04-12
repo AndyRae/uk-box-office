@@ -153,6 +153,8 @@ const TimeMetrics = ({
 		);
 	}
 
+	const hasAdmissions = admissions ? true : false;
+
 	return (
 		<DescriptionList>
 			<DescriptionItem
@@ -200,7 +202,7 @@ const TimeMetrics = ({
 				</TooltipProvider>
 			</DescriptionItem>
 
-			{admissions && (
+			{hasAdmissions && (
 				<DescriptionItem
 					title={'Admissions'}
 					text={admissions?.toLocaleString()}
@@ -218,7 +220,7 @@ const TimeMetrics = ({
 				</DescriptionItem>
 			)}
 
-			{admissions && (
+			{hasAdmissions && (
 				<DescriptionItem
 					title={'Average Ticket Price'}
 					text={`£ ${averageTicketPrice.toLocaleString()}`}
