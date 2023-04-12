@@ -1,4 +1,5 @@
-import { TimePage } from '../../../../../time';
+import { TimePage } from 'app/(pages)/time/time';
+import { fetchBoxOfficeInfinite, fetchBoxOfficeSummary } from 'lib/fetch/box';
 
 export async function generateMetadata({
 	params,
@@ -55,14 +56,57 @@ export async function generateMetadata({
 	};
 }
 
-export default function Page({
+declare global {
+	interface Date {
+		addDays(days: number): Date;
+	}
+}
+
+Date.prototype.addDays = function (days: number): Date {
+	var date = new Date(this.valueOf());
+	date.setDate(date.getDate() + days);
+	return date;
+};
+
+export default async function Page({
 	params,
 }: {
 	params: { year: number; month: number; day: number };
 }) {
+	// Build Dates based on existing params or defaults.
+	const start = new Date(params.year, params.month - 1, params.day);
+	const sLastWeek = start.addDays(-7);
+
+	// Build Date Strings for API
+	const startDate = `${start.getFullYear()}-${
+		start.getMonth() + 1
+	}-${start.getDate()}`;
+
+	const startLastWeek = `${sLastWeek.getFullYear()}-${
+		sLastWeek.getMonth() + 1
+	}-${sLastWeek.getDate()}`;
+
+	// Fetch Data
+	const { results, isReachedEnd, percentFetched } =
+		await fetchBoxOfficeInfinite(startDate, startDate);
+	const { results: lastWeekResults } = await fetchBoxOfficeInfinite(
+		startLastWeek,
+		startLastWeek
+	);
+	const timeComparisonData = await fetchBoxOfficeSummary(
+		startDate,
+		startDate,
+		25 // Years to go back.
+	);
+
 	return (
-		<>
-			<TimePage year={params.year} month={params.month} day={params.day} />
-		</>
+		<TimePage
+			year={params.year}
+			month={params.month}
+			day={params.day}
+			results={results}
+			lastWeekResults={lastWeekResults}
+			timeComparisonData={timeComparisonData.results}
+		/>
 	);
 }
