@@ -10,7 +10,7 @@ Date.prototype.addDays = function (days: number): Date {
 	return date;
 };
 
-export function getLastDayofMonth(year: number, month = 12) {
-	const d = new Date(year, month, 0);
+export function getLastDayofMonth(month: number) {
+	const d = new Date(2023, month, 0);
 	return d.getDate();
 }
