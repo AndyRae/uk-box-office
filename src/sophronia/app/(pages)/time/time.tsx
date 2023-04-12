@@ -263,32 +263,35 @@ const TimeCharts = ({
 	results: BoxOfficeWeek[];
 	timeComparisonData: BoxOfficeSummary[];
 }) => {
+	// Checks if the results are all the same date
+	const isWeekView = results.every(
+		(week, index) => index === 0 || week.date === results[0].date
+	);
+
 	return (
 		<div className='col-span-3 flex flex-col gap-4 divide-y divide-gray-200 dark:divide-gray-700'>
-			<>
-				{/* {!isWeekView && ( */}
+			{!isWeekView && (
 				<div className='my-4'>
 					<p className='font-bold text-sm text-gray-700 dark:text-gray-400'>
 						Box Office
 					</p>
 					<TimeLineChart data={results} />
 				</div>
-				{/* )} */}
+			)}
 
-				<div className='my-4'>
-					<p className='font-bold text-sm text-gray-700 dark:text-gray-400 mt-4'>
-						Films
-					</p>
-					<StackedBarChart data={results} />
-				</div>
+			<div className='my-4'>
+				<p className='font-bold text-sm text-gray-700 dark:text-gray-400 mt-4'>
+					Films
+				</p>
+				<StackedBarChart data={results} />
+			</div>
 
-				<div className='my-4'>
-					<p className='font-bold text-sm text-gray-700 dark:text-gray-400 mt-4'>
-						Previous Years
-					</p>
-					<PreviousYearsChart data={timeComparisonData} />
-				</div>
-			</>
+			<div className='my-4'>
+				<p className='font-bold text-sm text-gray-700 dark:text-gray-400 mt-4'>
+					Previous Years
+				</p>
+				<PreviousYearsChart data={timeComparisonData} />
+			</div>
 		</div>
 	);
 };
@@ -306,7 +309,7 @@ const TimeTabs = ({
 	const tableData = groupForTable(results);
 	const { results: weekData } = groupbyDate(results);
 
-	const isWeekView = false;
+	const isWeekView = weekData.length === 1;
 
 	return (
 		<Tabs defaultValue='tab1'>
@@ -315,41 +318,32 @@ const TimeTabs = ({
 				<TabsTrigger value='tab2'>Weeks</TabsTrigger>
 				<TabsTrigger value='tab3'>Previous Years</TabsTrigger>
 			</TabsList>
+
 			<TabsContent value='tab1'>
-				{results && (
-					<>
-						<div className='flex flex-row-reverse mt-3'>
-							<DatasourceButton />
-							<ExportCSV data={tableData} filename={'filmdata.csv'} />
-						</div>
-						<FilmTableDetailed
-							data={tableData}
-							comparisonData={lastWeekResults ? lastWeekResults : undefined}
-						/>
-					</>
-				)}
+				<div className='flex flex-row-reverse mt-3'>
+					<DatasourceButton />
+					<ExportCSV data={tableData} filename={'filmdata.csv'} />
+				</div>
+				<FilmTableDetailed
+					data={tableData}
+					comparisonData={isWeekView ? lastWeekResults : undefined}
+				/>
 			</TabsContent>
+
 			<TabsContent value='tab2'>
-				{weekData && (
-					<>
-						<div className='flex flex-row-reverse mt-3'>
-							<DatasourceButton />
-							<ExportCSV data={weekData} filename={'timedata.csv'} />
-						</div>
-						<WeeksTable data={weekData} />
-					</>
-				)}
+				<div className='flex flex-row-reverse mt-3'>
+					<DatasourceButton />
+					<ExportCSV data={weekData} filename={'timedata.csv'} />
+				</div>
+				<WeeksTable data={weekData} />
 			</TabsContent>
+
 			<TabsContent value='tab3'>
-				{timeComparisonData && (
-					<>
-						<div className='flex flex-row-reverse mt-3'>
-							<DatasourceButton />
-							<ExportCSV data={timeComparisonData} filename={'historic.csv'} />
-						</div>
-						<PreviousTable data={timeComparisonData} />
-					</>
-				)}
+				<div className='flex flex-row-reverse mt-3'>
+					<DatasourceButton />
+					<ExportCSV data={timeComparisonData} filename={'historic.csv'} />
+				</div>
+				<PreviousTable data={timeComparisonData} />
 			</TabsContent>
 		</Tabs>
 	);
