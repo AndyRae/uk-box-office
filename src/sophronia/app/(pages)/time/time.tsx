@@ -1,12 +1,7 @@
-'use client';
-
-import { usePathname } from 'next/navigation';
-
 import { groupForTable, groupbyDate } from 'lib/utils/groupData';
 
 import { BreadcrumbsTime } from 'components/ui/breadcrumbs-time';
 import { PageTitle } from 'components/ui/page-title';
-import { ProgressBar } from 'components/ui/progress-bar';
 import {
 	Tooltip,
 	TooltipContent,
@@ -26,8 +21,7 @@ import { FilmTableDetailed } from 'components/tables/film-table-detailed';
 import { WeeksTable } from 'components/tables/weeks-table';
 import { PreviousTable } from 'components/tables/previous-years-table';
 import { PreviousYearsChart } from 'components/charts/previous-years';
-
-import { useBoxOfficeInfinite, useBoxOfficeSummary } from 'lib/fetch/boxoffice';
+import { BoxOfficeWeek, BoxOfficeSummary } from 'interfaces/BoxOffice';
 
 type TimePageProps = {
 	year: number;
@@ -35,18 +29,9 @@ type TimePageProps = {
 	day?: number;
 	quarter?: number;
 	quarterend?: number;
-};
-
-declare global {
-	interface Date {
-		addDays(days: number): Date;
-	}
-}
-
-Date.prototype.addDays = function (days: number): Date {
-	var date = new Date(this.valueOf());
-	date.setDate(date.getDate() + days);
-	return date;
+	results: BoxOfficeWeek[];
+	lastWeekResults: BoxOfficeWeek[];
+	timeComparisonData: BoxOfficeSummary[];
 };
 
 /**
@@ -59,67 +44,10 @@ export const TimePage = ({
 	day = undefined,
 	quarter = undefined,
 	quarterend = 0,
+	results,
+	lastWeekResults,
+	timeComparisonData,
 }: TimePageProps): JSX.Element => {
-	const pathname = usePathname();
-
-	// Unpack dates to allow flexbility for Month/Day/Quarter being null.
-	// Year is never null.
-
-	// Month has to be unpacked differently to allow for quarters calculations.
-	let endMonth = month;
-
-	// Quarters unpack
-	if (quarter) {
-		month = quarter * 3 - 2;
-		if (quarterend !== 0) {
-			endMonth = quarterend * 3;
-		} else {
-			endMonth = quarter * 3;
-		}
-	}
-
-	function getLastDayofMonth(month = 12) {
-		const d = new Date(year, month, 0);
-		return d.getDate();
-	}
-	const lastDay = getLastDayofMonth(endMonth);
-
-	// Build Dates based on existing params or defaults.
-	const start = new Date(
-		year ? year : 2022,
-		month ? month - 1 : 0,
-		day ? day : 1
-	);
-	const end = new Date(
-		year ? year : 2022,
-		endMonth ? endMonth - 1 : 11,
-		day ? day : lastDay
-	);
-
-	// Build Date Strings for API
-	const startDate = `${start.getFullYear()}-${
-		start.getMonth() + 1
-	}-${start.getDate()}`;
-	const endDate = `${end.getFullYear()}-${end.getMonth() + 1}-${end.getDate()}`;
-
-	const sLastWeek = start.addDays(-7);
-	const eLastWeek = end.addDays(-7);
-	const startLastWeek = `${sLastWeek.getFullYear()}-${
-		sLastWeek.getMonth() + 1
-	}-${sLastWeek.getDate()}`;
-	const endLastWeek = `${eLastWeek.getFullYear()}-${
-		eLastWeek.getMonth() + 1
-	}-${eLastWeek.getDate()}`;
-
-	// To check if we're on a week page.
-	const isWeekView = startDate === endDate;
-
-	// Set Grid Columns for charts.
-	let gridColumns = 'md:grid-cols-1';
-	if (isWeekView) {
-		gridColumns = 'md:grid-cols-2';
-	}
-
 	type MonthsType = {
 		[key: number]: string;
 	};
@@ -139,27 +67,45 @@ export const TimePage = ({
 		12: 'December',
 	};
 
-	// Fetch Data
-	const { results, isReachedEnd, percentFetched } = useBoxOfficeInfinite(
-		startDate,
-		endDate
-	);
-	const { results: lastWeekResults } = useBoxOfficeInfinite(
-		startLastWeek,
-		endLastWeek
-	);
-	const { data: timeComparisonData } = useBoxOfficeSummary(
-		startDate,
-		endDate,
-		25 // Years to go back.
-	);
+	const pageTitle = `${day ? day : ''} ${
+		quarter ? `Q${quarter}` : month ? months[month as keyof MonthsType] : ''
+	}${quarterend ? ` - Q${quarterend}` : ''} ${year}`;
 
-	// Group Data
-	const tableData = groupForTable(results);
-	const { results: weekData } = groupbyDate(results);
+	return (
+		<>
+			<StructuredTimeData
+				title={`UK Box Office ${pageTitle}`}
+				endpoint={'/time'}
+				time={pageTitle}
+			/>
+			<BreadcrumbsTime year={year} month={month} />
 
-	// Get Data for Charts
-	const thisYear = timeComparisonData!.results[0];
+			<div className='grid grid-cols-1 md:grid-cols-5 gap-3 md:gap-5'>
+				<div className='col-span-2'>
+					<PageTitle>UK Box Office {pageTitle}</PageTitle>
+
+					<TimeMetrics timeComparisonData={timeComparisonData} />
+				</div>
+
+				<TimeCharts results={results} timeComparisonData={timeComparisonData} />
+			</div>
+
+			<TimeTabs
+				results={results}
+				timeComparisonData={timeComparisonData}
+				lastWeekResults={lastWeekResults}
+			/>
+		</>
+	);
+};
+
+const TimeMetrics = ({
+	timeComparisonData,
+}: {
+	timeComparisonData: BoxOfficeSummary[];
+}) => {
+	// Get Data for Metrics
+	const thisYear = timeComparisonData[0];
 	const boxOffice = thisYear.week_gross;
 	const weekendBoxOffice = thisYear.weekend_gross;
 	const numberOfNewFilms = thisYear.number_of_releases;
@@ -176,8 +122,8 @@ export const TimePage = ({
 	let changeCinemas = 0;
 	let changeAverageTicketPrice = 0;
 
-	if (timeComparisonData && timeComparisonData.results.length > 1) {
-		const lastYear = timeComparisonData.results[1];
+	if (timeComparisonData && timeComparisonData.length > 1) {
+		const lastYear = timeComparisonData[1];
 
 		changeNewFilms = Math.ceil(
 			((numberOfNewFilms - lastYear.number_of_releases) /
@@ -207,202 +153,204 @@ export const TimePage = ({
 		);
 	}
 
-	const pageTitle = `${day ? day : ''} ${
-		quarter ? `Q${quarter}` : month ? months[month as keyof MonthsType] : ''
-	}${quarterend ? ` - Q${quarterend}` : ''} ${year}`;
+	return (
+		<DescriptionList>
+			<DescriptionItem
+				title={'Total Box Office'}
+				text={`£ ${boxOffice.toLocaleString()}`}
+			>
+				<TooltipProvider>
+					<Tooltip>
+						<TooltipTrigger>
+							<MetricChange value={changeWeek} />
+						</TooltipTrigger>
+						<TooltipContent>
+							<p>Change from last year</p>
+						</TooltipContent>
+					</Tooltip>
+				</TooltipProvider>
+			</DescriptionItem>
+
+			<DescriptionItem
+				title={'Weekend Box Office'}
+				text={`£ ${weekendBoxOffice.toLocaleString()}`}
+			>
+				<TooltipProvider>
+					<Tooltip>
+						<TooltipTrigger>
+							<MetricChange value={changeWeekend} />
+						</TooltipTrigger>
+						<TooltipContent>
+							<p>Change from last year</p>
+						</TooltipContent>
+					</Tooltip>
+				</TooltipProvider>
+			</DescriptionItem>
+
+			<DescriptionItem title={'New Releases'} text={numberOfNewFilms}>
+				<TooltipProvider>
+					<Tooltip>
+						<TooltipTrigger>
+							<MetricChange value={changeNewFilms} />
+						</TooltipTrigger>
+						<TooltipContent>
+							<p>Change from last year</p>
+						</TooltipContent>
+					</Tooltip>
+				</TooltipProvider>
+			</DescriptionItem>
+
+			{admissions && (
+				<DescriptionItem
+					title={'Admissions'}
+					text={admissions?.toLocaleString()}
+				>
+					<TooltipProvider>
+						<Tooltip>
+							<TooltipTrigger>
+								<MetricChange value={changeAdmissions} />
+							</TooltipTrigger>
+							<TooltipContent>
+								<p>Change from last year</p>
+							</TooltipContent>
+						</Tooltip>
+					</TooltipProvider>
+				</DescriptionItem>
+			)}
+
+			{admissions && (
+				<DescriptionItem
+					title={'Average Ticket Price'}
+					text={`£ ${averageTicketPrice.toLocaleString()}`}
+				>
+					<TooltipProvider>
+						<Tooltip>
+							<TooltipTrigger>
+								<MetricChange value={changeAverageTicketPrice} />
+							</TooltipTrigger>
+							<TooltipContent>
+								<p>Change from last year</p>
+							</TooltipContent>
+						</Tooltip>
+					</TooltipProvider>
+				</DescriptionItem>
+			)}
+
+			<DescriptionItem
+				title={'Site Average'}
+				text={`£ ${siteAverage.toLocaleString()}`}
+			/>
+			<DescriptionItem title={'Cinemas'} text={numberOfCinemas}>
+				<TooltipProvider>
+					<Tooltip>
+						<TooltipTrigger>
+							<MetricChange value={changeCinemas} />
+						</TooltipTrigger>
+						<TooltipContent>
+							<p>Change from last year</p>
+						</TooltipContent>
+					</Tooltip>
+				</TooltipProvider>
+			</DescriptionItem>
+		</DescriptionList>
+	);
+};
+
+const TimeCharts = ({
+	results,
+	timeComparisonData,
+}: {
+	results: BoxOfficeWeek[];
+	timeComparisonData: BoxOfficeSummary[];
+}) => {
+	return (
+		<div className='col-span-3 flex flex-col gap-4 divide-y divide-gray-200 dark:divide-gray-700'>
+			<>
+				{/* {!isWeekView && ( */}
+				<div className='my-4'>
+					<p className='font-bold text-sm text-gray-700 dark:text-gray-400'>
+						Box Office
+					</p>
+					<TimeLineChart data={results} />
+				</div>
+				{/* )} */}
+
+				<div className='my-4'>
+					<p className='font-bold text-sm text-gray-700 dark:text-gray-400 mt-4'>
+						Films
+					</p>
+					<StackedBarChart data={results} />
+				</div>
+
+				<div className='my-4'>
+					<p className='font-bold text-sm text-gray-700 dark:text-gray-400 mt-4'>
+						Previous Years
+					</p>
+					<PreviousYearsChart data={timeComparisonData} />
+				</div>
+			</>
+		</div>
+	);
+};
+
+const TimeTabs = ({
+	results,
+	timeComparisonData,
+	lastWeekResults,
+}: {
+	results: BoxOfficeWeek[];
+	timeComparisonData: BoxOfficeSummary[];
+	lastWeekResults: BoxOfficeWeek[];
+}) => {
+	// Group Data
+	const tableData = groupForTable(results);
+	const { results: weekData } = groupbyDate(results);
+
+	const isWeekView = false;
 
 	return (
-		<>
-			<StructuredTimeData
-				title={`UK Box Office ${pageTitle}`}
-				endpoint={pathname as string}
-				time={pageTitle}
-			/>
-			<BreadcrumbsTime year={year} month={month} />
-
-			<div className='grid grid-cols-1 md:grid-cols-5 gap-3 md:gap-5'>
-				<div className='col-span-2'>
-					<PageTitle>UK Box Office {pageTitle}</PageTitle>
-
-					<DescriptionList>
-						<DescriptionItem
-							title={'Total Box Office'}
-							text={`£ ${boxOffice.toLocaleString()}`}
-						>
-							<TooltipProvider>
-								<Tooltip>
-									<TooltipTrigger>
-										<MetricChange value={changeWeek} />
-									</TooltipTrigger>
-									<TooltipContent>
-										<p>Change from last year</p>
-									</TooltipContent>
-								</Tooltip>
-							</TooltipProvider>
-						</DescriptionItem>
-
-						<DescriptionItem
-							title={'Weekend Box Office'}
-							text={`£ ${weekendBoxOffice.toLocaleString()}`}
-						>
-							<TooltipProvider>
-								<Tooltip>
-									<TooltipTrigger>
-										<MetricChange value={changeWeekend} />
-									</TooltipTrigger>
-									<TooltipContent>
-										<p>Change from last year</p>
-									</TooltipContent>
-								</Tooltip>
-							</TooltipProvider>
-						</DescriptionItem>
-
-						<DescriptionItem title={'New Releases'} text={numberOfNewFilms}>
-							<TooltipProvider>
-								<Tooltip>
-									<TooltipTrigger>
-										<MetricChange value={changeNewFilms} />
-									</TooltipTrigger>
-									<TooltipContent>
-										<p>Change from last year</p>
-									</TooltipContent>
-								</Tooltip>
-							</TooltipProvider>
-						</DescriptionItem>
-
-						{admissions && (
-							<DescriptionItem
-								title={'Admissions'}
-								text={admissions?.toLocaleString()}
-							>
-								<TooltipProvider>
-									<Tooltip>
-										<TooltipTrigger>
-											<MetricChange value={changeAdmissions} />
-										</TooltipTrigger>
-										<TooltipContent>
-											<p>Change from last year</p>
-										</TooltipContent>
-									</Tooltip>
-								</TooltipProvider>
-							</DescriptionItem>
-						)}
-
-						{admissions && (
-							<DescriptionItem
-								title={'Average Ticket Price'}
-								text={`£ ${averageTicketPrice.toLocaleString()}`}
-							>
-								<TooltipProvider>
-									<Tooltip>
-										<TooltipTrigger>
-											<MetricChange value={changeAverageTicketPrice} />
-										</TooltipTrigger>
-										<TooltipContent>
-											<p>Change from last year</p>
-										</TooltipContent>
-									</Tooltip>
-								</TooltipProvider>
-							</DescriptionItem>
-						)}
-
-						<DescriptionItem
-							title={'Site Average'}
-							text={`£ ${siteAverage.toLocaleString()}`}
+		<Tabs defaultValue='tab1'>
+			<TabsList>
+				<TabsTrigger value='tab1'>Films</TabsTrigger>
+				<TabsTrigger value='tab2'>Weeks</TabsTrigger>
+				<TabsTrigger value='tab3'>Previous Years</TabsTrigger>
+			</TabsList>
+			<TabsContent value='tab1'>
+				{results && (
+					<>
+						<div className='flex flex-row-reverse mt-3'>
+							<DatasourceButton />
+							<ExportCSV data={tableData} filename={'filmdata.csv'} />
+						</div>
+						<FilmTableDetailed
+							data={tableData}
+							comparisonData={isWeekView ? lastWeekResults : undefined}
 						/>
-						<DescriptionItem title={'Cinemas'} text={numberOfCinemas}>
-							<TooltipProvider>
-								<Tooltip>
-									<TooltipTrigger>
-										<MetricChange value={changeCinemas} />
-									</TooltipTrigger>
-									<TooltipContent>
-										<p>Change from last year</p>
-									</TooltipContent>
-								</Tooltip>
-							</TooltipProvider>
-						</DescriptionItem>
-					</DescriptionList>
-				</div>
-
-				<div className='col-span-3 flex flex-col gap-4 divide-y divide-gray-200 dark:divide-gray-700'>
-					{!isReachedEnd ? (
-						<ProgressBar value={percentFetched} />
-					) : (
-						<>
-							{!isWeekView && (
-								<div className='my-4'>
-									<p className='font-bold text-sm text-gray-700 dark:text-gray-400'>
-										Box Office
-									</p>
-									<TimeLineChart data={results} />
-								</div>
-							)}
-
-							<div className='my-4'>
-								<p className='font-bold text-sm text-gray-700 dark:text-gray-400 mt-4'>
-									Films
-								</p>
-								<StackedBarChart data={results} />
-							</div>
-
-							<div className='my-4'>
-								<p className='font-bold text-sm text-gray-700 dark:text-gray-400 mt-4'>
-									Previous Years
-								</p>
-								<PreviousYearsChart data={timeComparisonData!.results} />
-							</div>
-						</>
-					)}
-				</div>
-			</div>
-
-			<Tabs defaultValue='tab1'>
-				<TabsList>
-					<TabsTrigger value='tab1'>Films</TabsTrigger>
-					<TabsTrigger value='tab2'>Weeks</TabsTrigger>
-					<TabsTrigger value='tab3'>Previous Years</TabsTrigger>
-				</TabsList>
-				<TabsContent value='tab1'>
-					{results && (
-						<>
-							<div className='flex flex-row-reverse mt-3'>
-								<DatasourceButton />
-								<ExportCSV data={tableData} filename={'filmdata.csv'} />
-							</div>
-							<FilmTableDetailed
-								data={tableData}
-								comparisonData={isWeekView ? lastWeekResults : undefined}
-							/>
-						</>
-					)}
-				</TabsContent>
-				<TabsContent value='tab2'>
-					{weekData && (
-						<>
-							<div className='flex flex-row-reverse mt-3'>
-								<DatasourceButton />
-								<ExportCSV data={weekData} filename={'timedata.csv'} />
-							</div>
-							<WeeksTable data={weekData} />
-						</>
-					)}
-				</TabsContent>
-				<TabsContent value='tab3'>
-					{timeComparisonData && (
-						<>
-							<div className='flex flex-row-reverse mt-3'>
-								<DatasourceButton />
-								<ExportCSV
-									data={timeComparisonData.results}
-									filename={'historic.csv'}
-								/>
-							</div>
-							<PreviousTable data={timeComparisonData.results} />
-						</>
-					)}
-				</TabsContent>
-			</Tabs>
-		</>
+					</>
+				)}
+			</TabsContent>
+			<TabsContent value='tab2'>
+				{weekData && (
+					<>
+						<div className='flex flex-row-reverse mt-3'>
+							<DatasourceButton />
+							<ExportCSV data={weekData} filename={'timedata.csv'} />
+						</div>
+						<WeeksTable data={weekData} />
+					</>
+				)}
+			</TabsContent>
+			<TabsContent value='tab3'>
+				{timeComparisonData && (
+					<>
+						<div className='flex flex-row-reverse mt-3'>
+							<DatasourceButton />
+							<ExportCSV data={timeComparisonData} filename={'historic.csv'} />
+						</div>
+						<PreviousTable data={timeComparisonData} />
+					</>
+				)}
+			</TabsContent>
+		</Tabs>
 	);
 };
