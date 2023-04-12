@@ -65,7 +65,7 @@ export function BreadcrumbsYears({ year }: { year: number }) {
 				<NavigationMenuItem>
 					<NavigationMenuTrigger>{year}</NavigationMenuTrigger>
 					<NavigationMenuContent>
-						<ul className='md:w-[80px] lg:w-[80px]'>
+						<ul className='md:w-[60px] lg:w-[80px]'>
 							{years.map((y) => {
 								return (
 									<li className={listItemStyle}>
@@ -104,7 +104,7 @@ export function BreadcrumbsQuarters({
 				<NavigationMenuItem>
 					<NavigationMenuTrigger>Q{qt}</NavigationMenuTrigger>
 					<NavigationMenuContent>
-						<ul className='w-[80px]'>
+						<ul className='w-[40px]'>
 							{quarters.map((q) => {
 								return (
 									<li className={listItemStyle}>
