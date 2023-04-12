@@ -13,14 +13,10 @@ import { getApi } from './api';
  * @property {function} boxOfficeTopline - Boxoffice topline endpoint.
  */
 const fetchKeys: any = {
-	boxOfficeAll: (start: number, limit: number) =>
-		`boxoffice/all?start=${start}&limit=${limit}`,
 	boxOfficeSummary: (start: number, end: number, limit: number) =>
 		`${getApi()}/boxoffice/summary?start=${start}&end=${end}&limit=${limit}`,
-	boxOfficePrevious: (start: number, end: number) =>
-		`boxoffice/previous?start=${start}&end=${end}`,
 	boxOfficePreviousYear: (start: number, end: number) =>
-		`boxoffice/previousyear?start=${start}&end=${end}`,
+		`${getApi()}/boxoffice/previousyear?start=${start}&end=${end}`,
 	boxOfficeTopFilms: () => `boxoffice/topfilms`,
 	boxOfficeTopline: (start: number, end: number, limit: number) =>
 		`boxoffice/topline?start=${start}&end=${end}&limit=${limit}`,
@@ -46,6 +42,24 @@ export const fetchBoxOfficeSummary = async (
 			next: { revalidate: 60 },
 		}
 	);
+	return res.json();
+};
+
+/**
+ * Uses the box office ``previousyear`` endpoint
+ * @param {string} start - Start date for the query.
+ * @param {string} end - End date for the query.
+ * @returns boxoffice previous year data from the api.
+ * @example
+ * const { data, error } = useBoxOfficePrevious('2021-01-01', '2021-01-31');
+ */
+export const fetchBoxOfficePreviousYear = async (
+	start: string,
+	end: string
+): Promise<{ data?: { results: BoxOfficeSummary[] }; error?: any }> => {
+	const res = await fetch(fetchKeys.boxOfficePreviousYear(start, end), {
+		next: { revalidate: 60 },
+	});
 	return res.json();
 };
 
