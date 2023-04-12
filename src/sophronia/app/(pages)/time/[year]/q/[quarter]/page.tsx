@@ -65,13 +65,11 @@ export default async function Page({
 	);
 
 	return (
-		<>
-			<TimePage
-				year={params.year}
-				quarter={params.quarter}
-				results={results}
-				timeComparisonData={timeComparisonData.results}
-			/>
-		</>
+		<TimePage
+			year={params.year}
+			quarter={params.quarter}
+			results={results}
+			timeComparisonData={timeComparisonData.results}
+		/>
 	);
 }

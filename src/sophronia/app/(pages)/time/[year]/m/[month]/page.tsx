@@ -82,13 +82,11 @@ export default async function Page({
 	);
 
 	return (
-		<>
-			<TimePage
-				year={params.year}
-				month={params.month}
-				results={results}
-				timeComparisonData={timeComparisonData.results}
-			/>
-		</>
+		<TimePage
+			year={params.year}
+			month={params.month}
+			results={results}
+			timeComparisonData={timeComparisonData.results}
+		/>
 	);
 }

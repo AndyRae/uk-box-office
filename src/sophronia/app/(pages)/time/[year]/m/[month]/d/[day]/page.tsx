@@ -100,15 +100,13 @@ export default async function Page({
 	);
 
 	return (
-		<>
-			<TimePage
-				year={params.year}
-				month={params.month}
-				day={params.day}
-				results={results}
-				lastWeekResults={lastWeekResults}
-				timeComparisonData={timeComparisonData.results}
-			/>
-		</>
+		<TimePage
+			year={params.year}
+			month={params.month}
+			day={params.day}
+			results={results}
+			lastWeekResults={lastWeekResults}
+			timeComparisonData={timeComparisonData.results}
+		/>
 	);
 }

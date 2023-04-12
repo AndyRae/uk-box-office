@@ -57,12 +57,10 @@ export default async function Page({ params }: { params: { year: number } }) {
 	);
 
 	return (
-		<>
-			<TimePage
-				year={params.year}
-				results={results}
-				timeComparisonData={timeComparisonData.results}
-			/>
-		</>
+		<TimePage
+			year={params.year}
+			results={results}
+			timeComparisonData={timeComparisonData.results}
+		/>
 	);
 }
