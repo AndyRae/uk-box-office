@@ -3,7 +3,7 @@ import { useRouter, usePathname } from 'next/navigation';
 
 type PaginationProps = {
 	pages: number[];
-	pageIndex: string;
+	pageIndex: string | number;
 };
 
 /**
@@ -20,7 +20,12 @@ export const Pagination = ({
 }: PaginationProps): JSX.Element => {
 	const router = useRouter();
 	const pathName = usePathname();
-	const pageNumber = parseInt(pageIndex);
+	let pageNumber: number;
+	if (typeof pageIndex === 'string') {
+		pageNumber = parseInt(pageIndex, 10);
+	} else {
+		pageNumber = pageIndex;
+	}
 
 	const setPageIndex = (pageNumber: number) => {
 		router.push(pathName + `?p=${pageNumber}`);
