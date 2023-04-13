@@ -58,7 +58,7 @@ export const fetchBoxOfficePreviousYear = async (
 	end: string
 ): Promise<{ data?: { results: BoxOfficeSummary[] }; error?: any }> => {
 	const res = await fetch(fetchKeys.boxOfficePreviousYear(start, end), {
-		next: { revalidate: 60 },
+		cache: 'no-store',
 	});
 	return res.json();
 };
@@ -83,7 +83,8 @@ export async function fetchBoxOfficeInfinite(
 	let totalCount = 0;
 	while (!isLastPage) {
 		const response = await fetch(
-			`${backendUrl}?start=${startDate}&end=${endDate}&page=${nextPage}`
+			`${backendUrl}?start=${startDate}&end=${endDate}&page=${nextPage}`,
+			{ cache: 'no-store' }
 		);
 		if (!response.ok) {
 			throw new Error('Failed to fetch box office data');
