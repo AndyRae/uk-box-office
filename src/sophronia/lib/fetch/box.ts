@@ -29,7 +29,7 @@ const fetchKeys: any = {
  * @param {number} yearLimit - Number of years to limit.
  * @returns boxoffice summary data from the api with pagination.
  * @example
- * const { data, error } = useBoxOfficeSummary('2021-01-01', '2021-01-31', 5);
+ * const { data, error } = fetchBoxOfficeSummary('2021-01-01', '2021-01-31', 5);
  */
 export const fetchBoxOfficeSummary = async (
 	startDate: string,
@@ -51,7 +51,7 @@ export const fetchBoxOfficeSummary = async (
  * @param {string} end - End date for the query.
  * @returns boxoffice previous year data from the api.
  * @example
- * const { data, error } = useBoxOfficePrevious('2021-01-01', '2021-01-31');
+ * const { data, error } = fetchBoxOfficePrevious('2021-01-01', '2021-01-31');
  */
 export const fetchBoxOfficePreviousYear = async (
 	start: string,
@@ -64,10 +64,12 @@ export const fetchBoxOfficePreviousYear = async (
 };
 
 /**
- *
- * @param startDate
- * @param endDate
- * @returns
+ * Loops through the box office api infinitely and returns box office data.
+ * @param {string} startDate - Start date for the query.
+ * @param {string} endDate - End date for the query.
+ * @returns boxoffice data from the api with pagination.
+ * @example
+ * const { data, error } = fetchBoxOfficeInfinite('2021-01-01', '2021-01-31');
  */
 export async function fetchBoxOfficeInfinite(
 	startDate: string,
