@@ -1,5 +1,8 @@
 import { TimePage } from 'app/(pages)/time/time';
-import { fetchBoxOfficeInfinite, fetchBoxOfficeSummary } from 'lib/fetch/box';
+import {
+	fetchBoxOfficeInfinite,
+	fetchBoxOfficeSummary,
+} from 'lib/fetch/boxoffice';
 
 export async function generateMetadata({
 	params,
