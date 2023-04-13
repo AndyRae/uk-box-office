@@ -5,7 +5,10 @@ import { Button } from './ui/button';
 import { Datepickers } from './datepickers';
 import { LastUpdated } from './last-updated';
 import { DatasourceCard } from './datasource';
+import { parseDate } from 'lib/utils/dates';
+
 import { parseISO } from 'date-fns';
+import { useRouter } from 'next/navigation';
 
 export const Controls = ({
 	start,
@@ -16,10 +19,12 @@ export const Controls = ({
 	end: string;
 	lastUpdated: string;
 }) => {
-	// Buttons for the date picker
+	const router = useRouter();
+
+	// Pushes new date to URL
 	const changeDate = async (days: number) => {
 		const today = new Date();
-		// setStart(today.addDays(-days));
+		router.push(`?s=${parseDate(today.addDays(-days))}&e=${parseDate(today)}`);
 	};
 
 	// Work out the difference between the last two dates
