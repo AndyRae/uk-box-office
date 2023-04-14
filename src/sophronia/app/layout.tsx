@@ -3,7 +3,7 @@ import 'styles/globals.css';
 import { Sidebar } from 'components/ui/sidebar';
 import { Footer } from 'components/ui/footer';
 import { Metadata } from 'next';
-import Script from 'next/script';
+import { Analytics } from '@vercel/analytics/react';
 
 const title = 'Box Office Data Dashboard';
 const description =
@@ -17,19 +17,6 @@ export default function RootLayout({
 	return (
 		<html lang='en'>
 			<body>
-				<Script
-					src='https://www.googletagmanager.com/gtag/js?id=G-H0HGC7K5TL'
-					strategy='afterInteractive'
-				/>
-				<Script id='google-analytics' strategy='afterInteractive'>
-					{`
-						window.dataLayer = window.dataLayer || [];
-						function gtag(){window.dataLayer.push(arguments);}
-						gtag('js', new Date());
-
-						gtag('config', 'G-H0HGC7K5TL');
-					`}
-				</Script>
 				<Sidebar>
 					<div className='px-4 pb-4 bg-white dark:bg-black dark:text-white'>
 						<div className='h-max min-h-screen py-6'>{children}</div>
@@ -37,6 +24,7 @@ export default function RootLayout({
 					</div>
 				</Sidebar>
 			</body>
+			<Analytics />
 		</html>
 	);
 }
