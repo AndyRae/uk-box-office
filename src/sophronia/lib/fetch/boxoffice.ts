@@ -1,32 +1,5 @@
-/**
- * @file Boxoffice API endpoints.
- * @exports useBoxOffice
- * @exports useBoxOfficeFiltered
- * @exports useBoxOfficeTopFilms
- * @exports useBoxOfficeSummary
- * @exports useBoxOfficePrevious
- * @exports useBoxOfficePreviousYear
- * @exports useBoxOfficeTopline
- * @exports useBoxOfficeInfinite
- * @exports useProtectedSWRInfinite
- */
-
-import {
-	getApi,
-	useBackendApi,
-	useInfiniteFetcher,
-	getBackendURLClient,
-} from './api';
-import useSWR from 'swr';
-import useSWRInfinite, { SWRInfiniteResponse } from 'swr/infinite';
-import { useMemo } from 'react';
-import { useEffect } from 'react';
-import {
-	BoxOfficeListData,
-	BoxOfficeWeek,
-	BoxOfficeSummary,
-	Topline,
-} from 'interfaces/BoxOffice';
+import { BoxOfficeWeek, BoxOfficeSummary } from 'interfaces/BoxOffice';
+import { getApi } from './api';
 
 /**
  * Fetch keys for boxoffice.
@@ -40,14 +13,10 @@ import {
  * @property {function} boxOfficeTopline - Boxoffice topline endpoint.
  */
 const fetchKeys: any = {
-	boxOfficeAll: (start: number, limit: number) =>
-		`boxoffice/all?start=${start}&limit=${limit}`,
 	boxOfficeSummary: (start: number, end: number, limit: number) =>
-		`boxoffice/summary?start=${start}&end=${end}&limit=${limit}`,
-	boxOfficePrevious: (start: number, end: number) =>
-		`boxoffice/previous?start=${start}&end=${end}`,
+		`${getApi()}/boxoffice/summary?start=${start}&end=${end}&limit=${limit}`,
 	boxOfficePreviousYear: (start: number, end: number) =>
-		`boxoffice/previousyear?start=${start}&end=${end}`,
+		`${getApi()}/boxoffice/previousyear?start=${start}&end=${end}`,
 	boxOfficeTopFilms: () => `boxoffice/topfilms`,
 	boxOfficeTopline: (start: number, end: number, limit: number) =>
 		`boxoffice/topline?start=${start}&end=${end}&limit=${limit}`,
@@ -60,21 +29,20 @@ const fetchKeys: any = {
  * @param {number} yearLimit - Number of years to limit.
  * @returns boxoffice summary data from the api with pagination.
  * @example
- * const { data, error } = useBoxOfficeSummary('2021-01-01', '2021-01-31', 5);
+ * const { data, error } = fetchBoxOfficeSummary('2021-01-01', '2021-01-31', 5);
  */
-export const useBoxOfficeSummary = (
+export const fetchBoxOfficeSummary = async (
 	startDate: string,
 	endDate: string,
 	yearLimit: number
-): { data?: { results: BoxOfficeSummary[] }; error?: any } => {
-	const apiFetcher = useBackendApi();
-	return useSWR(
+): Promise<{ results: BoxOfficeSummary[] }> => {
+	const res = await fetch(
 		fetchKeys.boxOfficeSummary(startDate, endDate, yearLimit),
-		apiFetcher,
 		{
-			suspense: true,
+			next: { revalidate: 60 },
 		}
 	);
+	return res.json();
 };
 
 /**
@@ -83,110 +51,57 @@ export const useBoxOfficeSummary = (
  * @param {string} end - End date for the query.
  * @returns boxoffice previous year data from the api.
  * @example
- * const { data, error } = useBoxOfficePrevious('2021-01-01', '2021-01-31');
+ * const { data, error } = fetchBoxOfficePrevious('2021-01-01', '2021-01-31');
  */
-export const useBoxOfficePreviousYear = (
+export const fetchBoxOfficePreviousYear = async (
 	start: string,
 	end: string
-): { data?: { results: BoxOfficeSummary[] }; error?: any } => {
-	const apiFetcher = useBackendApi();
-	return useSWR(fetchKeys.boxOfficePreviousYear(start, end), apiFetcher, {
-		suspense: true,
+): Promise<{ results: BoxOfficeSummary[] }> => {
+	const res = await fetch(fetchKeys.boxOfficePreviousYear(start, end), {
+		cache: 'no-store',
 	});
+	return res.json();
 };
 
 /**
- * Wrapper for useSWRInfinite that uses the protected api.
  * Loops through the box office api infinitely and returns box office data.
  * @param {string} startDate - Start date for the query.
  * @param {string} endDate - End date for the query.
  * @returns boxoffice data from the api with pagination.
  * @example
- * const { data, error } = useBoxOfficeInfinite('2021-01-01', '2021-01-31');
+ * const { data, error } = fetchBoxOfficeInfinite('2021-01-01', '2021-01-31');
  */
-export function useBoxOfficeInfinite(
+export async function fetchBoxOfficeInfinite(
 	startDate: string,
 	endDate: string
-): {
-	results: BoxOfficeWeek[];
-	mutate: any;
-	error: any;
-	size: number;
-	setSize: any;
-	isReachedEnd: boolean;
-	percentFetched: number;
-} {
-	const { data, mutate, error, size, setSize } = useProtectedSWRInfinite(
-		startDate,
-		endDate
-	);
+) {
+	const backendUrl = `${getApi()}/boxoffice/all`;
+	const allData: BoxOfficeWeek[] = [];
 
-	useEffect(() => {
-		if (data?.[data?.length - 1]?.next) {
-			setSize((size: number) => size + 1);
+	let nextPage = 1;
+	let isLastPage = false;
+	let totalCount = 0;
+	while (!isLastPage) {
+		const response = await fetch(
+			`${backendUrl}?start=${startDate}&end=${endDate}&page=${nextPage}`,
+			{ cache: 'no-store' }
+		);
+		if (!response.ok) {
+			throw new Error('Failed to fetch box office data');
 		}
-	}, [data, setSize]);
+		const data = await response.json();
+		allData.push(...data.results);
+		totalCount = data.count;
+		isLastPage = !data.next;
+		nextPage++;
+	}
 
-	// Concatenate all pages into one array.
-	const results = useMemo(
-		() => [].concat(...data!.map((page: { results: any }) => page.results)),
-		[data]
-	);
-
-	const isReachedEnd = results.length === data![0].count;
-	const percentFetched = Math.round((results.length / data![0].count) * 100);
+	const isReachedEnd = allData.length === totalCount;
+	const percentFetched = Math.round((allData.length / totalCount) * 100);
 
 	return {
-		results,
-		mutate,
-		error,
-		size,
-		setSize,
+		results: allData,
 		isReachedEnd,
 		percentFetched,
 	};
 }
-
-/**
- * Protected useSWRInfinite hook that uses the protected api.
- * @param {string} startDate - Start date for the query.
- * @param {string} endDate - End date for the query.
- * @returns useSWR hook with boxoffice data from the api with pagination.
- */
-const useProtectedSWRInfinite = (
-	startDate: string,
-	endDate: string
-): SWRInfiniteResponse<BoxOfficeListData> => {
-	const backendUrl = `${getBackendURLClient()}boxoffice/all`;
-
-	/**
-	 * Next page infinite loading for useSWR
-	 * @param pageIndex The index of this paging collection
-	 * @param previousPageData Previous page information
-	 * @returns API to the next page
-	 */
-	function getNextKey(pageIndex: number, previousPageData: { next: any }) {
-		// Reached the end of the collection
-		if (previousPageData && !previousPageData.next) return null;
-
-		// First page with no prevPageData
-		if (pageIndex === 0)
-			return `${backendUrl}?start=${startDate}&end=${endDate}`;
-
-		// Add nextPage token to API endpoint
-		return [
-			`${backendUrl}?start=${startDate}&end=${endDate}&page=${previousPageData.next}`,
-		];
-	}
-
-	// Disable auto-revalidate, these options are equivalent to useSWRImmutable
-	// https://swr.vercel.app/docs/revalidation#disable-automatic-revalidations
-	const revalidationOptions = {
-		revalidateIfStale: false,
-		revalidateOnFocus: false,
-		revalidateFirstPage: false,
-		revalidateOnReconnect: true,
-		suspense: true,
-	};
-	return useSWRInfinite(getNextKey, useInfiniteFetcher, revalidationOptions);
-};
