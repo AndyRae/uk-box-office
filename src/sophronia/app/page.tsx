@@ -6,7 +6,6 @@ import { groupForTable } from 'lib/utils/groupData';
 import { Controls } from 'components/controls';
 import { FilmTableDetailed } from 'components/tables/film-table-detailed';
 import { TimeLineChart } from 'components/charts/timeline';
-import { SkeletonCards } from 'components/skeleton';
 import { StructuredTimeData } from 'components/structured-data';
 import { StackedBarChart } from 'components/charts/stacked-bar';
 import { ChartWrapper } from 'components/charts/chart-wrapper';
@@ -55,34 +54,26 @@ export default async function Dashboard({
 			<Controls start={start} end={end} lastUpdated={lastUpdated} />
 
 			{/* Scorecards grid. */}
-			{isReachedEnd ? (
-				<Scorecards
-					timeComparisonData={timeComparisonData}
-					tableData={tableData}
-					results={results}
-				/>
-			) : (
-				<SkeletonCards />
-			)}
+			<Scorecards
+				timeComparisonData={timeComparisonData}
+				tableData={tableData}
+				results={results}
+			/>
 
 			{/* Charts */}
 			<div className='grid md:grid-cols-1 mt-3 md:mt-6 lg:grid-cols-2 gap-3 md:gap-5'>
 				<ChartWrapper title='Box Office'>
-					<TimeLineChart data={isReachedEnd ? results : []} height='md' />
+					<TimeLineChart data={results} height='md' />
 				</ChartWrapper>
 
 				<ChartWrapper title='Films' chartClassName='mt-6'>
-					<StackedBarChart data={isReachedEnd ? results : []} height='md' />
+					<StackedBarChart data={results} height='md' />
 				</ChartWrapper>
 			</div>
 
 			{/* Table */}
 			<div className='mt-3 md:mt-6'>
-				{isReachedEnd ? (
-					<FilmTableDetailed data={tableData} />
-				) : (
-					<FilmTableDetailed data={[]} />
-				)}
+				<FilmTableDetailed data={tableData} />
 			</div>
 		</div>
 	);

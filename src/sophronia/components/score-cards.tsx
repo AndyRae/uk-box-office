@@ -71,24 +71,24 @@ export const Scorecards = ({
 	let changeWeek = 0;
 	let changeCinemas = 0;
 
-	if (timeComparisonData && timeComparisonData.results.length >= 1) {
-		const lastYear = timeComparisonData!.results[0];
+	if (timeComparisonData) {
+		const lastYear = timeComparisonData.results[0];
 
 		changeNewFilms = Math.ceil(
-			((numberOfNewFilms - lastYear.number_of_releases) /
-				lastYear.number_of_releases) *
+			((numberOfNewFilms - lastYear?.number_of_releases) /
+				lastYear?.number_of_releases) *
 				100
 		);
 		changeWeek = Math.ceil(
-			((boxOffice - lastYear.week_gross) / lastYear.week_gross) * 100
+			((boxOffice - lastYear?.week_gross) / lastYear?.week_gross) * 100
 		);
 		changeWeekend = Math.ceil(
-			((weekendBoxOffice - lastYear.weekend_gross) / lastYear.weekend_gross) *
+			((weekendBoxOffice - lastYear?.weekend_gross) / lastYear?.weekend_gross) *
 				100
 		);
 		changeCinemas = Math.ceil(
-			((numberOfCinemas - lastYear.number_of_cinemas) /
-				lastYear.number_of_cinemas) *
+			((numberOfCinemas - lastYear?.number_of_cinemas) /
+				lastYear?.number_of_cinemas) *
 				100
 		);
 	}
