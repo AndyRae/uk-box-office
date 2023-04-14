@@ -36,10 +36,7 @@ export default async function Dashboard({
 	// Fetch data from the API
 	const { results, isReachedEnd, percentFetched } =
 		await fetchBoxOfficeInfinite(start, end);
-	const { data: timeComparisonData } = await fetchBoxOfficePreviousYear(
-		start,
-		end
-	);
+	const timeComparisonData = await fetchBoxOfficePreviousYear(start, end);
 
 	// Group Data for the charts
 	const tableData = groupForTable(results);

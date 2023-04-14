@@ -56,7 +56,7 @@ export const fetchBoxOfficeSummary = async (
 export const fetchBoxOfficePreviousYear = async (
 	start: string,
 	end: string
-): Promise<{ data?: { results: BoxOfficeSummary[] }; error?: any }> => {
+): Promise<{ results: BoxOfficeSummary[] }> => {
 	const res = await fetch(fetchKeys.boxOfficePreviousYear(start, end), {
 		cache: 'no-store',
 	});
