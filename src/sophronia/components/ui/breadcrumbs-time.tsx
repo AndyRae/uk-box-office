@@ -79,7 +79,6 @@ export function BreadcrumbsYears({ year }: { year: number }) {
 					</NavigationMenuContent>
 				</NavigationMenuItem>
 			</NavigationMenuList>
-			<NavigationMenuViewport />
 		</NavigationMenu>
 	);
 }
@@ -118,7 +117,6 @@ export function BreadcrumbsQuarters({
 					</NavigationMenuContent>
 				</NavigationMenuItem>
 			</NavigationMenuList>
-			<NavigationMenuViewport />
 		</NavigationMenu>
 	);
 }
@@ -171,7 +169,6 @@ export function BreadcrumbsMonths({
 					</NavigationMenuContent>
 				</NavigationMenuItem>
 			</NavigationMenuList>
-			<NavigationMenuViewport />
 		</NavigationMenu>
 	);
 }

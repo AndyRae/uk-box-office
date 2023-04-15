@@ -5,6 +5,7 @@ import { PageTitle } from 'components/ui/page-title';
 import { PageContent } from 'components/ui/page-content';
 import { Topline } from 'interfaces/BoxOffice';
 import { Metadata } from 'next';
+import addDays from 'date-fns/addDays';
 
 export const metadata: Metadata = {
 	title: 'Forecast | Box Office Data',
@@ -56,16 +57,10 @@ function updateWeekGross(data: Topline[]) {
 }
 
 export default async function Page(): Promise<JSX.Element> {
-	Date.prototype.addDays = function (days) {
-		var date = new Date(this.valueOf());
-		date.setDate(date.getDate() + days);
-		return date;
-	};
-
 	// Get the last 6 months in API format
 	const today = new Date();
-	const start = today.addDays(-182);
-	const end = today.addDays(182);
+	const start = addDays(today, -182);
+	const end = addDays(today, 182);
 	const startDate = `${start.getFullYear()}-${
 		start.getMonth() + 1
 	}-${start.getDate()}`;

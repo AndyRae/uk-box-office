@@ -9,6 +9,7 @@ import { parseDate } from 'lib/utils/dates';
 
 import { parseISO } from 'date-fns';
 import { useRouter } from 'next/navigation';
+import addDays from 'date-fns/addDays';
 
 export const Controls = ({
 	start,
@@ -24,7 +25,7 @@ export const Controls = ({
 	// Pushes new date to URL
 	const changeDate = async (days: number) => {
 		const today = new Date();
-		router.push(`?s=${parseDate(today.addDays(-days))}&e=${parseDate(today)}`);
+		router.push(`?s=${parseDate(addDays(today, -days))}&e=${parseDate(today)}`);
 	};
 
 	// Work out the difference between the last two dates

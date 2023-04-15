@@ -132,11 +132,11 @@ const TimeMetrics = ({
 }) => {
 	// Get Data for Metrics
 	const thisYear = timeComparisonData[0];
-	const boxOffice = thisYear.week_gross;
-	const weekendBoxOffice = thisYear.weekend_gross;
-	const numberOfNewFilms = thisYear.number_of_releases;
-	const admissions = thisYear.admissions;
-	const numberOfCinemas = thisYear.number_of_cinemas;
+	const boxOffice = thisYear?.week_gross;
+	const weekendBoxOffice = thisYear?.weekend_gross;
+	const numberOfNewFilms = thisYear?.number_of_releases;
+	const admissions = thisYear?.admissions;
+	const numberOfCinemas = thisYear?.number_of_cinemas;
 	const averageTicketPrice = parseInt((boxOffice / admissions!).toFixed(2));
 	const siteAverage = Math.ceil(boxOffice / numberOfCinemas);
 
@@ -185,13 +185,13 @@ const TimeMetrics = ({
 		<DescriptionList>
 			<TimeMetric
 				title={'Total Box Office'}
-				text={`£ ${boxOffice.toLocaleString()}`}
+				text={`£ ${boxOffice?.toLocaleString()}`}
 				metricChange={changeWeek}
 			/>
 
 			<TimeMetric
 				title={'Weekend Box Office'}
-				text={`£ ${weekendBoxOffice.toLocaleString()}`}
+				text={`£ ${weekendBoxOffice?.toLocaleString()}`}
 				metricChange={changeWeekend}
 			/>
 
@@ -212,7 +212,7 @@ const TimeMetrics = ({
 			{hasAdmissions && (
 				<TimeMetric
 					title={'Average Ticket Price'}
-					text={`£ ${averageTicketPrice.toLocaleString()}`}
+					text={`£ ${averageTicketPrice?.toLocaleString()}`}
 					metricChange={changeAverageTicketPrice}
 				/>
 			)}
