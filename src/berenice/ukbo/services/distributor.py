@@ -1,3 +1,4 @@
+import datetime
 from typing import Optional
 
 import pandas as pd
@@ -162,6 +163,10 @@ def market_share(year: Optional[str] = None) -> Response:
     if year is not None:
         query = query.filter(
             func.extract("year", models.Film_Week.date) == year
+        )
+    else:
+        query = query.filter(
+            models.Film_Week.date >= datetime.date(2002, 1, 1)
         )
 
     data = query.all()
