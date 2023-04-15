@@ -11,21 +11,15 @@ import { StackedBarChart } from 'components/charts/stacked-bar';
 import { ChartWrapper } from 'components/charts/chart-wrapper';
 import { parseDate } from 'lib/utils/dates';
 import { Scorecards } from 'components/score-cards';
+import addDays from 'date-fns/addDays';
 
 export default async function Dashboard({
 	searchParams,
 }: {
 	searchParams: { s?: string; e?: string };
 }): Promise<JSX.Element> {
-	// TODO: Work out how to move this out.
-	Date.prototype.addDays = function (days) {
-		var date = new Date(this.valueOf());
-		date.setDate(date.getDate() + days);
-		return date;
-	};
-
 	// Calculate defaults at 90 days.
-	const s = parseDate(new Date().addDays(-90));
+	const s = parseDate(addDays(new Date(), 90));
 	const e = parseDate(new Date());
 
 	// Get dates from the searchparams.

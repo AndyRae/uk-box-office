@@ -1,4 +1,3 @@
-import { Spinner } from 'components/ui/spinner';
 import { Controls } from 'components/controls';
 import { ChartWrapper } from 'components/charts/chart-wrapper';
 import { Scorecards } from 'components/score-cards';
@@ -6,9 +5,10 @@ import { TimeLineChart } from 'components/charts/timeline';
 import { StackedBarChart } from 'components/charts/stacked-bar';
 import { FilmTableDetailed } from 'components/tables/film-table-detailed';
 import { parseDate } from 'lib/utils/dates';
+import addDays from 'date-fns/addDays';
 
 export default function Loading() {
-	const start = parseDate(new Date().addDays(-90));
+	const start = parseDate(addDays(new Date(), -90));
 	const end = parseDate(new Date());
 	const timeComparisonData = {
 		results: [],
