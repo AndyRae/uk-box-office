@@ -19,7 +19,7 @@ export default async function Dashboard({
 	searchParams: { s?: string; e?: string };
 }): Promise<JSX.Element> {
 	// Calculate defaults at 90 days.
-	const s = parseDate(addDays(new Date(), 90));
+	const s = parseDate(addDays(new Date(), -90));
 	const e = parseDate(new Date());
 
 	// Get dates from the searchparams.
@@ -27,8 +27,7 @@ export default async function Dashboard({
 	const end = searchParams?.e ?? e;
 
 	// Fetch data from the API
-	const { results, isReachedEnd, percentFetched } =
-		await fetchBoxOfficeInfinite(start, end);
+	const { results } = await fetchBoxOfficeInfinite(start, end);
 	const timeComparisonData = await fetchBoxOfficePreviousYear(start, end);
 
 	// Group Data for the charts
