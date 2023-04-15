@@ -37,13 +37,6 @@ export const metadata: Metadata = {
 		description: description,
 		url: 'https://boxofficedata.co.uk',
 		siteName: title,
-		images: [
-			{
-				url: 'icons/1.png',
-				width: 800,
-				height: 600,
-			},
-		],
 		locale: 'en-GB',
 		type: 'website',
 	},
@@ -59,6 +52,5 @@ export const metadata: Metadata = {
 		title: title,
 		description: description,
 		creator: '@AndyRae_',
-		images: ['/icons/1.png'],
 	},
 };

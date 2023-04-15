@@ -3,6 +3,7 @@ import {
 	fetchBoxOfficeInfinite,
 	fetchBoxOfficeSummary,
 } from 'lib/fetch/boxoffice';
+import addDays from 'date-fns/addDays';
 
 export async function generateMetadata({
 	params,
@@ -59,18 +60,6 @@ export async function generateMetadata({
 	};
 }
 
-declare global {
-	interface Date {
-		addDays(days: number): Date;
-	}
-}
-
-Date.prototype.addDays = function (days: number): Date {
-	var date = new Date(this.valueOf());
-	date.setDate(date.getDate() + days);
-	return date;
-};
-
 export default async function Page({
 	params,
 }: {
@@ -78,7 +67,7 @@ export default async function Page({
 }) {
 	// Build Dates based on existing params or defaults.
 	const start = new Date(params.year, params.month - 1, params.day);
-	const sLastWeek = start.addDays(-7);
+	const sLastWeek = addDays(start, -7);
 
 	// Build Date Strings for API
 	const startDate = `${start.getFullYear()}-${

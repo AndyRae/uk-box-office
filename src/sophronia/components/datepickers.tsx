@@ -8,6 +8,7 @@ import { useState } from 'react';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import { parseDate } from 'lib/utils/dates';
+import addDays from 'date-fns/addDays';
 
 type DatepickersProps = {
 	startParam: string;
@@ -28,19 +29,13 @@ export const Datepickers = ({
 	startParam,
 	endParam,
 }: DatepickersProps): JSX.Element => {
-	Date.prototype.addDays = function (days) {
-		var date = new Date(this.valueOf());
-		date.setDate(date.getDate() + days);
-		return date;
-	};
-
 	const router = useRouter();
 
 	const daysToShow = 90;
 	const daysAllowedToGoBack = 547; // 547 days is 18 months
 	const s = new Date();
 
-	const [start, setStart] = useState(s.addDays(-daysToShow));
+	const [start, setStart] = useState(addDays(s, -daysToShow));
 	const [end, setEnd] = useState(new Date());
 
 	const handleStart = (date: any) => {
@@ -68,7 +63,7 @@ export const Datepickers = ({
 						filterDate={(d) => {
 							return new Date() > d;
 						}}
-						minDate={s.addDays(-daysAllowedToGoBack)}
+						minDate={addDays(s, -daysAllowedToGoBack)}
 					/>
 				</div>
 				<div className=''>
