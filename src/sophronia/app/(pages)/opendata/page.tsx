@@ -44,7 +44,7 @@ export default function Page(): JSX.Element {
 					<InlineLink to='/contact'>let me know</InlineLink>; I'd love to see
 					what you do with it.
 				</p>
-				<Button>
+				<Button aria='All Time Box Office'>
 					<a href={`${getApi()}/boxoffice/archive`}>
 						All Time Box Office Data (.csv)
 					</a>

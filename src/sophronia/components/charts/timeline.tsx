@@ -183,6 +183,7 @@ export const TimeLineChart = ({
 											? { transform: 'rotate(180deg)' }
 											: { transform: 'rotate(0deg)' }
 									}
+									aria-label='Group data'
 									onClick={isGroupedByMonth ? rollDown : rollUp}
 								/>
 							</TooltipTrigger>
