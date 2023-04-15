@@ -1,5 +1,6 @@
 from typing import Any, Dict, List, Union
 
+import numpy as np
 import pandas as pd
 from ukbo import models, services
 from ukbo.extensions import db
@@ -103,9 +104,14 @@ def load_weeks(df: pd.DataFrame, **kwargs: Any) -> None:
             if "country" in film
             else ""
         )
+        # if a film does not have a distributor
+        if np.isnan(film["distributor"]):
+            film["distributor"] = ""
+
         distributor = services.distributor.add_distributor(
-            str(film["distributor"])
+            str(film["distributor"]) if "distributor" in film else ""
         )
+
         title = services.film.add_film(str(film["film"]), distributor, countries)  # type: ignore
 
         record = {
@@ -114,6 +120,10 @@ def load_weeks(df: pd.DataFrame, **kwargs: Any) -> None:
         }
 
         for week in film["weeks"]:
+            # Clear empty data.
+            if np.isnan(week["number_of_cinemas"]):
+                week["number_of_cinemas"] = 0
+
             services.week.add_week(**week)
 
             if week["number_of_cinemas"] > 0:
