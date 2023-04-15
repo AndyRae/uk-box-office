@@ -28,7 +28,7 @@ export const ExportCSV = ({
 }): JSX.Element => {
 	const Icon = Icons['spreadsheet'];
 	return (
-		<Button>
+		<Button aria='export .csv'>
 			<div className='px-1'>
 				<Icon />
 			</div>

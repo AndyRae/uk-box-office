@@ -33,7 +33,7 @@ export const DatasourceCard = (): JSX.Element => {
 export const DatasourceButton = () => {
 	const Icon = Icons['seedling'];
 	return (
-		<Button>
+		<Button aria='data source'>
 			<div className='px-1'>
 				<Icon />
 			</div>
