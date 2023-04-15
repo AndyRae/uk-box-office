@@ -50,7 +50,7 @@ class Film(PkModel):  # type: ignore
     )
     country_id = db.Column(db.Integer, db.ForeignKey("country.id"))
     distributor_id = db.Column(
-        db.Integer, db.ForeignKey("distributor.id"), nullable=False
+        db.Integer, db.ForeignKey("distributor.id"), nullable=True
     )
     distributor = db.relationship(
         "Distributor", back_populates="films", innerjoin=True, lazy="joined"
