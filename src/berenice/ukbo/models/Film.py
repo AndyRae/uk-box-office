@@ -52,9 +52,6 @@ class Film(PkModel):  # type: ignore
     distributor_id = db.Column(
         db.Integer, db.ForeignKey("distributor.id"), nullable=True
     )
-    distributor = db.relationship(
-        "Distributor", back_populates="films", innerjoin=True, lazy="joined"
-    )
     slug = db.Column(db.String(300), nullable=False, unique=True)
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
