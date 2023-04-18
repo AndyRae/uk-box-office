@@ -61,10 +61,6 @@ export function BreadcrumbsYears({ year }: { year: number }) {
 		(_, i) => maxYear - i
 	);
 
-	console.log(year);
-	console.log(currentYear);
-	console.log(maxYear);
-
 	return (
 		<NavigationMenu>
 			<NavigationMenuList>
