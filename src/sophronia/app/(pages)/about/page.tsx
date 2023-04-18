@@ -22,7 +22,7 @@ export default function Page(): JSX.Element {
 					<ExternalLink to='https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures'>
 						BFI weekend box office reports
 					</ExternalLink>
-					, it visualises box office back to September 2001, with new data every
+					, it visualises box office back to January 1980, with new data every
 					week on a Wednesday.
 				</p>
 				<p>
@@ -34,9 +34,9 @@ export default function Page(): JSX.Element {
 				<p>
 					It is not an exhaustive data set - the source only includes the weekly
 					box office for the top 15 films, British films, and new releases. But
-					this still covers ~99%+ of the market. There are also inevitably some
-					errors in the data, as there are over 10,000 films, 1,000
-					distributors, and 40,000 weekly records.
+					this still covers ~99%+ of the market back to 2001. There are also
+					inevitably some errors in the data, as there are over 15,000 films,
+					1,000 distributors, and 50,000 weekly records.
 				</p>
 				<p>
 					This does leave some unfortunate gaps, for example{' '}
