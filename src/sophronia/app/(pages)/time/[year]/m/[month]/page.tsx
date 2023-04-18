@@ -8,7 +8,7 @@ import { getLastDayofMonth } from 'lib/utils/dates';
 export async function generateMetadata({
 	params,
 }: {
-	params: { year: number; month: string };
+	params: { year: string; month: string };
 }) {
 	const months = [
 		'January',
@@ -59,12 +59,12 @@ export async function generateMetadata({
 export default async function Page({
 	params,
 }: {
-	params: { year: number; month: number };
+	params: { year: string; month: number };
 }) {
 	// Build Dates based on existing params or defaults.
-	const start = new Date(params.year, params.month - 1, 1);
+	const start = new Date(parseInt(params.year), params.month - 1, 1);
 	const end = new Date(
-		params.year,
+		parseInt(params.year),
 		params.month - 1,
 		getLastDayofMonth(params.month)
 	);
@@ -86,7 +86,7 @@ export default async function Page({
 
 	return (
 		<TimePage
-			year={params.year}
+			year={parseInt(params.year)}
 			month={params.month}
 			results={results}
 			timeComparisonData={timeComparisonData.results}

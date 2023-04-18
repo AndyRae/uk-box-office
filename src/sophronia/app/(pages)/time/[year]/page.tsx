@@ -39,10 +39,10 @@ export async function generateMetadata({
 	};
 }
 
-export default async function Page({ params }: { params: { year: number } }) {
+export default async function Page({ params }: { params: { year: string } }) {
 	// Build Dates based on existing params or defaults.
-	const start = new Date(params.year, 1, 1);
-	const end = new Date(params.year, 11, 31);
+	const start = new Date(parseInt(params.year), 1, 1);
+	const end = new Date(parseInt(params.year), 11, 31);
 
 	// Build Date Strings for API
 	const startDate = `${start.getFullYear()}-${
@@ -61,7 +61,7 @@ export default async function Page({ params }: { params: { year: number } }) {
 
 	return (
 		<TimePage
-			year={params.year}
+			year={parseInt(params.year)}
 			results={results}
 			timeComparisonData={timeComparisonData.results}
 		/>
