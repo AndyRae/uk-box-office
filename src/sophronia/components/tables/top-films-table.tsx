@@ -27,7 +27,9 @@ export const TopFilmsTable = ({ data }: { data: TopFilm[] }): JSX.Element => {
 								{toTitleCase(obj.film.name)}
 							</Link>
 						</Td>
-						<Td>{toTitleCase(obj.film.distributor.name)}</Td>
+						<Td>
+							{obj.film.distributor && toTitleCase(obj.film.distributor.name)}
+						</Td>
 						<Td isNumeric>£ {obj.gross.toLocaleString('en-GB')}</Td>
 					</Tr>
 				);
