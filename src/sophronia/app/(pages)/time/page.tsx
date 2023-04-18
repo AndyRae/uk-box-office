@@ -82,6 +82,10 @@ export default async function Page(): Promise<JSX.Element> {
 						overall numbers are calculated, rather than just publishing a
 						number.
 					</p>
+					<p>
+						*Data prior to September 2001 becomes more incomplete the further
+						you go back, and before 1990 is very sparse.
+					</p>
 				</PageContent>
 			</div>
 
