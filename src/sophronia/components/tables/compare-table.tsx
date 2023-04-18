@@ -54,7 +54,7 @@ export const CompareTable = ({ data }: TableProps): JSX.Element => {
 						<Td>
 							<Date dateString={releaseDate} />
 						</Td>
-						<Td>{toTitleCase(film.distributor.name)}</Td>
+						<Td>{film.distributor && toTitleCase(film.distributor.name)}</Td>
 						<Td isNumeric>£ {film.gross.toLocaleString()}</Td>
 						<Td isNumeric>{film.weeks.length}</Td>
 						<Td isNumeric>x{multiple}</Td>
