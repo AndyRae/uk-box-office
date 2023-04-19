@@ -21,7 +21,7 @@ class Distributor(PkModel):  # type: ignore
 
     __tablename__ = "distributor"
     name = db.Column(db.String(160), unique=True, nullable=False)
-    films = db.relationship("Film", backref="distributor")
+    films = db.relationship("Film", backref="distributor", lazy="dynamic")
     weeks = db.relationship("Film_Week", backref="distributor", lazy="dynamic")
     slug = db.Column(db.String(160), nullable=False, unique=True)
 

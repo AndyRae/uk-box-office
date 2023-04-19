@@ -27,7 +27,7 @@ def test_single_film(app, client, add_test_film):
         add_test_film: Fixture to add a test film
     """
     with app.app_context():
-        response = client.get("/api/film/nope")
+        response = client.get("/api/film/slug/nope")
         data = json.loads(response.data)
         assert response.status_code == 200
 
