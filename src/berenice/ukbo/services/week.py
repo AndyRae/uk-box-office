@@ -1,6 +1,8 @@
 from datetime import datetime
 from typing import Any
 
+import numpy as np
+import pandas as pd
 from ukbo import models
 from ukbo.extensions import db
 
@@ -44,6 +46,10 @@ def add_week(
 
     # If the week doesn't exist, create it
     number_of_releases = 1 if weeks_on_release == 1 else 0
+
+    # Clear empty data.
+    if np.isnan(number_of_cinemas):
+        number_of_cinemas = 0
 
     new_week = {
         "date": date,

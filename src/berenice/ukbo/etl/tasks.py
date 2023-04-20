@@ -76,15 +76,17 @@ def forecast_task() -> None:
 
     This task is run every Wednesday evening after the ETL pipeline.
     """
-
-    try:
-        f = services.forecast.Forecast()
-        f.run_forecast()
-        services.events.create(models.Area.forecast, models.State.success)
-    except Exception:
-        services.events.create(
-            models.Area.forecast, models.State.error, "Forecast run failed."
-        )
+    with scheduler.app.app_context():
+        try:
+            f = services.forecast.Forecast()
+            f.run_forecast()
+            services.events.create(models.Area.forecast, models.State.success)
+        except Exception:
+            services.events.create(
+                models.Area.forecast,
+                models.State.error,
+                "Forecast run failed.",
+            )
 
 
 @with_appcontext
@@ -340,9 +342,10 @@ def build_archive(path: str = "./data/archive_export.csv") -> None:
     This is run every Wednesday evening after the box office data is updated.
 
     """
-    try:
-        archive = services.boxoffice.build_archive()
-        archive.to_csv(path, index=False, date_format="%Y%m%d")
-        services.events.create(models.Area.archive, models.State.success)
-    except Exception:
-        services.events.create(models.Area.archive, models.State.error)
+    with scheduler.app.app_context():
+        try:
+            archive = services.boxoffice.build_archive()
+            archive.to_csv(path, index=False, date_format="%Y%m%d")
+            services.events.create(models.Area.archive, models.State.success)
+        except Exception:
+            services.events.create(models.Area.archive, models.State.error)

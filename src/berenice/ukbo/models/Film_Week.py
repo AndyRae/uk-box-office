@@ -34,7 +34,7 @@ class Film_Week(PkModel):  # type: ignore
         "Film", back_populates="weeks", innerjoin=True, lazy="joined"
     )
     distributor_id = db.Column(
-        db.Integer, db.ForeignKey("distributor.id"), nullable=False
+        db.Integer, db.ForeignKey("distributor.id"), nullable=True
     )
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     rank = db.Column(db.Integer, nullable=False)

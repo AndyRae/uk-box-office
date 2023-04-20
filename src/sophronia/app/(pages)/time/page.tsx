@@ -46,7 +46,7 @@ export default async function Page(): Promise<JSX.Element> {
 	const endDate = `${today}-${12}-${31}`;
 
 	// Look back 25 years.
-	const yearsToLookBack = 22;
+	const yearsToLookBack = 43;
 	const data = await getBoxOfficeSummary(startDate, endDate, yearsToLookBack);
 
 	// Reverse for the graph so to be left to right.
@@ -81,6 +81,10 @@ export default async function Page(): Promise<JSX.Element> {
 						specific films and weeks. So we can be transparent about how the
 						overall numbers are calculated, rather than just publishing a
 						number.
+					</p>
+					<p>
+						*Data prior to September 2001 becomes more incomplete the further
+						you go back, and before 1990 is very sparse.
 					</p>
 				</PageContent>
 			</div>

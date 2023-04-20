@@ -67,7 +67,7 @@ def make_film():
 
     def make(name, distributor, countries):
         return models.Film(
-            name=name, distributor=distributor, countries=countries
+            name=name, countries=countries, distributor=distributor
         )
 
     return make

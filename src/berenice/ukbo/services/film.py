@@ -1,4 +1,5 @@
-from typing import List
+import uuid
+from typing import List, Optional
 
 import pandas as pd
 from flask import Response, abort, jsonify
@@ -81,8 +82,8 @@ def get_by_id(id: int) -> Response:
 
 def add_film(
     film: str,
-    distributor: models.Distributor,
     countries: List[models.Country],
+    distributor: Optional[models.Distributor] = None,
 ) -> models.Film:
     """
     Add a film to the database.
@@ -99,12 +100,22 @@ def add_film(
     """
     film = film.strip()
 
-    if instance := models.Film.query.filter_by(
-        name=film, distributor=distributor
-    ).first():
+    if distributor:
+        instance = models.Film.query.filter_by(
+            name=film, distributor=distributor
+        ).first()
+    else:
+        instance = models.Film.query.filter_by(
+            name=film, distributor=None
+        ).first()
+
+    if instance:
         return instance
 
-    new = models.Film(name=film, distributor=distributor, countries=countries)
+    record = {"name": film, "distributor": distributor, "countries": countries}
+
+    new = models.Film.create(**record, commit=False)
+
     try:
         new.save()
     except Exception:
@@ -114,9 +125,13 @@ def add_film(
         services.events.create(
             models.Area.etl, models.State.warning, f"Duplicate - {film}."
         )
-        slug = slugify(f"{film}-{distributor.name}")
+        if distributor:
+            slug = slugify(f"{film}-{distributor.name}")
+        else:
+            slug = slugify(f"{film}-{uuid.uuid4()}")
         new.slug = slug
         new.save()
+
     return new
 
 

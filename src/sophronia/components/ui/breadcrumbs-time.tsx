@@ -52,11 +52,13 @@ export function BreadcrumbsTime({
 }
 
 export function BreadcrumbsYears({ year }: { year: number }) {
-	// List of the years
+	// List of the years +/- 5
 	const currentYear = new Date().getFullYear();
+	const maxYear = Math.min(year + 5, currentYear);
+	const limit = Math.max(year - 5, 1980);
 	const years = Array.from(
-		Array(currentYear - 2001 + 1).keys(),
-		(_, i) => currentYear - i
+		Array(maxYear - limit + 1).keys(),
+		(_, i) => maxYear - i
 	);
 
 	return (

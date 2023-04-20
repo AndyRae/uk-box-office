@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { BaseTable, Tr, Td } from 'components/tables/base-table';
 import { Film } from 'interfaces/Film';
+import { toTitleCase } from 'lib/utils/toTitleCase';
 
 /**
  * @description Films Table component for search
@@ -22,9 +23,9 @@ export const FilmsTable = ({ data }: { data: Film[] }): JSX.Element => {
 			{data.map((film, index: number) => (
 				<Tr key={film.id} index={index}>
 					<Td isHighlight>
-						<Link href={`/film/${film.slug}`}>{film.name}</Link>
+						<Link href={`/film/${film.slug}`}>{toTitleCase(film.name)}</Link>
 					</Td>
-					<Td>{film.distributor.name}</Td>
+					<Td>{film.distributor && toTitleCase(film.distributor?.name)}</Td>
 					<Td>{film.countries.map((c, index: number) => `${c.name} `)}</Td>
 					<Td isNumeric>£ {film.gross.toLocaleString('en-GB')}</Td>
 				</Tr>
