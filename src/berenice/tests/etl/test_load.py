@@ -1,6 +1,7 @@
 import datetime
 
 import pandas as pd
+from sqlalchemy.orm import joinedload
 from ukbo import db, etl, models
 
 
@@ -64,7 +65,11 @@ def test_load_films(app):
 
     with app.app_context():
         etl.load.load_films([film])
-        response = models.Film.query.filter_by(name=film["film"]).first()
+        response = (
+            models.Film.query.options(joinedload(models.Film.distributor))
+            .filter_by(name=film["film"])
+            .first()
+        )
 
     assert response.name == "The Lion King"
     assert response.slug == "the-lion-king"

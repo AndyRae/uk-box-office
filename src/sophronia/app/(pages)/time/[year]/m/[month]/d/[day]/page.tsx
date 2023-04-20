@@ -63,10 +63,10 @@ export async function generateMetadata({
 export default async function Page({
 	params,
 }: {
-	params: { year: number; month: number; day: number };
+	params: { year: string; month: number; day: number };
 }) {
 	// Build Dates based on existing params or defaults.
-	const start = new Date(params.year, params.month - 1, params.day);
+	const start = new Date(parseInt(params.year), params.month - 1, params.day);
 	const sLastWeek = addDays(start, -7);
 
 	// Build Date Strings for API
@@ -93,7 +93,7 @@ export default async function Page({
 
 	return (
 		<TimePage
-			year={params.year}
+			year={parseInt(params.year)}
 			month={params.month}
 			day={params.day}
 			results={results}

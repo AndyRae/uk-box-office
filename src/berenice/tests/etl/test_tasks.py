@@ -283,8 +283,8 @@ def test_delete_film_task(app, add_test_distributor, add_test_country):
 
         services.film.add_film(
             "Nope",
-            distributor,
             [country],
+            distributor=distributor,
         )
         # Get click context and run delete_film_task
         ctx = click.Context(click.Command("cmd"), obj={"prop": "A Context"})

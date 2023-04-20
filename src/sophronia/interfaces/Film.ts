@@ -8,7 +8,7 @@ export interface Film {
 	slug: string;
 	gross: number;
 	countries: Country[];
-	distributor: Distributor;
+	distributor?: Distributor;
 }
 
 export interface FilmWithWeeks extends Film {
@@ -27,7 +27,7 @@ export interface TopFilm {
 	film: {
 		name: string;
 		slug: string;
-		distributor: {
+		distributor?: {
 			name: string;
 		};
 	};

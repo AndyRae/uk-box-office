@@ -1,3 +1,4 @@
+import datetime
 from typing import Optional
 
 import pandas as pd
@@ -101,7 +102,7 @@ def get_films(slug: str, page: int = 1, limit: int = 100) -> Response:
     )
 
 
-def add_distributor(distributor: str) -> models.Distributor:
+def add_distributor(distributor: str) -> Optional[models.Distributor]:
     """
     Add a distributor to the database.
 
@@ -113,6 +114,11 @@ def add_distributor(distributor: str) -> models.Distributor:
 
     Returns Distributor object.
     """
+    if distributor is None or (
+        isinstance(distributor, str) and not distributor.strip()
+    ):
+        return None
+
     distributor = distributor.strip()
     slug = slugify(distributor)
 
@@ -162,6 +168,10 @@ def market_share(year: Optional[str] = None) -> Response:
     if year is not None:
         query = query.filter(
             func.extract("year", models.Film_Week.date) == year
+        )
+    else:
+        query = query.filter(
+            models.Film_Week.date >= datetime.date(2002, 1, 1)
         )
 
     data = query.all()

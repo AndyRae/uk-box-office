@@ -80,6 +80,8 @@ export default async function Page({
 		})
 	);
 
+	const hasCountries = data.countries.length > 1;
+
 	return (
 		<div>
 			<StructuredTimeData
@@ -108,28 +110,32 @@ export default async function Page({
 
 						<DescriptionItem title={'Multiple'} text={`x${multiple}`} />
 
-						<DescriptionItem
-							title={'Distributor'}
-							text={
-								<BadgeLink
-									text={toTitleCase(data.distributor.name)}
-									link={`/distributor/${data.distributor.slug}`}
-								/>
-							}
-						/>
-
-						<DescriptionItem
-							title={'Country'}
-							text={data.countries.map((country) => {
-								return (
+						{data.distributor && (
+							<DescriptionItem
+								title={'Distributor'}
+								text={
 									<BadgeLink
-										key={country.id}
-										text={country.name}
-										link={`/country/${country.slug}`}
+										text={toTitleCase(data.distributor.name)}
+										link={`/distributor/${data.distributor.slug}`}
 									/>
-								);
-							})}
-						/>
+								}
+							/>
+						)}
+
+						{hasCountries && (
+							<DescriptionItem
+								title={'Country'}
+								text={data.countries.map((country) => {
+									return (
+										<BadgeLink
+											key={country.id}
+											text={country.name}
+											link={`/country/${country.slug}`}
+										/>
+									);
+								})}
+							/>
+						)}
 
 						<DescriptionItem
 							title={'Compare'}

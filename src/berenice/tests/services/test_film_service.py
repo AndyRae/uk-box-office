@@ -101,8 +101,8 @@ def test_add_film(app, add_test_distributor, add_test_country):
 
         response = services.film.add_film(
             "Nope",
-            distributor,
             [country],
+            distributor,
         )
 
         assert response.name == "Nope"
@@ -137,8 +137,8 @@ def test_delete_film(app, add_test_distributor, add_test_country):
 
         response = services.film.add_film(
             "Nope",
-            distributor,
             [country],
+            distributor,
         )
 
         response = services.film.delete_film(1)

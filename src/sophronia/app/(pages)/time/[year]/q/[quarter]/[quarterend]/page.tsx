@@ -43,14 +43,18 @@ export async function generateMetadata({
 export default async function Page({
 	params,
 }: {
-	params: { year: number; quarter: number; quarterend: number };
+	params: { year: string; quarter: number; quarterend: number };
 }) {
 	// Build Dates based on existing params or defaults.
 	const month = params.quarter * 3 - 2;
 	const endMonth = params.quarterend * 3;
 
-	const start = new Date(params.year, month - 1, 1);
-	const end = new Date(params.year, endMonth - 1, getLastDayofMonth(endMonth));
+	const start = new Date(parseInt(params.year), month - 1, 1);
+	const end = new Date(
+		parseInt(params.year),
+		endMonth - 1,
+		getLastDayofMonth(endMonth)
+	);
 
 	// Build Date Strings for API
 	const startDate = `${start.getFullYear()}-${
@@ -69,7 +73,7 @@ export default async function Page({
 
 	return (
 		<TimePage
-			year={params.year}
+			year={parseInt(params.year)}
 			quarter={params.quarter}
 			quarterend={params.quarterend}
 			results={results}
