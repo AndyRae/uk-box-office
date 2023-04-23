@@ -4,7 +4,6 @@ import * as React from 'react';
 import clsx from 'clsx';
 import { DayPicker } from 'react-day-picker';
 
-import { Icons } from 'components/icons';
 import { buttonVariants } from 'components/ui/button-new';
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
@@ -13,12 +12,13 @@ function Calendar({
 	className,
 	classNames,
 	showOutsideDays = true,
+	fromDate,
 	...props
 }: CalendarProps) {
-	const IconRight = Icons['arrowRight'];
-	const IconLeft = Icons['arrowLeft'];
 	return (
 		<DayPicker
+			fromDate={fromDate}
+			toDate={new Date()}
 			showOutsideDays={showOutsideDays}
 			className={clsx('p-3', className)}
 			classNames={{
@@ -27,10 +27,6 @@ function Calendar({
 				caption: 'flex justify-center pt-1 relative items-center',
 				caption_label: 'text-sm font-medium',
 				nav: 'space-x-1 flex items-center',
-				nav_button: clsx(
-					buttonVariants({ variant: 'outline' }),
-					'h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100'
-				),
 				nav_button_previous: 'absolute left-1',
 				nav_button_next: 'absolute right-1',
 				table: 'w-full border-collapse space-y-1',
@@ -52,10 +48,6 @@ function Calendar({
 					'aria-selected:bg-slate-200 aria-selected:dark:bg-slate-800 aria-selected:text-black aria-selected:dark:text-white',
 				day_hidden: 'invisible',
 				...classNames,
-			}}
-			components={{
-				IconLeft: ({ ...props }) => <IconLeft />,
-				IconRight: ({ ...props }) => <IconRight className='h-4 w-4' />,
 			}}
 			{...props}
 		/>

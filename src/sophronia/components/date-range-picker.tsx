@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { format } from 'date-fns';
+import { format, addDays } from 'date-fns';
 import { useRouter } from 'next/navigation';
 import { parseDate } from 'lib/utils/dates';
 
@@ -25,6 +25,9 @@ export function CalendarDateRangePicker({
 	className,
 }: CalendarDateRangePickerProps) {
 	const router = useRouter();
+
+	const minDays = 547; // 547 days is 18 months
+	const fromDate = addDays(new Date(), -minDays);
 
 	const [date, setDate] = React.useState<DateRange | undefined>({
 		from: startParam,
@@ -73,6 +76,7 @@ export function CalendarDateRangePicker({
 						selected={date}
 						onSelect={(date) => handleSelect(date!)}
 						numberOfMonths={2}
+						fromDate={fromDate}
 					/>
 				</PopoverContent>
 			</Popover>
