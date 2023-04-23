@@ -39,36 +39,42 @@ export const Controls = ({
 		<div className='flex flex-wrap mb-2 gap-y-4 items-center justify-center'>
 			<CalendarDateRangePicker startParam={sDate} endParam={eDate} />
 
-			<ButtonGroup>
-				<Button
-					onClick={() => changeDate(7)}
-					isActive={diffDays === 7}
-					aria='1 Week'
-				>
-					1W
-				</Button>
-				<Button
-					onClick={() => changeDate(30)}
-					isActive={diffDays === 30}
-					aria='1 Month'
-				>
-					1M
-				</Button>
-				<Button
-					onClick={() => changeDate(90)}
-					isActive={diffDays === 90}
-					aria='3 Months'
-				>
-					3M
-				</Button>
-				<Button
-					onClick={() => changeDate(365)}
-					isActive={diffDays === 365}
-					aria='1 Year'
-				>
-					1Y
-				</Button>
-			</ButtonGroup>
+			<Button
+				onClick={() => changeDate(7)}
+				isActive={diffDays === 7}
+				aria='1 Week'
+				className='ml-2 rounded-r-none'
+				innerClassName='rounded-r-none'
+			>
+				1W
+			</Button>
+			<Button
+				onClick={() => changeDate(30)}
+				isActive={diffDays === 30}
+				aria='1 Month'
+				className='rounded-none pl-0 pr-0'
+				innerClassName='rounded-none'
+			>
+				1M
+			</Button>
+			<Button
+				onClick={() => changeDate(90)}
+				isActive={diffDays === 90}
+				aria='3 Months'
+				className='rounded-none pr-0'
+				innerClassName='rounded-none'
+			>
+				3M
+			</Button>
+			<Button
+				onClick={() => changeDate(365)}
+				isActive={diffDays === 365}
+				aria='1 Year'
+				className='rounded-l-none'
+				innerClassName='rounded-l-none'
+			>
+				1Y
+			</Button>
 
 			<LastUpdated date={lastUpdated} />
 

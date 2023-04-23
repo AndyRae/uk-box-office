@@ -1,10 +1,13 @@
-export type ButtonProps = {
+import clsx from 'clsx';
+
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	children: React.ReactNode;
 	onClick?: () => void;
 	isActive?: boolean;
 	aria?: string;
+	innerClassName?: string;
 	[x: string]: any;
-};
+}
 
 /**
  * @file Button.jsx
@@ -22,19 +25,26 @@ export const Button = ({
 	onClick,
 	isActive,
 	aria,
-	...props
+	innerClassName,
+	className,
 }: ButtonProps): JSX.Element => {
+	const active = isActive ? 'bg-opacity-0' : 'bg-white dark:bg-black';
 	return (
 		<button
 			onClick={onClick}
 			aria-label={aria}
-			className=' max-w-fit relative inline-flex items-center justify-center p-0.5 mr-2 mb-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-bo-primary to-cyan-500 group-hover:from-bo-primary group-hover:to-cyan-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800'
-			{...props}
+			className={clsx(
+				className,
+				'max-w-fit relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-bo-primary to-cyan-500 group-hover:from-bo-primary group-hover:to-cyan-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800',
+				className
+			)}
 		>
 			<span
-				className={`relative px-5 py-2 transition-all inline-flex items-center ease-in duration-150 rounded-md group-hover:bg-opacity-0 ${
-					isActive ? 'bg-opacity-0' : 'bg-white dark:bg-black'
-				}`}
+				className={clsx(
+					'relative px-5 py-2 transition-all inline-flex items-center ease-in duration-150 rounded-md group-hover:bg-opacity-0',
+					active,
+					innerClassName
+				)}
 			>
 				{children}
 			</span>

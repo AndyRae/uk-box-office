@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from './button';
-import { ButtonProps } from './button';
+// import { ButtonProps } from './button';
 
 /**
  * @file ButtonGroup.jsx
@@ -23,7 +23,7 @@ export const ButtonGroup = ({ children }: ButtonGroupProps): JSX.Element => {
 	return (
 		<div className='inline-flex rounded-md px-4' role='group'>
 			{childrenArray.map((child, index) => {
-				if (React.isValidElement<ButtonProps>(child)) {
+				if (React.isValidElement(child)) {
 					return (
 						<Button
 							onClick={child.props.onClick}
