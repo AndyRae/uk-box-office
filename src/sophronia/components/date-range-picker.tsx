@@ -1,23 +1,40 @@
 'use client';
 
 import * as React from 'react';
-import { addDays, format } from 'date-fns';
+import { format } from 'date-fns';
+import { useRouter } from 'next/navigation';
+import { parseDate } from 'lib/utils/dates';
 
 import { DateRange } from 'react-day-picker';
 import clsx from 'clsx';
 
-import { Button } from 'components/ui/button';
+import { Button } from './ui/button-new';
 import { Calendar } from 'components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from 'components/ui/popover';
 import { Icons } from './icons';
 
+interface CalendarDateRangePickerProps
+	extends React.HTMLAttributes<HTMLDivElement> {
+	startParam: Date;
+	endParam: Date;
+}
+
 export function CalendarDateRangePicker({
+	startParam,
+	endParam,
 	className,
-}: React.HTMLAttributes<HTMLDivElement>) {
+}: CalendarDateRangePickerProps) {
+	const router = useRouter();
+
 	const [date, setDate] = React.useState<DateRange | undefined>({
-		from: new Date(2022, 0, 20),
-		to: addDays(new Date(2022, 0, 20), 20),
+		from: startParam,
+		to: endParam,
 	});
+
+	const handleSelect = (date: any) => {
+		setDate(date);
+		router.push(`?s=${parseDate(date.from)}&e=${parseDate(date.to)}`);
+	};
 
 	const CalendarIcon = Icons['calendar'];
 
@@ -54,7 +71,7 @@ export function CalendarDateRangePicker({
 						mode='range'
 						defaultMonth={date?.from}
 						selected={date}
-						onSelect={setDate}
+						onSelect={(date) => handleSelect(date!)}
 						numberOfMonths={2}
 					/>
 				</PopoverContent>

@@ -2,7 +2,6 @@
 
 import { ButtonGroup } from './ui/button-group';
 import { Button } from './ui/button';
-import { Datepickers } from './datepickers';
 import { LastUpdated } from './last-updated';
 import { DatasourceCard } from './datasource';
 import { parseDate } from 'lib/utils/dates';
@@ -10,6 +9,7 @@ import { parseDate } from 'lib/utils/dates';
 import { parseISO } from 'date-fns';
 import { useRouter } from 'next/navigation';
 import addDays from 'date-fns/addDays';
+import { CalendarDateRangePicker } from './date-range-picker';
 
 export const Controls = ({
 	start,
@@ -37,7 +37,8 @@ export const Controls = ({
 
 	return (
 		<div className='flex flex-wrap mb-2 gap-y-4 items-center justify-center'>
-			<Datepickers startParam={start} endParam={end} />
+			<CalendarDateRangePicker startParam={sDate} endParam={eDate} />
+
 			<ButtonGroup>
 				<Button
 					onClick={() => changeDate(7)}
