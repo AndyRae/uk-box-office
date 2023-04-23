@@ -281,9 +281,13 @@ const TimeTabs = ({
 			</TabsList>
 
 			<TabsContent value='tab1'>
-				<div className='flex flex-row-reverse mt-3'>
+				<div className='flex flex-row-reverse mt-3 mb-3'>
 					<DatasourceButton />
-					<ExportCSV data={tableData} filename={'filmdata.csv'} />
+					<ExportCSV
+						data={tableData}
+						filename={'filmdata.csv'}
+						className='mr-2'
+					/>
 				</div>
 				<FilmTableDetailed
 					data={tableData}
@@ -292,17 +296,25 @@ const TimeTabs = ({
 			</TabsContent>
 
 			<TabsContent value='tab2'>
-				<div className='flex flex-row-reverse mt-3'>
+				<div className='flex flex-row-reverse mt-3 mb-3'>
 					<DatasourceButton />
-					<ExportCSV data={weekData} filename={'timedata.csv'} />
+					<ExportCSV
+						data={weekData}
+						filename={'timedata.csv'}
+						className='mr-2'
+					/>
 				</div>
 				<WeeksTable data={weekData} />
 			</TabsContent>
 
 			<TabsContent value='tab3'>
-				<div className='flex flex-row-reverse mt-3'>
+				<div className='flex flex-row-reverse mt-3 mb-3'>
 					<DatasourceButton />
-					<ExportCSV data={timeComparisonData} filename={'historic.csv'} />
+					<ExportCSV
+						data={timeComparisonData}
+						filename={'historic.csv'}
+						className='mr-2'
+					/>
 				</div>
 				<PreviousTable data={timeComparisonData} />
 			</TabsContent>

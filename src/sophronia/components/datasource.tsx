@@ -30,10 +30,10 @@ export const DatasourceCard = (): JSX.Element => {
  * Quick component to add credit where necessary with a button
  * @returns {JSX.Element}
  */
-export const DatasourceButton = () => {
+export const DatasourceButton = ({ className }: { className?: string }) => {
 	const Icon = Icons['seedling'];
 	return (
-		<Button aria='data source'>
+		<Button aria='data source' className={className}>
 			<div className='px-1'>
 				<Icon />
 			</div>

@@ -4,8 +4,10 @@ import {
 	AiOutlineClose,
 	AiOutlineSearch,
 	AiOutlineArrowDown,
+	AiOutlineArrowLeft,
+	AiOutlineArrowRight,
 } from 'react-icons/ai';
-import { BiNetworkChart } from 'react-icons/bi';
+import { BiNetworkChart, BiCalendarAlt } from 'react-icons/bi';
 import { BsListOl, BsFileEarmarkSpreadsheet } from 'react-icons/bs';
 import {
 	FaInfoCircle,
@@ -44,6 +46,8 @@ export const Icons = {
 	error: MdOutlineErrorOutline,
 	success: MdCheckCircleOutline,
 	arrowDown: AiOutlineArrowDown,
+	arrowLeft: AiOutlineArrowLeft,
+	arrowRight: AiOutlineArrowRight,
 	spreadsheet: BsFileEarmarkSpreadsheet,
 	github: FaGithub,
 	info: FaInfoCircle,
@@ -51,4 +55,5 @@ export const Icons = {
 	film: FaFilm,
 	status: TbActivityHeartbeat,
 	chevronDown: FiChevronDown,
+	calendar: BiCalendarAlt,
 };
