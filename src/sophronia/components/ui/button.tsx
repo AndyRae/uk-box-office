@@ -32,7 +32,7 @@ export const Button = ({
 			{...props}
 		>
 			<span
-				className={`relative px-5 py-1.5 transition-all inline-flex items-center ease-in duration-150 rounded-md group-hover:bg-opacity-0 ${
+				className={`relative px-5 py-2 transition-all inline-flex items-center ease-in duration-150 rounded-md group-hover:bg-opacity-0 ${
 					isActive ? 'bg-opacity-0' : 'bg-white dark:bg-black'
 				}`}
 			>
