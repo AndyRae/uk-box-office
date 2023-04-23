@@ -22,13 +22,15 @@ const DynamicCSV = dynamic(
 export const ExportCSV = ({
 	data,
 	filename,
+	className,
 }: {
 	data: any;
 	filename: string;
+	className?: string;
 }): JSX.Element => {
 	const Icon = Icons['spreadsheet'];
 	return (
-		<Button aria='export .csv'>
+		<Button aria='export .csv' className={className}>
 			<div className='px-1'>
 				<Icon />
 			</div>

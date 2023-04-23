@@ -145,10 +145,14 @@ export default async function Page({
 						/>
 					</DescriptionList>
 
-					<DatasourceButton />
 					{data.weeks && (
-						<ExportCSV data={data.weeks} filename={`${data.name}_data.csv`} />
+						<ExportCSV
+							data={data.weeks}
+							filename={`${data.name}_data.csv`}
+							className='mr-2'
+						/>
 					)}
+					<DatasourceButton />
 				</div>
 
 				{/* Charts */}
