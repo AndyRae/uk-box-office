@@ -21,7 +21,7 @@ export const ButtonGroup = ({ children }: ButtonGroupProps): JSX.Element => {
 	const childrenArray = React.Children.toArray(children);
 
 	return (
-		<div className='inline-flex rounded-md shadow-sm px-4' role='group'>
+		<div className='inline-flex rounded-md px-4' role='group'>
 			{childrenArray.map((child, index) => {
 				if (React.isValidElement<ButtonProps>(child)) {
 					return (
@@ -33,8 +33,8 @@ export const ButtonGroup = ({ children }: ButtonGroupProps): JSX.Element => {
 								${index === 0 ? 'rounded-l-lg' : ''} ${
 									index === childrenArray.length - 1 ? 'rounded-r-lg' : ''
 								}
-								group bg-gradient-to-br from-bo-primary to-cyan-500 group-hover:from-pink-500 group-hover:to-orange-400
-								hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800`}
+								group bg-gradient-to-br from-bo-primary to-cyan-500
+								hover:text-white dark:text-white focus:ring-4 focus:outline-none `}
 						>
 							{child.props.children}
 						</Button>
