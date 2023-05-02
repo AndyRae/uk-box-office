@@ -12,6 +12,8 @@ attrs==22.1.0
     # via pytest
 beautifulsoup4==4.11.1
     # via -r requirements.in
+blinker==1.6.2
+    # via flask
 brotli==1.0.9
     # via flask-compress
 build==0.9.0
@@ -54,7 +56,7 @@ et-xmlfile==1.1.0
     # via openpyxl
 filelock==3.8.0
     # via virtualenv
-flask==2.2.2
+flask==2.3.2
     # via
     #   -r requirements.in
     #   flask-apscheduler
@@ -85,6 +87,8 @@ flask-sqlalchemy==3.0.2
     #   flask-migrate
 fonttools==4.38.0
     # via matplotlib
+greenlet==2.0.2
+    # via sqlalchemy
 gunicorn==20.1.0
     # via -r requirements.in
 hijri-converter==2.2.4
@@ -245,7 +249,7 @@ virtualenv==20.16.6
     # via
     #   -r requirements.in
     #   pre-commit
-werkzeug==2.2.3
+werkzeug==2.3.3
     # via flask
 wheel==0.38.3
     # via
