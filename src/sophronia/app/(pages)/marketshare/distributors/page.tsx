@@ -132,6 +132,7 @@ export default async function Page() {
 								<ExportCSV
 									data={yearlyData}
 									filename={`${year}-distributor-market-share.csv`}
+									className='mb-3'
 								/>
 							</div>
 							<MarketShareTable data={yearlyData} />
