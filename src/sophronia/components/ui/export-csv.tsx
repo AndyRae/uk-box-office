@@ -10,6 +10,11 @@ const DynamicCSV = dynamic(
 	{ ssr: false }
 );
 
+interface ExportCsvProps extends React.HTMLAttributes<HTMLDivElement> {
+	data: any;
+	filename: string;
+}
+
 /**
  * @file ExportCSV.jsx
  * @description ExportCSV button component with a branded gradient outline.
@@ -23,11 +28,7 @@ export const ExportCSV = ({
 	data,
 	filename,
 	className,
-}: {
-	data: any;
-	filename: string;
-	className?: string;
-}): JSX.Element => {
+}: ExportCsvProps): JSX.Element => {
 	const Icon = Icons['spreadsheet'];
 	return (
 		<Button aria='export .csv' className={className}>
