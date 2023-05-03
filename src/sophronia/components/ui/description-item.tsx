@@ -1,12 +1,13 @@
+interface DescriptionItemProps extends React.HTMLAttributes<HTMLDivElement> {
+	title: string;
+	text: any;
+}
+
 export const DescriptionItem = ({
 	title,
 	text,
 	children,
-}: {
-	title: string;
-	text: any;
-	children?: React.ReactNode;
-}) => {
+}: DescriptionItemProps) => {
 	return (
 		<div className='flex flex-col pb-3'>
 			<dt className='mb-1 text-gray-500 dark:text-gray-400'>{title}</dt>

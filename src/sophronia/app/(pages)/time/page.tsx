@@ -90,7 +90,9 @@ export default async function Page(): Promise<JSX.Element> {
 			</div>
 
 			<hr className='my-10' />
-			<ExportCSV data={data.results} filename={'alltime.csv'} />
+			<div className='mb-5'>
+				<ExportCSV data={data.results} filename={'alltime.csv'} />
+			</div>
 			<YearsTable data={data.results} id={'yearstable'} />
 		</>
 	);

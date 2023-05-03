@@ -138,7 +138,11 @@ export default function Page(): JSX.Element {
 				<>
 					<div className='flex flex-row-reverse my-6'>
 						<DatasourceButton />
-						<ExportCSV data={filmData} filename={'comparison_data.csv'} />
+						<ExportCSV
+							data={filmData}
+							filename={'comparison_data.csv'}
+							className='mr-2'
+						/>
 					</div>
 
 					<div className='mt-6'>

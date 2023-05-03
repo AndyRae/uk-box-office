@@ -1,12 +1,11 @@
 import Link from 'next/link';
 
-export const BadgeLink = ({
-	text,
-	link,
-}: {
+interface BadgeLinkProps extends React.HTMLAttributes<HTMLDivElement> {
 	text: string;
 	link: string;
-}): JSX.Element => {
+}
+
+export const BadgeLink = ({ text, link }: BadgeLinkProps): JSX.Element => {
 	return (
 		<Link
 			href={link}
