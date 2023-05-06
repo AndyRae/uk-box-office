@@ -19,7 +19,7 @@ export const FilmTable = ({
 	const columns = [
 		{ label: 'title' },
 		{ label: 'distributor' },
-		{ label: 'box office', isNumeric: true },
+		{ label: 'box office (£)', isNumeric: true },
 	];
 	return (
 		<BaseTable columns={columns}>
@@ -29,7 +29,7 @@ export const FilmTable = ({
 						<Link href={`/film/${film.slug}`}>{toTitleCase(film.name)}</Link>
 					</Td>
 					<Td>{film.distributor && toTitleCase(film.distributor.name)}</Td>
-					<Td isNumeric>£ {film.gross.toLocaleString('en-GB')}</Td>
+					<Td isNumeric>{film.gross.toLocaleString('en-GB')}</Td>
 				</Tr>
 			))}
 		</BaseTable>

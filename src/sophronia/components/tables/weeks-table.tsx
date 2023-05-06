@@ -17,8 +17,8 @@ export const WeeksTable = ({
 }): JSX.Element => {
 	const columns = [
 		{ label: 'week ending' },
-		{ label: 'weekend box office', isNumeric: true },
-		{ label: 'week box office', isNumeric: true },
+		{ label: 'weekend box office (£)', isNumeric: true },
+		{ label: 'week box office (£)', isNumeric: true },
 		{ label: 'week change', isNumeric: true },
 		{ label: 'new releases', isNumeric: true },
 	];
@@ -41,8 +41,8 @@ export const WeeksTable = ({
 								{week.date}
 							</Link>
 						</Td>
-						<Td isNumeric>£ {week.weekendGross.toLocaleString('en-GB')}</Td>
-						<Td isNumeric>£ {week.weekGross.toLocaleString('en-GB')}</Td>
+						<Td isNumeric>{week.weekendGross.toLocaleString('en-GB')}</Td>
+						<Td isNumeric>{week.weekGross.toLocaleString('en-GB')}</Td>
 						<Td isNumeric>
 							<MetricChange value={changeWeekend} />
 						</Td>
