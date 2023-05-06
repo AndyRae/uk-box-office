@@ -15,10 +15,10 @@ export const PreviousTable = ({
 }): JSX.Element => {
 	const columns = [
 		{ label: 'year', isNumeric: true },
-		{ label: 'total box office', isNumeric: true },
-		{ label: 'change YOY', isNumeric: true },
-		{ label: 'site average', isNumeric: true },
-		{ label: 'weekend box office', isNumeric: true },
+		{ label: 'total box office (£)', isNumeric: true },
+		{ label: 'change YOY (%)', isNumeric: true },
+		{ label: 'site average (£)', isNumeric: true },
+		{ label: 'weekend box office (£)', isNumeric: true },
 		{ label: 'cinemas', isNumeric: true },
 	];
 	return (
@@ -40,14 +40,12 @@ export const PreviousTable = ({
 						<Td isNumeric isHighlight>
 							<Link href={`/time/${year.year}`}>{year.year}</Link>
 						</Td>
-						<Td isNumeric>£ {year.week_gross.toLocaleString('en-GB')}</Td>
+						<Td isNumeric>{year.week_gross.toLocaleString('en-GB')}</Td>
 						<Td isNumeric>
 							<MetricChange value={changeYOY} />
 						</Td>
-						<Td isNumeric>
-							£ {Math.ceil(siteAverage).toLocaleString('en-GB')}
-						</Td>
-						<Td isNumeric>£ {year.weekend_gross.toLocaleString('en-GB')}</Td>
+						<Td isNumeric>{Math.ceil(siteAverage).toLocaleString('en-GB')}</Td>
+						<Td isNumeric>{year.weekend_gross.toLocaleString('en-GB')}</Td>
 						<Td isNumeric>{year.number_of_cinemas}</Td>
 					</Tr>
 				);

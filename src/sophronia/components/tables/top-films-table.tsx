@@ -10,10 +10,10 @@ import { toTitleCase } from 'lib/utils/toTitleCase';
  */
 export const TopFilmsTable = ({ data }: { data: TopFilm[] }): JSX.Element => {
 	const columns = [
-		{ label: 'rank', isNumeric: true },
+		{ label: 'rank' },
 		{ label: 'title' },
 		{ label: 'distributor' },
-		{ label: 'box office', isNumeric: true },
+		{ label: 'box office (£)', isNumeric: true },
 	];
 
 	return (
@@ -30,7 +30,7 @@ export const TopFilmsTable = ({ data }: { data: TopFilm[] }): JSX.Element => {
 						<Td>
 							{obj.film.distributor && toTitleCase(obj.film.distributor.name)}
 						</Td>
-						<Td isNumeric>£ {obj.gross.toLocaleString('en-GB')}</Td>
+						<Td isNumeric>{obj.gross.toLocaleString('en-GB')}</Td>
 					</Tr>
 				);
 			})}
