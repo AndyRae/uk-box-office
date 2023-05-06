@@ -3,6 +3,7 @@ from typing import List
 import pandas as pd
 from flask import Response, abort, jsonify
 from slugify import slugify  # type: ignore
+from sqlalchemy import func
 from ukbo import models
 from ukbo.dto import CountrySchema, FilmSchemaStrict
 from ukbo.extensions import db
@@ -55,9 +56,39 @@ def get(slug: str) -> Response:
     if data is None:
         abort(404)
 
-    country_schema = CountrySchema()
+    subquery = (
+        db.session.query(models.Film.id)
+        .join(models.Film.countries)
+        .join(models.Country)
+        .filter(models.Country.slug == slug)
+        .distinct()
+        .subquery()
+    )
 
-    return country_schema.dump(data)
+    total_box_office = (
+        db.session.query(func.sum(models.Film_Week.total_gross))
+        .join(models.Film_Week.film)
+        .join(subquery, models.Film.id == subquery.c.id)
+        .scalar()
+    )
+
+    #     query = (
+    # db.session.query(func.sum(models.Film_Week.total_gross))
+    #         .join(models.Film_Week.film)
+    #         .join(models.Film.countries)
+    #         .join(models.Country)
+    #         .filter(models.Country.slug == slug)
+    #         .statement
+    #     )
+
+    #     print(query.compile(compile_kwargs={"literal_binds": True}))
+    print("welp")
+
+    return total_box_office
+
+    # country_schema = CountrySchema()
+
+    # return country_schema.dump(data)
 
 
 def get_films(slug: str, page: int = 1, limit: int = 100) -> Response:
