@@ -96,3 +96,22 @@ def get_films(slug: str) -> Response:
     page = int(request.args.get("page", 1))
     limit = int(request.args.get("limit", 100))
     return services.distributor.get_films(slug, page, limit)
+
+
+@distributor.route("/<slug>/boxoffice", methods=["GET"])
+def get_box_office(slug: str) -> Response:
+    """
+    Get a distributor box office history grouped by year.
+
+    Arguments:
+        slug: Distributor slug to return.
+
+    Request Arguments (optional):
+        limit: Number of years to backwards.
+
+    Returns:
+        JSON response of a distributor box office history.
+    """
+    limit = request.args.get("limit", 1)
+
+    return services.distributor.get_box_office(slug, int(limit))
