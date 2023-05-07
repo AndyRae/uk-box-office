@@ -20,3 +20,13 @@ export interface DistributorFilmsData {
 	distributor: Distributor;
 	results: Film[];
 }
+
+export interface BoxOfficeYear {
+	total: number;
+	count: number;
+	year: string;
+}
+
+export interface DistributorBoxOffice {
+	results: BoxOfficeYear[];
+}

@@ -12,6 +12,7 @@ import {
 	Distributor,
 	DistributorListData,
 	DistributorFilmsData,
+	DistributorBoxOffice,
 } from 'interfaces/Distributor';
 
 /**
@@ -29,6 +30,8 @@ const fetchKeys = {
 	distributorFilms: (slug: string, pageIndex: number, pageLimit: number) =>
 		`${getApi()}/distributor/${slug}/films?page=${pageIndex}&limit=${pageLimit}`,
 	distributor: (slug: string) => `${getApi()}/distributor/${slug}`,
+	distributorBoxOffice: (slug: string, limit: number) =>
+		`${getApi()}/distributor/${slug}/boxoffice?limit=${limit}`,
 };
 
 /**
@@ -58,6 +61,24 @@ export const useDistributorList = async (
  */
 export async function getDistributor(slug: string): Promise<Distributor> {
 	const res = await fetch(fetchKeys.distributor(slug), {
+		next: { revalidate: 60 },
+	});
+	return res.json();
+}
+
+/**
+ * Gets a distributor box office grouped by year
+ * @param {string} slug - Distributor slug.
+ * @param {number} limit - Years to go back .
+ * @returns a distributors box office grouped by year
+ * @example
+ * const distributor = await getDistributorBoxOffice('warner-bros');
+ */
+export async function getDistributorBoxOffice(
+	slug: string,
+	limit: number = 25
+): Promise<DistributorBoxOffice> {
+	const res = await fetch(fetchKeys.distributorBoxOffice(slug, limit), {
 		next: { revalidate: 60 },
 	});
 	return res.json();

@@ -23,7 +23,7 @@ export const MarketShareTable = ({
 }): JSX.Element => {
 	const columns = [
 		{ label: 'distributor' },
-		{ label: 'box office', isNumeric: true },
+		{ label: 'box office (£)', isNumeric: true },
 		{ label: 'market share', isNumeric: true },
 	];
 	return (
@@ -36,7 +36,7 @@ export const MarketShareTable = ({
 								{toTitleCase(row.name)}
 							</Link>
 						</Td>
-						<Td isNumeric>£ {row.marketShare.toLocaleString('en-GB')}</Td>
+						<Td isNumeric>{row.marketShare.toLocaleString('en-GB')}</Td>
 						<Td isNumeric>{Math.ceil(row.marketPercentage * 100)}%</Td>
 					</Tr>
 				);

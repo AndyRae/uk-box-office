@@ -33,7 +33,7 @@ const Th = ({
 	children: React.ReactNode;
 }): JSX.Element => {
 	return (
-		<th scope='col' className={`py-3 px-3 ${isNumeric ? 'text-center' : ''}`}>
+		<th scope='col' className={`py-3 px-3 ${isNumeric ? 'text-right' : ''}`}>
 			{children}
 		</th>
 	);
@@ -94,7 +94,7 @@ export const Td = ({
 	return (
 		<td
 			className={`py-4 px-3 ${
-				isNumeric ? 'text-center whitespace-nowrap tabular-nums' : ''
+				isNumeric ? 'text-right whitespace-nowrap tabular-nums' : ''
 			} ${isHighlight ? 'font-medium text-gray-900 dark:text-white' : ''} ${
 				rest.className
 			}`}
