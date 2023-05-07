@@ -14,7 +14,7 @@ export const DistributorPreviousTable = ({
 	data: BoxOfficeYear[];
 }): JSX.Element => {
 	const columns = [
-		{ label: 'year', isNumeric: true },
+		{ label: 'year' },
 		{ label: 'total box office (£)', isNumeric: true },
 		{ label: 'change YOY', isNumeric: true },
 	];
@@ -30,7 +30,7 @@ export const DistributorPreviousTable = ({
 
 				return (
 					<Tr key={index} index={index}>
-						<Td isNumeric isHighlight>
+						<Td isHighlight>
 							<Link href={`/time/${year.year}`}>{year.year}</Link>
 						</Td>
 						<Td isNumeric>£ {year.total.toLocaleString('en-GB')}</Td>

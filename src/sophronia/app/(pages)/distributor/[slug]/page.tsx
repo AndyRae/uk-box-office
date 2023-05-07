@@ -4,6 +4,7 @@ import { PreviousYearsDistributorChart } from 'components/charts/previous-distri
 import { DescriptionList } from 'components/ui/description-list';
 import { DescriptionItem } from 'components/ui/description-item';
 import { DistributorPreviousTable } from 'components/tables/distributor-previous-table';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from 'components/ui/tabs';
 
 import {
 	getDistributor,
@@ -67,20 +68,30 @@ export default async function Page({
 		<div>
 			<PageTitle>{toTitleCase(data.name)}</PageTitle>
 
-			<div className='grid grid-cols-1 md:grid-cols-5 gap-3 md:gap-5'>
-				<div className='col-span-2'>
+			<div className='grid grid-cols-1 md:grid-cols-5 gap-3 md:gap-5 mb-5'>
+				<div className='col-span-2 max-h-96'>
 					<DescriptionList>
 						<DescriptionItem
 							title='Total Box Office'
 							text={`£ ${total.toLocaleString('en-GB')}`}
 						/>
 					</DescriptionList>
-
-					<DistributorPreviousTable data={boxOffice.results} />
 				</div>
 
 				<div className='col-span-3'>
-					<PreviousYearsDistributorChart data={boxOffice.results} />
+					<Tabs defaultValue='tab1'>
+						<TabsList>
+							<TabsTrigger value='tab1'>Chart</TabsTrigger>
+							<TabsTrigger value='tab2'>Table</TabsTrigger>
+						</TabsList>
+						<TabsContent value='tab1'>
+							<PreviousYearsDistributorChart data={boxOffice.results} />
+						</TabsContent>
+
+						<TabsContent value='tab2'>
+							<DistributorPreviousTable data={boxOffice.results} />
+						</TabsContent>
+					</Tabs>
 				</div>
 			</div>
 
