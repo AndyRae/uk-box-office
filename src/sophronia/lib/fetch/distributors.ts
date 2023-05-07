@@ -12,6 +12,7 @@ import {
 	Distributor,
 	DistributorListData,
 	DistributorFilmsData,
+	DistributorBoxOffice,
 } from 'interfaces/Distributor';
 
 /**
@@ -76,7 +77,7 @@ export async function getDistributor(slug: string): Promise<Distributor> {
 export async function getDistributorBoxOffice(
 	slug: string,
 	limit: number = 25
-): Promise<Distributor> {
+): Promise<DistributorBoxOffice> {
 	const res = await fetch(fetchKeys.distributorBoxOffice(slug, limit), {
 		next: { revalidate: 60 },
 	});

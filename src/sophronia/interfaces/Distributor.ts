@@ -20,3 +20,10 @@ export interface DistributorFilmsData {
 	distributor: Distributor;
 	results: Film[];
 }
+
+export interface DistributorBoxOffice {
+	results: {
+		total: number;
+		year: string;
+	};
+}
