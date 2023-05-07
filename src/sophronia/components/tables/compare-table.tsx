@@ -17,11 +17,11 @@ export const CompareTable = ({ data }: TableProps): JSX.Element => {
 		{ label: 'title' },
 		{ label: 'release' },
 		{ label: 'distributor' },
-		{ label: 'total box office', isNumeric: true },
+		{ label: 'total box office (£)', isNumeric: true },
 		{ label: 'weeks', isNumeric: true },
 		{ label: 'multiple', isNumeric: true },
 		{ label: 'cinemas', isNumeric: true },
-		{ label: 'site average', isNumeric: true },
+		{ label: 'site average (£)', isNumeric: true },
 	];
 
 	return (
@@ -55,11 +55,11 @@ export const CompareTable = ({ data }: TableProps): JSX.Element => {
 							<Date dateString={releaseDate} />
 						</Td>
 						<Td>{film.distributor && toTitleCase(film.distributor.name)}</Td>
-						<Td isNumeric>£ {film.gross.toLocaleString()}</Td>
+						<Td isNumeric>{film.gross.toLocaleString()}</Td>
 						<Td isNumeric>{film.weeks.length}</Td>
 						<Td isNumeric>x{multiple}</Td>
 						<Td isNumeric>{cinemas}</Td>
-						<Td isNumeric>£ {siteAverage.toLocaleString()}</Td>
+						<Td isNumeric>{siteAverage.toLocaleString()}</Td>
 					</Tr>
 				);
 			})}
