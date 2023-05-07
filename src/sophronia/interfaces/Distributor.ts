@@ -21,9 +21,11 @@ export interface DistributorFilmsData {
 	results: Film[];
 }
 
+export interface BoxOfficeYear {
+	total: number;
+	year: string;
+}
+
 export interface DistributorBoxOffice {
-	results: {
-		total: number;
-		year: string;
-	};
+	results: BoxOfficeYear[];
 }

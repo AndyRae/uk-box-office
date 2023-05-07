@@ -1,6 +1,14 @@
-import { getDistributor } from 'lib/fetch/distributors';
 import { PageTitle } from 'components/ui/page-title';
 import { DistributorFilmsTable } from 'components/tables/distributor-films-table';
+import { PreviousYearsDistributorChart } from 'components/charts/previous-distributor';
+import { DescriptionList } from 'components/ui/description-list';
+import { DescriptionItem } from 'components/ui/description-item';
+import { DistributorPreviousTable } from 'components/tables/distributor-previous-table';
+
+import {
+	getDistributor,
+	getDistributorBoxOffice,
+} from 'lib/fetch/distributors';
 import { toTitleCase } from 'lib/utils/toTitleCase';
 
 export async function generateMetadata({
@@ -10,8 +18,9 @@ export async function generateMetadata({
 }) {
 	const data = await getDistributor(params.slug);
 
-	const title = `${data.name} | Box Office Data`;
-	const description = `Get ${data.name} distributed films data at the UK Box Office.`;
+	const name = toTitleCase(data.name);
+	const title = `${name} | Box Office Data`;
+	const description = `Get ${name} distributed films data at the UK Box Office.`;
 
 	return {
 		title: title,
@@ -50,10 +59,31 @@ export default async function Page({
 }): Promise<JSX.Element> {
 	let pageIndex = searchParams?.p ?? 1;
 	const data = await getDistributor(params.slug);
+	const boxOffice = await getDistributorBoxOffice(params.slug, 25);
+
+	const total = boxOffice.results.reduce((acc, curr) => acc + curr.total, 0);
 
 	return (
 		<div>
 			<PageTitle>{toTitleCase(data.name)}</PageTitle>
+
+			<div className='grid grid-cols-1 md:grid-cols-5 gap-3 md:gap-5'>
+				<div className='col-span-2'>
+					<DescriptionList>
+						<DescriptionItem
+							title='Total Box Office'
+							text={`£ ${total.toLocaleString('en-GB')}`}
+						/>
+					</DescriptionList>
+
+					<DistributorPreviousTable data={boxOffice.results} />
+				</div>
+
+				<div className='col-span-3'>
+					<PreviousYearsDistributorChart data={boxOffice.results} />
+				</div>
+			</div>
+
 			{/* @ts-expect-error Server Component */}
 			<DistributorFilmsTable slug={params.slug} pageIndex={pageIndex} />
 		</div>
