@@ -83,7 +83,7 @@ def get_films(slug: str, page: int = 1, limit: int = 100) -> Response:
     query = query.join(models.Distributor)
 
     query = query.filter(models.Distributor.slug == slug)
-    data = query.order_by(models.Film.id.asc()).paginate(
+    data = query.order_by(models.Film.id.desc()).paginate(
         page=page, per_page=limit, error_out=False
     )
 
@@ -117,6 +117,7 @@ def get_box_office(slug: str, limit: int) -> Response:
     query = db.session.query(
         func.extract("year", models.Film_Week.date),
         func.sum(models.Film_Week.total_gross),
+        func.count(models.Film.id),
     ).group_by(func.extract("year", models.Film_Week.date))
 
     query = query.join(
@@ -142,6 +143,7 @@ def get_box_office(slug: str, limit: int) -> Response:
             dict(
                 year=row[0],
                 total=row[1],
+                count=row[2],
             )
             for row in data
         ]
