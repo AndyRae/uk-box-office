@@ -23,6 +23,7 @@ export interface DistributorFilmsData {
 
 export interface BoxOfficeYear {
 	total: number;
+	count: number;
 	year: string;
 }
 

@@ -5,6 +5,8 @@ import { DescriptionList } from 'components/ui/description-list';
 import { DescriptionItem } from 'components/ui/description-item';
 import { DistributorPreviousTable } from 'components/tables/distributor-previous-table';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from 'components/ui/tabs';
+import { DatasourceButton } from 'components/datasource';
+import { ExportCSV } from 'components/ui/export-csv';
 
 import {
 	getDistributor,
@@ -76,6 +78,13 @@ export default async function Page({
 							text={`£ ${total.toLocaleString('en-GB')}`}
 						/>
 					</DescriptionList>
+
+					<ExportCSV
+						data={boxOffice.results}
+						filename={`${data.name}_data.csv`}
+						className='mr-2'
+					/>
+					<DatasourceButton />
 				</div>
 
 				<div className='col-span-3'>

@@ -15,6 +15,7 @@ export const DistributorPreviousTable = ({
 }): JSX.Element => {
 	const columns = [
 		{ label: 'year' },
+		{ label: 'films', isNumeric: true },
 		{ label: 'total box office (£)', isNumeric: true },
 		{ label: 'change YOY', isNumeric: true },
 	];
@@ -33,6 +34,7 @@ export const DistributorPreviousTable = ({
 						<Td isHighlight>
 							<Link href={`/time/${year.year}`}>{year.year}</Link>
 						</Td>
+						<Td isNumeric>{year.count}</Td>
 						<Td isNumeric>£ {year.total.toLocaleString('en-GB')}</Td>
 						<Td isNumeric>
 							<MetricChange value={changeYOY} />
