@@ -12,7 +12,7 @@
 		"@testing-library/user-event": "^13.5.0",
 		"@vercel/analytics": "^1.0.1",
 		"chart.js": "^4.1.1",
-		"chartjs-adapter-date-fns": "^2.0.0",
+		"chartjs-adapter-date-fns": "^3.0.0",
 		"class-variance-authority": "^0.5.2",
 		"clsx": "^1.2.1",
 		"d3-scale-chromatic": "^3.0.0",
@@ -24,7 +24,7 @@
 		"lodash.map": "^4.6.0",
 		"lodash.sortby": "^4.7.0",
 		"lodash.sumby": "^4.6.0",
-		"next": "^13.3.4",
+		"next": "^13.4.1",
 		"react": "^18.2.0",
 		"react-chartjs-2": "^5.2.0",
 		"react-csv": "^2.2.2",
@@ -33,7 +33,7 @@
 		"react-hook-form": "^7.39.1",
 		"react-icons": "^4.4.0",
 		"react-select": "^5.7.0",
-		"web-vitals": "^2.1.4"
+		"web-vitals": "^3.3.1"
 	},
 	"scripts": {
 		"dev": "next dev",

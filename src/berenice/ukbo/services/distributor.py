@@ -102,6 +102,52 @@ def get_films(slug: str, page: int = 1, limit: int = 100) -> Response:
     )
 
 
+def get_box_office(slug: str, limit: int) -> Response:
+    """
+    Gets box office summary for a given distributor, grouped by years.
+
+    Args:
+        slug: Slug of the distributor to get.
+        limit: The number of years to go backwards.
+
+    Returns:
+        JSON response of the list of years.
+    """
+
+    query = db.session.query(
+        func.extract("year", models.Film_Week.date),
+        func.sum(models.Film_Week.total_gross),
+    ).group_by(func.extract("year", models.Film_Week.date))
+
+    query = query.join(
+        models.Film, models.Film.id == models.Film_Week.film_id
+    ).join(
+        models.Distributor, models.Distributor.id == models.Film.distributor_id
+    )
+
+    query = query.filter(models.Distributor.slug == slug)
+
+    # get current year and set limit
+    now = datetime.datetime.now().year
+    query = query.filter(
+        func.extract("year", models.Film_Week.date) >= (now - limit)
+    )
+
+    data = query.order_by(
+        func.extract("year", models.Film_Week.date).desc()
+    ).all()
+
+    return jsonify(
+        results=[
+            dict(
+                year=row[0],
+                total=row[1],
+            )
+            for row in data
+        ]
+    )
+
+
 def add_distributor(distributor: str) -> Optional[models.Distributor]:
     """
     Add a distributor to the database.

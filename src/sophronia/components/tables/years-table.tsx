@@ -18,11 +18,11 @@ export const YearsTable = ({
 }): JSX.Element => {
 	const columns = [
 		{ label: 'year' },
-		{ label: 'weekend box office', isNumeric: true },
-		{ label: 'total box office', isNumeric: true },
+		{ label: 'weekend box office (£)', isNumeric: true },
+		{ label: 'total box office (£)', isNumeric: true },
 		{ label: 'total change', isNumeric: true },
 		{ label: 'admissions', isNumeric: true },
-		{ label: 'average ticket price', isNumeric: true },
+		{ label: 'average ticket price (£)', isNumeric: true },
 		{ label: 'new releases', isNumeric: true },
 	];
 	return (
@@ -44,15 +44,15 @@ export const YearsTable = ({
 						<Td isHighlight>
 							<Link href={`/time/${year.year}`}>{year.year}</Link>
 						</Td>
-						<Td isNumeric>£ {year.weekend_gross.toLocaleString('en-GB')}</Td>
-						<Td isNumeric>£ {year.week_gross.toLocaleString('en-GB')}</Td>
+						<Td isNumeric>{year.weekend_gross.toLocaleString('en-GB')}</Td>
+						<Td isNumeric>{year.week_gross.toLocaleString('en-GB')}</Td>
 						<Td isNumeric>
 							<MetricChange value={changeWeekend} />
 						</Td>
 						<Td isNumeric>
 							{year.admissions ? year.admissions.toLocaleString('en-GB') : ''}
 						</Td>
-						<Td isNumeric>£ {year.admissions ? averageTicketPrice : '-'}</Td>
+						<Td isNumeric>{year.admissions ? averageTicketPrice : '-'}</Td>
 						<Td isNumeric>{year.number_of_releases}</Td>
 					</Tr>
 				);
