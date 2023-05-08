@@ -15,28 +15,73 @@ from ukbo.dto import (
 from ukbo.extensions import db
 
 
+class TimeFilter:
+    """
+    Class representing a filter based on a time period.
+
+    Attributes:
+        start (Optional[str]): Start date to filter by (YYYY-MM-DD).
+        end (Optional[str]): End date to filter by (YYYY-MM-DD).
+    """
+
+    def __init__(self, start: Optional[str] = None, end: Optional[str] = None):
+        self.start = start
+        self.end = end
+
+
+class QueryFilter:
+    """
+    Class representing a filter based on a location.
+
+    Attributes:
+        distributor_id (Optional[int]): ID of the distributor to filter by.
+        country_id (Optional[int]): ID of the country to filter by.
+    """
+
+    def __init__(
+        self,
+        distributor_id: Optional[int] = None,
+        country_id: Optional[int] = None,
+    ):
+        self.distributor_id = distributor_id
+        self.country_id = country_id
+
+
 def all(
-    start: Optional[str] = None, end: Optional[str] = None, page: int = 1
+    time_filter: TimeFilter = TimeFilter(),
+    query_filter: QueryFilter = QueryFilter(),
+    page: int = 1,
 ) -> Response:
     """
     All box office data for a time period.
 
     Args:
-        start: Start date to filter by (YYYY-MM-DD).
-        end: End date to filter by (YYYY-MM-DD).
+        time_filter: Object containing start and end date to filter by.
+        query_filter: Object containing distributor ID and country ID to filter by.
         page: Page number to return.
-        limit: Number of distributors to return.
 
     Returns:
         Paginated JSON response of box office data.
     """
     query = db.session.query(models.Film_Week)
 
-    if start is not None:
-        query = query.filter(models.Film_Week.date >= to_date(start))
+    if time_filter.start is not None:
+        query = query.filter(
+            models.Film_Week.date >= to_date(time_filter.start)
+        )
 
-    if end is not None:
-        query = query.filter(models.Film_Week.date <= to_date(end))
+    if time_filter.end is not None:
+        query = query.filter(models.Film_Week.date <= to_date(time_filter.end))
+
+    if query_filter.distributor_id is not None:
+        query = query.filter(
+            models.Film_Week.distributor_id == query_filter.distributor_id
+        )
+
+    if query_filter.country_id is not None:
+        query = query.filter(
+            models.Film_Week.country_id == query_filter.country_id
+        )
 
     data = query.order_by(models.Film_Week.date.desc()).paginate(
         page=page, per_page=700, error_out=False
