@@ -1,9 +1,9 @@
 import { PageTitle } from 'components/ui/page-title';
 import { DistributorFilmsTable } from 'components/tables/distributor-films-table';
-import { PreviousYearsDistributorChart } from 'components/charts/previous-distributor';
+import { PreviousChart } from 'components/charts/previous-chart';
 import { DescriptionList } from 'components/ui/description-list';
 import { DescriptionItem } from 'components/ui/description-item';
-import { DistributorPreviousTable } from 'components/tables/distributor-previous-table';
+import { PreviousTable } from 'components/tables/previous-table';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from 'components/ui/tabs';
 import { DatasourceButton } from 'components/datasource';
 import { ExportCSV } from 'components/ui/export-csv';
@@ -94,11 +94,11 @@ export default async function Page({
 							<TabsTrigger value='tab2'>Table</TabsTrigger>
 						</TabsList>
 						<TabsContent value='tab1'>
-							<PreviousYearsDistributorChart data={boxOffice.results} />
+							<PreviousChart data={boxOffice.results} />
 						</TabsContent>
 
 						<TabsContent value='tab2'>
-							<DistributorPreviousTable data={boxOffice.results} />
+							<PreviousTable data={boxOffice.results} />
 						</TabsContent>
 					</Tabs>
 				</div>
