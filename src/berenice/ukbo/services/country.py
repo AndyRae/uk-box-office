@@ -1,3 +1,4 @@
+import datetime
 from typing import List
 
 import pandas as pd
@@ -56,39 +57,9 @@ def get(slug: str) -> Response:
     if data is None:
         abort(404)
 
-    subquery = (
-        db.session.query(models.Film.id)
-        .join(models.Film.countries)
-        .join(models.Country)
-        .filter(models.Country.slug == slug)
-        .distinct()
-        .subquery()
-    )
+    country_schema = CountrySchema()
 
-    total_box_office = (
-        db.session.query(func.sum(models.Film_Week.total_gross))
-        .join(models.Film_Week.film)
-        .join(subquery, models.Film.id == subquery.c.id)
-        .scalar()
-    )
-
-    #     query = (
-    # db.session.query(func.sum(models.Film_Week.total_gross))
-    #         .join(models.Film_Week.film)
-    #         .join(models.Film.countries)
-    #         .join(models.Country)
-    #         .filter(models.Country.slug == slug)
-    #         .statement
-    #     )
-
-    #     print(query.compile(compile_kwargs={"literal_binds": True}))
-    print("welp")
-
-    return total_box_office
-
-    # country_schema = CountrySchema()
-
-    # return country_schema.dump(data)
+    return country_schema.dump(data)
 
 
 def get_films(slug: str, page: int = 1, limit: int = 100) -> Response:
@@ -126,6 +97,50 @@ def get_films(slug: str, page: int = 1, limit: int = 100) -> Response:
         next=next_page,
         previous=previous_page,
         results=[film_schema.dump(ix) for ix in data.items],
+    )
+
+
+def get_box_office(slug: str, limit: int) -> Response:
+    """
+    Gets box office summary for a given country, grouped by years.
+
+    Args:
+        slug: Slug of the country to get.
+        limit: The number of years to go backwards.
+
+    Returns:
+        JSON response of the list of years.
+    """
+
+    query = db.session.query(
+        func.extract("year", models.Film_Week.date),
+        func.sum(models.Film_Week.total_gross),
+        func.count(models.Film.id),
+    ).group_by(func.extract("year", models.Film_Week.date))
+
+    query = query.join(models.Film).join(models.countries).join(models.Country)
+
+    query = query.filter(models.Country.slug == slug)
+
+    # get current year and set limit
+    now = datetime.datetime.now().year
+    query = query.filter(
+        func.extract("year", models.Film_Week.date) >= (now - limit)
+    )
+
+    data = query.order_by(
+        func.extract("year", models.Film_Week.date).desc()
+    ).all()
+
+    return jsonify(
+        results=[
+            dict(
+                year=row[0],
+                total=row[1],
+                count=row[2],
+            )
+            for row in data
+        ]
     )
 
 
