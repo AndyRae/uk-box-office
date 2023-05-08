@@ -81,7 +81,7 @@ def get_films(slug: str, page: int = 1, limit: int = 100) -> Response:
         db.selectinload(models.Film.weeks)
     )
     query = query.filter(models.Film.countries.contains(country))
-    data = query.order_by(models.Film.id.asc()).paginate(
+    data = query.order_by(models.Film.id.desc()).paginate(
         page=page, per_page=limit, error_out=False
     )
 

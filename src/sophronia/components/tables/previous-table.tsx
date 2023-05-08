@@ -1,14 +1,14 @@
 import Link from 'next/link';
 import { BaseTable, Td, Tr } from 'components/tables/base-table';
 import { MetricChange } from 'components/metric-change';
-import { BoxOfficeYear } from 'interfaces/Distributor';
+import { BoxOfficeYear } from 'interfaces/BoxOffice';
 
 /**
  * @description Previous Table component for distributors.
  * @param {Array} data - Array of box office data for years.
  * @returns {JSX.Element}
  */
-export const DistributorPreviousTable = ({
+export const PreviousTable = ({
 	data,
 }: {
 	data: BoxOfficeYear[];
