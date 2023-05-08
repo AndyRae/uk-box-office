@@ -74,14 +74,16 @@ def all(
         query = query.filter(models.Film_Week.date <= to_date(time_filter.end))
 
     if query_filter.distributor_id is not None:
+        query = query.join(models.Film).join(models.Distributor)
         query = query.filter(
-            models.Film_Week.distributor_id == query_filter.distributor_id
+            models.Distributor.id == query_filter.distributor_id
         )
 
     if query_filter.country_id is not None:
-        query = query.filter(
-            models.Film_Week.country_id == query_filter.country_id
+        query = (
+            query.join(models.Film).join(models.countries).join(models.Country)
         )
+        query = query.filter(models.Country.id == query_filter.country_id)
 
     data = query.order_by(models.Film_Week.date.desc()).paginate(
         page=page, per_page=700, error_out=False
