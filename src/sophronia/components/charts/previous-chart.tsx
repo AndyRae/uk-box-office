@@ -4,7 +4,6 @@ import { BarChart } from 'components/charts/bar';
 import { MouseEvent, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { getElementAtEvent } from 'react-chartjs-2';
-import { BoxOfficeSummary } from 'interfaces/BoxOffice';
 
 /**
  * @description Charts previous box office years as a horizontal bar chart.
@@ -15,11 +14,7 @@ import { BoxOfficeSummary } from 'interfaces/BoxOffice';
  * @example
  * <PreviousYearsChart data={data} />
  */
-export const PreviousYearsDistributorChart = ({
-	data,
-}: {
-	data: any[];
-}): JSX.Element => {
+export const PreviousChart = ({ data }: { data: any[] }): JSX.Element => {
 	const router = useRouter();
 
 	const options = {
