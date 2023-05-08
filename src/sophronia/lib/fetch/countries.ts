@@ -7,7 +7,12 @@
  */
 
 import { getApi } from './api';
-import { Country, CountryListData, CountryFilmsData } from 'interfaces/Country';
+import {
+	Country,
+	CountryListData,
+	CountryFilmsData,
+	CountryBoxOffice,
+} from 'interfaces/Country';
 
 /**
  * Fetch keys for countries.
@@ -22,6 +27,8 @@ export const fetchKeys: any = {
 	countryFilms: (slug: string, pageIndex: number, pageLimit: number) =>
 		`${getApi()}/country/${slug}/films?page=${pageIndex}&limit=${pageLimit}`,
 	country: (slug: string) => `${getApi()}/country/${slug}`,
+	countryBoxOffice: (slug: string, limit: number) =>
+		`${getApi()}/country/${slug}/boxoffice?limit=${limit}`,
 };
 
 /**
@@ -71,6 +78,25 @@ export const useCountryFilms = async (
 	pageLimit: number
 ): Promise<CountryFilmsData> => {
 	const res = await fetch(fetchKeys.countryFilms(slug, pageIndex, pageLimit), {
+		next: { revalidate: 60 },
+	});
+	return res.json();
+};
+
+/**
+ * Get a single countries and its films paginated.
+ * @param {string} slug - Country slug.
+ * @param {number} pageIndex - Page number to start from.
+ * @param {number} pageLimit - Number of items per page.
+ * @returns a single country and its paginated films from the api.
+ * @example
+ * const { data, error } = useCountryFilms('uk', 1, 10);
+ */
+export const getCountryBoxOffice = async (
+	slug: string,
+	limit: number
+): Promise<CountryBoxOffice> => {
+	const res = await fetch(fetchKeys.countryBoxOffice(slug, limit), {
 		next: { revalidate: 60 },
 	});
 	return res.json();

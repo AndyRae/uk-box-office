@@ -1,4 +1,5 @@
 import { Film } from './Film';
+import { BoxOfficeYear } from './BoxOffice';
 
 export interface Distributor {
 	id: number;
@@ -19,12 +20,6 @@ export interface DistributorFilmsData {
 	previous: number;
 	distributor: Distributor;
 	results: Film[];
-}
-
-export interface BoxOfficeYear {
-	total: number;
-	count: number;
-	year: string;
 }
 
 export interface DistributorBoxOffice {
