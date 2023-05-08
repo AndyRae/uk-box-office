@@ -16,6 +16,9 @@ def all() -> Response:
         start (str): Start date to filter by (YYYY-MM-DD).
         end (str): End date to filter by (YYYY-MM-DD).
         page (int): Page number to return.
+        distributor (int): ID of the distributor to filter by.
+        country (int): ID of the country to filter by.
+
 
     Returns:
         JSON response of box office data.
@@ -23,8 +26,15 @@ def all() -> Response:
     start = request.args.get("start", None)
     end = request.args.get("end", None)
     page = request.args.get("page", 1)
+    distributor = request.args.get("distributor", None)
+    country = request.args.get("country", None)
 
-    return services.boxoffice.all(start, end, int(page))
+    time_filter = services.boxoffice.TimeFilter(start=start, end=end)
+    query_filter = services.boxoffice.QueryFilter(
+        distributor_id=distributor, country_id=country
+    )
+
+    return services.boxoffice.all(time_filter, query_filter, int(page))
 
 
 @boxoffice.route("/topfilms", methods=["GET"])
