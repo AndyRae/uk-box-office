@@ -11,7 +11,16 @@ export default function Loading() {
 	const start = parseDate(addDays(new Date(), -90));
 	const end = parseDate(new Date());
 	const timeComparisonData = {
-		results: [],
+		results: [
+			{
+				number_of_releases: 1,
+				week_gross: 1,
+				weekend_gross: 1,
+				number_of_cinemas: 1,
+				admissions: 1,
+				year: '0',
+			},
+		],
 	};
 
 	const lastUpdated = '';
