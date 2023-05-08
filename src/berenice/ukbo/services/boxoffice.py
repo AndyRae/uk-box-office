@@ -1,5 +1,5 @@
 import datetime
-from typing import Optional
+from typing import List, Optional
 
 import pandas as pd
 from flask import jsonify
@@ -35,16 +35,16 @@ class QueryFilter:
 
     Attributes:
         distributor_id (Optional[int]): ID of the distributor to filter by.
-        country_id (Optional[int]): ID of the country to filter by.
+        country_ids (Optional[List[int]]): IDs of the countries to filter by.
     """
 
     def __init__(
         self,
         distributor_id: Optional[int] = None,
-        country_id: Optional[int] = None,
+        country_ids: Optional[List[int]] = None,
     ):
         self.distributor_id = distributor_id
-        self.country_id = country_id
+        self.country_ids = country_ids
 
 
 def all(
@@ -79,11 +79,11 @@ def all(
             models.Distributor.id == query_filter.distributor_id
         )
 
-    if query_filter.country_id is not None:
+    if query_filter.country_ids is not None:
         query = (
             query.join(models.Film).join(models.countries).join(models.Country)
         )
-        query = query.filter(models.Country.id == query_filter.country_id)
+        query = query.filter(models.Country.id.in_(query_filter.country_ids))
 
     data = query.order_by(models.Film_Week.date.desc()).paginate(
         page=page, per_page=700, error_out=False
