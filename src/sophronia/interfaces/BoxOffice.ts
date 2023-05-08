@@ -75,3 +75,9 @@ export interface BoxOfficeSummary {
 	weekend_gross: number;
 	year: string;
 }
+
+export interface BoxOfficeYear {
+	total: number;
+	count: number;
+	year: string;
+}

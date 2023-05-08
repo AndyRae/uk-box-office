@@ -1,3 +1,4 @@
+import { BoxOfficeYear } from './BoxOffice';
 import { Film } from './Film';
 
 export interface Country {
@@ -18,4 +19,8 @@ export interface CountryFilmsData {
 	next: number;
 	previous: number;
 	results: Film[];
+}
+
+export interface CountryBoxOffice {
+	results: BoxOfficeYear[];
 }
