@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { format, addDays } from 'date-fns';
 import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { parseDate } from 'lib/utils/dates';
 
 import { DateRange } from 'react-day-picker';
@@ -25,6 +26,7 @@ export function CalendarDateRangePicker({
 	className,
 }: CalendarDateRangePickerProps) {
 	const router = useRouter();
+	const pathname = usePathname();
 
 	const minDays = 547; // 547 days is 18 months
 	const fromDate = addDays(new Date(), -minDays);
@@ -36,10 +38,17 @@ export function CalendarDateRangePicker({
 
 	const handleSelect = (date: any) => {
 		setDate(date);
-		router.push(`?s=${parseDate(date.from)}&e=${parseDate(date.to)}`);
+		router.push(
+			`${pathname}?s=${parseDate(date.from)}&e=${parseDate(date.to)}`
+		);
 	};
 
 	const CalendarIcon = Icons['calendar'];
+
+	// Update date state when startParam or endParam change
+	if (startParam !== date?.from || endParam !== date?.to) {
+		setDate({ from: startParam, to: endParam });
+	}
 
 	return (
 		<div className={clsx('grid gap-2', className)}>

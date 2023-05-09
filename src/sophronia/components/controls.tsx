@@ -5,8 +5,10 @@ import { LastUpdated } from './last-updated';
 import { DatasourceCard } from './datasource';
 import { parseDate } from 'lib/utils/dates';
 
-import { parseISO } from 'date-fns';
 import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
+
+import { parseISO } from 'date-fns';
 import addDays from 'date-fns/addDays';
 import { CalendarDateRangePicker } from './date-range-picker';
 
@@ -20,11 +22,14 @@ export const Controls = ({
 	lastUpdated: string;
 }) => {
 	const router = useRouter();
+	const pathname = usePathname();
 
 	// Pushes new date to URL
 	const changeDate = async (days: number) => {
 		const today = new Date();
-		router.push(`?s=${parseDate(addDays(today, -days))}&e=${parseDate(today)}`);
+		router.push(
+			`${pathname}?s=${parseDate(addDays(today, -days))}&e=${parseDate(today)}`
+		);
 	};
 
 	// Work out the difference between the last two dates
