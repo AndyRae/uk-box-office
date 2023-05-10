@@ -44,7 +44,10 @@ def test_all_filtered(app, add_test_film):
         add_test_film: Fixture to add a test film to the database
     """
     with app.app_context():
-        response = services.boxoffice.all(start="2022-01-20", end="2022-01-21")
+        time_filter = services.boxoffice.TimeFilter(
+            start="2022-01-20", end="2022-01-21"
+        )
+        response = services.boxoffice.all(time_filter)
 
     data = json.loads(response.data)
 
@@ -74,7 +77,10 @@ def test_all_filtered_empty(app, add_test_film):
         add_test_film: Fixture to add a test film to the database
     """
     with app.app_context():
-        response = services.boxoffice.all(start="2022-01-21", end="2022-01-22")
+        time_filter = services.boxoffice.TimeFilter(
+            start="2022-01-21", end="2022-01-22"
+        )
+        response = services.boxoffice.all(time_filter)
 
     data = json.loads(response.data)
 

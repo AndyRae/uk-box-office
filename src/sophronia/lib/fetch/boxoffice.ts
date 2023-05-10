@@ -73,7 +73,9 @@ export const fetchBoxOfficePreviousYear = async (
  */
 export async function fetchBoxOfficeInfinite(
 	startDate: string,
-	endDate: string
+	endDate: string,
+	distributorId?: number,
+	countryIds?: number[]
 ) {
 	const backendUrl = `${getApi()}/boxoffice/all`;
 	const allData: BoxOfficeWeek[] = [];
@@ -82,10 +84,14 @@ export async function fetchBoxOfficeInfinite(
 	let isLastPage = false;
 	let totalCount = 0;
 	while (!isLastPage) {
-		const response = await fetch(
-			`${backendUrl}?start=${startDate}&end=${endDate}&page=${nextPage}`,
-			{ cache: 'no-store' }
-		);
+		let url = `${backendUrl}?start=${startDate}&end=${endDate}&page=${nextPage}`;
+		if (distributorId) {
+			url += `&distributor=${distributorId}`;
+		}
+		if (countryIds) {
+			url += `&country=${countryIds.join(',')}`;
+		}
+		const response = await fetch(url, { cache: 'no-store' });
 		if (!response.ok) {
 			throw new Error('Failed to fetch box office data');
 		}

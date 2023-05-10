@@ -132,11 +132,11 @@ const TimeMetrics = ({
 }) => {
 	// Get Data for Metrics
 	const thisYear = timeComparisonData[0];
-	const boxOffice = thisYear?.week_gross;
-	const weekendBoxOffice = thisYear?.weekend_gross;
-	const numberOfNewFilms = thisYear?.number_of_releases;
-	const admissions = thisYear?.admissions;
-	const numberOfCinemas = thisYear?.number_of_cinemas;
+	const boxOffice = thisYear?.week_gross ?? 0;
+	const weekendBoxOffice = thisYear?.weekend_gross ?? 0;
+	const numberOfNewFilms = thisYear?.number_of_releases ?? 0;
+	const admissions = thisYear?.admissions ?? 0;
+	const numberOfCinemas = thisYear?.number_of_cinemas ?? 0;
 	const averageTicketPrice = parseInt((boxOffice / admissions!).toFixed(2));
 	const siteAverage = Math.ceil(boxOffice / numberOfCinemas);
 

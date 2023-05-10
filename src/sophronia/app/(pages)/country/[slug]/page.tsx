@@ -7,8 +7,14 @@ import { DatasourceButton } from 'components/datasource';
 import { ExportCSV } from 'components/ui/export-csv';
 import { PreviousChart } from 'components/charts/previous-chart';
 import { PreviousTable } from 'components/tables/previous-table';
+import { ChartWrapper } from 'components/charts/chart-wrapper';
+import { Controls } from 'components/controls';
+import { StackedBarChart } from 'components/charts/stacked-bar';
 
 import { getCountry, getCountryBoxOffice } from 'lib/fetch/countries';
+import { fetchBoxOfficeInfinite } from 'lib/fetch/boxoffice';
+import { parseDate } from 'lib/utils/dates';
+import addDays from 'date-fns/addDays';
 
 export async function generateMetadata({
 	params,
@@ -53,47 +59,77 @@ export default async function Page({
 	searchParams,
 }: {
 	params: { slug: string };
-	searchParams: { p?: number };
+	searchParams: { p?: number; s?: string; e?: string };
 }): Promise<JSX.Element> {
 	let pageIndex = searchParams?.p ?? 1;
 	const data = await getCountry(params.slug);
-	const boxOffice = await getCountryBoxOffice(params.slug, 25);
+	const boxOfficeData = await getCountryBoxOffice(params.slug, 25);
 
-	const total = boxOffice.results.reduce((acc, curr) => acc + curr.total, 0);
+	const boxOfficeTotal = boxOfficeData.results.reduce(
+		(acc, curr) => acc + curr.total,
+		0
+	);
+	const filmsCount = boxOfficeData.results.reduce(
+		(acc, curr) => acc + curr.count,
+		0
+	);
+
+	// Fetch box office data
+	// Calculate defaults at 90 days.
+	const s = parseDate(addDays(new Date(), -90));
+	const e = parseDate(new Date());
+
+	// Get dates from the searchparams.
+	const start = searchParams?.s ?? s;
+	const end = searchParams?.e ?? e;
+	const { results } = await fetchBoxOfficeInfinite(start, end, undefined, [
+		data.id,
+	]);
 
 	return (
 		<div>
-			<PageTitle>{data.name}</PageTitle>
-
 			<div className='grid grid-cols-1 md:grid-cols-5 gap-3 md:gap-5 mb-5'>
 				<div className='col-span-2 max-h-96'>
+					<PageTitle>{data.name}</PageTitle>
 					<DescriptionList>
 						<DescriptionItem
 							title='Total Box Office'
-							text={`£ ${total.toLocaleString('en-GB')}`}
+							text={`£ ${boxOfficeTotal.toLocaleString('en-GB')}`}
+						/>
+						<DescriptionItem
+							title='Number of Films'
+							text={filmsCount.toLocaleString('en-GB')}
 						/>
 					</DescriptionList>
 
 					<ExportCSV
-						data={boxOffice.results}
+						data={boxOfficeData.results}
 						filename={`${data.name}_data.csv`}
 						className='mr-2'
 					/>
 					<DatasourceButton />
 				</div>
 
-				<div className='col-span-3'>
+				<div className='col-span-3 h-[35rem]'>
 					<Tabs defaultValue='tab1'>
 						<TabsList>
-							<TabsTrigger value='tab1'>Chart</TabsTrigger>
-							<TabsTrigger value='tab2'>Table</TabsTrigger>
+							<TabsTrigger value='tab1'>Years</TabsTrigger>
+							<TabsTrigger value='tab2'>Films</TabsTrigger>
+							<TabsTrigger value='tab3'>Table</TabsTrigger>
 						</TabsList>
-						<TabsContent value='tab1'>
-							<PreviousChart data={boxOffice.results} />
+						<TabsContent value='tab1' className='h-[30rem]'>
+							<PreviousChart data={boxOfficeData.results} />
 						</TabsContent>
 
-						<TabsContent value='tab2'>
-							<PreviousTable data={boxOffice.results} />
+						<TabsContent value='tab2' className='h-[30rem]'>
+							<Controls start={start} end={end} />
+							<ChartWrapper chartClassName='mt-6'>
+								<StackedBarChart data={results} height='md' />
+							</ChartWrapper>
+						</TabsContent>
+
+						<TabsContent value='tab3' className='h-[30rem]'>
+							<PreviousTable data={boxOfficeData.results} />
 						</TabsContent>
 					</Tabs>
 				</div>
