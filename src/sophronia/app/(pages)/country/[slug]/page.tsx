@@ -63,13 +63,20 @@ export default async function Page({
 }): Promise<JSX.Element> {
 	let pageIndex = searchParams?.p ?? 1;
 	const data = await getCountry(params.slug);
-	const boxOffice = await getCountryBoxOffice(params.slug, 25);
+	const boxOfficeData = await getCountryBoxOffice(params.slug, 25);
 
-	const total = boxOffice.results.reduce((acc, curr) => acc + curr.total, 0);
+	const boxOfficeTotal = boxOfficeData.results.reduce(
+		(acc, curr) => acc + curr.total,
+		0
+	);
+	const filmsCount = boxOfficeData.results.reduce(
+		(acc, curr) => acc + curr.count,
+		0
+	);
 
 	// Fetch box office data
 	// Calculate defaults at 90 days.
-	const s = parseDate(addDays(new Date(), -180));
+	const s = parseDate(addDays(new Date(), -90));
 	const e = parseDate(new Date());
 
 	// Get dates from the searchparams.
@@ -81,19 +88,22 @@ export default async function Page({
 
 	return (
 		<div>
-			<PageTitle>{data.name}</PageTitle>
-
 			<div className='grid grid-cols-1 md:grid-cols-5 gap-3 md:gap-5 mb-5'>
 				<div className='col-span-2 max-h-96'>
+					<PageTitle>{data.name}</PageTitle>
 					<DescriptionList>
 						<DescriptionItem
 							title='Total Box Office'
-							text={`£ ${total.toLocaleString('en-GB')}`}
+							text={`£ ${boxOfficeTotal.toLocaleString('en-GB')}`}
+						/>
+						<DescriptionItem
+							title='Number of Films'
+							text={filmsCount.toLocaleString('en-GB')}
 						/>
 					</DescriptionList>
 
 					<ExportCSV
-						data={boxOffice.results}
+						data={boxOfficeData.results}
 						filename={`${data.name}_data.csv`}
 						className='mr-2'
 					/>
@@ -108,18 +118,18 @@ export default async function Page({
 							<TabsTrigger value='tab3'>Table</TabsTrigger>
 						</TabsList>
 						<TabsContent value='tab1'>
-							<PreviousChart data={boxOffice.results} />
+							<PreviousChart data={boxOfficeData.results} />
 						</TabsContent>
 
 						<TabsContent value='tab2'>
-							<Controls start={start} end={end} lastUpdated={'-'} />
+							<Controls start={start} end={end} />
 							<ChartWrapper chartClassName='mt-6'>
 								<StackedBarChart data={results} height='md' />
 							</ChartWrapper>
 						</TabsContent>
 
 						<TabsContent value='tab3'>
-							<PreviousTable data={boxOffice.results} />
+							<PreviousTable data={boxOfficeData.results} />
 						</TabsContent>
 					</Tabs>
 				</div>

@@ -68,13 +68,20 @@ export default async function Page({
 }): Promise<JSX.Element> {
 	let pageIndex = searchParams?.p ?? 1;
 	const data = await getDistributor(params.slug);
-	const boxOffice = await getDistributorBoxOffice(params.slug, 25);
+	const boxOfficeData = await getDistributorBoxOffice(params.slug, 25);
 
-	const total = boxOffice.results.reduce((acc, curr) => acc + curr.total, 0);
+	const boxOfficeTotal = boxOfficeData.results.reduce(
+		(acc, curr) => acc + curr.total,
+		0
+	);
+	const filmsCount = boxOfficeData.results.reduce(
+		(acc, curr) => acc + curr.count,
+		0
+	);
 
 	// Fetch box office data
 	// Calculate defaults at 90 days.
-	const s = parseDate(addDays(new Date(), -180));
+	const s = parseDate(addDays(new Date(), -90));
 	const e = parseDate(new Date());
 
 	// Get dates from the searchparams.
@@ -84,26 +91,30 @@ export default async function Page({
 
 	return (
 		<div>
-			<PageTitle>{toTitleCase(data.name)}</PageTitle>
-
-			<div className='grid grid-cols-1 md:grid-cols-5 gap-3 md:gap-5 mb-5'>
-				<div className='col-span-2 max-h-96'>
+			<div className='grid grid-cols-1 md:grid-cols-5 gap-3 md:gap-5 mb-4 h-[30rem]'>
+				<div className='col-span-2'>
+					<PageTitle>{toTitleCase(data.name)}</PageTitle>
 					<DescriptionList>
 						<DescriptionItem
 							title='Total Box Office'
-							text={`£ ${total.toLocaleString('en-GB')}`}
+							text={`£ ${boxOfficeTotal.toLocaleString('en-GB')}`}
+						/>
+
+						<DescriptionItem
+							title='Number of Films'
+							text={filmsCount.toLocaleString('en-GB')}
 						/>
 					</DescriptionList>
 
 					<ExportCSV
-						data={boxOffice.results}
+						data={boxOfficeData.results}
 						filename={`${data.name}_data.csv`}
 						className='mr-2'
 					/>
 					<DatasourceButton />
 				</div>
 
-				<div className='col-span-3'>
+				<div className='col-span-3 h-full'>
 					<Tabs defaultValue='tab1'>
 						<TabsList>
 							<TabsTrigger value='tab1'>Years</TabsTrigger>
@@ -111,15 +122,15 @@ export default async function Page({
 							<TabsTrigger value='tab2'>Table</TabsTrigger>
 						</TabsList>
 						<TabsContent value='tab1'>
-							<PreviousChart data={boxOffice.results} />
+							<PreviousChart data={boxOfficeData.results} />
 						</TabsContent>
 
 						<TabsContent value='tab2'>
-							<PreviousTable data={boxOffice.results} />
+							<PreviousTable data={boxOfficeData.results} />
 						</TabsContent>
 
 						<TabsContent value='tab3'>
-							<Controls start={start} end={end} lastUpdated={'-'} />
+							<Controls start={start} end={end} />
 							<ChartWrapper chartClassName='mt-6'>
 								<StackedBarChart data={results} height='md' />
 							</ChartWrapper>
@@ -128,8 +139,10 @@ export default async function Page({
 				</div>
 			</div>
 
-			{/* @ts-expect-error Server Component */}
-			<DistributorFilmsTable slug={params.slug} pageIndex={pageIndex} />
+			<div className='mt-4'>
+				{/* @ts-expect-error Server Component */}
+				<DistributorFilmsTable slug={params.slug} pageIndex={pageIndex} />
+			</div>
 		</div>
 	);
 }
