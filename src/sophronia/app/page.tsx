@@ -70,7 +70,7 @@ export default async function Dashboard({
 			</div>
 
 			{/* Table */}
-			<div className='mt-3 md:mt-6'>
+			<div className='mt-3 md:mt-6 h-screen'>
 				<FilmTableDetailed data={tableData} />
 			</div>
 		</div>

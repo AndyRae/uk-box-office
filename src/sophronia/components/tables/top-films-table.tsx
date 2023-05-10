@@ -21,7 +21,7 @@ export const TopFilmsTable = ({ data }: { data: TopFilm[] }): JSX.Element => {
 			{data.map((obj, index: number) => {
 				return (
 					<Tr key={index} index={index}>
-						<Td isNumeric>{index + 1}</Td>
+						<Td>{index + 1}</Td>
 						<Td isHighlight>
 							<Link href={`/film/${obj.film.slug}`}>
 								{toTitleCase(obj.film.name)}

@@ -110,25 +110,25 @@ export default async function Page({
 					<DatasourceButton />
 				</div>
 
-				<div className='col-span-3'>
+				<div className='col-span-3 h-[35rem]'>
 					<Tabs defaultValue='tab1'>
 						<TabsList>
 							<TabsTrigger value='tab1'>Years</TabsTrigger>
 							<TabsTrigger value='tab2'>Films</TabsTrigger>
 							<TabsTrigger value='tab3'>Table</TabsTrigger>
 						</TabsList>
-						<TabsContent value='tab1'>
+						<TabsContent value='tab1' className='h-[30rem]'>
 							<PreviousChart data={boxOfficeData.results} />
 						</TabsContent>
 
-						<TabsContent value='tab2'>
+						<TabsContent value='tab2' className='h-[30rem]'>
 							<Controls start={start} end={end} />
 							<ChartWrapper chartClassName='mt-6'>
 								<StackedBarChart data={results} height='md' />
 							</ChartWrapper>
 						</TabsContent>
 
-						<TabsContent value='tab3'>
+						<TabsContent value='tab3' className='h-[30rem]'>
 							<PreviousTable data={boxOfficeData.results} />
 						</TabsContent>
 					</Tabs>

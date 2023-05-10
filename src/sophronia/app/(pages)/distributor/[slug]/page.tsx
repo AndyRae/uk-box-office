@@ -91,7 +91,7 @@ export default async function Page({
 
 	return (
 		<div>
-			<div className='grid grid-cols-1 md:grid-cols-5 gap-3 md:gap-5 mb-4 h-[30rem]'>
+			<div className='grid grid-cols-1 md:grid-cols-5 gap-3 md:gap-5 mb-4'>
 				<div className='col-span-2'>
 					<PageTitle>{toTitleCase(data.name)}</PageTitle>
 					<DescriptionList>
@@ -114,26 +114,26 @@ export default async function Page({
 					<DatasourceButton />
 				</div>
 
-				<div className='col-span-3 h-full'>
+				<div className='col-span-3 h-[35rem]'>
 					<Tabs defaultValue='tab1'>
 						<TabsList>
 							<TabsTrigger value='tab1'>Years</TabsTrigger>
-							<TabsTrigger value='tab3'>Films</TabsTrigger>
-							<TabsTrigger value='tab2'>Table</TabsTrigger>
+							<TabsTrigger value='tab2'>Films</TabsTrigger>
+							<TabsTrigger value='tab3'>Table</TabsTrigger>
 						</TabsList>
-						<TabsContent value='tab1'>
+						<TabsContent value='tab1' className='h-[30rem]'>
 							<PreviousChart data={boxOfficeData.results} />
 						</TabsContent>
 
-						<TabsContent value='tab2'>
-							<PreviousTable data={boxOfficeData.results} />
-						</TabsContent>
-
-						<TabsContent value='tab3'>
+						<TabsContent value='tab2' className='h-[30rem]'>
 							<Controls start={start} end={end} />
 							<ChartWrapper chartClassName='mt-6'>
 								<StackedBarChart data={results} height='md' />
 							</ChartWrapper>
+						</TabsContent>
+
+						<TabsContent value='tab3' className='h-[30rem]'>
+							<PreviousTable data={boxOfficeData.results} />
 						</TabsContent>
 					</Tabs>
 				</div>
