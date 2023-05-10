@@ -4,6 +4,8 @@ import { Scorecards } from 'components/score-cards';
 import { TimeLineChart } from 'components/charts/timeline';
 import { StackedBarChart } from 'components/charts/stacked-bar';
 import { FilmTableDetailed } from 'components/tables/film-table-detailed';
+import { LastUpdated } from 'components/last-updated';
+import { DatasourceCard } from 'components/datasource';
 import { parseDate } from 'lib/utils/dates';
 import addDays from 'date-fns/addDays';
 
@@ -19,7 +21,10 @@ export default function Loading() {
 	return (
 		<div className='transition ease-in-out animate-pulse'>
 			{/* Controls */}
-			<Controls start={start} end={end} lastUpdated={lastUpdated} />
+			<Controls start={start} end={end}>
+				<LastUpdated date={lastUpdated} />
+				<DatasourceCard />
+			</Controls>
 
 			{/* Scorecards grid. */}
 			<Scorecards
