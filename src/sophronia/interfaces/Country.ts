@@ -2,7 +2,7 @@ import { BoxOfficeYear } from './BoxOffice';
 import { Film } from './Film';
 
 export interface Country {
-	id: string;
+	id: number;
 	name: string;
 	slug: string;
 }

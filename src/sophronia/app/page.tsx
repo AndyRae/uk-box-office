@@ -12,6 +12,8 @@ import { ChartWrapper } from 'components/charts/chart-wrapper';
 import { parseDate } from 'lib/utils/dates';
 import { Scorecards } from 'components/score-cards';
 import addDays from 'date-fns/addDays';
+import { LastUpdated } from 'components/last-updated';
+import { DatasourceCard } from 'components/datasource';
 
 export default async function Dashboard({
 	searchParams,
@@ -44,7 +46,10 @@ export default async function Dashboard({
 			/>
 
 			{/* Controls */}
-			<Controls start={start} end={end} lastUpdated={lastUpdated} />
+			<Controls start={start} end={end}>
+				<LastUpdated date={lastUpdated} />
+				<DatasourceCard />
+			</Controls>
 
 			{/* Scorecards grid. */}
 			<Scorecards
@@ -65,7 +70,7 @@ export default async function Dashboard({
 			</div>
 
 			{/* Table */}
-			<div className='mt-3 md:mt-6'>
+			<div className='mt-3 md:mt-6 h-screen'>
 				<FilmTableDetailed data={tableData} />
 			</div>
 		</div>

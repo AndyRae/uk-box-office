@@ -134,7 +134,7 @@ export const BaseTable = ({
 	children,
 }: BaseTableProps): JSX.Element => {
 	return (
-		<div className='overflow-x-auto rounded-lg relative max-h-screen'>
+		<div className='overflow-x-auto rounded-lg relative max-h-full'>
 			<table
 				className='table-auto w-full text-sm text-left text-gray-600 dark:text-gray-400'
 				id={id}
