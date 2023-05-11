@@ -29,12 +29,15 @@ def all() -> Response:
     distributor = request.args.get("distributor", None)
     country_ids = request.args.get("country", None)
 
-    # Split the comma-separated list of country IDs into a list
+    # Split the comma-separated list of IDs into a list
     if country_ids is not None:
-        country_ids = [int(cid) for cid in country_ids.split(",")]
+        country_ids = [int(id) for id in country_ids.split(",")]
 
-    time_filter = services.boxoffice.TimeFilter(start=start, end=end)
-    query_filter = services.boxoffice.QueryFilter(
+    if distributor is not None:
+        distributor = [int(id) for id in distributor.split(",")]
+
+    time_filter = services.filters.TimeFilter(start=start, end=end)
+    query_filter = services.filters.QueryFilter(
         distributor_id=distributor, country_ids=country_ids
     )
 
