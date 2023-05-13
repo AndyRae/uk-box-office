@@ -65,11 +65,11 @@ export default async function Page({
 				</div>
 			) : null}
 
-			{data!.films.length > 0 && (
+			{data!.films.results.length > 0 && (
 				<h2 className='text-2xl font-bold py-5 capitalize'>Films</h2>
 			)}
 
-			{data!.films ? <FilmsTable data={data!.films} /> : null}
+			{data!.films ? <FilmsTable data={data!.films.results} /> : null}
 		</>
 	);
 }

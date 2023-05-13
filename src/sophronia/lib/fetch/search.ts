@@ -12,7 +12,12 @@ import { Film } from 'interfaces/Film';
 interface SearchResults {
 	countries: Country[];
 	distributors: Distributor[];
-	films: Film[];
+	films: {
+		count: number;
+		next: number;
+		previous: number;
+		results: Film[];
+	};
 }
 
 /**
