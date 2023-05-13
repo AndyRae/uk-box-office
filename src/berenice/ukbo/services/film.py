@@ -4,6 +4,8 @@ from typing import List, Optional
 import pandas as pd
 from flask import Response, abort, jsonify
 from slugify import slugify  # type: ignore
+from sqlalchemy import extract, func, select
+from sqlalchemy.orm import joinedload, selectinload
 from ukbo import models, services
 from ukbo.dto import FilmSchema, FilmSchemaStrict, FilmSchemaValues
 from ukbo.extensions import db
@@ -159,7 +161,12 @@ def delete_film(id: int) -> bool:
         return False
 
 
-def search(search_query: str, limit: int = 15) -> Response:
+def search(
+    search_query: str,
+    query_filter: services.filters.QueryFilter = services.filters.QueryFilter(),
+    limit: int = 15,
+    page: int = 1,
+) -> Response:
     """
     Search films by name.
 
@@ -168,13 +175,57 @@ def search(search_query: str, limit: int = 15) -> Response:
 
     Returns (JSON): List of films.
     """
+    # main query
     query = db.session.query(models.Film)
     query = query.filter(models.Film.name.ilike(f"%{search_query}%"))
-    data = query.limit(limit).all()
+
+    # apply filters
+    if query_filter.distributor_id is not None:
+        query = query.filter(
+            models.Film.distributor_id.in_(query_filter.distributor_id)
+        )
+
+    if query_filter.country_ids is not None:
+        query = query.join(models.countries).join(models.Country)
+        query = query.filter(models.Country.id.in_(query_filter.country_ids))
+
+    if (
+        query_filter.min_year is not None
+        or query_filter.max_year is not None
+        or query_filter.min_box is not None
+    ):
+        query = query.join(models.Film_Week).group_by(models.Film.id)
+
+    if query_filter.min_year is not None:
+        query = query.filter(
+            extract("year", models.Film_Week.date) >= query_filter.min_year
+        )
+
+    if query_filter.max_year is not None:
+        query = query.filter(
+            extract("year", models.Film_Week.date) <= query_filter.max_year
+        )
+
+    if query_filter.min_box is not None:
+        query = query.having(
+            func.max(models.Film_Week.total_gross) >= query_filter.min_box
+        )
+
+    if query_filter.max_box is not None:
+        query = query.having(
+            func.max(models.Film_Week.total_gross) <= query_filter.max_box
+        )
+
+    data = query.paginate(page=1, per_page=200, error_out=False)
+    if data is None:
+        return {"none"}
+
+    # next_page = (page + 1) if data.has_next else ""
+    # previous_page = (page - 1) if data.has_prev else ""
 
     film_schema = FilmSchemaStrict()
 
-    return [] if data is None else [film_schema.dump(ix) for ix in data]
+    return [film_schema.dump(ix) for ix in data]
 
 
 def partial_search(search_query: str, limit: int = 15) -> Response:

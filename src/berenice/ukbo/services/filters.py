@@ -22,24 +22,24 @@ class QueryFilter:
     Attributes:
         distributor_id (Optional[int]): ID of the distributor to filter by.
         country_ids (Optional[List[int]]): IDs of the countries to filter by.
-        year_low (Optional[int]): Low of the year number to filter by.
-        year_high (Optional[int]): High of the year number to filter by.
-        box_low (Optional[int]): Low of the box office number to filter by.
-        box_heigh (Optional[int]): High of the box office number to filter by.
+        min_year (Optional[int]): Low of the year number to filter by.
+        max_year (Optional[int]): High of the year number to filter by.
+        min_box (Optional[int]): Low of the box office number to filter by.
+        max_box (Optional[int]): High of the box office number to filter by.
     """
 
     def __init__(
         self,
         distributor_id: Optional[List[int]] = None,
         country_ids: Optional[List[int]] = None,
-        year_low: Optional[int] = None,
-        year_high: Optional[int] = None,
-        box_low: Optional[int] = None,
-        box_high: Optional[int] = None,
+        min_year: Optional[int] = None,
+        max_year: Optional[int] = None,
+        min_box: Optional[int] = None,
+        max_box: Optional[int] = None,
     ):
         self.distributor_id = distributor_id
         self.country_ids = country_ids
-        self.year_low = year_low
-        self.year_high = year_high
-        self.box_low = box_low
-        self.box_high = box_high
+        self.min_year = min_year
+        self.max_year = max_year
+        self.min_box = min_box
+        self.max_box = max_box
