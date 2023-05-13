@@ -216,16 +216,21 @@ def search(
             func.max(models.Film_Week.total_gross) <= query_filter.max_box
         )
 
-    data = query.paginate(page=1, per_page=200, error_out=False)
+    data = query.paginate(page=page, per_page=25, error_out=False)
     if data is None:
         return {"none"}
 
-    # next_page = (page + 1) if data.has_next else ""
-    # previous_page = (page - 1) if data.has_prev else ""
+    next_page = (page + 1) if data.has_next else ""
+    previous_page = (page - 1) if data.has_prev else ""
 
     film_schema = FilmSchemaStrict()
 
-    return [film_schema.dump(ix) for ix in data]
+    return {
+        "count": data.total,
+        "next": next_page,
+        "previous": previous_page,
+        "results": [film_schema.dump(ix) for ix in data],
+    }
 
 
 def partial_search(search_query: str, limit: int = 15) -> Response:

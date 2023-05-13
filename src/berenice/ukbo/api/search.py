@@ -17,6 +17,7 @@ def all() -> Response:
         JSON response of search results.
     """
     query = request.args.get("q", None)
+    page = request.args.get("page", 1)
 
     if not query:
         return jsonify(
@@ -49,7 +50,7 @@ def all() -> Response:
         max_box=max_box,
     )
 
-    films = services.film.search(query, query_filter)
+    films = services.film.search(query, query_filter, page=int(page))
     distributors = services.distributor.search(query)
     countries = services.country.search(query)
 
