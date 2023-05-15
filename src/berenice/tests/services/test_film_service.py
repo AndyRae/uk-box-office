@@ -14,7 +14,7 @@ def test_list(app, add_test_film):
     """
     with app.app_context():
 
-        response = services.film.list()
+        response = services.film.list_all()
 
         data = json.loads(response.data)
         assert data["count"] == 1
@@ -147,7 +147,7 @@ def test_delete_film(app, add_test_distributor, add_test_country):
         with pytest.raises(Exception):
             response = services.film.delete_film(1)
 
-        response = services.film.list()
+        response = services.film.list_all()
         data = json.loads(response.data)
         assert data["count"] == 0
 

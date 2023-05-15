@@ -1,3 +1,4 @@
+import json
 import uuid
 from typing import List, Optional
 
@@ -7,11 +8,16 @@ from slugify import slugify  # type: ignore
 from sqlalchemy import extract, func, select
 from sqlalchemy.orm import joinedload, selectinload
 from ukbo import models, services
-from ukbo.dto import FilmSchema, FilmSchemaStrict, FilmSchemaValues
+from ukbo.dto import (
+    DistributorSchema,
+    FilmSchema,
+    FilmSchemaStrict,
+    FilmSchemaValues,
+)
 from ukbo.extensions import db
 
 
-def list(page: int = 1, limit: int = 100) -> Response:
+def list_all(page: int = 1, limit: int = 100) -> Response:
     """
     Paginated list of all films.
 
@@ -216,6 +222,21 @@ def search(
             func.max(models.Film_Week.total_gross) <= query_filter.max_box
         )
 
+    # Execute the query to retrieve all films
+    all_films = query.options(joinedload(models.Film.distributor)).all()
+
+    # Extract distributors from all films
+    distributor_schema = DistributorSchema()
+
+    distributors = [
+        distributor_schema.dump(film.distributor)
+        for film in all_films
+        if film.distributor is not None
+    ]
+
+    x = set(distributors)
+
+    # query to paginate
     data = query.paginate(page=page, per_page=25, error_out=False)
     if data is None:
         return {"none"}
@@ -230,6 +251,7 @@ def search(
         "next": next_page,
         "previous": previous_page,
         "results": [film_schema.dump(ix) for ix in data],
+        "distributors": list(x),
     }
 
 
