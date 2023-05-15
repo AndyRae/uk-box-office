@@ -6,6 +6,7 @@ import { PageTitle } from 'components/ui/page-title';
 
 import { Distributor } from 'interfaces/Distributor';
 import { Country } from 'interfaces/Country';
+import { SearchFilters } from 'components/search-filters';
 
 export default async function Page({
 	searchParams,
@@ -68,6 +69,7 @@ export default async function Page({
 			{data!.films.results.length > 0 && (
 				<h2 className='text-2xl font-bold py-5 capitalize'>Films</h2>
 			)}
+			<SearchFilters />
 
 			{data!.films ? <FilmsTable data={data!.films.results} /> : null}
 		</>
