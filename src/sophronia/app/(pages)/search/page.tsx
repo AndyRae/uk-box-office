@@ -11,10 +11,10 @@ import { SearchFilters } from 'components/search-filters';
 export default async function Page({
 	searchParams,
 }: {
-	searchParams: { q?: string };
+	searchParams: { q: string };
 }): Promise<JSX.Element> {
 	const query = searchParams?.q ?? '';
-	const data = await useSearch(query || '');
+	const data = await useSearch(searchParams);
 
 	return (
 		<>
@@ -69,7 +69,7 @@ export default async function Page({
 			{data!.films.results.length > 0 && (
 				<h2 className='text-2xl font-bold py-5 capitalize'>Films</h2>
 			)}
-			<SearchFilters />
+			<SearchFilters query={query} distributors={data.films.distributors} />
 
 			{data!.films ? <FilmsTable data={data!.films.results} /> : null}
 		</>

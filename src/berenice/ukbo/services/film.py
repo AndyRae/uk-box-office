@@ -234,7 +234,8 @@ def search(
         if film.distributor is not None
     ]
 
-    x = set(distributors)
+    # Get unique ones.
+    unique = [dict(s) for s in set(frozenset(d.items()) for d in distributors)]
 
     # query to paginate
     data = query.paginate(page=page, per_page=25, error_out=False)
@@ -251,7 +252,7 @@ def search(
         "next": next_page,
         "previous": previous_page,
         "results": [film_schema.dump(ix) for ix in data],
-        "distributors": list(x),
+        "distributors": unique,
     }
 
 
