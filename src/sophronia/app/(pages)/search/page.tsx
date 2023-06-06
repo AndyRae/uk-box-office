@@ -8,6 +8,8 @@ import { Distributor } from 'interfaces/Distributor';
 import { Country } from 'interfaces/Country';
 import { SearchFilters } from 'components/search-filters';
 
+import { toTitleCase } from 'lib/utils/toTitleCase';
+
 export default async function Page({
 	searchParams,
 }: {
@@ -56,7 +58,7 @@ export default async function Page({
 									href={`/distributor/${distributor.slug}`}
 									className='font-bold text-left'
 								>
-									{distributor.name}
+									{toTitleCase(distributor.name)}
 								</Link>
 							</div>
 						);
