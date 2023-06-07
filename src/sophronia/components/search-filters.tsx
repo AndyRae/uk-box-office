@@ -5,11 +5,18 @@ import { Distributor } from 'interfaces/Distributor';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { toTitleCase } from 'lib/utils/toTitleCase';
 import { Button } from 'components/ui/button-new';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 type DistributorOption = {
 	value: string;
 	label: string;
+};
+
+const mapToValues = (array: any[]) => {
+	return array.map((item) => ({
+		value: item.id.toString(),
+		label: toTitleCase(item.name),
+	}));
 };
 
 export const SearchFilters = ({
@@ -25,11 +32,19 @@ export const SearchFilters = ({
 
 	const [selected, setDistributors] = useState<DistributorOption[]>([]);
 
+	// Run on start to set state, if already filtered.
+	useEffect(() => {
+		const distributorIds = searchParams
+			.get('distributor')
+			?.split(',')
+			.filter(Boolean);
+		if (distributorIds) {
+			setDistributors(mapToValues(distributors));
+		}
+	}, []);
+
 	// map to values
-	const options = distributors.map((distributor) => ({
-		value: distributor.id.toString(),
-		label: toTitleCase(distributor.name),
-	}));
+	const options = mapToValues(distributors);
 
 	// Fetch data when an option is selected
 	const handleOptionChange = async (data: any) => {
@@ -62,7 +77,7 @@ export const SearchFilters = ({
 				instanceId='compare-select'
 				noOptionsMessage={() => 'Distributors...'}
 			/>
-			<Button onClick={handleFilter} variant={'secondary'}>
+			<Button onClick={handleFilter} variant={'outline'}>
 				Apply Filter
 			</Button>
 			<Button onClick={handleClearFilter} variant={'outline'}>

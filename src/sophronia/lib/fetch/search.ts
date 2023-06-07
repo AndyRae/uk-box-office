@@ -56,8 +56,6 @@ export const useSearch = async (
 		urlSearchParams.append('distributor', distributor);
 	}
 
-	console.log(fetchKeys.search(urlSearchParams.toString()));
-
 	const res = await fetch(fetchKeys.search(urlSearchParams.toString()), {
 		cache: 'no-store',
 	});
