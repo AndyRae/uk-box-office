@@ -18,12 +18,14 @@ interface SearchResults {
 		previous: number;
 		results: Film[];
 		distributors: Distributor[];
+		countries: Country[];
 	};
 }
 
 interface SearchParams {
 	q: string;
 	distributor?: string;
+	country?: string;
 }
 
 /**
@@ -45,7 +47,7 @@ const fetchKeys = {
 export const useSearch = async (
 	searchParams: SearchParams
 ): Promise<SearchResults> => {
-	const { q, distributor } = searchParams;
+	const { q, distributor, country } = searchParams;
 	const urlSearchParams = new URLSearchParams();
 
 	// Add query parameter
@@ -54,6 +56,11 @@ export const useSearch = async (
 	// Add distributor parameter if provided
 	if (distributor) {
 		urlSearchParams.append('distributor', distributor);
+	}
+
+	// Add country parameter if provided
+	if (country) {
+		urlSearchParams.append('country', country);
 	}
 
 	const res = await fetch(fetchKeys.search(urlSearchParams.toString()), {

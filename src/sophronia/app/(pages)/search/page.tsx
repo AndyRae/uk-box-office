@@ -71,7 +71,11 @@ export default async function Page({
 			{data!.films.results.length > 0 && (
 				<h2 className='text-2xl font-bold py-5 capitalize'>Films</h2>
 			)}
-			<SearchFilters query={query} distributors={data.films.distributors} />
+			<SearchFilters
+				query={query}
+				distributors={data.films.distributors}
+				countries={data.films.countries}
+			/>
 
 			{data!.films ? <FilmsTable data={data!.films.results} /> : null}
 		</>

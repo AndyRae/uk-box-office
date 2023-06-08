@@ -2,12 +2,13 @@
 
 import Select from 'react-select';
 import { Distributor } from 'interfaces/Distributor';
+import { Country } from 'interfaces/Country';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { toTitleCase } from 'lib/utils/toTitleCase';
 import { Button } from 'components/ui/button-new';
 import { useState, useEffect } from 'react';
 
-type DistributorOption = {
+type SelectOption = {
 	value: string;
 	label: string;
 };
@@ -22,15 +23,18 @@ const mapToValues = (array: any[]) => {
 export const SearchFilters = ({
 	query,
 	distributors,
+	countries,
 }: {
 	query: string;
 	distributors: Distributor[];
+	countries: Country[];
 }) => {
 	const router = useRouter();
 	const pathName = usePathname();
 	const searchParams = useSearchParams();
 
-	const [selected, setDistributors] = useState<DistributorOption[]>([]);
+	const [selectedDist, setDistributors] = useState<SelectOption[]>([]);
+	const [selectedCountry, setCountry] = useState<SelectOption[]>([]);
 
 	// Run on start to set state, if already filtered.
 	useEffect(() => {
@@ -41,26 +45,53 @@ export const SearchFilters = ({
 		if (distributorIds) {
 			setDistributors(mapToValues(distributors));
 		}
+
+		const countryIds = searchParams.get('country')?.split(',').filter(Boolean);
+
+		if (countryIds) {
+			const selected = countries.filter((country) =>
+				countryIds.includes(country.id.toString())
+			);
+			setCountry(mapToValues(selected));
+			console.log(countryIds);
+		}
 	}, []);
 
 	// map to values
-	const options = mapToValues(distributors);
+	const distOptions = mapToValues(distributors);
+	const countryOptions = mapToValues(countries);
 
 	// Fetch data when an option is selected
 	const handleOptionChange = async (data: any) => {
 		setDistributors(data);
 	};
+	const handleSelectCountry = async (data: any) => {
+		setCountry(data);
+	};
 
 	const handleFilter = async () => {
-		// Add Ids to the url
-		const urlIds = selected.map(
-			(distributor: DistributorOption) => distributor.value
-		);
-		router.push(pathName + `?q=${query}&distributor=${urlIds}`);
+		// Add Ids to the URL
+		const distIds = selectedDist.map((distributor) => distributor.value);
+		const countryIds = selectedCountry.map((country) => country.value);
+
+		const queryParams = new URLSearchParams();
+		queryParams.append('q', query);
+
+		if (distIds.length > 0) {
+			queryParams.append('distributor', distIds.join(','));
+		}
+
+		if (countryIds.length > 0) {
+			queryParams.append('country', countryIds.join(','));
+		}
+
+		const url = `${pathName}?${queryParams.toString()}`;
+		router.push(url);
 	};
 
 	const handleClearFilter = async () => {
 		setDistributors([]);
+		setCountry([]);
 		router.push(pathName + `?q=${query}`);
 	};
 
@@ -68,14 +99,25 @@ export const SearchFilters = ({
 		<div className='flex flex-wrap mb-2 gap-y-4 items-center justify-center'>
 			<Select
 				isMulti
-				value={selected}
+				value={selectedDist}
 				onChange={handleOptionChange}
-				options={options}
+				options={distOptions}
 				className='compare-select-container'
 				classNamePrefix='compare-select'
 				inputId='compare-select'
 				instanceId='compare-select'
 				noOptionsMessage={() => 'Distributors...'}
+			/>
+			<Select
+				isMulti
+				value={selectedCountry}
+				onChange={handleSelectCountry}
+				options={countryOptions}
+				className='compare-select-container'
+				classNamePrefix='compare-select'
+				inputId='compare-select'
+				instanceId='compare-select'
+				noOptionsMessage={() => 'Countries...'}
 			/>
 			<Button onClick={handleFilter} variant={'outline'}>
 				Apply Filter
