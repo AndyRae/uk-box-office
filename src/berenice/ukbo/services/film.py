@@ -256,7 +256,7 @@ def unique_countries(all_films: List[models.Film]) -> List[Dict[str, Any]]:
     """
     country_schema = CountrySchema()
 
-    countries: List[Any] = []
+    countries: List[Dict[str, Any]] = []
     for film in all_films:
         if film.countries:
             countries.extend(
