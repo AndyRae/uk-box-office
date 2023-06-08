@@ -36,6 +36,8 @@ export const SearchFilters = ({
 	const [selectedDist, setDistributors] = useState<SelectOption[]>([]);
 	const [selectedCountry, setCountry] = useState<SelectOption[]>([]);
 
+	const isFilterActive = selectedDist.length > 0 || selectedCountry.length > 0;
+
 	// Run on start to set state, if already filtered.
 	useEffect(() => {
 		const distributorIds = searchParams
@@ -96,13 +98,13 @@ export const SearchFilters = ({
 	};
 
 	return (
-		<div className='flex flex-wrap mb-2 gap-y-4 items-center justify-center'>
+		<div className='flex flex-wrap pb-4 gap-4'>
 			<Select
 				isMulti
 				value={selectedDist}
 				onChange={handleOptionChange}
 				options={distOptions}
-				className='compare-select-container'
+				className='compare-select-container w-64'
 				classNamePrefix='compare-select'
 				inputId='compare-select'
 				instanceId='compare-select'
@@ -113,17 +115,25 @@ export const SearchFilters = ({
 				value={selectedCountry}
 				onChange={handleSelectCountry}
 				options={countryOptions}
-				className='compare-select-container'
+				className='compare-select-container w-64'
 				classNamePrefix='compare-select'
 				inputId='compare-select'
 				instanceId='compare-select'
 				noOptionsMessage={() => 'Countries...'}
 			/>
-			<Button onClick={handleFilter} variant={'outline'}>
-				Apply Filter
+			<Button
+				onClick={handleFilter}
+				variant={'outline'}
+				disabled={!isFilterActive}
+			>
+				Apply
 			</Button>
-			<Button onClick={handleClearFilter} variant={'outline'}>
-				Clear Filter
+			<Button
+				onClick={handleClearFilter}
+				variant={'outline'}
+				disabled={!isFilterActive}
+			>
+				Clear
 			</Button>
 		</div>
 	);
