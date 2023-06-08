@@ -228,7 +228,7 @@ def search(
 
     # Get unique search metadata
     distributors = unique_distributors(all_films)
-    countries = unique_countries(all_films)
+    countries = unique(all_films)
 
     # query to paginate
     data = query.paginate(page=page, per_page=25, error_out=False)
@@ -250,7 +250,7 @@ def search(
     }
 
 
-def unique_countries(all_films: List[models.Film]) -> List[Dict[str, Any]]:
+def unique(all_films: List[models.Film]) -> List[Dict[str, Any]]:
     """
     Extract a set of countries from a list of films.
     """
@@ -263,8 +263,9 @@ def unique_countries(all_films: List[models.Film]) -> List[Dict[str, Any]]:
                 country_schema.dump(country) for country in film.countries
             )
 
-    # Get unique countries
-    return [dict(s) for s in {frozenset(d.items()) for d in countries}]
+    # Get unique countries and sort them
+    unique = [dict(s) for s in {frozenset(d.items()) for d in countries}]
+    return sorted(unique, key=lambda c: c["name"])
 
 
 def unique_distributors(all_films: List[models.Film]) -> List[Dict[str, Any]]:
@@ -279,8 +280,9 @@ def unique_distributors(all_films: List[models.Film]) -> List[Dict[str, Any]]:
         if film.distributor is not None
     ]
 
-    # Get unique distributors.
-    return [dict(s) for s in {frozenset(d.items()) for d in distributors}]
+    # Get unique distributors and sort them.
+    unique = [dict(s) for s in {frozenset(d.items()) for d in distributors}]
+    return sorted(unique, key=lambda c: c["name"])
 
 
 def partial_search(search_query: str, limit: int = 15) -> Response:
