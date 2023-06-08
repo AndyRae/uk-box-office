@@ -1,6 +1,6 @@
 import json
 import uuid
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 
 import pandas as pd
 from flask import Response, abort, jsonify
@@ -9,6 +9,7 @@ from sqlalchemy import extract, func, select
 from sqlalchemy.orm import joinedload, selectinload
 from ukbo import models, services
 from ukbo.dto import (
+    CountrySchema,
     DistributorSchema,
     FilmSchema,
     FilmSchemaStrict,
@@ -225,17 +226,9 @@ def search(
     # Execute the query to retrieve all films
     all_films = query.options(joinedload(models.Film.distributor)).all()
 
-    # Extract distributors from all films
-    distributor_schema = DistributorSchema()
-
-    distributors = [
-        distributor_schema.dump(film.distributor)
-        for film in all_films
-        if film.distributor is not None
-    ]
-
-    # Get unique ones.
-    unique = [dict(s) for s in set(frozenset(d.items()) for d in distributors)]
+    # Get unique search metadata
+    distributors = unique_distributors(all_films)
+    countries = unique_countries(all_films)
 
     # query to paginate
     data = query.paginate(page=page, per_page=25, error_out=False)
@@ -252,8 +245,42 @@ def search(
         "next": next_page,
         "previous": previous_page,
         "results": [film_schema.dump(ix) for ix in data],
-        "distributors": unique,
+        "distributors": distributors,
+        "countries": countries,
     }
+
+
+def unique_countries(all_films: List[models.Film]) -> List[Dict[str, Any]]:
+    """
+    Extract a set of countries from a list of films.
+    """
+    country_schema = CountrySchema()
+
+    countries: List[Any] = []
+    for film in all_films:
+        if film.countries:
+            countries.extend(
+                country_schema.dump(country) for country in film.countries
+            )
+
+    # Get unique countries
+    return [dict(s) for s in {frozenset(d.items()) for d in countries}]
+
+
+def unique_distributors(all_films: List[models.Film]) -> List[Dict[str, Any]]:
+    """
+    Extract a set of distributors from a list of films.
+    """
+    distributor_schema = DistributorSchema()
+
+    distributors = [
+        distributor_schema.dump(film.distributor)
+        for film in all_films
+        if film.distributor is not None
+    ]
+
+    # Get unique distributors.
+    return [dict(s) for s in {frozenset(d.items()) for d in distributors}]
 
 
 def partial_search(search_query: str, limit: int = 15) -> Response:
