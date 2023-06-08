@@ -109,6 +109,7 @@ export const SearchFilters = ({
 				inputId='compare-select'
 				instanceId='compare-select'
 				noOptionsMessage={() => 'Distributors...'}
+				placeholder='Filter Distributors'
 			/>
 			<Select
 				isMulti
@@ -120,6 +121,7 @@ export const SearchFilters = ({
 				inputId='compare-select'
 				instanceId='compare-select'
 				noOptionsMessage={() => 'Countries...'}
+				placeholder='Filter Countries'
 			/>
 			<Button
 				onClick={handleFilter}
