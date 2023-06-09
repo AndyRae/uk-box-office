@@ -5,6 +5,7 @@
 	"dependencies": {
 		"@radix-ui/react-navigation-menu": "^1.1.2",
 		"@radix-ui/react-popover": "^1.0.5",
+		"@radix-ui/react-slider": "^1.1.2",
 		"@radix-ui/react-tabs": "^1.0.3",
 		"@radix-ui/react-tooltip": "^1.0.5",
 		"@testing-library/jest-dom": "^5.16.5",
@@ -33,6 +34,7 @@
 		"react-hook-form": "^7.39.1",
 		"react-icons": "^4.4.0",
 		"react-select": "^5.7.0",
+		"tailwind-merge": "^1.13.1",
 		"web-vitals": "^3.3.1"
 	},
 	"scripts": {
