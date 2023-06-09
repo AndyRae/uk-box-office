@@ -200,6 +200,7 @@ def search(
         query_filter.min_year is not None
         or query_filter.max_year is not None
         or query_filter.min_box is not None
+        or query_filter.max_box is not None
     ):
         query = query.join(models.Film_Week).group_by(models.Film.id)
 
@@ -227,10 +228,13 @@ def search(
     all_films = query.options(joinedload(models.Film.distributor)).all()
 
     # Find the film with the highest total_gross
-    film_with_highest_gross = max(all_films, key=lambda film: film.gross)
+    if all_films:
+        film_with_highest_gross = max(all_films, key=lambda film: film.gross)
 
-    # Retrieve the highest total_gross value
-    highest_gross_value = film_with_highest_gross.gross
+        # Retrieve the highest total_gross value
+        highest_gross_value = film_with_highest_gross.gross
+    else:
+        highest_gross_value = 0
 
     # Get unique search metadata
     distributors = unique_distributors(all_films)
