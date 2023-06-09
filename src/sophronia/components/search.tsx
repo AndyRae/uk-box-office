@@ -48,6 +48,7 @@ export const Searchbar = ({
 						className='block p-2 w-full text-sm text-gray-900 rounded-lg bg-white dark:bg-black dark:placeholder-gray-400 dark:text-white border-black border dark:border-white'
 						{...register('Search', {})}
 						required
+						minLength={3}
 					/>
 					<button
 						type='submit'
