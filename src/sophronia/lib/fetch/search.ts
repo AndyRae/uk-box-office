@@ -12,7 +12,20 @@ import { Film } from 'interfaces/Film';
 interface SearchResults {
 	countries: Country[];
 	distributors: Distributor[];
-	films: Film[];
+	films: {
+		count: number;
+		next: number;
+		previous: number;
+		results: Film[];
+		distributors: Distributor[];
+		countries: Country[];
+	};
+}
+
+interface SearchParams {
+	q: string;
+	distributor?: string;
+	country?: string;
 }
 
 /**
@@ -21,7 +34,7 @@ interface SearchResults {
  * @property {function} search - Search endpoint.
  */
 const fetchKeys = {
-	search: (query: string) => `${getApi()}/search?q=${query}`,
+	search: (query: string) => `${getApi()}/search?${query}`,
 };
 
 /**
@@ -31,7 +44,27 @@ const fetchKeys = {
  * @example
  * const { data, error } = useSearch('uk');
  */
-export const useSearch = async (query: string): Promise<SearchResults> => {
-	const res = await fetch(fetchKeys.search(query), { cache: 'no-store' });
+export const useSearch = async (
+	searchParams: SearchParams
+): Promise<SearchResults> => {
+	const { q, distributor, country } = searchParams;
+	const urlSearchParams = new URLSearchParams();
+
+	// Add query parameter
+	urlSearchParams.append('q', q);
+
+	// Add distributor parameter if provided
+	if (distributor) {
+		urlSearchParams.append('distributor', distributor);
+	}
+
+	// Add country parameter if provided
+	if (country) {
+		urlSearchParams.append('country', country);
+	}
+
+	const res = await fetch(fetchKeys.search(urlSearchParams.toString()), {
+		cache: 'no-store',
+	});
 	return res.json();
 };

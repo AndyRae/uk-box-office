@@ -14,37 +14,7 @@ from ukbo.dto import (
 )
 from ukbo.extensions import db
 
-
-class TimeFilter:
-    """
-    Class representing a filter based on a time period.
-
-    Attributes:
-        start (Optional[str]): Start date to filter by (YYYY-MM-DD).
-        end (Optional[str]): End date to filter by (YYYY-MM-DD).
-    """
-
-    def __init__(self, start: Optional[str] = None, end: Optional[str] = None):
-        self.start = start
-        self.end = end
-
-
-class QueryFilter:
-    """
-    Class representing a filter based on a location.
-
-    Attributes:
-        distributor_id (Optional[int]): ID of the distributor to filter by.
-        country_ids (Optional[List[int]]): IDs of the countries to filter by.
-    """
-
-    def __init__(
-        self,
-        distributor_id: Optional[int] = None,
-        country_ids: Optional[List[int]] = None,
-    ):
-        self.distributor_id = distributor_id
-        self.country_ids = country_ids
+from .filters import QueryFilter, TimeFilter
 
 
 def all(

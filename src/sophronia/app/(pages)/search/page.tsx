@@ -6,14 +6,17 @@ import { PageTitle } from 'components/ui/page-title';
 
 import { Distributor } from 'interfaces/Distributor';
 import { Country } from 'interfaces/Country';
+import { SearchFilters } from 'components/search-filters';
+
+import { toTitleCase } from 'lib/utils/toTitleCase';
 
 export default async function Page({
 	searchParams,
 }: {
-	searchParams: { q?: string };
+	searchParams: { q: string };
 }): Promise<JSX.Element> {
 	const query = searchParams?.q ?? '';
-	const data = await useSearch(query || '');
+	const data = await useSearch(searchParams);
 
 	return (
 		<>
@@ -55,7 +58,7 @@ export default async function Page({
 									href={`/distributor/${distributor.slug}`}
 									className='font-bold text-left'
 								>
-									{distributor.name}
+									{toTitleCase(distributor.name)}
 								</Link>
 							</div>
 						);
@@ -65,11 +68,16 @@ export default async function Page({
 				</div>
 			) : null}
 
-			{data!.films.length > 0 && (
+			{data!.films.results.length > 0 && (
 				<h2 className='text-2xl font-bold py-5 capitalize'>Films</h2>
 			)}
+			<SearchFilters
+				query={query}
+				distributors={data.films.distributors}
+				countries={data.films.countries}
+			/>
 
-			{data!.films ? <FilmsTable data={data!.films} /> : null}
+			{data!.films ? <FilmsTable data={data!.films.results} /> : null}
 		</>
 	);
 }
