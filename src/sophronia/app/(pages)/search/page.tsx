@@ -75,6 +75,7 @@ export default async function Page({
 				query={query}
 				distributors={data.films.distributors}
 				countries={data.films.countries}
+				maxGross={data.films.max_gross}
 			/>
 
 			{data!.films ? <FilmsTable data={data!.films.results} /> : null}

@@ -1,11 +1,13 @@
 'use client';
 
-import Select from 'react-select';
 import { Distributor } from 'interfaces/Distributor';
 import { Country } from 'interfaces/Country';
-import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { toTitleCase } from 'lib/utils/toTitleCase';
 import { Button } from 'components/ui/button-new';
+import { Slider } from 'components/ui/slider';
+
+import Select from 'react-select';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
 type SelectOption = {
@@ -24,10 +26,12 @@ export const SearchFilters = ({
 	query,
 	distributors,
 	countries,
+	maxGross,
 }: {
 	query: string;
 	distributors: Distributor[];
 	countries: Country[];
+	maxGross: number;
 }) => {
 	const router = useRouter();
 	const pathName = usePathname();
@@ -35,8 +39,14 @@ export const SearchFilters = ({
 
 	const [selectedDist, setDistributors] = useState<SelectOption[]>([]);
 	const [selectedCountry, setCountry] = useState<SelectOption[]>([]);
+	const [selectedMin, setMin] = useState<number[]>();
+	const [selectedMax, setMax] = useState<number[]>();
 
-	const isFilterActive = selectedDist.length > 0 || selectedCountry.length > 0;
+	const isFilterActive =
+		selectedDist.length > 0 ||
+		selectedCountry.length > 0 ||
+		selectedMin ||
+		selectedMax;
 
 	// Run on start to set state, if already filtered.
 	useEffect(() => {
@@ -87,6 +97,18 @@ export const SearchFilters = ({
 			queryParams.append('country', countryIds.join(','));
 		}
 
+		if (selectedMin) {
+			if (maxGross != selectedMin[0]) {
+				queryParams.append('min_box', selectedMin[0].toString());
+			}
+		}
+
+		if (selectedMax) {
+			if (maxGross != selectedMax[0]) {
+				queryParams.append('max_box', selectedMax[0].toString());
+			}
+		}
+
 		const url = `${pathName}?${queryParams.toString()}`;
 		router.push(url);
 	};
@@ -94,6 +116,7 @@ export const SearchFilters = ({
 	const handleClearFilter = async () => {
 		setDistributors([]);
 		setCountry([]);
+		setMax(undefined);
 		router.push(pathName + `?q=${query}`);
 	};
 
@@ -123,6 +146,22 @@ export const SearchFilters = ({
 				noOptionsMessage={() => 'Countries...'}
 				placeholder='Filter Countries'
 			/>
+			<Slider
+				className='w-32'
+				onValueChange={setMin}
+				defaultValue={[0]}
+				max={maxGross}
+				step={1}
+			/>
+			<div>£{selectedMin?.toLocaleString()}</div>
+			<Slider
+				className='w-32'
+				onValueChange={setMax}
+				defaultValue={[maxGross]}
+				max={maxGross}
+				step={1}
+			/>
+			<div>£{selectedMax?.toLocaleString()}</div>
 			<Button
 				onClick={handleFilter}
 				variant={'outline'}
@@ -130,11 +169,7 @@ export const SearchFilters = ({
 			>
 				Apply
 			</Button>
-			<Button
-				onClick={handleClearFilter}
-				variant={'outline'}
-				disabled={!isFilterActive}
-			>
+			<Button onClick={handleClearFilter} variant={'outline'}>
 				Clear
 			</Button>
 		</div>
