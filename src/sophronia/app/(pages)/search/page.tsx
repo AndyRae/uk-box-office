@@ -7,6 +7,11 @@ import { PageTitle } from 'components/ui/page-title';
 import { Distributor } from 'interfaces/Distributor';
 import { Country } from 'interfaces/Country';
 import { SearchFilters } from 'components/search-filters';
+import {
+	Collapsible,
+	CollapsibleContent,
+	CollapsibleTrigger,
+} from 'components/ui/collapsible';
 
 import { toTitleCase } from 'lib/utils/toTitleCase';
 
@@ -71,12 +76,18 @@ export default async function Page({
 			{data!.films.results.length > 0 && (
 				<h2 className='text-2xl font-bold py-5 capitalize'>Films</h2>
 			)}
-			<SearchFilters
-				query={query}
-				distributors={data.films.distributors}
-				countries={data.films.countries}
-				maxGross={data.films.max_gross}
-			/>
+
+			<Collapsible>
+				<CollapsibleTrigger>Filters</CollapsibleTrigger>
+				<CollapsibleContent>
+					<SearchFilters
+						query={query}
+						distributors={data.films.distributors}
+						countries={data.films.countries}
+						maxGross={data.films.max_gross}
+					/>
+				</CollapsibleContent>
+			</Collapsible>
 
 			{data!.films ? <FilmsTable data={data!.films.results} /> : null}
 		</>
