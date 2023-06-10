@@ -12,18 +12,25 @@ import {
 	CollapsibleContent,
 	CollapsibleTrigger,
 } from 'components/ui/collapsible';
-
-import { toTitleCase } from 'lib/utils/toTitleCase';
 import { Icons } from 'components/icons';
 import { Button } from 'components/ui/button-new';
+import { Pagination } from 'components/ui/pagination';
+import { paginate } from 'lib/utils/pagination';
+
+import { toTitleCase } from 'lib/utils/toTitleCase';
 
 export default async function Page({
 	searchParams,
 }: {
-	searchParams: { q: string };
+	searchParams: { q: string; p?: string };
 }): Promise<JSX.Element> {
 	const query = searchParams?.q ?? '';
 	const data = await useSearch(searchParams);
+
+	let pageIndex = searchParams?.p ?? 1;
+
+	const pageLimit = 15;
+	const pageNumbers = paginate(data.films.count, Number(pageIndex), pageLimit);
 
 	const FilterIcon = Icons['filter'];
 
@@ -99,6 +106,7 @@ export default async function Page({
 			</Collapsible>
 
 			{data!.films ? <FilmsTable data={data!.films.results} /> : null}
+			<Pagination pages={pageNumbers} pageIndex={pageIndex} />
 		</>
 	);
 }

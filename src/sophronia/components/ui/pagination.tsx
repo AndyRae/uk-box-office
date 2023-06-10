@@ -1,5 +1,5 @@
 'use client';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 
 type PaginationProps = {
 	pages: number[];
@@ -20,6 +20,8 @@ export const Pagination = ({
 }: PaginationProps): JSX.Element => {
 	const router = useRouter();
 	const pathName = usePathname();
+	const searchParams = useSearchParams();
+
 	let pageNumber: number;
 	if (typeof pageIndex === 'string') {
 		pageNumber = parseInt(pageIndex, 10);
@@ -28,7 +30,19 @@ export const Pagination = ({
 	}
 
 	const setPageIndex = (pageNumber: number) => {
-		router.push(pathName + `?p=${pageNumber}`);
+		// Preserve any existing url params
+		const queryParams = new URLSearchParams();
+
+		for (const [key, value] of searchParams.entries()) {
+			queryParams.append(key, value);
+		}
+
+		// Remove any existing page parameter
+		queryParams.delete('p');
+		queryParams.append('p', pageNumber.toString());
+
+		const url = `${pathName}?${queryParams.toString()}`;
+		router.push(url);
 	};
 
 	return (

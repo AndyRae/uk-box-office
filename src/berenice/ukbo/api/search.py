@@ -17,7 +17,7 @@ def all() -> Response:
         JSON response of search results.
     """
     query = request.args.get("q", None)
-    page = request.args.get("page", 1)
+    page = request.args.get("p", 1)
 
     if not query:
         return jsonify(

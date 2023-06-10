@@ -29,6 +29,7 @@ interface SearchParams {
 	country?: string;
 	max_box?: string;
 	min_box?: string;
+	p?: string;
 }
 
 /**
@@ -50,31 +51,18 @@ const fetchKeys = {
 export const useSearch = async (
 	searchParams: SearchParams
 ): Promise<SearchResults> => {
-	const { q, distributor, country, max_box, min_box } = searchParams;
+	const { q, distributor, country, max_box, min_box, p } = searchParams;
 	const urlSearchParams = new URLSearchParams();
 
 	// Add query parameter
 	urlSearchParams.append('q', q);
 
-	// Add distributor parameter if provided
-	if (distributor) {
-		urlSearchParams.append('distributor', distributor);
-	}
-
-	// Add country parameter if provided
-	if (country) {
-		urlSearchParams.append('country', country);
-	}
-
-	// Add min box if provided
-	if (min_box) {
-		urlSearchParams.append('min_box', min_box);
-	}
-
-	// Add max box if provided
-	if (max_box) {
-		urlSearchParams.append('max_box', max_box);
-	}
+	// Add parameters if provided
+	distributor && urlSearchParams.append('distributor', distributor);
+	country && urlSearchParams.append('country', country);
+	min_box && urlSearchParams.append('min_box', min_box);
+	max_box && urlSearchParams.append('max_box', max_box);
+	p && urlSearchParams.append('p', p);
 
 	const res = await fetch(fetchKeys.search(urlSearchParams.toString()), {
 		cache: 'no-store',
