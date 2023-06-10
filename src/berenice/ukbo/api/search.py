@@ -26,6 +26,9 @@ def all() -> Response:
             countries=[],
         )
 
+    if len(query) < 3:
+        return "Query length is 3 characters or more.", 400
+
     # Build filters
     distributor = request.args.get("distributor", None)
     country = request.args.get("country", None)

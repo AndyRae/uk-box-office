@@ -19,6 +19,7 @@ interface SearchResults {
 		results: Film[];
 		distributors: Distributor[];
 		countries: Country[];
+		max_gross: number;
 	};
 }
 
@@ -26,6 +27,8 @@ interface SearchParams {
 	q: string;
 	distributor?: string;
 	country?: string;
+	max_box?: string;
+	min_box?: string;
 }
 
 /**
@@ -47,7 +50,7 @@ const fetchKeys = {
 export const useSearch = async (
 	searchParams: SearchParams
 ): Promise<SearchResults> => {
-	const { q, distributor, country } = searchParams;
+	const { q, distributor, country, max_box, min_box } = searchParams;
 	const urlSearchParams = new URLSearchParams();
 
 	// Add query parameter
@@ -61,6 +64,16 @@ export const useSearch = async (
 	// Add country parameter if provided
 	if (country) {
 		urlSearchParams.append('country', country);
+	}
+
+	// Add min box if provided
+	if (min_box) {
+		urlSearchParams.append('min_box', min_box);
+	}
+
+	// Add max box if provided
+	if (max_box) {
+		urlSearchParams.append('max_box', max_box);
 	}
 
 	const res = await fetch(fetchKeys.search(urlSearchParams.toString()), {

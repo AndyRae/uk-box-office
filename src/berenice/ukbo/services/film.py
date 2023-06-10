@@ -200,6 +200,7 @@ def search(
         query_filter.min_year is not None
         or query_filter.max_year is not None
         or query_filter.min_box is not None
+        or query_filter.max_box is not None
     ):
         query = query.join(models.Film_Week).group_by(models.Film.id)
 
@@ -226,9 +227,18 @@ def search(
     # Execute the query to retrieve all films
     all_films = query.options(joinedload(models.Film.distributor)).all()
 
+    # Find the film with the highest total_gross
+    if all_films:
+        film_with_highest_gross = max(all_films, key=lambda film: film.gross)
+
+        # Retrieve the highest total_gross value
+        highest_gross_value = film_with_highest_gross.gross
+    else:
+        highest_gross_value = 0
+
     # Get unique search metadata
     distributors = unique_distributors(all_films)
-    countries = unique(all_films)
+    countries = unique_countries(all_films)
 
     # query to paginate
     data = query.paginate(page=page, per_page=25, error_out=False)
@@ -247,17 +257,18 @@ def search(
         "results": [film_schema.dump(ix) for ix in data],
         "distributors": distributors,
         "countries": countries,
+        "max_gross": highest_gross_value,
     }
 
 
-def unique(all_films: List[models.Film]) -> List[Dict[str, Any]]:
+def unique_countries(films: List[models.Film]) -> List[Dict[str, Any]]:
     """
     Extract a set of countries from a list of films.
     """
     country_schema = CountrySchema()
 
     countries: List[Dict[str, Any]] = []
-    for film in all_films:
+    for film in films:
         if film.countries:
             countries.extend(
                 country_schema.dump(country) for country in film.countries
@@ -268,7 +279,7 @@ def unique(all_films: List[models.Film]) -> List[Dict[str, Any]]:
     return sorted(unique, key=lambda c: c["name"])
 
 
-def unique_distributors(all_films: List[models.Film]) -> List[Dict[str, Any]]:
+def unique_distributors(films: List[models.Film]) -> List[Dict[str, Any]]:
     """
     Extract a set of distributors from a list of films.
     """
@@ -276,7 +287,7 @@ def unique_distributors(all_films: List[models.Film]) -> List[Dict[str, Any]]:
 
     distributors = [
         distributor_schema.dump(film.distributor)
-        for film in all_films
+        for film in films
         if film.distributor is not None
     ]
 
