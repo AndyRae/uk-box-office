@@ -5,11 +5,6 @@ import { Country } from 'interfaces/Country';
 import { toTitleCase } from 'lib/utils/toTitleCase';
 import { Button } from 'components/ui/button-new';
 import { Slider } from 'components/ui/slider';
-import {
-	Collapsible,
-	CollapsibleContent,
-	CollapsibleTrigger,
-} from 'components/ui/collapsible';
 
 import Select from 'react-select';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
