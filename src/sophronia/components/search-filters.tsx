@@ -5,6 +5,11 @@ import { Country } from 'interfaces/Country';
 import { toTitleCase } from 'lib/utils/toTitleCase';
 import { Button } from 'components/ui/button-new';
 import { Slider } from 'components/ui/slider';
+import {
+	Collapsible,
+	CollapsibleContent,
+	CollapsibleTrigger,
+} from 'components/ui/collapsible';
 
 import Select from 'react-select';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
@@ -65,8 +70,13 @@ export const SearchFilters = ({
 				countryIds.includes(country.id.toString())
 			);
 			setCountry(mapToValues(selected));
-			console.log(countryIds);
 		}
+
+		const minBox = searchParams.get('min_box');
+		const maxBox = searchParams.get('max_box');
+
+		minBox ?? setMin([Number(minBox)]);
+		maxBox ?? setMin([Number(maxBox)]);
 	}, []);
 
 	// map to values
@@ -122,56 +132,77 @@ export const SearchFilters = ({
 
 	return (
 		<div className='flex flex-wrap pb-4 gap-4'>
-			<Select
-				isMulti
-				value={selectedDist}
-				onChange={handleOptionChange}
-				options={distOptions}
-				className='compare-select-container w-64'
-				classNamePrefix='compare-select'
-				inputId='compare-select'
-				instanceId='compare-select'
-				noOptionsMessage={() => 'Distributors...'}
-				placeholder='Filter Distributors'
-			/>
-			<Select
-				isMulti
-				value={selectedCountry}
-				onChange={handleSelectCountry}
-				options={countryOptions}
-				className='compare-select-container w-64'
-				classNamePrefix='compare-select'
-				inputId='compare-select'
-				instanceId='compare-select'
-				noOptionsMessage={() => 'Countries...'}
-				placeholder='Filter Countries'
-			/>
-			<Slider
-				className='w-32'
-				onValueChange={setMin}
-				defaultValue={[0]}
-				max={maxGross}
-				step={1}
-			/>
-			<div>£{selectedMin?.toLocaleString()}</div>
-			<Slider
-				className='w-32'
-				onValueChange={setMax}
-				defaultValue={[maxGross]}
-				max={maxGross}
-				step={1}
-			/>
-			<div>£{selectedMax?.toLocaleString()}</div>
-			<Button
-				onClick={handleFilter}
-				variant={'outline'}
-				disabled={!isFilterActive}
-			>
-				Apply
-			</Button>
-			<Button onClick={handleClearFilter} variant={'outline'}>
-				Clear
-			</Button>
+			<div className='flex flex-wrap gap-4'>
+				<Select
+					isMulti
+					value={selectedDist}
+					onChange={handleOptionChange}
+					options={distOptions}
+					className='compare-select-container w-64'
+					classNamePrefix='compare-select'
+					inputId='compare-select'
+					instanceId='compare-select'
+					noOptionsMessage={() => 'Distributors...'}
+					placeholder='Filter Distributors'
+				/>
+				<Select
+					isMulti
+					value={selectedCountry}
+					onChange={handleSelectCountry}
+					options={countryOptions}
+					className='compare-select-container w-64'
+					classNamePrefix='compare-select'
+					inputId='compare-select'
+					instanceId='compare-select'
+					noOptionsMessage={() => 'Countries...'}
+					placeholder='Filter Countries'
+				/>
+			</div>
+
+			<div className='flex flex-wrap gap-4'>
+				<div className='flex flex-col items-center'>
+					<div className='text-sm font-medium'>Minimum Box Office</div>
+					<Slider
+						className='w-32'
+						onValueChange={setMin}
+						defaultValue={[0]}
+						max={maxGross}
+						step={1}
+					/>
+					<div className='text-sm font-medium'>
+						£{selectedMin ? selectedMin?.toLocaleString() : 0}
+					</div>
+				</div>
+				<div className='flex flex-col items-center'>
+					<div className='text-sm font-medium'>Maximum Box Office</div>
+					<Slider
+						className='w-32'
+						onValueChange={setMax}
+						defaultValue={[maxGross]}
+						max={maxGross}
+						step={1}
+					/>
+					<div className='text-sm font-medium'>
+						£
+						{selectedMax
+							? selectedMax?.toLocaleString()
+							: maxGross.toLocaleString()}
+					</div>
+				</div>
+			</div>
+
+			<div className='flex flex-wrap gap-4'>
+				<Button
+					onClick={handleFilter}
+					variant={'outline'}
+					disabled={!isFilterActive}
+				>
+					Apply
+				</Button>
+				<Button onClick={handleClearFilter} variant={'outline'}>
+					Clear
+				</Button>
+			</div>
 		</div>
 	);
 };
