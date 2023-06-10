@@ -14,6 +14,8 @@ import {
 } from 'components/ui/collapsible';
 
 import { toTitleCase } from 'lib/utils/toTitleCase';
+import { Icons } from 'components/icons';
+import { Button } from 'components/ui/button-new';
 
 export default async function Page({
 	searchParams,
@@ -22,6 +24,8 @@ export default async function Page({
 }): Promise<JSX.Element> {
 	const query = searchParams?.q ?? '';
 	const data = await useSearch(searchParams);
+
+	const FilterIcon = Icons['filter'];
 
 	return (
 		<>
@@ -78,7 +82,12 @@ export default async function Page({
 			)}
 
 			<Collapsible>
-				<CollapsibleTrigger>Filters</CollapsibleTrigger>
+				<CollapsibleTrigger>
+					<Button variant={'secondary'}>
+						Filters
+						<FilterIcon />
+					</Button>
+				</CollapsibleTrigger>
 				<CollapsibleContent>
 					<SearchFilters
 						query={query}

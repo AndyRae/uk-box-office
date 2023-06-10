@@ -127,6 +127,7 @@ export const SearchFilters = ({
 		setDistributors([]);
 		setCountry([]);
 		setMax(undefined);
+		setMin(undefined);
 		router.push(pathName + `?q=${query}`);
 	};
 

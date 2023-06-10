@@ -6,6 +6,7 @@ import {
 	AiOutlineArrowDown,
 	AiOutlineArrowLeft,
 	AiOutlineArrowRight,
+	AiOutlineFilter,
 } from 'react-icons/ai';
 import { BiNetworkChart, BiCalendarAlt } from 'react-icons/bi';
 import { BsListOl, BsFileEarmarkSpreadsheet } from 'react-icons/bs';
@@ -56,4 +57,5 @@ export const Icons = {
 	status: TbActivityHeartbeat,
 	chevronDown: FiChevronDown,
 	calendar: BiCalendarAlt,
+	filter: AiOutlineFilter,
 };
