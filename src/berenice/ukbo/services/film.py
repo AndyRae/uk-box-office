@@ -230,7 +230,15 @@ def search(
 def add_filters(
     query: flask_sqlalchemy.query.Query, query_filter: QueryFilter
 ) -> flask_sqlalchemy.query.Query:
-    """ """
+    """
+    Adds filters and sorting to a query if they are present.
+
+    Args:
+        query: The query that will be executed.
+        query_filter: The set of filters to apply
+
+    Returns: The query with filters applied.
+    """
     if query_filter.distributor_id is not None:
         query = query.filter(
             models.Film.distributor_id.in_(query_filter.distributor_id)
