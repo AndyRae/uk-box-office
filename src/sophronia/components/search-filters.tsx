@@ -102,33 +102,43 @@ export const SearchFilters = ({
 		const countryIds = selectedCountry.map((country) => country.value);
 
 		const queryParams = new URLSearchParams();
-		queryParams.append('q', query);
+
+		// Preserve any existing params
+		for (const [key, value] of searchParams.entries()) {
+			queryParams.append(key, value);
+		}
 
 		if (distIds.length > 0) {
+			queryParams.delete('distributor');
 			queryParams.append('distributor', distIds.join(','));
 		}
 
 		if (countryIds.length > 0) {
+			queryParams.delete('country');
 			queryParams.append('country', countryIds.join(','));
 		}
 
 		if (selectedMinBox) {
 			if (selectedMinBox[0] != 0) {
+				queryParams.delete('min_box');
 				queryParams.append('min_box', selectedMinBox[0].toString());
 			}
 		}
 
 		if (selectedMaxBox) {
 			if (selectedMaxBox[0] != maxGross) {
+				queryParams.delete('max_box');
 				queryParams.append('max_box', selectedMaxBox[0].toString());
 			}
 		}
 
 		if (selectedMinYear) {
+			queryParams.delete('min_year');
 			queryParams.append('min_year', selectedMinYear[0].toString());
 		}
 
 		if (selectedMaxYear) {
+			queryParams.delete('max_year');
 			queryParams.append('max_year', selectedMaxYear[0].toString());
 		}
 
