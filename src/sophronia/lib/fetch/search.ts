@@ -30,6 +30,8 @@ interface SearchParams {
 	max_box?: string;
 	min_box?: string;
 	p?: string;
+	min_year?: string;
+	max_year?: string;
 }
 
 /**
@@ -51,7 +53,8 @@ const fetchKeys = {
 export const useSearch = async (
 	searchParams: SearchParams
 ): Promise<SearchResults> => {
-	const { q, distributor, country, max_box, min_box, p } = searchParams;
+	const { q, distributor, country, min_box, max_box, min_year, max_year, p } =
+		searchParams;
 	const urlSearchParams = new URLSearchParams();
 
 	// Add query parameter
@@ -62,6 +65,8 @@ export const useSearch = async (
 	country && urlSearchParams.append('country', country);
 	min_box && urlSearchParams.append('min_box', min_box);
 	max_box && urlSearchParams.append('max_box', max_box);
+	min_year && urlSearchParams.append('min_year', min_year);
+	max_year && urlSearchParams.append('max_year', max_year);
 	p && urlSearchParams.append('p', p);
 
 	const res = await fetch(fetchKeys.search(urlSearchParams.toString()), {

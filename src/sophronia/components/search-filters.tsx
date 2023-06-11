@@ -39,14 +39,18 @@ export const SearchFilters = ({
 
 	const [selectedDist, setDistributors] = useState<SelectOption[]>([]);
 	const [selectedCountry, setCountry] = useState<SelectOption[]>([]);
-	const [selectedMin, setMin] = useState<number[]>();
-	const [selectedMax, setMax] = useState<number[]>();
+	const [selectedMinBox, setMinBox] = useState<number[]>();
+	const [selectedMaxBox, setMaxBox] = useState<number[]>();
+	const [selectedMinYear, setMinYear] = useState<number[]>();
+	const [selectedMaxYear, setMaxYear] = useState<number[]>();
 
 	const isFilterActive =
 		selectedDist.length > 0 ||
 		selectedCountry.length > 0 ||
-		selectedMin ||
-		selectedMax;
+		selectedMinBox ||
+		selectedMaxBox ||
+		selectedMinYear ||
+		selectedMaxYear;
 
 	// Run on start to set state, if already filtered.
 	useEffect(() => {
@@ -69,9 +73,15 @@ export const SearchFilters = ({
 
 		const minBox = searchParams.get('min_box');
 		const maxBox = searchParams.get('max_box');
+		const minYear = searchParams.get('min_year');
+		const maxYear = searchParams.get('max_year');
 
-		minBox ?? setMin([Number(minBox)]);
-		maxBox ?? setMin([Number(maxBox)]);
+		maxBox && console.log(Number(maxBox));
+
+		minBox && setMinBox([Number(minBox)]);
+		maxBox && setMaxBox([Number(maxBox)]);
+		minYear && setMinYear([Number(minYear)]);
+		maxYear && setMaxYear([Number(maxYear)]);
 	}, []);
 
 	// map to values
@@ -102,16 +112,24 @@ export const SearchFilters = ({
 			queryParams.append('country', countryIds.join(','));
 		}
 
-		if (selectedMin) {
-			if (maxGross != selectedMin[0]) {
-				queryParams.append('min_box', selectedMin[0].toString());
+		if (selectedMinBox) {
+			if (selectedMinBox[0] != 0) {
+				queryParams.append('min_box', selectedMinBox[0].toString());
 			}
 		}
 
-		if (selectedMax) {
-			if (maxGross != selectedMax[0]) {
-				queryParams.append('max_box', selectedMax[0].toString());
+		if (selectedMaxBox) {
+			if (selectedMaxBox[0] != maxGross) {
+				queryParams.append('max_box', selectedMaxBox[0].toString());
 			}
+		}
+
+		if (selectedMinYear) {
+			queryParams.append('min_year', selectedMinYear[0].toString());
+		}
+
+		if (selectedMaxYear) {
+			queryParams.append('max_year', selectedMaxYear[0].toString());
 		}
 
 		const url = `${pathName}?${queryParams.toString()}`;
@@ -121,8 +139,8 @@ export const SearchFilters = ({
 	const handleClearFilter = async () => {
 		setDistributors([]);
 		setCountry([]);
-		setMax(undefined);
-		setMin(undefined);
+		setMaxBox(undefined);
+		setMinBox(undefined);
 		router.push(pathName + `?q=${query}`);
 	};
 
@@ -160,29 +178,61 @@ export const SearchFilters = ({
 					<div className='text-sm font-medium'>Minimum Box Office</div>
 					<Slider
 						className='w-32'
-						onValueChange={setMin}
+						onValueChange={setMinBox}
 						defaultValue={[0]}
 						max={maxGross}
 						step={1}
 					/>
 					<div className='text-sm font-medium'>
-						£{selectedMin ? selectedMin?.toLocaleString() : 0}
+						£{selectedMinBox ? selectedMinBox?.toLocaleString() : 0}
 					</div>
 				</div>
 				<div className='flex flex-col items-center'>
 					<div className='text-sm font-medium'>Maximum Box Office</div>
 					<Slider
 						className='w-32'
-						onValueChange={setMax}
+						onValueChange={setMaxBox}
 						defaultValue={[maxGross]}
 						max={maxGross}
 						step={1}
 					/>
 					<div className='text-sm font-medium'>
 						£
-						{selectedMax
-							? selectedMax?.toLocaleString()
+						{selectedMaxBox
+							? // ? selectedMaxBox?.toLocaleString()
+							  'fuck'
 							: maxGross.toLocaleString()}
+					</div>
+				</div>
+			</div>
+
+			<div className='flex flex-wrap gap-4'>
+				<div className='flex flex-col items-center'>
+					<div className='text-sm font-medium'>Minimum Year</div>
+					<Slider
+						className='w-32'
+						onValueChange={setMinYear}
+						defaultValue={[1980]}
+						min={1980}
+						max={selectedMaxYear ? selectedMaxYear[0] : 2023}
+						step={1}
+					/>
+					<div className='text-sm font-medium'>
+						{selectedMinYear ? selectedMinYear : 1980}
+					</div>
+				</div>
+				<div className='flex flex-col items-center'>
+					<div className='text-sm font-medium'>Maximum Year</div>
+					<Slider
+						className='w-32'
+						onValueChange={setMaxYear}
+						defaultValue={[2023]}
+						min={selectedMinYear ? selectedMinYear[0] : 1981}
+						max={2023}
+						step={1}
+					/>
+					<div className='text-sm font-medium'>
+						{selectedMaxYear ? selectedMaxYear : 2023}
 					</div>
 				</div>
 			</div>

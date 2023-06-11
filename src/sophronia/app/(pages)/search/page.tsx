@@ -90,10 +90,10 @@ export default async function Page({
 
 			<Collapsible>
 				<CollapsibleTrigger>
-					<Button variant={'secondary'}>
-						Filters
-						<FilterIcon />
-					</Button>
+					{/* <Button variant={'secondary'}> */}
+					Filters
+					<FilterIcon />
+					{/* </Button> */}
 				</CollapsibleTrigger>
 				<CollapsibleContent>
 					<SearchFilters
