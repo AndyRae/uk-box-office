@@ -185,9 +185,9 @@ export const SearchFilters = ({
 
 			<BoxOfficeFilters
 				selectedMinBox={selectedMinBox}
-				setMinBox={setMinYear}
+				setMinBox={setMinBox}
 				selectedMaxBox={selectedMaxBox}
-				setMaxBox={setMaxYear}
+				setMaxBox={setMaxBox}
 				maxGross={maxGross}
 			/>
 
