@@ -155,7 +155,7 @@ export const SearchFilters = ({
 	};
 
 	return (
-		<div className='flex flex-wrap pb-4 gap-4'>
+		<div className='flex flex-col pb-4 gap-4'>
 			<div className='flex flex-wrap gap-4'>
 				<Select
 					isMulti
@@ -206,24 +206,12 @@ export const SearchFilters = ({
 				/>
 			</div>
 
-			<div className='flex flex-wrap gap-4'>
-				<SliderWrapper
-					title='Minimum Year'
-					label={selectedMinYear ? selectedMinYear : 1980}
-					onValueChange={setMinYear}
-					defaultValue={[1980]}
-					min={1980}
-					max={selectedMaxYear ? selectedMaxYear[0] : 2023}
-				/>
-				<SliderWrapper
-					title='Maximum Year'
-					label={selectedMaxYear ? selectedMaxYear : 2023}
-					onValueChange={setMaxYear}
-					defaultValue={[2023]}
-					min={selectedMinYear ? selectedMinYear[0] : 1981}
-					max={2023}
-				/>
-			</div>
+			<YearFilters
+				selectedMinYear={selectedMinYear}
+				setMinYear={setMinYear}
+				selectedMaxYear={selectedMaxYear}
+				setMaxYear={setMaxYear}
+			/>
 
 			<div className='flex flex-wrap gap-4'>
 				<Button
@@ -270,6 +258,40 @@ const SliderWrapper = ({
 				step={step}
 			/>
 			<div className='text-sm font-medium'>{label}</div>
+		</div>
+	);
+};
+
+const YearFilters = ({
+	selectedMinYear,
+	setMinYear,
+	selectedMaxYear,
+	setMaxYear,
+}: {
+	selectedMinYear?: number[];
+	setMinYear: (value: number[]) => void;
+	selectedMaxYear?: number[];
+	setMaxYear: (value: number[]) => void;
+}) => {
+	return (
+		<div className='flex flex-wrap gap-4'>
+			<SliderWrapper
+				title='Minimum Year'
+				label={selectedMinYear ? selectedMinYear : 1980}
+				onValueChange={setMinYear}
+				defaultValue={[1980]}
+				min={1980}
+				max={selectedMaxYear ? selectedMaxYear[0] : 2023}
+			/>
+
+			<SliderWrapper
+				title='Maximum Year'
+				label={selectedMaxYear ? selectedMaxYear : 2023}
+				onValueChange={setMaxYear}
+				defaultValue={[2023]}
+				min={selectedMinYear ? selectedMinYear[0] : 1981}
+				max={2023}
+			/>
 		</div>
 	);
 };
