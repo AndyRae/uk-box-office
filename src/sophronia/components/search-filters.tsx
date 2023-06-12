@@ -184,67 +184,45 @@ export const SearchFilters = ({
 			</div>
 
 			<div className='flex flex-wrap gap-4'>
-				<div className='flex flex-col items-center'>
-					<div className='text-sm font-medium'>Minimum Box Office</div>
-					<Slider
-						className='w-32'
-						onValueChange={setMinBox}
-						defaultValue={[0]}
-						max={maxGross}
-						step={1}
-					/>
-					<div className='text-sm font-medium'>
-						£{selectedMinBox ? selectedMinBox?.toLocaleString() : 0}
-					</div>
-				</div>
-				<div className='flex flex-col items-center'>
-					<div className='text-sm font-medium'>Maximum Box Office</div>
-					<Slider
-						className='w-32'
-						onValueChange={setMaxBox}
-						defaultValue={[maxGross]}
-						max={maxGross}
-						step={1}
-					/>
-					<div className='text-sm font-medium'>
-						£
-						{selectedMaxBox
-							? // ? selectedMaxBox?.toLocaleString()
-							  'fuck'
-							: maxGross.toLocaleString()}
-					</div>
-				</div>
+				<SliderWrapper
+					title='Minimum Box Office'
+					label={selectedMinBox ? selectedMinBox?.toLocaleString() : 0}
+					onValueChange={setMinBox}
+					defaultValue={[0]}
+					min={0}
+					max={selectedMaxBox ? selectedMaxBox[0] : maxGross - 1}
+				/>
+				<SliderWrapper
+					title='Maximum Box Office'
+					label={
+						selectedMaxBox
+							? selectedMaxBox?.toLocaleString()
+							: maxGross.toLocaleString()
+					}
+					onValueChange={setMaxBox}
+					defaultValue={[maxGross]}
+					min={selectedMinBox ? selectedMinBox[0] : 1}
+					max={maxGross}
+				/>
 			</div>
 
 			<div className='flex flex-wrap gap-4'>
-				<div className='flex flex-col items-center'>
-					<div className='text-sm font-medium'>Minimum Year</div>
-					<Slider
-						className='w-32'
-						onValueChange={setMinYear}
-						defaultValue={[1980]}
-						min={1980}
-						max={selectedMaxYear ? selectedMaxYear[0] : 2023}
-						step={1}
-					/>
-					<div className='text-sm font-medium'>
-						{selectedMinYear ? selectedMinYear : 1980}
-					</div>
-				</div>
-				<div className='flex flex-col items-center'>
-					<div className='text-sm font-medium'>Maximum Year</div>
-					<Slider
-						className='w-32'
-						onValueChange={setMaxYear}
-						defaultValue={[2023]}
-						min={selectedMinYear ? selectedMinYear[0] : 1981}
-						max={2023}
-						step={1}
-					/>
-					<div className='text-sm font-medium'>
-						{selectedMaxYear ? selectedMaxYear : 2023}
-					</div>
-				</div>
+				<SliderWrapper
+					title='Minimum Year'
+					label={selectedMinYear ? selectedMinYear : 1980}
+					onValueChange={setMinYear}
+					defaultValue={[1980]}
+					min={1980}
+					max={selectedMaxYear ? selectedMaxYear[0] : 2023}
+				/>
+				<SliderWrapper
+					title='Maximum Year'
+					label={selectedMaxYear ? selectedMaxYear : 2023}
+					onValueChange={setMaxYear}
+					defaultValue={[2023]}
+					min={selectedMinYear ? selectedMinYear[0] : 1981}
+					max={2023}
+				/>
 			</div>
 
 			<div className='flex flex-wrap gap-4'>
@@ -259,6 +237,39 @@ export const SearchFilters = ({
 					Clear
 				</Button>
 			</div>
+		</div>
+	);
+};
+
+const SliderWrapper = ({
+	title,
+	label,
+	onValueChange,
+	defaultValue,
+	min,
+	max,
+	step = 1,
+}: {
+	title: string;
+	label: string | any;
+	onValueChange: (value: number[]) => void;
+	defaultValue: number[];
+	min: number;
+	max: number;
+	step?: number;
+}) => {
+	return (
+		<div className='flex flex-col items-center'>
+			<div className='text-sm font-medium'>{title}</div>
+			<Slider
+				className='w-32'
+				onValueChange={onValueChange}
+				defaultValue={defaultValue}
+				min={min}
+				max={max}
+				step={step}
+			/>
+			<div className='text-sm font-medium'>{label}</div>
 		</div>
 	);
 };
