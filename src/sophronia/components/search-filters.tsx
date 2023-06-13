@@ -188,52 +188,56 @@ export const SearchFilters = ({
 
 			<Collapsible>
 				<CollapsibleTrigger>
-					Filters
-					<FilterIcon />
+					<div className='flex'>
+						Filters
+						<FilterIcon className='h-6 w-6' />
+					</div>
 				</CollapsibleTrigger>
 
 				<CollapsibleContent>
-					<div className='flex flex-wrap gap-4'>
-						<Select
-							isMulti
-							value={selectedDist}
-							onChange={handleOptionChange}
-							options={distOptions}
-							className='compare-select-container w-64'
-							classNamePrefix='compare-select'
-							inputId='compare-select'
-							instanceId='compare-select'
-							noOptionsMessage={() => 'Distributors...'}
-							placeholder='Filter Distributors'
+					<div className='flex flex-col gap-6'>
+						<div className='flex flex-wrap gap-4 pt-6'>
+							<Select
+								isMulti
+								value={selectedDist}
+								onChange={handleOptionChange}
+								options={distOptions}
+								className='compare-select-container w-64'
+								classNamePrefix='compare-select'
+								inputId='compare-select'
+								instanceId='compare-select'
+								noOptionsMessage={() => 'Distributors...'}
+								placeholder='Filter Distributors'
+							/>
+							<Select
+								isMulti
+								value={selectedCountry}
+								onChange={handleSelectCountry}
+								options={countryOptions}
+								className='compare-select-container w-64'
+								classNamePrefix='compare-select'
+								inputId='compare-select'
+								instanceId='compare-select'
+								noOptionsMessage={() => 'Countries...'}
+								placeholder='Filter Countries'
+							/>
+						</div>
+
+						<BoxOfficeFilters
+							selectedMinBox={selectedMinBox}
+							setMinBox={setMinBox}
+							selectedMaxBox={selectedMaxBox}
+							setMaxBox={setMaxBox}
+							maxGross={maxGross}
 						/>
-						<Select
-							isMulti
-							value={selectedCountry}
-							onChange={handleSelectCountry}
-							options={countryOptions}
-							className='compare-select-container w-64'
-							classNamePrefix='compare-select'
-							inputId='compare-select'
-							instanceId='compare-select'
-							noOptionsMessage={() => 'Countries...'}
-							placeholder='Filter Countries'
+
+						<YearFilters
+							selectedMinYear={selectedMinYear}
+							setMinYear={setMinYear}
+							selectedMaxYear={selectedMaxYear}
+							setMaxYear={setMaxYear}
 						/>
 					</div>
-
-					<BoxOfficeFilters
-						selectedMinBox={selectedMinBox}
-						setMinBox={setMinBox}
-						selectedMaxBox={selectedMaxBox}
-						setMaxBox={setMaxBox}
-						maxGross={maxGross}
-					/>
-
-					<YearFilters
-						selectedMinYear={selectedMinYear}
-						setMinYear={setMinYear}
-						selectedMaxYear={selectedMaxYear}
-						setMaxYear={setMaxYear}
-					/>
 				</CollapsibleContent>
 			</Collapsible>
 		</div>
@@ -351,7 +355,7 @@ const SliderWrapper = ({
 	step?: number;
 }) => {
 	return (
-		<div className='flex flex-col items-center'>
+		<div className='flex flex-col items-center gap-2'>
 			<div className='text-sm font-medium'>{title}</div>
 			<Slider
 				className='w-32'
