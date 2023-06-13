@@ -1,14 +1,31 @@
 'use client';
 
+import { useState, useEffect } from 'react';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import Select from 'react-select';
+
 import { Distributor } from 'interfaces/Distributor';
 import { Country } from 'interfaces/Country';
+
 import { toTitleCase } from 'lib/utils/toTitleCase';
+
+import { Icons } from 'components/icons';
 import { Button } from 'components/ui/button-new';
 import { Slider } from 'components/ui/slider';
-
-import Select from 'react-select';
-import { useRouter, usePathname, useSearchParams } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import {
+	Select as SelectWrap,
+	SelectContent,
+	SelectGroup,
+	SelectItem,
+	SelectLabel,
+	SelectTrigger,
+	SelectValue,
+} from 'components/ui/select';
+import {
+	Collapsible,
+	CollapsibleContent,
+	CollapsibleTrigger,
+} from 'components/ui/collapsible';
 
 type SelectOption = {
 	value: string;
@@ -36,6 +53,8 @@ export const SearchFilters = ({
 	const router = useRouter();
 	const pathName = usePathname();
 	const searchParams = useSearchParams();
+
+	const FilterIcon = Icons['filter'];
 
 	const [selectedDist, setDistributors] = useState<SelectOption[]>([]);
 	const [selectedCountry, setCountry] = useState<SelectOption[]>([]);
@@ -157,46 +176,59 @@ export const SearchFilters = ({
 	return (
 		<div className='flex flex-col pb-4 gap-4'>
 			<div className='flex flex-wrap gap-4'>
-				<Select
-					isMulti
-					value={selectedDist}
-					onChange={handleOptionChange}
-					options={distOptions}
-					className='compare-select-container w-64'
-					classNamePrefix='compare-select'
-					inputId='compare-select'
-					instanceId='compare-select'
-					noOptionsMessage={() => 'Distributors...'}
-					placeholder='Filter Distributors'
-				/>
-				<Select
-					isMulti
-					value={selectedCountry}
-					onChange={handleSelectCountry}
-					options={countryOptions}
-					className='compare-select-container w-64'
-					classNamePrefix='compare-select'
-					inputId='compare-select'
-					instanceId='compare-select'
-					noOptionsMessage={() => 'Countries...'}
-					placeholder='Filter Countries'
-				/>
+				<SortSelect def='Name Ascending' />
 			</div>
 
-			<BoxOfficeFilters
-				selectedMinBox={selectedMinBox}
-				setMinBox={setMinBox}
-				selectedMaxBox={selectedMaxBox}
-				setMaxBox={setMaxBox}
-				maxGross={maxGross}
-			/>
+			<Collapsible>
+				<CollapsibleTrigger>
+					Filters
+					<FilterIcon />
+				</CollapsibleTrigger>
 
-			<YearFilters
-				selectedMinYear={selectedMinYear}
-				setMinYear={setMinYear}
-				selectedMaxYear={selectedMaxYear}
-				setMaxYear={setMaxYear}
-			/>
+				<CollapsibleContent>
+					<div className='flex flex-wrap gap-4'>
+						<Select
+							isMulti
+							value={selectedDist}
+							onChange={handleOptionChange}
+							options={distOptions}
+							className='compare-select-container w-64'
+							classNamePrefix='compare-select'
+							inputId='compare-select'
+							instanceId='compare-select'
+							noOptionsMessage={() => 'Distributors...'}
+							placeholder='Filter Distributors'
+						/>
+						<Select
+							isMulti
+							value={selectedCountry}
+							onChange={handleSelectCountry}
+							options={countryOptions}
+							className='compare-select-container w-64'
+							classNamePrefix='compare-select'
+							inputId='compare-select'
+							instanceId='compare-select'
+							noOptionsMessage={() => 'Countries...'}
+							placeholder='Filter Countries'
+						/>
+					</div>
+
+					<BoxOfficeFilters
+						selectedMinBox={selectedMinBox}
+						setMinBox={setMinBox}
+						selectedMaxBox={selectedMaxBox}
+						setMaxBox={setMaxBox}
+						maxGross={maxGross}
+					/>
+
+					<YearFilters
+						selectedMinYear={selectedMinYear}
+						setMinYear={setMinYear}
+						selectedMaxYear={selectedMaxYear}
+						setMaxYear={setMaxYear}
+					/>
+				</CollapsibleContent>
+			</Collapsible>
 
 			<div className='flex flex-wrap gap-4'>
 				<Button
@@ -211,6 +243,25 @@ export const SearchFilters = ({
 				</Button>
 			</div>
 		</div>
+	);
+};
+
+const SortSelect = ({ def }: { def: any }) => {
+	return (
+		<SelectWrap>
+			<SelectTrigger className='w-[180px]'>
+				<SelectValue placeholder={def} />
+			</SelectTrigger>
+			<SelectContent>
+				<SelectGroup>
+					<SelectLabel>Sort</SelectLabel>
+					<SelectItem value='ascName'>Name Ascending</SelectItem>
+					<SelectItem value='descName'>Name Descending</SelectItem>
+					<SelectItem value='ascBox'>Box Office Low to High</SelectItem>
+					<SelectItem value='descBox'>Box Office High to Low</SelectItem>
+				</SelectGroup>
+			</SelectContent>
+		</SelectWrap>
 	);
 };
 

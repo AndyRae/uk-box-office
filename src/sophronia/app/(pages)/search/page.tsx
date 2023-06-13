@@ -1,23 +1,17 @@
 import Link from 'next/link';
-import { useSearch } from 'lib/fetch/search';
-import { FilmsTable } from 'components/tables/films-table';
-import { Searchbar } from 'components/search';
-import { PageTitle } from 'components/ui/page-title';
 
 import { Distributor } from 'interfaces/Distributor';
 import { Country } from 'interfaces/Country';
-import { SearchFilters } from 'components/search-filters';
-import {
-	Collapsible,
-	CollapsibleContent,
-	CollapsibleTrigger,
-} from 'components/ui/collapsible';
-import { Icons } from 'components/icons';
-import { Button } from 'components/ui/button-new';
-import { Pagination } from 'components/ui/pagination';
-import { paginate } from 'lib/utils/pagination';
 
+import { paginate } from 'lib/utils/pagination';
 import { toTitleCase } from 'lib/utils/toTitleCase';
+import { useSearch } from 'lib/fetch/search';
+
+import { FilmsTable } from 'components/tables/films-table';
+import { Searchbar } from 'components/search';
+import { PageTitle } from 'components/ui/page-title';
+import { SearchFilters } from 'components/search-filters';
+import { Pagination } from 'components/ui/pagination';
 
 export default async function Page({
 	searchParams,
@@ -31,8 +25,6 @@ export default async function Page({
 
 	const pageLimit = 15;
 	const pageNumbers = paginate(data.films.count, Number(pageIndex), pageLimit);
-
-	const FilterIcon = Icons['filter'];
 
 	return (
 		<>
@@ -88,22 +80,12 @@ export default async function Page({
 				<h2 className='text-2xl font-bold py-5 capitalize'>Films</h2>
 			)}
 
-			<Collapsible>
-				<CollapsibleTrigger>
-					{/* <Button variant={'secondary'}> */}
-					Filters
-					<FilterIcon />
-					{/* </Button> */}
-				</CollapsibleTrigger>
-				<CollapsibleContent>
-					<SearchFilters
-						query={query}
-						distributors={data.films.distributors}
-						countries={data.films.countries}
-						maxGross={data.films.max_gross}
-					/>
-				</CollapsibleContent>
-			</Collapsible>
+			<SearchFilters
+				query={query}
+				distributors={data.films.distributors}
+				countries={data.films.countries}
+				maxGross={data.films.max_gross}
+			/>
 
 			{data!.films ? <FilmsTable data={data!.films.results} /> : null}
 			<Pagination pages={pageNumbers} pageIndex={pageIndex} />
