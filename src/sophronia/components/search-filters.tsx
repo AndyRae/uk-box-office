@@ -177,6 +177,13 @@ export const SearchFilters = ({
 		<div className='flex flex-col pb-4 gap-4'>
 			<div className='flex flex-wrap gap-4'>
 				<SortSelect def='Name Ascending' />
+
+				<Button onClick={handleFilter} variant={'outline'}>
+					Apply
+				</Button>
+				<Button onClick={handleClearFilter} variant={'outline'}>
+					Clear
+				</Button>
 			</div>
 
 			<Collapsible>
@@ -229,19 +236,6 @@ export const SearchFilters = ({
 					/>
 				</CollapsibleContent>
 			</Collapsible>
-
-			<div className='flex flex-wrap gap-4'>
-				<Button
-					onClick={handleFilter}
-					variant={'outline'}
-					disabled={!isFilterActive}
-				>
-					Apply
-				</Button>
-				<Button onClick={handleClearFilter} variant={'outline'}>
-					Clear
-				</Button>
-			</div>
 		</div>
 	);
 };
@@ -249,7 +243,7 @@ export const SearchFilters = ({
 const SortSelect = ({ def }: { def: any }) => {
 	return (
 		<SelectWrap>
-			<SelectTrigger className='w-[180px]'>
+			<SelectTrigger className='w-[240px]'>
 				<SelectValue placeholder={def} />
 			</SelectTrigger>
 			<SelectContent>
