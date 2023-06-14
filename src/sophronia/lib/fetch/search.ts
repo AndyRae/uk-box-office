@@ -29,6 +29,10 @@ interface SearchParams {
 	country?: string;
 	max_box?: string;
 	min_box?: string;
+	p?: string;
+	min_year?: string;
+	max_year?: string;
+	sort?: string;
 }
 
 /**
@@ -50,31 +54,31 @@ const fetchKeys = {
 export const useSearch = async (
 	searchParams: SearchParams
 ): Promise<SearchResults> => {
-	const { q, distributor, country, max_box, min_box } = searchParams;
+	const {
+		q,
+		distributor,
+		country,
+		min_box: minBox,
+		max_box: maxBox,
+		min_year: minYear,
+		max_year: maxYear,
+		p: page,
+		sort: sort,
+	} = searchParams;
 	const urlSearchParams = new URLSearchParams();
 
 	// Add query parameter
 	urlSearchParams.append('q', q);
 
-	// Add distributor parameter if provided
-	if (distributor) {
-		urlSearchParams.append('distributor', distributor);
-	}
-
-	// Add country parameter if provided
-	if (country) {
-		urlSearchParams.append('country', country);
-	}
-
-	// Add min box if provided
-	if (min_box) {
-		urlSearchParams.append('min_box', min_box);
-	}
-
-	// Add max box if provided
-	if (max_box) {
-		urlSearchParams.append('max_box', max_box);
-	}
+	// Add parameters if provided
+	distributor && urlSearchParams.append('distributor', distributor);
+	country && urlSearchParams.append('country', country);
+	minBox && urlSearchParams.append('min_box', minBox);
+	maxBox && urlSearchParams.append('max_box', maxBox);
+	minYear && urlSearchParams.append('min_year', minYear);
+	maxYear && urlSearchParams.append('max_year', maxYear);
+	page && urlSearchParams.append('p', page);
+	sort && urlSearchParams.append('sort', sort);
 
 	const res = await fetch(fetchKeys.search(urlSearchParams.toString()), {
 		cache: 'no-store',

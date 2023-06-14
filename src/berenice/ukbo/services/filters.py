@@ -26,6 +26,7 @@ class QueryFilter:
         max_year (Optional[int]): High of the year number to filter by.
         min_box (Optional[int]): Low of the box office number to filter by.
         max_box (Optional[int]): High of the box office number to filter by.
+        sort (Optional[str]): Field / order to sort by.
     """
 
     def __init__(
@@ -36,6 +37,7 @@ class QueryFilter:
         max_year: Optional[int] = None,
         min_box: Optional[int] = None,
         max_box: Optional[int] = None,
+        sort: Optional[str] = None,
     ):
         self.distributor_id = distributor_id
         self.country_ids = country_ids
@@ -43,3 +45,4 @@ class QueryFilter:
         self.max_year = max_year
         self.min_box = min_box
         self.max_box = max_box
+        self.sort = sort

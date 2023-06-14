@@ -45,9 +45,7 @@ def all(
 
     if query_filter.distributor_id is not None:
         query = query.join(models.Film).join(models.Distributor)
-        query = query.filter(
-            models.Distributor.id == query_filter.distributor_id
-        )
+        query.filter(models.Distributor.id.in_(query_filter.distributor_id))
 
     if query_filter.country_ids is not None:
         query = (
