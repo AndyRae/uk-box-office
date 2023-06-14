@@ -32,8 +32,7 @@ interface SearchParams {
 	p?: string;
 	min_year?: string;
 	max_year?: string;
-	sort_asc?: string;
-	sort_desc?: string;
+	sort?: string;
 }
 
 /**
@@ -64,8 +63,7 @@ export const useSearch = async (
 		min_year: minYear,
 		max_year: maxYear,
 		p: page,
-		sort_asc: sortAsc,
-		sort_desc: sortDesc,
+		sort: sort,
 	} = searchParams;
 	const urlSearchParams = new URLSearchParams();
 
@@ -80,8 +78,7 @@ export const useSearch = async (
 	minYear && urlSearchParams.append('min_year', minYear);
 	maxYear && urlSearchParams.append('max_year', maxYear);
 	page && urlSearchParams.append('p', page);
-	sortAsc && urlSearchParams.append('sort_asc', sortAsc);
-	sortDesc && urlSearchParams.append('sort_desc', sortDesc);
+	sort && urlSearchParams.append('sort', sort);
 
 	const res = await fetch(fetchKeys.search(urlSearchParams.toString()), {
 		cache: 'no-store',

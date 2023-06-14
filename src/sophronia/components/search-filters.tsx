@@ -62,6 +62,7 @@ export const SearchFilters = ({
 	const [selectedMaxBox, setMaxBox] = useState<number[]>();
 	const [selectedMinYear, setMinYear] = useState<number[]>();
 	const [selectedMaxYear, setMaxYear] = useState<number[]>();
+	const [selectedSort, setSort] = useState<string>();
 
 	const isFilterActive =
 		selectedDist.length > 0 ||
@@ -127,6 +128,11 @@ export const SearchFilters = ({
 			queryParams.append(key, value);
 		}
 
+		if (selectedSort) {
+			queryParams.delete('sort');
+			queryParams.append('sort', selectedSort);
+		}
+
 		if (distIds.length > 0) {
 			queryParams.delete('distributor');
 			queryParams.append('distributor', distIds.join(','));
@@ -176,7 +182,7 @@ export const SearchFilters = ({
 	return (
 		<div className='flex flex-col pb-4 gap-4'>
 			<div className='flex flex-wrap gap-4'>
-				<SortSelect def='Name Ascending' />
+				<SortSelect def='Name Ascending' setSort={setSort} />
 
 				<Button onClick={handleFilter} variant={'default'}>
 					Apply
@@ -248,19 +254,25 @@ export const SearchFilters = ({
 	);
 };
 
-const SortSelect = ({ def }: { def: any }) => {
+const SortSelect = ({
+	setSort,
+	def,
+}: {
+	setSort: (value: string) => void;
+	def: any;
+}) => {
 	return (
-		<SelectWrap>
+		<SelectWrap onValueChange={setSort}>
 			<SelectTrigger className='w-[240px]'>
 				<SelectValue placeholder={def} />
 			</SelectTrigger>
 			<SelectContent>
 				<SelectGroup>
 					<SelectLabel>Sort</SelectLabel>
-					<SelectItem value='ascName'>Name Ascending</SelectItem>
-					<SelectItem value='descName'>Name Descending</SelectItem>
-					<SelectItem value='ascBox'>Box Office Low to High</SelectItem>
-					<SelectItem value='descBox'>Box Office High to Low</SelectItem>
+					<SelectItem value='asc_name'>Name Ascending</SelectItem>
+					<SelectItem value='desc_name'>Name Descending</SelectItem>
+					<SelectItem value='asc_box'>Box Office Low to High</SelectItem>
+					<SelectItem value='desc_box'>Box Office High to Low</SelectItem>
 				</SelectGroup>
 			</SelectContent>
 		</SelectWrap>
