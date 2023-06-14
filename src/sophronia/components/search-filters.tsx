@@ -54,7 +54,7 @@ export const SearchFilters = ({
 	const pathName = usePathname();
 	const searchParams = useSearchParams();
 
-	const FilterIcon = Icons['filter'];
+	const FilterIcon = Icons['chevronDown'];
 
 	const [selectedDist, setDistributors] = useState<SelectOption[]>([]);
 	const [selectedCountry, setCountry] = useState<SelectOption[]>([]);
@@ -178,7 +178,7 @@ export const SearchFilters = ({
 			<div className='flex flex-wrap gap-4'>
 				<SortSelect def='Name Ascending' />
 
-				<Button onClick={handleFilter} variant={'outline'}>
+				<Button onClick={handleFilter} variant={'default'}>
 					Apply
 				</Button>
 				<Button onClick={handleClearFilter} variant={'outline'}>
@@ -195,7 +195,7 @@ export const SearchFilters = ({
 				</CollapsibleTrigger>
 
 				<CollapsibleContent>
-					<div className='flex flex-col gap-6'>
+					<div className='flex flex-col gap-6 pb-6'>
 						<div className='flex flex-wrap gap-4 pt-6'>
 							<Select
 								isMulti
@@ -223,20 +223,24 @@ export const SearchFilters = ({
 							/>
 						</div>
 
-						<BoxOfficeFilters
-							selectedMinBox={selectedMinBox}
-							setMinBox={setMinBox}
-							selectedMaxBox={selectedMaxBox}
-							setMaxBox={setMaxBox}
-							maxGross={maxGross}
-						/>
+						<div className='flex flex-wrap gap-4'>
+							<BoxOfficeFilters
+								selectedMinBox={selectedMinBox}
+								setMinBox={setMinBox}
+								selectedMaxBox={selectedMaxBox}
+								setMaxBox={setMaxBox}
+								maxGross={maxGross}
+							/>
 
-						<YearFilters
-							selectedMinYear={selectedMinYear}
-							setMinYear={setMinYear}
-							selectedMaxYear={selectedMaxYear}
-							setMaxYear={setMaxYear}
-						/>
+							<div className='border-r border-gray-300 pr-4'></div>
+
+							<YearFilters
+								selectedMinYear={selectedMinYear}
+								setMinYear={setMinYear}
+								selectedMaxYear={selectedMaxYear}
+								setMaxYear={setMaxYear}
+							/>
+						</div>
 					</div>
 				</CollapsibleContent>
 			</Collapsible>
@@ -275,7 +279,7 @@ const YearFilters = ({
 	setMaxYear: (value: number[]) => void;
 }) => {
 	return (
-		<div className='flex flex-wrap gap-4'>
+		<>
 			<SliderWrapper
 				title='Minimum Year'
 				label={selectedMinYear ? selectedMinYear : 1980}
@@ -293,7 +297,7 @@ const YearFilters = ({
 				min={selectedMinYear ? selectedMinYear[0] : 1981}
 				max={2023}
 			/>
-		</div>
+		</>
 	);
 };
 
@@ -311,7 +315,7 @@ const BoxOfficeFilters = ({
 	maxGross: number;
 }) => {
 	return (
-		<div className='flex flex-wrap gap-4'>
+		<>
 			<SliderWrapper
 				title='Minimum Box Office'
 				label={selectedMinBox ? selectedMinBox?.toLocaleString() : 0}
@@ -333,7 +337,7 @@ const BoxOfficeFilters = ({
 				min={selectedMinBox ? selectedMinBox[0] : 1}
 				max={maxGross}
 			/>
-		</div>
+		</>
 	);
 };
 
