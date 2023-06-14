@@ -38,8 +38,7 @@ def all() -> Response:
     max_box = request.args.get("max_box", None)
 
     # Build sorting
-    sort_asc = request.args.get("sort_asc", None)
-    sort_desc = request.args.get("sort_desc", None)
+    sort = request.args.get("sort", None)
 
     # Split the comma-separated list of country IDs into a list
     if country is not None:
@@ -55,8 +54,7 @@ def all() -> Response:
         max_year=max_year,
         min_box=min_box,
         max_box=max_box,
-        sort_asc=sort_asc,
-        sort_desc=sort_desc,
+        sort=sort,
     )
 
     films = services.film.search(query, query_filter, page=int(page))

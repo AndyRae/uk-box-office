@@ -253,8 +253,7 @@ def add_filters(
         or query_filter.max_year is not None
         or query_filter.min_box is not None
         or query_filter.max_box is not None
-        or query_filter.sort_asc is not None
-        or query_filter.sort_desc is not None
+        or query_filter.sort is not None
     ):
         query = query.join(models.Film_Week).group_by(models.Film.id)
 
@@ -278,22 +277,19 @@ def add_filters(
             func.max(models.Film_Week.total_gross) <= query_filter.max_box
         )
 
-    # apply sorting
+    # Apply sorting
     # Define the sorting options and their corresponding ordering expressions
     sorting_options = {
-        "name": models.Film.name,
-        "box": func.max(models.Film_Week.total_gross),
+        "asc_name": models.Film.name.asc(),
+        "desc_name": models.Film.name.desc(),
+        "asc_box": func.max(models.Film_Week.total_gross).asc(),
+        "desc_box": func.max(models.Film_Week.total_gross).desc(),
     }
 
-    if query_filter.sort_asc is not None:
-        sort_option = sorting_options.get(query_filter.sort_asc)
+    if query_filter.sort is not None:
+        sort_option = sorting_options.get(query_filter.sort)
         if sort_option is not None:
-            query = query.order_by(sort_option.asc())
-
-    if query_filter.sort_desc is not None:
-        sort_option = sorting_options.get(query_filter.sort_desc)
-        if sort_option is not None:
-            query = query.order_by(sort_option.desc())
+            query = query.order_by(sort_option)
 
     return query
 
