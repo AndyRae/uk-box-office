@@ -64,14 +64,6 @@ export const SearchFilters = ({
 	const [selectedMaxYear, setMaxYear] = useState<number[]>();
 	const [selectedSort, setSort] = useState<string>();
 
-	const isFilterActive =
-		selectedDist.length > 0 ||
-		selectedCountry.length > 0 ||
-		selectedMinBox ||
-		selectedMaxBox ||
-		selectedMinYear ||
-		selectedMaxYear;
-
 	// Run on start to set state, if already filtered.
 	useEffect(() => {
 		const sort = searchParams.get('sort');
@@ -120,55 +112,41 @@ export const SearchFilters = ({
 	};
 
 	const handleFilter = async () => {
-		// Add Ids to the URL
-		const distIds = selectedDist.map((distributor) => distributor.value);
-		const countryIds = selectedCountry.map((country) => country.value);
+		const filterMappings = [
+			{ filter: selectedSort, param: 'sort' },
+			{
+				filter: selectedDist,
+				param: 'distributor',
+				mapFn: (filter: SelectOption[]) => filter.map((d) => d.value),
+			},
+			{
+				filter: selectedCountry,
+				param: 'country',
+				mapFn: (filter: SelectOption[]) => filter.map((c) => c.value),
+			},
+			{ filter: selectedMinBox, param: 'min_box' },
+			{ filter: selectedMaxBox, param: 'max_box' },
+			{ filter: selectedMinYear, param: 'min_year' },
+			{ filter: selectedMaxYear, param: 'max_year' },
+		];
 
-		const queryParams = new URLSearchParams();
+		const queryParams = new URLSearchParams(searchParams);
 
-		// Preserve any existing params
-		for (const [key, value] of searchParams.entries()) {
-			queryParams.append(key, value);
-		}
-
-		if (selectedSort) {
-			queryParams.delete('sort');
-			queryParams.append('sort', selectedSort);
-		}
-
-		if (distIds.length > 0) {
-			queryParams.delete('distributor');
-			queryParams.append('distributor', distIds.join(','));
-		}
-
-		if (countryIds.length > 0) {
-			queryParams.delete('country');
-			queryParams.append('country', countryIds.join(','));
-		}
-
-		if (selectedMinBox) {
-			if (selectedMinBox[0] != 0) {
-				queryParams.delete('min_box');
-				queryParams.append('min_box', selectedMinBox[0].toString());
+		// Apply filters to queryParams based on properties.
+		filterMappings.forEach(({ filter, param, mapFn }) => {
+			if (filter) {
+				if (mapFn && filter.length > 0) {
+					const mappedFilter = mapFn(filter);
+					queryParams.set(param, mappedFilter.join(','));
+				} else if (Array.isArray(filter) && filter.length > 0) {
+					queryParams.set(param, filter[0].toString());
+				} else if (!Array.isArray(filter)) {
+					queryParams.set(param, filter);
+				}
+			} else {
+				queryParams.delete(param);
 			}
-		}
-
-		if (selectedMaxBox) {
-			if (selectedMaxBox[0] != maxGross) {
-				queryParams.delete('max_box');
-				queryParams.append('max_box', selectedMaxBox[0].toString());
-			}
-		}
-
-		if (selectedMinYear) {
-			queryParams.delete('min_year');
-			queryParams.append('min_year', selectedMinYear[0].toString());
-		}
-
-		if (selectedMaxYear) {
-			queryParams.delete('max_year');
-			queryParams.append('max_year', selectedMaxYear[0].toString());
-		}
+		});
 
 		const url = `${pathName}?${queryParams.toString()}`;
 		router.push(url);
