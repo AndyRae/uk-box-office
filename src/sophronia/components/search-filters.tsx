@@ -278,6 +278,7 @@ const YearFilters = ({
 	selectedMaxYear?: number[];
 	setMaxYear: (value: number[]) => void;
 }) => {
+	const now = new Date().getFullYear();
 	return (
 		<>
 			<SliderWrapper
@@ -286,16 +287,16 @@ const YearFilters = ({
 				onValueChange={setMinYear}
 				defaultValue={[1980]}
 				min={1980}
-				max={selectedMaxYear ? selectedMaxYear[0] : 2023}
+				max={selectedMaxYear ? selectedMaxYear[0] : now}
 			/>
 
 			<SliderWrapper
 				title='Maximum Year'
-				label={selectedMaxYear ? selectedMaxYear : 2023}
+				label={selectedMaxYear ? selectedMaxYear : now}
 				onValueChange={setMaxYear}
-				defaultValue={[2023]}
+				defaultValue={[now]}
 				min={selectedMinYear ? selectedMinYear[0] : 1981}
-				max={2023}
+				max={now}
 			/>
 		</>
 	);
