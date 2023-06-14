@@ -74,6 +74,9 @@ export const SearchFilters = ({
 
 	// Run on start to set state, if already filtered.
 	useEffect(() => {
+		const sort = searchParams.get('sort');
+		sort && setSort(sort);
+
 		const distributorIds = searchParams
 			.get('distributor')
 			?.split(',')
