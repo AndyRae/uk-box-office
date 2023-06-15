@@ -1,19 +1,30 @@
 import Link from 'next/link';
-import { useSearch } from 'lib/fetch/search';
-import { FilmsTable } from 'components/tables/films-table';
-import { Searchbar } from 'components/search';
-import { PageTitle } from 'components/ui/page-title';
 
 import { Distributor } from 'interfaces/Distributor';
 import { Country } from 'interfaces/Country';
 
+import { paginate } from 'lib/utils/pagination';
+import { toTitleCase } from 'lib/utils/toTitleCase';
+import { useSearch } from 'lib/fetch/search';
+
+import { FilmsTable } from 'components/tables/films-table';
+import { Searchbar } from 'components/search';
+import { PageTitle } from 'components/ui/page-title';
+import { SearchFilters } from 'components/search-filters';
+import { Pagination } from 'components/ui/pagination';
+
 export default async function Page({
 	searchParams,
 }: {
-	searchParams: { q?: string };
+	searchParams: { q: string; p?: string };
 }): Promise<JSX.Element> {
 	const query = searchParams?.q ?? '';
-	const data = await useSearch(query || '');
+	const data = await useSearch(searchParams);
+
+	let pageIndex = searchParams?.p ?? 1;
+
+	const pageLimit = 15;
+	const pageNumbers = paginate(data.films.count, Number(pageIndex), pageLimit);
 
 	return (
 		<>
@@ -55,7 +66,7 @@ export default async function Page({
 									href={`/distributor/${distributor.slug}`}
 									className='font-bold text-left'
 								>
-									{distributor.name}
+									{toTitleCase(distributor.name)}
 								</Link>
 							</div>
 						);
@@ -65,11 +76,19 @@ export default async function Page({
 				</div>
 			) : null}
 
-			{data!.films.length > 0 && (
+			{data!.films.results.length > 0 && (
 				<h2 className='text-2xl font-bold py-5 capitalize'>Films</h2>
 			)}
 
-			{data!.films ? <FilmsTable data={data!.films} /> : null}
+			<SearchFilters
+				query={query}
+				distributors={data.films.distributors}
+				countries={data.films.countries}
+				maxGross={data.films.max_gross}
+			/>
+
+			{data!.films ? <FilmsTable data={data!.films.results} /> : null}
+			<Pagination pages={pageNumbers} pageIndex={pageIndex} />
 		</>
 	);
 }

@@ -10,7 +10,7 @@
   /* .compare-select-container {
   } */
   .compare-select-container .compare-select__control {
-    @apply bg-white dark:bg-black;
+    @apply bg-white text-sm text-black dark:text-white dark:bg-black rounded-lg min-h-[2.5rem]
   }
 
   .compare-select-container .compare-select__control--is-focused {
@@ -22,7 +22,7 @@
   }
 
   .compare-select-container .compare-select__option {
-    @apply text-black dark:text-neutral-200 bg-neutral-100 hover:bg-neutral-200 dark:bg-black dark:hover:bg-slate-700;
+    @apply text-sm text-black dark:text-neutral-200 bg-neutral-100 hover:bg-neutral-200 dark:bg-black dark:hover:bg-slate-700;
   }
 
   .compare-select-container .compare-select__option--is-focused {

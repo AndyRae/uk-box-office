@@ -1,15 +1,25 @@
 import uuid
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 
+import flask_sqlalchemy
 import pandas as pd
 from flask import Response, abort, jsonify
 from slugify import slugify  # type: ignore
+from sqlalchemy import extract, func
+from sqlalchemy.orm import joinedload
 from ukbo import models, services
-from ukbo.dto import FilmSchema, FilmSchemaStrict, FilmSchemaValues
+from ukbo.dto import (
+    CountrySchema,
+    DistributorSchema,
+    FilmSchema,
+    FilmSchemaStrict,
+    FilmSchemaValues,
+)
 from ukbo.extensions import db
+from ukbo.services.filters import QueryFilter
 
 
-def list(page: int = 1, limit: int = 100) -> Response:
+def list_all(page: int = 1, limit: int = 100) -> Response:
     """
     Paginated list of all films.
 
@@ -159,7 +169,12 @@ def delete_film(id: int) -> bool:
         return False
 
 
-def search(search_query: str, limit: int = 15) -> Response:
+def search(
+    search_query: str,
+    query_filter: services.filters.QueryFilter = services.filters.QueryFilter(),
+    limit: int = 15,
+    page: int = 1,
+) -> Response:
     """
     Search films by name.
 
@@ -168,13 +183,150 @@ def search(search_query: str, limit: int = 15) -> Response:
 
     Returns (JSON): List of films.
     """
+    # main query
     query = db.session.query(models.Film)
     query = query.filter(models.Film.name.ilike(f"%{search_query}%"))
-    data = query.limit(limit).all()
+
+    # apply filters
+    query = add_filters(query, query_filter)
+
+    # Execute the query to retrieve all films
+    all_films = query.options(joinedload(models.Film.distributor)).all()
+
+    # # Find the film with the highest total_gross
+    if all_films:
+        film_with_highest_gross = max(all_films, key=lambda film: film.gross)
+
+        # Retrieve the highest total_gross value
+        highest_gross_value = film_with_highest_gross.gross
+    else:
+        highest_gross_value = 0
+
+    # Get unique search metadata
+    distributors = unique_distributors(all_films)
+    countries = unique_countries(all_films)
+
+    # query to paginate
+    data = query.paginate(page=page, per_page=25, error_out=False)
+    if data is None:
+        return {"none"}
+
+    next_page = (page + 1) if data.has_next else ""
+    previous_page = (page - 1) if data.has_prev else ""
 
     film_schema = FilmSchemaStrict()
 
-    return [] if data is None else [film_schema.dump(ix) for ix in data]
+    return {
+        "count": data.total,
+        "next": next_page,
+        "previous": previous_page,
+        "results": [film_schema.dump(ix) for ix in data],
+        "distributors": distributors,
+        "countries": countries,
+        "max_gross": highest_gross_value,
+    }
+
+
+def add_filters(
+    query: flask_sqlalchemy.query.Query, query_filter: QueryFilter
+) -> flask_sqlalchemy.query.Query:
+    """
+    Adds filters and sorting to a query if they are present.
+
+    Args:
+        query: The query that will be executed.
+        query_filter: The set of filters to apply
+
+    Returns: The query with filters applied.
+    """
+    if query_filter.distributor_id is not None:
+        query = query.filter(
+            models.Film.distributor_id.in_(query_filter.distributor_id)
+        )
+
+    if query_filter.country_ids is not None:
+        query = query.join(models.countries).join(models.Country)
+        query = query.filter(models.Country.id.in_(query_filter.country_ids))
+
+    if (
+        query_filter.min_year is not None
+        or query_filter.max_year is not None
+        or query_filter.min_box is not None
+        or query_filter.max_box is not None
+        or query_filter.sort is not None
+    ):
+        query = query.join(models.Film_Week).group_by(models.Film.id)
+
+    if query_filter.min_year is not None:
+        query = query.filter(
+            extract("year", models.Film_Week.date) >= query_filter.min_year
+        )
+
+    if query_filter.max_year is not None:
+        query = query.filter(
+            extract("year", models.Film_Week.date) <= query_filter.max_year
+        )
+
+    if query_filter.min_box is not None:
+        query = query.having(
+            func.max(models.Film_Week.total_gross) >= query_filter.min_box
+        )
+
+    if query_filter.max_box is not None:
+        query = query.having(
+            func.max(models.Film_Week.total_gross) <= query_filter.max_box
+        )
+
+    # Apply sorting
+    # Define the sorting options and their corresponding ordering expressions
+    sorting_options = {
+        "asc_name": models.Film.name.asc(),
+        "desc_name": models.Film.name.desc(),
+        "asc_box": func.max(models.Film_Week.total_gross).asc(),
+        "desc_box": func.max(models.Film_Week.total_gross).desc(),
+    }
+
+    if query_filter.sort is not None:
+        sort_option = sorting_options.get(query_filter.sort)
+        if sort_option is not None:
+            query = query.order_by(sort_option)
+
+    return query
+
+
+def unique_countries(films: List[models.Film]) -> List[Dict[str, Any]]:
+    """
+    Extract a set of countries from a list of films.
+    """
+    country_schema = CountrySchema()
+
+    countries: List[Dict[str, Any]] = []
+    for film in films:
+        if film.countries:
+            countries.extend(
+                country_schema.dump(country) for country in film.countries
+            )
+
+    # Get unique countries and sort them
+    unique = [dict(s) for s in {frozenset(d.items()) for d in countries}]
+    return sorted(unique, key=lambda c: c["name"])
+
+
+def unique_distributors(films: List[models.Film]) -> List[Dict[str, Any]]:
+    """
+    Extract a set of distributors from a list of films.
+    """
+    distributor_schema = DistributorSchema()
+
+    distributors = [
+        distributor_schema.dump(film.distributor)
+        for film in films
+        if film.distributor is not None
+    ]
+
+    # Get unique distributors and sort them.
+    unique = [dict(s) for s in {frozenset(d.items()) for d in distributors}]
+    return sorted(unique, key=lambda c: c["name"])
 
 
 def partial_search(search_query: str, limit: int = 15) -> Response:

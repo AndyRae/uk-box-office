@@ -12,7 +12,27 @@ import { Film } from 'interfaces/Film';
 interface SearchResults {
 	countries: Country[];
 	distributors: Distributor[];
-	films: Film[];
+	films: {
+		count: number;
+		next: number;
+		previous: number;
+		results: Film[];
+		distributors: Distributor[];
+		countries: Country[];
+		max_gross: number;
+	};
+}
+
+interface SearchParams {
+	q: string;
+	distributor?: string;
+	country?: string;
+	max_box?: string;
+	min_box?: string;
+	p?: string;
+	min_year?: string;
+	max_year?: string;
+	sort?: string;
 }
 
 /**
@@ -21,7 +41,7 @@ interface SearchResults {
  * @property {function} search - Search endpoint.
  */
 const fetchKeys = {
-	search: (query: string) => `${getApi()}/search?q=${query}`,
+	search: (query: string) => `${getApi()}/search?${query}`,
 };
 
 /**
@@ -31,7 +51,37 @@ const fetchKeys = {
  * @example
  * const { data, error } = useSearch('uk');
  */
-export const useSearch = async (query: string): Promise<SearchResults> => {
-	const res = await fetch(fetchKeys.search(query), { cache: 'no-store' });
+export const useSearch = async (
+	searchParams: SearchParams
+): Promise<SearchResults> => {
+	const {
+		q,
+		distributor,
+		country,
+		min_box: minBox,
+		max_box: maxBox,
+		min_year: minYear,
+		max_year: maxYear,
+		p: page,
+		sort: sort,
+	} = searchParams;
+	const urlSearchParams = new URLSearchParams();
+
+	// Add query parameter
+	urlSearchParams.append('q', q);
+
+	// Add parameters if provided
+	distributor && urlSearchParams.append('distributor', distributor);
+	country && urlSearchParams.append('country', country);
+	minBox && urlSearchParams.append('min_box', minBox);
+	maxBox && urlSearchParams.append('max_box', maxBox);
+	minYear && urlSearchParams.append('min_year', minYear);
+	maxYear && urlSearchParams.append('max_year', maxYear);
+	page && urlSearchParams.append('p', page);
+	sort && urlSearchParams.append('sort', sort);
+
+	const res = await fetch(fetchKeys.search(urlSearchParams.toString()), {
+		cache: 'no-store',
+	});
 	return res.json();
 };
