@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg width="100%" height="100%" viewBox="0 0 2250 2250" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-    <defs><style>.curve-1{fill:#FE7E6D}</style></defs>
+    <defs><style>.curve-1{fill:#10b981}</style></defs>
     <g transform="matrix(2.08333,0,0,2.08333,0,0)">
         <path class="curve-1" d="M-0,596.36L-0,486.403C5.544,431.541 19.293,379.086 40,330.287L40,752.475C19.293,703.676 5.544,651.222 -0,596.36Z" />
         <path class="curve-1" d="M208,969.99L208,112.773C220.885,102.816 234.231,93.426 248,84.641L248,998.121C234.231,989.337 220.885,979.947 208,969.99Z" />
