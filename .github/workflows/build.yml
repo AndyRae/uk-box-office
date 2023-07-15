@@ -3,7 +3,6 @@ name: Build frontend
 on:
   pull_request:
 
-
 jobs:
   stage:
     name: Build frontend.
@@ -17,12 +16,12 @@ jobs:
         with:
           node-version: 16
           cache: npm
-          cache-dependency-path: './src/sophronia/package-lock.json'
+          cache-dependency-path: './src/frontend/package-lock.json'
 
       - name: Install
-        run: npm ci --prefix ./src/sophronia/
+        run: npm ci --prefix ./src/frontend/
 
       - name: Build React
         env:
           NEXT_PUBLIC_BACKEND_URL: https://api.boxofficedata.co.uk/api/
-        run: CI=false npm run build --prefix ./src/sophronia/
+        run: CI=false npm run build --prefix ./src/frontend/

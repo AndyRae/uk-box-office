@@ -4,13 +4,14 @@
 	"name": "Python 3 & PostgreSQL",
 	"dockerComposeFile": "docker-compose-codespace.yml",
 	"service": "app",
-	"runServices": ["app", "db"],
+	"runServices": [
+		"app",
+		"db"
+	],
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
-	"updateContentCommand": "cd src/sophronia/ && npm install",
-
+	"updateContentCommand": "cd src/frontend/ && npm install",
 	// Leave this off - too clunky.
-	// "postStartCommand": "cd src/berenice/ && flask --debug run",
-
+	// "postStartCommand": "cd src/backend/ && flask --debug run",
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	"features": {
 		"ghcr.io/devcontainers/features/node:1": {},
@@ -18,20 +19,22 @@
 			"version": "latest"
 		}
 	},
-
-	"forwardPorts": [5432, 5000, 3000],
+	"forwardPorts": [
+		5432,
+		5000,
+		3000
+	],
 	"portsAttributes": {
 		"3000": {
-		  "label": "React"
+			"label": "React"
 		},
 		"5000": {
-		  "label": "Flask"
+			"label": "Flask"
 		},
 		"5432": {
-		  "label": "Postgres"
+			"label": "Postgres"
 		}
-	  },
-
+	},
 	// Configure tool-specific properties.
 	"customizations": {
 		"codespaces": {
@@ -40,14 +43,12 @@
 			]
 		}
 	},
-
 	// // Pass the codespace variables to Next
 	"remoteEnv": {
 		"NEXT_PUBLIC_CODESPACE": "true",
 		"NEXT_PUBLIC_CODESPACE_NAME": "${localEnv:CODESPACE_NAME}",
 		"NEXT_PUBLIC_GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN": "${localEnv:GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}"
 	}
-
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	// "remoteUser": "root"
 }

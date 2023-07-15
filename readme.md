@@ -3,7 +3,7 @@
 UK Box Office data is the most detailed and searchable source for box office data in the UK.
 The backend runs Flask built with Python, the frontend is built with Next.js in Typescript, using chart.js for visualisation.
 
-The Next.js app uses the [application directory](https://beta.nextjs.org/docs/getting-started) (beta).
+The Next.js app uses the [application directory](https://beta.nextjs.org/docs/getting-started).
 
 [Use the application.](https://boxofficedata.co.uk)
 
@@ -19,12 +19,12 @@ This codespace will run the services needed for the application; the backend, fr
 
 Run backend:
 
-- `cd src/berenice; flask run`
+- `cd src/backend; flask run`
 - Change the Port Visibility to `Public`
 
 Run frontend:
 
-- `cd src/sophronia; npm start`
+- `cd src/frontend; npm start`
 
 ### Run Locally
 
@@ -32,11 +32,11 @@ Run frontend:
 
 ### Seeding Data
 
-Seeding data requires you to have a `archive.csv` of box office data in `src/berenice/data/`.
+Seeding data requires you to have a `archive.csv` of box office data in `src/backend/data/`.
 You can find the entire dataset to use [here](https://boxofficedata.co.uk/opendata).
 It will take a long time to seed the data, so you should try the `--year` flag to only seed a single year.
 
-- Make database migrations, inside `src/berenice` `flask db upgrade`
+- Make database migrations, inside `src/backend` `flask db upgrade`
 - Seed films: `flask seed-films`
 - Seed box office: `flask seed-box-office`
   - Additionally takes `--year` option for a specific year: `--year 2007`
@@ -44,11 +44,11 @@ It will take a long time to seed the data, so you should try the `--year` flag t
 
 ## Structure
 
-- `src/berenice/` - Flask app
-- `src/berenice/ukbo/api` - API endpoints
-- `src/berenice/ukbo/services` - Services
-- `src/berenice/ukbo/etl` - ETL Pipelines / CLI Tasks
-- `src/sophronia/` - Next.js app
+- `src/backend/` - Flask app
+- `src/backend/ukbo/api` - API endpoints
+- `src/backend/ukbo/services` - Services
+- `src/backend/ukbo/etl` - ETL Pipelines / CLI Tasks
+- `src/frontend/` - Next.js app
 
 ## Tasks
 
