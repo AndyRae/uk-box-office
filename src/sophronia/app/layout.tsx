@@ -41,8 +41,7 @@ export const metadata: Metadata = {
 		type: 'website',
 	},
 	icons: {
-		icon: '/icons/icon.png',
-		shortcut: '/icons/favicon-32x32.png',
+		icon: '/icons/favicon.ico',
 		apple: '/icons/apple-touch-icon.png',
 	},
 	themeColor: 'black',
