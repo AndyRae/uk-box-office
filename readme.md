@@ -3,7 +3,7 @@
 UK Box Office data is the most detailed and searchable source for box office data in the UK.
 The backend runs Flask built with Python, the frontend is built with Next.js in Typescript, using chart.js for visualisation.
 
-The Next.js app uses the [application directory](https://beta.nextjs.org/docs/getting-started) (beta).
+The Next.js app uses the [application directory](https://beta.nextjs.org/docs/getting-started).
 
 [Use the application.](https://boxofficedata.co.uk)
 
