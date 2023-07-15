@@ -178,8 +178,7 @@ yarn-error.log*
 
 
 src/data
-src/berenice/data
+src/backend/data
 src/legacy/*.csv
 .DS_store
 .python-version
-src/berenice/data

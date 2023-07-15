@@ -20,6 +20,5 @@ ENV APP /app
 RUN mkdir $APP
 WORKDIR $APP
 
-COPY src/berenice/requirements.txt requirements.txt
+COPY src/backend/requirements.txt requirements.txt
 RUN pip install -r requirements.txt
-

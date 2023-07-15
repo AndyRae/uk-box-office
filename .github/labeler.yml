@@ -2,10 +2,10 @@ maintenance:
   - '*'
 
 migrations:
-  - 'src/berenice/migrations/**/*'
+  - 'src/backend/migrations/**/*'
 
 frontend:
   - 'src/sophronia/**/*'
 
 backend:
-  - 'src/berenice/**/*'
+  - 'src/backend/**/*'

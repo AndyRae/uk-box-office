@@ -12,17 +12,17 @@ services:
     ports:
       - 3000:3000
     depends_on:
-      - berenice
-  berenice:
-    container_name: berenice
-    build: src/berenice
+      - backend
+  backend:
+    container_name: backend
+    build: src/backend
     env_file:
       - ./.env
     environment:
       - FLASK_APP=ukbo:create_app('dev')
     command: flask --debug run --host=0.0.0.0
     volumes:
-      - ./src/berenice/:/app
+      - ./src/backend/:/app
     ports:
       - 5000:5000
     depends_on:
