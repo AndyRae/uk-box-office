@@ -9,11 +9,11 @@
       "path": "../src/backend"
     },
     {
-      "name": "src/sophronia",
-      "path": "../src/sophronia"
+      "name": "src/frontend",
+      "path": "../src/frontend"
     },
   ],
   "settings": {
-    "typescript.tsdk": "src/sophronia/node_modules/typescript/lib"
+    "typescript.tsdk": "src/frontend/node_modules/typescript/lib"
   }
 }

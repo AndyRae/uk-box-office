@@ -5,7 +5,7 @@ migrations:
   - 'src/backend/migrations/**/*'
 
 frontend:
-  - 'src/sophronia/**/*'
+  - 'src/frontend/**/*'
 
 backend:
   - 'src/backend/**/*'

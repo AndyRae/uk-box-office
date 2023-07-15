@@ -9,7 +9,7 @@
 		"db"
 	],
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
-	"updateContentCommand": "cd src/sophronia/ && npm install",
+	"updateContentCommand": "cd src/frontend/ && npm install",
 	// Leave this off - too clunky.
 	// "postStartCommand": "cd src/backend/ && flask --debug run",
 	// Features to add to the dev container. More info: https://containers.dev/features.

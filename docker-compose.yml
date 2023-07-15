@@ -1,14 +1,14 @@
 version: '3.9'
 
 services:
-  sophronia:
-    container_name: sophronia
-    build: src/sophronia
+  frontend:
+    container_name: frontend
+    build: src/frontend
     env_file:
       - ./.env
     command: npm run dev
     volumes:
-      - ./src/sophronia/:/app
+      - ./src/frontend/:/app
     ports:
       - 3000:3000
     depends_on:

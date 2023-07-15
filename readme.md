@@ -24,7 +24,7 @@ Run backend:
 
 Run frontend:
 
-- `cd src/sophronia; npm start`
+- `cd src/frontend; npm start`
 
 ### Run Locally
 
@@ -48,7 +48,7 @@ It will take a long time to seed the data, so you should try the `--year` flag t
 - `src/backend/ukbo/api` - API endpoints
 - `src/backend/ukbo/services` - Services
 - `src/backend/ukbo/etl` - ETL Pipelines / CLI Tasks
-- `src/sophronia/` - Next.js app
+- `src/frontend/` - Next.js app
 
 ## Tasks
 
