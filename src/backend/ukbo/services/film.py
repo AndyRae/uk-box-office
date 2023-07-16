@@ -93,7 +93,7 @@ def get_by_id(id: int) -> Response:
 def add_film(
     film: str,
     countries: List[models.Country],
-    distributor: Optional[models.Distributor] = None,
+    distributors: Optional[List[models.Distributor]],
 ) -> models.Film:
     """
     Add a film to the database.
@@ -103,17 +103,20 @@ def add_film(
 
     Args:
         film: Name of the film.
-        distributor: Distributor object.
+        distributors: List of Distributor objects.
         countries: List of country objects.
 
     Returns Film object.
     """
     film = film.strip()
 
-    if distributor:
+    if distributors:
         instance = models.Film.query.filter_by(
-            name=film, distributor=distributor
+            name=film, distributor=distributors
         ).first()
+        query = db.session.query(models.Film).filter(models.Film.name == film)
+        query = query.filter(models.Film.distributors.in_(distributors))
+        instance = query.first()
     else:
         instance = models.Film.query.filter_by(
             name=film, distributor=None
@@ -122,7 +125,11 @@ def add_film(
     if instance:
         return instance
 
-    record = {"name": film, "distributor": distributor, "countries": countries}
+    record = {
+        "name": film,
+        "distributor": distributors,
+        "countries": countries,
+    }
 
     new = models.Film.create(**record, commit=False)
 
@@ -135,8 +142,8 @@ def add_film(
         services.events.create(
             models.Area.etl, models.State.warning, f"Duplicate - {film}."
         )
-        if distributor:
-            slug = slugify(f"{film}-{distributor.name}")
+        if distributors:
+            slug = slugify(f"{film}-{distributors[0].name}-{uuid.uuid4()}")
         else:
             slug = slugify(f"{film}-{uuid.uuid4()}")
         new.slug = slug

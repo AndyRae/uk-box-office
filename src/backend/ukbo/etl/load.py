@@ -55,7 +55,7 @@ def load_films(list_of_films: List[Dict[str, Any]]) -> None:
         distributor = services.distributor.add_distributor(film["distributor"])
         countries = services.country.add_country(film["country"])
         film = services.film.add_film(
-            film=film["film"], distributor=distributor, countries=countries
+            film=film["film"], distributors=distributor, countries=countries
         )
         db.session.commit()
 
