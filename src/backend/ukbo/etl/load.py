@@ -106,16 +106,16 @@ def load_weeks(df: pd.DataFrame, **kwargs: Any) -> None:
         )
         # if a film does not have a distributor
         if pd.isna(film["distributor"]):
-            distributor = None
+            distributors = None
 
         else:
-            distributor = services.distributor.add_distributor(
+            distributors = services.distributor.add_distributor(
                 str(film["distributor"])
             )
 
-        title = services.film.add_film(film=str(film["film"]), countries=countries, distributor=distributor)  # type: ignore
+        title = services.film.add_film(film=str(film["film"]), countries=countries, distributors=distributors)  # type: ignore
 
-        record = {"film": title, "distributor": distributor}
+        record = {"film": title}
 
         for week in film["weeks"]:
             # Clear empty data.
