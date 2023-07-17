@@ -102,13 +102,13 @@ def test_add_film(app, add_test_distributor, add_test_country):
         response = services.film.add_film(
             "Nope",
             [country],
-            distributor,
+            [distributor],
         )
 
         assert response.name == "Nope"
         assert response.slug == "nope"
-        assert response.distributor.name == "20th Century Fox"
-        assert response.distributor.slug == "20th-century-fox"
+        assert response.distributors[0].name == "20th Century Fox"
+        assert response.distributors[0].slug == "20th-century-fox"
         assert response.countries[0].name == "United Kingdom"
         assert response.countries[0].slug == "united-kingdom"
 
@@ -138,7 +138,7 @@ def test_delete_film(app, add_test_distributor, add_test_country):
         response = services.film.add_film(
             "Nope",
             [country],
-            distributor,
+            [distributor],
         )
 
         response = services.film.delete_film(1)

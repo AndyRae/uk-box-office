@@ -61,6 +61,14 @@ def test_search_empty(app, client):
     result = client.get("/api/search?q=notfound", follow_redirects=True)
     assert result.status_code == 200
     data = json.loads(result.data)
-    assert data["films"] == []
+    assert data["films"] == {
+        "count": 0,
+        "countries": [],
+        "distributors": [],
+        "max_gross": 0,
+        "next": "",
+        "previous": "",
+        "results": [],
+    }
     assert data["distributors"] == []
     assert data["countries"] == []

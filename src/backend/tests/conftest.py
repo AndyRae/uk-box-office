@@ -67,7 +67,7 @@ def make_film():
 
     def make(name, distributor, countries):
         return models.Film(
-            name=name, countries=countries, distributor=distributor
+            name=name, countries=countries, distributors=distributor
         )
 
     return make
@@ -115,7 +115,6 @@ def make_film_week():
     def make(
         date,
         film,
-        distributor,
         rank=1,
         weeks_on_release=1,
         number_of_cinemas=100,
@@ -134,7 +133,6 @@ def make_film_week():
             total_gross=total_gross,
             site_average=site_average,
             film=film,
-            distributor=distributor,
         )
 
     return make
@@ -149,7 +147,7 @@ def make_film_weeks():
         Function to create a list of film weeks
     """
 
-    def make(film, distributor, number_of_weeks):
+    def make(film, number_of_weeks):
         film_weeks = []
         for i in range(number_of_weeks):
             film_week = models.Film_Week(
@@ -162,7 +160,6 @@ def make_film_weeks():
                 total_gross=(1000 * (i + 1)),
                 site_average=5.0,
                 film=film,
-                distributor=distributor,
             )
             film_weeks.append(film_week)
         return film_weeks
@@ -179,7 +176,7 @@ def make_film_weeks_with_gaps():
         Function to create a list of film weeks with gaps
     """
 
-    def make(film, distributor, number_of_weeks):
+    def make(film, number_of_weeks):
         film_weeks = []
         for i in range(number_of_weeks):
             film_week = models.Film_Week(
@@ -192,7 +189,6 @@ def make_film_weeks_with_gaps():
                 total_gross=1000,
                 site_average=5.0,
                 film=film,
-                distributor=distributor,
             )
             film_weeks.append(film_week)
         return film_weeks
@@ -284,12 +280,10 @@ def add_test_film(
     """
     with app.app_context():
 
-        distributor = make_distributor()
+        distributor = [make_distributor()]
         countries = [make_country()]
         film = make_film("Nope", distributor, countries)
-        film_week = make_film_week(
-            date=datetime.date(2022, 1, 20), film=film, distributor=distributor
-        )
+        film_week = make_film_week(date=datetime.date(2022, 1, 20), film=film)
 
         db.session.add(distributor)
         db.session.add(film)

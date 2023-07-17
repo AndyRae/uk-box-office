@@ -77,13 +77,13 @@ def test_add_distributor(app):
 
         response = services.distributor.add_distributor("20th Century Fox")
 
-        assert response.name == "20th Century Fox"
-        assert response.slug == "20th-century-fox"
+        assert response[0].name == "20TH CENTURY FOX"
+        assert response[0].slug == "20th-century-fox"
 
         response = services.distributor.add_distributor("Warner Bros")
 
-        assert response.name == "Warner Bros"
-        assert response.slug == "warner-bros"
+        assert response[0].name == "WARNER BROS"
+        assert response[0].slug == "warner-bros"
 
 
 def test_search(app, add_test_distributor):

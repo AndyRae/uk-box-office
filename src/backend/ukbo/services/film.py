@@ -111,11 +111,12 @@ def add_film(
     film = film.strip()
 
     if distributors:
-        instance = models.Film.query.filter_by(
-            name=film, distributor=distributors
-        ).first()
         query = db.session.query(models.Film).filter(models.Film.name == film)
-        query = query.filter(models.Film.distributors.in_(distributors))
+        query = query.join(models.Film.distributors).filter(
+            models.Distributor.id.in_(
+                [distributor.id for distributor in distributors]
+            )
+        )
         instance = query.first()
     else:
         instance = models.Film.query.filter_by(
@@ -127,7 +128,7 @@ def add_film(
 
     record = {
         "name": film,
-        "distributor": distributors,
+        "distributors": distributors,
         "countries": countries,
     }
 
@@ -198,7 +199,7 @@ def search(
     query = add_filters(query, query_filter)
 
     # Execute the query to retrieve all films
-    all_films = query.options(joinedload(models.Film.distributor)).all()
+    all_films = query.options(joinedload(models.Film.distributors)).all()
 
     # # Find the film with the highest total_gross
     if all_films:
