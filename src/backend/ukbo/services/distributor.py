@@ -77,6 +77,9 @@ def get_films(slug: str, page: int = 1, limit: int = 100) -> Response:
     query = query.filter(models.Distributor.slug == slug)
     distributor = query.first()
 
+    if distributor is None:
+        abort(404)
+
     query = db.session.query(models.Film).options(
         db.joinedload(models.Film.weeks)
     )
