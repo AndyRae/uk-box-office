@@ -13,12 +13,6 @@ class FilmWeekSchema(ma.SQLAlchemyAutoSchema):
     date = ma.Function(lambda obj: obj.date.strftime("%Y-%m-%d"))
     film_slug = ma.Function(lambda obj: obj.film.slug)
     film = ma.Function(lambda obj: obj.film.name)
-    distributor = ma.Function(
-        lambda obj: obj.distributor.name if obj.distributor else ""
-    )
-    distributor_slug = ma.Function(
-        lambda obj: obj.distributor.slug if obj.distributor else ""
-    )
 
 
 class FilmWeekSchemaArchive(ma.SQLAlchemyAutoSchema):
@@ -32,7 +26,4 @@ class FilmWeekSchemaArchive(ma.SQLAlchemyAutoSchema):
 
     date = ma.Function(lambda obj: obj.date.strftime("%Y%m%d"))
     film = ma.Function(lambda obj: obj.film.name)
-    distributor = ma.Function(
-        lambda obj: obj.distributor.name if obj.distributor else ""
-    )
     country = ma.Function(lambda obj: [x.name for x in obj.film.countries])

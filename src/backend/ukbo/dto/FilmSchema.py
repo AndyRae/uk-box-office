@@ -16,7 +16,7 @@ class FilmSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = models.Film
 
-    distributor = ma.Nested(DistributorSchema)
+    distributors = ma.Nested(DistributorSchema, many=True)
     countries = ma.Nested(CountrySchema, many=True)
     weeks = ma.Nested(FilmWeekSchema, many=True)
     gross = ma.Function(lambda obj: obj.gross)
@@ -31,7 +31,7 @@ class FilmSchemaStrict(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = models.Film
 
-    distributor = ma.Nested(DistributorSchema)
+    distributors = ma.Nested(DistributorSchema, many=True)
     countries = ma.Nested(CountrySchema, many=True)
     gross = ma.Function(lambda obj: obj.gross)
 

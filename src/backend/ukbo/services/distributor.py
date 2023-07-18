@@ -221,6 +221,8 @@ def market_share(year: Optional[str] = None) -> Response:
         func.sum(models.Film_Week.week_gross),
     )
 
+    query = query.join(models.Film)
+    query = query.join(models.distributors)
     query = query.join(models.Distributor)
     query = query.group_by(models.Distributor)
     query = query.group_by(func.extract("year", models.Film_Week.date))
@@ -268,7 +270,7 @@ def market_share_date(start: str, end: str) -> Response:
         models.Distributor,
         func.sum(models.Film_Week.week_gross),
     )
-
+    query = query.join(models.Film)
     query = query.join(models.Distributor)
     query = query.filter(models.Film_Week.date >= start)
     query = query.filter(models.Film_Week.date <= end)

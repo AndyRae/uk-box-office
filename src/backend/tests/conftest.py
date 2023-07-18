@@ -285,7 +285,6 @@ def add_test_film(
         film = make_film("Nope", distributor, countries)
         film_week = make_film_week(date=datetime.date(2022, 1, 20), film=film)
 
-        db.session.add(distributor)
         db.session.add(film)
         db.session.add(film_week)
         db.session.commit()
