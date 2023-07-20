@@ -326,11 +326,13 @@ def unique_distributors(films: List[models.Film]) -> List[Dict[str, Any]]:
     """
     distributor_schema = DistributorSchema()
 
-    distributors = [
-        distributor_schema.dump(film.distributor)
-        for film in films
-        if film.distributor is not None
-    ]
+    distributors: List[Dict[str, Any]] = []
+    for film in films:
+        if film.distributors:
+            distributors.extend(
+                distributor_schema.dump(distributor)
+                for distributor in film.distributors
+            )
 
     # Get unique distributors and sort them.
     unique = [dict(s) for s in {frozenset(d.items()) for d in distributors}]

@@ -83,6 +83,7 @@ def get_films(slug: str, page: int = 1, limit: int = 100) -> Response:
     query = db.session.query(models.Film).options(
         db.joinedload(models.Film.weeks)
     )
+    query = query.join(models.distributors)
     query = query.join(models.Distributor)
 
     query = query.filter(models.Distributor.slug == slug)

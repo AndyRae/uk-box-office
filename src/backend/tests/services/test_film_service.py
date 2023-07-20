@@ -22,8 +22,12 @@ def test_list(app, add_test_film):
         assert data["previous"] == ""
         assert data["results"][0]["name"] == "Nope"
         assert data["results"][0]["slug"] == "nope"
-        assert data["results"][0]["distributor"]["name"] == "20th Century Fox"
-        assert data["results"][0]["distributor"]["slug"] == "20th-century-fox"
+        assert (
+            data["results"][0]["distributors"][0]["name"] == "20th Century Fox"
+        )
+        assert (
+            data["results"][0]["distributors"][0]["slug"] == "20th-century-fox"
+        )
         assert data["results"][0]["countries"][0]["name"] == "United Kingdom"
         assert data["results"][0]["countries"][0]["slug"] == "united-kingdom"
 
@@ -163,12 +167,22 @@ def test_search(app, add_test_film):
     with app.app_context():
 
         response = services.film.search("Nope")
-        assert response[0]["name"] == "Nope"
-        assert response[0]["slug"] == "nope"
-        assert response[0]["distributor"]["name"] == "20th Century Fox"
-        assert response[0]["distributor"]["slug"] == "20th-century-fox"
-        assert response[0]["countries"][0]["name"] == "United Kingdom"
-        assert response[0]["countries"][0]["slug"] == "united-kingdom"
+        assert response["results"][0]["name"] == "Nope"
+        assert response["results"][0]["slug"] == "nope"
+        assert (
+            response["results"][0]["distributors"][0]["name"]
+            == "20th Century Fox"
+        )
+        assert (
+            response["results"][0]["distributors"][0]["slug"]
+            == "20th-century-fox"
+        )
+        assert (
+            response["results"][0]["countries"][0]["name"] == "United Kingdom"
+        )
+        assert (
+            response["results"][0]["countries"][0]["slug"] == "united-kingdom"
+        )
 
 
 def test_search_with_no_results(app, add_test_film):
@@ -182,4 +196,13 @@ def test_search_with_no_results(app, add_test_film):
     with app.app_context():
 
         response = services.film.search("Nope2")
-        assert response == []
+
+    assert response == {
+        "count": 0,
+        "countries": [],
+        "distributors": [],
+        "max_gross": 0,
+        "next": "",
+        "previous": "",
+        "results": [],
+    }

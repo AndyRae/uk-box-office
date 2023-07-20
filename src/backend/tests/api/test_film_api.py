@@ -34,8 +34,8 @@ def test_single_film(app, client, add_test_film):
         assert data.get("name") == "Nope"
         assert data.get("slug") == "nope"
         assert data.get("gross") == 1000
-        assert data.get("distributor").get("name") == "20th Century Fox"
-        assert data.get("distributor").get("slug") == "20th-century-fox"
+        assert data.get("distributors")[0].get("name") == "20th Century Fox"
+        assert data.get("distributors")[0].get("slug") == "20th-century-fox"
         assert data.get("countries")[0].get("name") == "United Kingdom"
         assert data.get("countries")[0].get("slug") == "united-kingdom"
         assert data.get("weeks")[0].get("film") == "Nope"

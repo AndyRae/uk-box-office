@@ -31,8 +31,6 @@ def test_all(app, add_test_film):
     assert data["results"][0]["total_gross"] == 1000
     assert data["results"][0]["site_average"] == 5.0
     assert data["results"][0]["weeks_on_release"] == 1
-    assert data["results"][0]["distributor"] == "20th Century Fox"
-    assert data["results"][0]["distributor_slug"] == "20th-century-fox"
 
 
 def test_all_filtered(app, add_test_film):
@@ -64,8 +62,6 @@ def test_all_filtered(app, add_test_film):
     assert data["results"][0]["total_gross"] == 1000
     assert data["results"][0]["site_average"] == 5.0
     assert data["results"][0]["weeks_on_release"] == 1
-    assert data["results"][0]["distributor"] == "20th Century Fox"
-    assert data["results"][0]["distributor_slug"] == "20th-century-fox"
 
 
 def test_all_filtered_empty(app, add_test_film):
@@ -107,10 +103,12 @@ def test_topfilms(app, add_test_film):
     assert data["results"][0]["film"]["slug"] == "nope"
     assert data["results"][0]["film"]["gross"] == 1000
     assert (
-        data["results"][0]["film"]["distributor"]["name"] == "20th Century Fox"
+        data["results"][0]["film"]["distributors"][0]["name"]
+        == "20th Century Fox"
     )
     assert (
-        data["results"][0]["film"]["distributor"]["slug"] == "20th-century-fox"
+        data["results"][0]["film"]["distributors"][0]["slug"]
+        == "20th-century-fox"
     )
 
 

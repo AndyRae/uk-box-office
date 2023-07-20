@@ -60,8 +60,12 @@ def test_get_films(app, add_test_film):
         assert data["previous"] == ""
         assert data["results"][0]["name"] == "Nope"
         assert data["results"][0]["slug"] == "nope"
-        assert data["results"][0]["distributor"]["name"] == "20th Century Fox"
-        assert data["results"][0]["distributor"]["slug"] == "20th-century-fox"
+        assert (
+            data["results"][0]["distributors"][0]["name"] == "20th Century Fox"
+        )
+        assert (
+            data["results"][0]["distributors"][0]["slug"] == "20th-century-fox"
+        )
         assert data["results"][0]["countries"][0]["name"] == "United Kingdom"
         assert data["results"][0]["countries"][0]["slug"] == "united-kingdom"
 
