@@ -86,11 +86,11 @@ def test_top_films(app, client, add_test_film):
         assert data["results"][0]["film"]["name"] == "Nope"
         assert data["results"][0]["film"]["gross"] == 1000
         assert (
-            data["results"][0]["film"]["distributor"]["name"]
+            data["results"][0]["film"]["distributors"][0]["name"]
             == "20th Century Fox"
         )
         assert (
-            data["results"][0]["film"]["distributor"]["slug"]
+            data["results"][0]["film"]["distributors"][0]["slug"]
             == "20th-century-fox"
         )
         assert (
