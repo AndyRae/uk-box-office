@@ -361,8 +361,9 @@ def build_archive() -> pd.DataFrame:
     df["week_gross"] = df["week_gross"].astype(float)
     df["number_of_cinemas"] = df["number_of_cinemas"].astype(int)
 
-    # Unwrap country objects to their names with seperator.
+    # Unwrap objects to their names with seperator.
     df["country"] = ["/".join(list(ix)) for ix in df["country"]]
+    df["distributor"] = ["/".join(list(ix)) for ix in df["distributor"]]
 
     order = [
         "date",

@@ -26,4 +26,7 @@ class FilmWeekSchemaArchive(ma.SQLAlchemyAutoSchema):
 
     date = ma.Function(lambda obj: obj.date.strftime("%Y%m%d"))
     film = ma.Function(lambda obj: obj.film.name)
+    distributor = ma.Function(
+        lambda obj: [x.name for x in obj.film.distributors]
+    )
     country = ma.Function(lambda obj: [x.name for x in obj.film.countries])
