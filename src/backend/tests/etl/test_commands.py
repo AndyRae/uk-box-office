@@ -95,7 +95,6 @@ def test_seed_films_command(app, runner):
     )
 
     with app.app_context():
-        result = models.Film.query.all()
         assert len(models.Film.query.all()) == 7
         assert len(models.Distributor.query.all()) == 6
         assert len(models.Country.query.all()) == 2

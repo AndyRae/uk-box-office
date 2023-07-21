@@ -18,7 +18,7 @@ def load_distributors(list_of_distributors: List[str]) -> None:
         None
     """
     for distributor in set(list_of_distributors):
-        distributor = str(distributor.strip())
+        distributor = str(distributor)
         services.distributor.add_distributor(distributor)
         db.session.commit()
 

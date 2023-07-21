@@ -1,6 +1,7 @@
 import datetime
-from typing import List
+from typing import List, Optional
 
+import numpy as np
 import pandas as pd
 from flask import Response, abort, jsonify
 from slugify import slugify  # type: ignore
@@ -144,7 +145,7 @@ def get_box_office(slug: str, limit: int) -> Response:
     )
 
 
-def add_country(country: str) -> List[models.Country]:
+def add_country(country: str) -> Optional[List[models.Country]]:
     """
     Add a country to the database.
 
@@ -158,9 +159,10 @@ def add_country(country: str) -> List[models.Country]:
 
     Returns list of Country objects.
     """
+    if country is None or (isinstance(country, str) and not country.strip()):
+        return None
     new_countries: List[models.Country] = []
-    if type(country) == float:
-        return new_countries
+
     country = country.strip()
     countries = country.split("/")
     for i in countries:

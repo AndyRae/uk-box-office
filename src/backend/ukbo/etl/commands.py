@@ -45,7 +45,6 @@ def seed_films_command(path: str = "./data/archive.csv") -> None:
     """
     Seeds database with countries/distributors/films data.
     """
-    path = "./data/test.csv"
     tasks.seed_films(path)
     click.echo("Seeded films data.")
 

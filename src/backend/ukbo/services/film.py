@@ -92,7 +92,7 @@ def get_by_id(id: int) -> Response:
 
 def add_film(
     film: str,
-    countries: List[models.Country],
+    countries: Optional[List[models.Country]],
     distributors: Optional[List[models.Distributor]],
 ) -> models.Film:
     """
@@ -119,12 +119,17 @@ def add_film(
         )
         instance = query.first()
     else:
-        instance = models.Film.query.filter_by(
-            name=film, distributor=None
-        ).first()
+        instance = (
+            db.session.query(models.Film)
+            .filter(models.Film.name == film)
+            .first()
+        )
 
     if instance:
         return instance
+
+    distributors = distributors if distributors is not None else []
+    countries = countries if countries is not None else []
 
     record = {
         "name": film,
