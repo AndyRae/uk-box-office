@@ -25,7 +25,12 @@ export const FilmsTable = ({ data }: { data: Film[] }): JSX.Element => {
 					<Td isHighlight>
 						<Link href={`/film/${film.slug}`}>{toTitleCase(film.name)}</Link>
 					</Td>
-					<Td>{film.distributor && toTitleCase(film.distributor?.name)}</Td>
+					<Td>
+						{film.distributors &&
+							film.distributors.map((distributor) =>
+								toTitleCase(distributor.name)
+							)}
+					</Td>
 					<Td>{film.countries.map((c, index: number) => `${c.name} `)}</Td>
 					<Td isNumeric>{film.gross.toLocaleString('en-GB')}</Td>
 				</Tr>
