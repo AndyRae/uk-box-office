@@ -172,7 +172,7 @@ prophet==1.1.1
     # via -r requirements.in
 psycopg2-binary==2.9.5
     # via -r requirements.in
-pygments==2.13.0
+pygments==2.15.0
     # via rich
 pymeeus==0.5.11
     # via convertdate
