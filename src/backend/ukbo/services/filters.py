@@ -20,7 +20,7 @@ class QueryFilter:
     Class representing a filter based on metadata.
 
     Attributes:
-        distributor_id (Optional[int]): ID of the distributor to filter by.
+        distributor_ids (Optional[int]): IDs of the distributor to filter by.
         country_ids (Optional[List[int]]): IDs of the countries to filter by.
         min_year (Optional[int]): Low of the year number to filter by.
         max_year (Optional[int]): High of the year number to filter by.
@@ -31,7 +31,7 @@ class QueryFilter:
 
     def __init__(
         self,
-        distributor_id: Optional[List[int]] = None,
+        distributor_ids: Optional[List[int]] = None,
         country_ids: Optional[List[int]] = None,
         min_year: Optional[int] = None,
         max_year: Optional[int] = None,
@@ -39,7 +39,7 @@ class QueryFilter:
         max_box: Optional[int] = None,
         sort: Optional[str] = None,
     ):
-        self.distributor_id = distributor_id
+        self.distributor_ids = distributor_ids
         self.country_ids = country_ids
         self.min_year = min_year
         self.max_year = max_year

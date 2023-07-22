@@ -124,10 +124,10 @@ def get_box_office(slug: str, limit: int) -> Response:
         func.count(models.Film.id),
     ).group_by(func.extract("year", models.Film_Week.date))
 
-    query = query.join(
-        models.Film, models.Film.id == models.Film_Week.film_id
-    ).join(
-        models.Distributor, models.Distributor.id == models.Film.distributor_id
+    query = (
+        query.join(models.Film, models.Film.id == models.Film_Week.film_id)
+        .join(models.distributors)
+        .join(models.Distributor)
     )
 
     query = query.filter(models.Distributor.slug == slug)

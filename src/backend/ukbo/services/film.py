@@ -252,9 +252,9 @@ def add_filters(
 
     Returns: The query with filters applied.
     """
-    if query_filter.distributor_id is not None:
+    if query_filter.distributor_ids is not None:
         query = query.filter(
-            models.Film.distributor_id.in_(query_filter.distributor_id)
+            models.Film.distributor_id.in_(query_filter.distributor_ids)
         )
 
     if query_filter.country_ids is not None:

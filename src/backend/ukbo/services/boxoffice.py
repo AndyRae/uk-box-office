@@ -43,9 +43,15 @@ def all(
     if time_filter.end is not None:
         query = query.filter(models.Film_Week.date <= to_date(time_filter.end))
 
-    if query_filter.distributor_id is not None:
-        query = query.join(models.Film).join(models.Distributor)
-        query.filter(models.Distributor.id.in_(query_filter.distributor_id))
+    if query_filter.distributor_ids is not None:
+        query = (
+            query.join(models.Film)
+            .join(models.distributors)
+            .join(models.Distributor)
+        )
+        query = query.filter(
+            models.Distributor.id.in_(query_filter.distributor_ids)
+        )
 
     if query_filter.country_ids is not None:
         query = (
