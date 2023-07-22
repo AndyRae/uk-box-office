@@ -50,7 +50,7 @@ export const groupStackedFilms = (data: BoxOfficeWeek[]): StackedFilm[] => {
 
 	// Create the dataset objects - one for each film
 	const stackedData = groupedFilms.map((film, index: number) => {
-		const filmData = data.filter((item) => item.film_slug === film.slug);
+		const filmData = data.filter((item) => item.film.slug === film.slug);
 		const weekData = filmData.map((item) => {
 			return { x: item.date, y: item.week_gross };
 		});
@@ -99,9 +99,9 @@ export const groupForTable = (data: BoxOfficeWeek[]): TableData => {
 			);
 			if (!item) {
 				item = {
-					film: curr['film'],
-					slug: curr['film_slug'],
-					distributor: curr['distributor'],
+					film: curr['film']['name'],
+					slug: curr['film']['slug'],
+					distributor: curr['film']['distributors'][0]['name'],
 					weeks: {},
 					weekend: {},
 					cinemas: {},
