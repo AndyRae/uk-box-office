@@ -22,6 +22,7 @@ import {
 	StackedFilm,
 	TableData,
 	BoxOfficeGroup,
+	BoxOfficeWeekStrict,
 } from 'interfaces/BoxOffice';
 
 /**
@@ -152,7 +153,7 @@ export const groupForTable = (data: BoxOfficeWeek[]): TableData => {
  * @returns array of grouped data by date.
  */
 export const groupbyDate = (
-	data: BoxOfficeWeek[] | BoxOfficeGroup[]
+	data: BoxOfficeWeek[] | BoxOfficeGroup[] | BoxOfficeWeekStrict[]
 ): { results: BoxOfficeGroup[] } => {
 	const results = flow(
 		(arr) => groupBy(arr, 'date'),

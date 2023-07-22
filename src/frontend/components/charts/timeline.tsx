@@ -11,11 +11,11 @@ import {
 } from 'components/ui/tooltip';
 import { useRouter } from 'next/navigation';
 import { getElementAtEvent } from 'react-chartjs-2';
-import { BoxOfficeWeek } from 'interfaces/BoxOffice';
+import { BoxOfficeWeek, BoxOfficeWeekStrict } from 'interfaces/BoxOffice';
 import { Icons } from 'components/icons';
 
 type TimeLineChartProps = {
-	data: BoxOfficeWeek[];
+	data: BoxOfficeWeek[] | BoxOfficeWeekStrict[];
 	height?: 'sm' | 'md' | 'lg' | 'xl';
 	color?: string;
 	allowRollUp?: boolean;
