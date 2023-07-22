@@ -1,3 +1,5 @@
+import { Film } from './Film';
+
 export interface Topline {
 	date: string;
 	admissions: number;
@@ -13,10 +15,19 @@ export interface Topline {
 
 export interface BoxOfficeWeek {
 	date: string;
-	distributor: string;
-	distributor_slug: string;
-	film: string;
-	film_slug: string;
+	film: Film;
+	id: number;
+	number_of_cinemas: number;
+	rank: number;
+	site_average: number;
+	total_gross: number;
+	week_gross: number;
+	weekend_gross: number;
+	weeks_on_release: number;
+}
+
+export interface BoxOfficeWeekStrict {
+	date: string;
 	id: number;
 	number_of_cinemas: number;
 	rank: number;

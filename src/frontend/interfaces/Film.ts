@@ -1,6 +1,6 @@
 import { Country } from './Country';
 import { Distributor } from './Distributor';
-import { BoxOfficeWeek } from './BoxOffice';
+import { BoxOfficeWeekStrict } from './BoxOffice';
 
 export interface Film {
 	id: number;
@@ -8,11 +8,11 @@ export interface Film {
 	slug: string;
 	gross: number;
 	countries: Country[];
-	distributor?: Distributor;
+	distributors: Distributor[];
 }
 
 export interface FilmWithWeeks extends Film {
-	weeks: BoxOfficeWeek[];
+	weeks: BoxOfficeWeekStrict[];
 	color?: string;
 }
 
