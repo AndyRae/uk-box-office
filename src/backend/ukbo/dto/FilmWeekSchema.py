@@ -1,6 +1,22 @@
 from ukbo import models
 from ukbo.extensions import ma
 
+from .CountrySchema import CountrySchema
+from .DistributorSchema import DistributorSchema
+
+
+class FilmSchemaStrictWeek(ma.SQLAlchemyAutoSchema):
+    """
+    Film schema for serialisation with nested objects.
+    Does not include weeks.
+    """
+
+    class Meta:
+        model = models.Film
+
+    distributors = ma.Nested(DistributorSchema, many=True)
+    countries = ma.Nested(CountrySchema, many=True)
+
 
 class FilmWeekSchema(ma.SQLAlchemyAutoSchema):
     """
@@ -11,8 +27,7 @@ class FilmWeekSchema(ma.SQLAlchemyAutoSchema):
         model = models.Film_Week
 
     date = ma.Function(lambda obj: obj.date.strftime("%Y-%m-%d"))
-    film_slug = ma.Function(lambda obj: obj.film.slug)
-    film = ma.Function(lambda obj: obj.film.name)
+    film = ma.Nested(FilmSchemaStrictWeek)
 
 
 class FilmWeekSchemaArchive(ma.SQLAlchemyAutoSchema):
