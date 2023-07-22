@@ -22,8 +22,8 @@ def test_all(app, add_test_film):
     assert data["previous"] == ""
     assert data["next"] == ""
     assert data["results"][0]["date"] == "2022-01-20"
-    assert data["results"][0]["film"] == "Nope"
-    assert data["results"][0]["film_slug"] == "nope"
+    assert data["results"][0]["film"]["name"] == "Nope"
+    assert data["results"][0]["film"]["slug"] == "nope"
     assert data["results"][0]["week_gross"] == 1000
     assert data["results"][0]["weekend_gross"] == 500
     assert data["results"][0]["number_of_cinemas"] == 100
@@ -53,8 +53,8 @@ def test_all_filtered(app, add_test_film):
     assert data["previous"] == ""
     assert data["next"] == ""
     assert data["results"][0]["date"] == "2022-01-20"
-    assert data["results"][0]["film"] == "Nope"
-    assert data["results"][0]["film_slug"] == "nope"
+    assert data["results"][0]["film"]["name"] == "Nope"
+    assert data["results"][0]["film"]["slug"] == "nope"
     assert data["results"][0]["week_gross"] == 1000
     assert data["results"][0]["weekend_gross"] == 500
     assert data["results"][0]["number_of_cinemas"] == 100

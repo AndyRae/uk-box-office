@@ -63,6 +63,7 @@ def seed_box_office_command(
         year: Year to seed.
 
     """
+    path = "./data/archive.csv"
     tasks.seed_box_office(path, year=year)
     click.echo("Seeded box office data")
 
