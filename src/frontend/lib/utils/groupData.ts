@@ -223,7 +223,9 @@ export const calculateNumberOfFilms = (data: BoxOfficeWeek[]): number => {
  * @param {*} data - array of box office data.
  * @returns total box office.
  */
-export const calculateNumberOfCinemas = (data: BoxOfficeWeek[]): number => {
+export const calculateNumberOfCinemas = (
+	data: BoxOfficeWeekStrict[]
+): number => {
 	return Math.max.apply(
 		Math,
 		data.map(function (o) {

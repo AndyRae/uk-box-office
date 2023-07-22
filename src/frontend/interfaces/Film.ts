@@ -27,9 +27,7 @@ export interface TopFilm {
 	film: {
 		name: string;
 		slug: string;
-		distributor?: {
-			name: string;
-		};
+		distributors: Distributor[];
 	};
 	gross: number;
 }

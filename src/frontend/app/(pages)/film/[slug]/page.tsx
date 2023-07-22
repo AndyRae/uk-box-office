@@ -91,7 +91,7 @@ export default async function Page({
 				time={releaseDate}
 			/>
 
-			<div className='grid grid-cols-1 md:grid-cols-5 gap-3 md:gap-5'>
+			<div className='grid grid-cols-1 md:grid-cols-5 gap-3 md:gap-5 mb-4'>
 				<div className='col-span-2'>
 					<PageTitle>
 						{toTitleCase(data.name)}{' '}

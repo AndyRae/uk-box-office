@@ -13,17 +13,8 @@ export interface Topline {
 	id: number;
 }
 
-export interface BoxOfficeWeek {
-	date: string;
+export interface BoxOfficeWeek extends BoxOfficeWeekStrict {
 	film: Film;
-	id: number;
-	number_of_cinemas: number;
-	rank: number;
-	site_average: number;
-	total_gross: number;
-	week_gross: number;
-	weekend_gross: number;
-	weeks_on_release: number;
 }
 
 export interface BoxOfficeWeekStrict {
