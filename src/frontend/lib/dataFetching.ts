@@ -30,7 +30,7 @@ import {
 	CountryBoxOffice,
 	CountryFilmsData,
 	CountryListData,
-} from '../interfaces/Country';
+} from 'interfaces/Country';
 
 /**
  * Box Office

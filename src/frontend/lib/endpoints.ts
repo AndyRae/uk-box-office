@@ -4,7 +4,7 @@
  * @example
  * returns http://localhost:5000/api/
  */
-const getApi = (): string => {
+export const getApi = (): string => {
 	if (process.env.NEXT_PUBLIC_CODESPACE === 'true') {
 		return `https://${process.env.NEXT_PUBLIC_CODESPACE_NAME}-5000.${process.env.NEXT_PUBLIC_GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}/api`;
 	}
