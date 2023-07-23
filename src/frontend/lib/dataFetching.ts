@@ -272,7 +272,7 @@ export async function fetchDistributor(slug: string): Promise<Distributor> {
  * @example
  * const distributor = await fetchDistributorBoxOffice('warner-bros');
  */
-export async function getDistributorBoxOffice(
+export async function fetchDistributorBoxOffice(
 	slug: string,
 	limit: number = 25
 ): Promise<DistributorBoxOffice> {

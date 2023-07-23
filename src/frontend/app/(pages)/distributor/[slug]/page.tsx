@@ -13,7 +13,7 @@ import { Controls } from 'components/controls';
 
 import {
 	fetchDistributor,
-	getDistributorBoxOffice,
+	fetchDistributorBoxOffice,
 	fetchBoxOfficeInfinite,
 } from 'lib/dataFetching';
 import { parseDate } from 'lib/utils/dates';
@@ -68,7 +68,7 @@ export default async function Page({
 }): Promise<JSX.Element> {
 	let pageIndex = searchParams?.p ?? 1;
 	const data = await fetchDistributor(params.slug);
-	const boxOfficeData = await getDistributorBoxOffice(params.slug, 25);
+	const boxOfficeData = await fetchDistributorBoxOffice(params.slug, 25);
 
 	const boxOfficeTotal = boxOfficeData.results.reduce(
 		(acc, curr) => acc + curr.total,
