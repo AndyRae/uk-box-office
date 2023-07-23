@@ -46,6 +46,10 @@ export const getBoxOfficeToplineEndpoint = (
 	return `${getApi()}/boxoffice/topline?start=${startDate}&end=${endDate}&limit=${limit}`;
 };
 
+export const getBoxOfficeLastWeekEndpoint = (): string => {
+	return `${getApi()}/boxoffice/all`;
+};
+
 // Films
 export const getFilmListEndpoint = (page: number, limit: number): string => {
 	return `${getApi()}/film/?page=${page}&limit=${limit}`;
@@ -130,4 +134,9 @@ export const getForecastEndpoint = (
 	limit: number
 ): string => {
 	return `${getApi()}/boxoffice/topline?start=${startDate}&end=${endDate}&limit=${limit}`;
+};
+
+// Events
+export const getEventsEndpoint = (): string => {
+	return `${getApi()}/events`;
 };

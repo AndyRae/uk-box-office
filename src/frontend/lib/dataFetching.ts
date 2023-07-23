@@ -2,6 +2,7 @@ import { BoxOfficeSummary, BoxOfficeWeek, Topline } from 'interfaces/BoxOffice';
 import request from './request';
 import {
 	getApi,
+	getBoxOfficeLastWeekEndpoint,
 	getBoxOfficePreviousYearEndpoint,
 	getBoxOfficeSummaryEndpoint,
 	getBoxOfficeTopFilmsEndpoint,
@@ -14,6 +15,7 @@ import {
 	getDistributorFilmsEndpoint,
 	getDistributorListEndpoint,
 	getDistributorMarketShareEndpoint,
+	getEventsEndpoint,
 	getFilmIdEndpoint,
 	getFilmListEndpoint,
 	getFilmSlugEndpoint,
@@ -41,6 +43,7 @@ import {
 } from 'interfaces/Country';
 import { SearchParams, SearchResults } from 'interfaces/Search';
 import MarketShare from '../interfaces/MarketShare';
+import { StatusEvent } from '../interfaces/Event';
 
 /**
  * Box Office
@@ -102,6 +105,19 @@ export const fetchBoxOfficeTopFilms = async (): Promise<TopFilm[]> => {
 		throw new Error('Failed to fetch box office summary');
 	}
 };
+
+/**
+ * Fetches last week box office data.
+ * @returns
+ */
+export async function getLastWeek(): Promise<{ results: { date: string }[] }> {
+	try {
+		const url = getBoxOfficeLastWeekEndpoint();
+		return await request<{ results: { date: string }[] }>(url);
+	} catch (error) {
+		throw new Error('Failed to fetch box office summary');
+	}
+}
 
 /**
  * Loops through the box office api infinitely and returns box office data.
@@ -469,6 +485,37 @@ export async function getForecast(
 	try {
 		const url = getForecastEndpoint(start, end, limit);
 		return await request<ForecastData>(url);
+	} catch (error) {
+		throw new Error('Failed to distributor');
+	}
+}
+
+/**
+ * Events
+ */
+
+type EventsOverview = {
+	Archive: StatusEvent;
+	ETL: StatusEvent;
+	Forecast: StatusEvent;
+	latest: {
+		count: number;
+		next: string;
+		previous: string;
+		results: StatusEvent[];
+	};
+};
+
+/**
+ * Get the events overview.
+ * @returns the events overview from the api.
+ * @example
+ * const events = await getEvents());
+ */
+export async function getEvents(): Promise<EventsOverview> {
+	try {
+		const url = getEventsEndpoint();
+		return await request<EventsOverview>(url);
 	} catch (error) {
 		throw new Error('Failed to distributor');
 	}
