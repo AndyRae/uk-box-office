@@ -12,6 +12,7 @@ import {
 	getDistributorEndpoint,
 	getDistributorFilmsEndpoint,
 	getDistributorListEndpoint,
+	getDistributorMarketShareEndpoint,
 	getFilmIdEndpoint,
 	getFilmListEndpoint,
 	getFilmSlugEndpoint,
@@ -33,6 +34,7 @@ import {
 	CountryListData,
 } from 'interfaces/Country';
 import { SearchParams, SearchResults } from 'interfaces/Search';
+import MarketShare from '../interfaces/MarketShare';
 
 /**
  * Box Office
@@ -266,6 +268,23 @@ export const useDistributorFilms = async (
 		throw new Error('Failed to distributor');
 	}
 };
+
+type MarketShareData = {
+	results: MarketShare[];
+};
+
+/**
+ * Get market share data from the backend.
+ * @returns {Promise<MarketShareData>}
+ */
+export async function getMarketshare(): Promise<MarketShareData> {
+	try {
+		const url = getDistributorMarketShareEndpoint();
+		return await request<MarketShareData>(url);
+	} catch (error) {
+		throw new Error('Failed to distributor');
+	}
+}
 
 /**
  * Countries

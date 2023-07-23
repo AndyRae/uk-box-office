@@ -1,5 +1,3 @@
-import { getApi } from 'lib/fetch/api';
-
 import { PageTitle } from 'components/ui/page-title';
 import { ExportCSV } from 'components/ui/export-csv';
 import { MarketShareChart } from 'components/charts/market-share';
@@ -9,27 +7,12 @@ import { getDefaultColorArray } from 'lib/utils/colorGenerator';
 
 import MarketShare from 'interfaces/MarketShare';
 import { Metadata } from 'next';
+import { getMarketshare } from 'lib/dataFetching';
 
 export const metadata: Metadata = {
 	title: 'Distributor Market Share | Box Office Data',
 	description: 'UK Box Office market share for Distributors.',
 };
-
-type MarketShareData = {
-	results: MarketShare[];
-};
-
-/**
- * Get market share data from the backend.
- * @returns {Promise<MarketShareData>}
- */
-async function getMarketshare(): Promise<MarketShareData> {
-	const url = getApi();
-	const res = await fetch(`${url}/distributor/marketshare`, {
-		next: { revalidate: 60 },
-	});
-	return res.json();
-}
 
 export default async function Page() {
 	const data = await getMarketshare();

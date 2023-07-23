@@ -86,6 +86,10 @@ export const getDistributorBoxOfficeEndpoint = (
 	return `${getApi()}/distributor/${slug}/boxoffice?limit=${limit}`;
 };
 
+export const getDistributorMarketShareEndpoint = (): string => {
+	return `${getApi()}/distributor/marketshare`;
+};
+
 // Countries
 export const getCountryListEndpoint = (page: number, limit: number): string => {
 	return `${getApi()}/country/?page=${page}&limit=${limit}`;
