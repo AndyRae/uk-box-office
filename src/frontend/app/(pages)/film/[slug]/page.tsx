@@ -10,7 +10,7 @@ import { ExportCSV } from 'components/ui/export-csv';
 import { TimeLineChart } from 'components/charts/timeline';
 import { toTitleCase } from 'lib/utils/toTitleCase';
 import { ChartWrapper } from 'components/charts/chart-wrapper';
-import { getFilm } from 'lib/fetch/films';
+import { getFilm } from 'lib/dataFetching';
 
 export async function generateMetadata({
 	params,

@@ -18,8 +18,9 @@ import {
 	getFilmListEndpoint,
 	getFilmSlugEndpoint,
 	getSearchEndpoint,
+	getSearchFilmEndpoint,
 } from './endpoints';
-import { FilmWithWeeks, FilmListData } from 'interfaces/Film';
+import { FilmWithWeeks, FilmListData, FilmOption } from 'interfaces/Film';
 import {
 	Distributor,
 	DistributorBoxOffice,
@@ -395,3 +396,13 @@ export const useSearch = async (
 		throw new Error('Failed to distributor');
 	}
 };
+
+// Make the options search request
+export async function SearchFilms(term: string): Promise<FilmOption[]> {
+	try {
+		const url = getSearchFilmEndpoint(term);
+		return await request<FilmOption[]>(url);
+	} catch (error) {
+		throw new Error('Failed to distributor');
+	}
+}

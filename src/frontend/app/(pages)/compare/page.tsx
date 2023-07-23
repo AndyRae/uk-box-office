@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { PageTitle } from 'components/ui/page-title';
 import { getFilmId } from 'lib/dataFetching';
-import { getApi } from 'lib/fetch/api';
+
 import AsyncSelect from 'react-select/async';
 import { CompareTable } from 'components/tables/compare-table';
 import { CompareTotalChart } from 'components/charts/compare-total';
@@ -14,18 +14,8 @@ import { DatasourceButton } from 'components/datasource';
 import { ChartWrapper } from 'components/charts/chart-wrapper';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import debounce from 'lodash/debounce';
-
-type FilmOption = {
-	value: string;
-	label: string;
-};
-
-// Make the options search request
-async function SearchFilms(term: string): Promise<FilmOption[]> {
-	const url = getApi();
-	const res = await fetch(`${url}/search/film?q=${term}`);
-	return res.json();
-}
+import { FilmOption } from 'interfaces/Film';
+import { SearchFilms } from 'lib/dataFetching';
 
 // For parsing the options request response.
 async function FilmsToOptions(term: string): Promise<FilmOption[]> {

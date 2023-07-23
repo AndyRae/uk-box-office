@@ -112,5 +112,9 @@ export const getCountryBoxOfficeEndpoint = (
 
 // Search
 export const getSearchEndpoint = (query: string): string => {
-	return `${getApi()}/search?${query}`;
+	return `${getApi()}/search?q=${query}`;
+};
+
+export const getSearchFilmEndpoint = (query: string): string => {
+	return `${getApi()}/search/film?q=${query}`;
 };

@@ -31,3 +31,8 @@ export interface TopFilm {
 	};
 	gross: number;
 }
+
+export type FilmOption = {
+	value: string;
+	label: string;
+};
