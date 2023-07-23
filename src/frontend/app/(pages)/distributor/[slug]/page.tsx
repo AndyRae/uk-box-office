@@ -14,8 +14,8 @@ import { Controls } from 'components/controls';
 import {
 	getDistributor,
 	getDistributorBoxOffice,
-} from 'lib/fetch/distributors';
-import { fetchBoxOfficeInfinite } from 'lib/fetch/boxoffice';
+	fetchBoxOfficeInfinite,
+} from 'lib/dataFetching';
 import { parseDate } from 'lib/utils/dates';
 import { toTitleCase } from 'lib/utils/toTitleCase';
 import addDays from 'date-fns/addDays';

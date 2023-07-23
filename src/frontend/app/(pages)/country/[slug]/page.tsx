@@ -11,8 +11,11 @@ import { ChartWrapper } from 'components/charts/chart-wrapper';
 import { Controls } from 'components/controls';
 import { StackedBarChart } from 'components/charts/stacked-bar';
 
-import { getCountry, getCountryBoxOffice } from 'lib/fetch/countries';
-import { fetchBoxOfficeInfinite } from 'lib/fetch/boxoffice';
+import {
+	getCountry,
+	getCountryBoxOffice,
+	fetchBoxOfficeInfinite,
+} from 'lib/dataFetching';
 import { parseDate } from 'lib/utils/dates';
 import addDays from 'date-fns/addDays';
 

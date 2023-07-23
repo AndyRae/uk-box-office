@@ -2,7 +2,7 @@ import { TimePage } from 'app/(pages)/time/time';
 import {
 	fetchBoxOfficeInfinite,
 	fetchBoxOfficeSummary,
-} from 'lib/fetch/boxoffice';
+} from 'lib/dataFetching';
 
 export async function generateMetadata({
 	params,
@@ -63,7 +63,7 @@ export default async function Page({ params }: { params: { year: string } }) {
 		<TimePage
 			year={parseInt(params.year)}
 			results={results}
-			timeComparisonData={timeComparisonData.results}
+			timeComparisonData={timeComparisonData}
 		/>
 	);
 }

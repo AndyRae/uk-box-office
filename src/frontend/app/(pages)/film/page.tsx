@@ -1,4 +1,4 @@
-import { useFilmList } from 'lib/fetch/films';
+import { useFilmList } from 'lib/dataFetching';
 import { paginate } from 'lib/utils/pagination';
 import { Pagination } from 'components/ui/pagination';
 import { PageTitle } from 'components/ui/page-title';

@@ -2,7 +2,7 @@ import { TimePage } from 'app/(pages)/time/time';
 import {
 	fetchBoxOfficeInfinite,
 	fetchBoxOfficeSummary,
-} from 'lib/fetch/boxoffice';
+} from 'lib/dataFetching';
 import { getLastDayofMonth } from 'lib/utils/dates';
 
 export async function generateMetadata({
@@ -77,7 +77,7 @@ export default async function Page({
 			quarter={params.quarter}
 			quarterend={params.quarterend}
 			results={results}
-			timeComparisonData={timeComparisonData.results}
+			timeComparisonData={timeComparisonData}
 		/>
 	);
 }
