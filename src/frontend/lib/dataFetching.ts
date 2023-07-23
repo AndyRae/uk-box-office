@@ -76,18 +76,15 @@ export const fetchBoxOfficeSummary = async (
  * @param {string} end - End date for the query.
  * @returns boxoffice previous year data from the api.
  * @example
- * const { data, error } = fetchBoxOfficePrevious('2021-01-01', '2021-01-31');
+ * const data = fetchBoxOfficePrevious('2021-01-01', '2021-01-31');
  */
 export const fetchBoxOfficePreviousYear = async (
 	start: string,
 	end: string
-): Promise<{ results: BoxOfficeSummary[] }> => {
+): Promise<BoxOfficeSummary[]> => {
 	try {
 		const url = getBoxOfficePreviousYearEndpoint(start, end);
-		const data = await request<BoxOfficeSummary[]>(url);
-		return {
-			results: data,
-		};
+		return await request<BoxOfficeSummary[]>(url);
 	} catch (error) {
 		throw new Error('Failed to fetch box office summary');
 	}
