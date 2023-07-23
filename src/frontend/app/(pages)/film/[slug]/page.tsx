@@ -137,7 +137,7 @@ export default async function Page({
 									return (
 										<BadgeLink
 											key={country.id}
-											text={country.name}
+											text={toTitleCase(country.name)}
 											link={`/country/${country.slug}`}
 										/>
 									);
