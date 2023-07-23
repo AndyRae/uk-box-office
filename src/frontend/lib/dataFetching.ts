@@ -4,6 +4,7 @@ import {
 	getApi,
 	getBoxOfficePreviousYearEndpoint,
 	getBoxOfficeSummaryEndpoint,
+	getBoxOfficeTopFilmsEndpoint,
 	getCountryBoxOfficeEndpoint,
 	getCountryEndpoint,
 	getCountryFilmsEndpoint,
@@ -20,7 +21,12 @@ import {
 	getSearchEndpoint,
 	getSearchFilmEndpoint,
 } from './endpoints';
-import { FilmWithWeeks, FilmListData, FilmOption } from 'interfaces/Film';
+import {
+	FilmWithWeeks,
+	FilmListData,
+	FilmOption,
+	TopFilm,
+} from 'interfaces/Film';
 import {
 	Distributor,
 	DistributorBoxOffice,
@@ -79,6 +85,19 @@ export const fetchBoxOfficePreviousYear = async (
 		return {
 			results: data,
 		};
+	} catch (error) {
+		throw new Error('Failed to fetch box office summary');
+	}
+};
+
+/**
+ * Get the top films from the backend
+ * @returns {Promise<{ results: TopFilm[] }>}
+ */
+export const fetchBoxOfficeTopFilms = async (): Promise<TopFilm[]> => {
+	try {
+		const url = getBoxOfficeTopFilmsEndpoint();
+		return await request<TopFilm[]>(url);
 	} catch (error) {
 		throw new Error('Failed to fetch box office summary');
 	}
