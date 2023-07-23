@@ -92,8 +92,8 @@ def get_by_id(id: int) -> Response:
 
 def add_film(
     film: str,
-    countries: List[models.Country],
-    distributor: Optional[models.Distributor] = None,
+    countries: Optional[List[models.Country]],
+    distributors: Optional[List[models.Distributor]],
 ) -> models.Film:
     """
     Add a film to the database.
@@ -103,26 +103,39 @@ def add_film(
 
     Args:
         film: Name of the film.
-        distributor: Distributor object.
+        distributors: List of Distributor objects.
         countries: List of country objects.
 
     Returns Film object.
     """
     film = film.strip()
 
-    if distributor:
-        instance = models.Film.query.filter_by(
-            name=film, distributor=distributor
-        ).first()
+    if distributors:
+        query = db.session.query(models.Film).filter(models.Film.name == film)
+        query = query.join(models.Film.distributors).filter(
+            models.Distributor.id.in_(
+                [distributor.id for distributor in distributors]
+            )
+        )
+        instance = query.first()
     else:
-        instance = models.Film.query.filter_by(
-            name=film, distributor=None
-        ).first()
+        instance = (
+            db.session.query(models.Film)
+            .filter(models.Film.name == film)
+            .first()
+        )
 
     if instance:
         return instance
 
-    record = {"name": film, "distributor": distributor, "countries": countries}
+    distributors = distributors if distributors is not None else []
+    countries = countries if countries is not None else []
+
+    record = {
+        "name": film,
+        "distributors": distributors,
+        "countries": countries,
+    }
 
     new = models.Film.create(**record, commit=False)
 
@@ -135,8 +148,8 @@ def add_film(
         services.events.create(
             models.Area.etl, models.State.warning, f"Duplicate - {film}."
         )
-        if distributor:
-            slug = slugify(f"{film}-{distributor.name}")
+        if distributors:
+            slug = slugify(f"{film}-{distributors[0].name}-{uuid.uuid4()}")
         else:
             slug = slugify(f"{film}-{uuid.uuid4()}")
         new.slug = slug
@@ -191,7 +204,7 @@ def search(
     query = add_filters(query, query_filter)
 
     # Execute the query to retrieve all films
-    all_films = query.options(joinedload(models.Film.distributor)).all()
+    all_films = query.options(joinedload(models.Film.distributors)).all()
 
     # # Find the film with the highest total_gross
     if all_films:
@@ -239,9 +252,9 @@ def add_filters(
 
     Returns: The query with filters applied.
     """
-    if query_filter.distributor_id is not None:
+    if query_filter.distributor_ids is not None:
         query = query.filter(
-            models.Film.distributor_id.in_(query_filter.distributor_id)
+            models.Film.distributor_id.in_(query_filter.distributor_ids)
         )
 
     if query_filter.country_ids is not None:
@@ -318,11 +331,13 @@ def unique_distributors(films: List[models.Film]) -> List[Dict[str, Any]]:
     """
     distributor_schema = DistributorSchema()
 
-    distributors = [
-        distributor_schema.dump(film.distributor)
-        for film in films
-        if film.distributor is not None
-    ]
+    distributors: List[Dict[str, Any]] = []
+    for film in films:
+        if film.distributors:
+            distributors.extend(
+                distributor_schema.dump(distributor)
+                for distributor in film.distributors
+            )
 
     # Get unique distributors and sort them.
     unique = [dict(s) for s in {frozenset(d.items()) for d in distributors}]

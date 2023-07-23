@@ -60,8 +60,12 @@ def test_get_films(app, add_test_film):
         assert data["previous"] == ""
         assert data["results"][0]["name"] == "Nope"
         assert data["results"][0]["slug"] == "nope"
-        assert data["results"][0]["distributor"]["name"] == "20th Century Fox"
-        assert data["results"][0]["distributor"]["slug"] == "20th-century-fox"
+        assert (
+            data["results"][0]["distributors"][0]["name"] == "20th Century Fox"
+        )
+        assert (
+            data["results"][0]["distributors"][0]["slug"] == "20th-century-fox"
+        )
         assert data["results"][0]["countries"][0]["name"] == "United Kingdom"
         assert data["results"][0]["countries"][0]["slug"] == "united-kingdom"
 
@@ -77,13 +81,13 @@ def test_add_distributor(app):
 
         response = services.distributor.add_distributor("20th Century Fox")
 
-        assert response.name == "20th Century Fox"
-        assert response.slug == "20th-century-fox"
+        assert response[0].name == "20TH CENTURY FOX"
+        assert response[0].slug == "20th-century-fox"
 
         response = services.distributor.add_distributor("Warner Bros")
 
-        assert response.name == "Warner Bros"
-        assert response.slug == "warner-bros"
+        assert response[0].name == "WARNER BROS"
+        assert response[0].slug == "warner-bros"
 
 
 def test_search(app, add_test_distributor):

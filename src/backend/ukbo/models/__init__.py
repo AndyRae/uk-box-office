@@ -10,6 +10,6 @@ from . import models
 from .Country import Country
 from .Distributor import Distributor
 from .Event import Area, Event, State
-from .Film import Film, countries
+from .Film import Film, countries, distributors
 from .Film_Week import Film_Week
 from .Week import Week

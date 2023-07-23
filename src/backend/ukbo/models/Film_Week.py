@@ -17,8 +17,6 @@ class Film_Week(PkModel):  # type: ignore
     Attributes:
         film_id: ID of the film.
         film: Film object.
-        distributor_id: ID of the distributor.
-        distributor: Distributor object.
         date: Date of the film week.
         rank: Rank of the film in the film week.
         weeks_on_release: Number of weeks the film has been on release.
@@ -32,9 +30,6 @@ class Film_Week(PkModel):  # type: ignore
     film_id = db.Column(db.Integer, db.ForeignKey("film.id"), nullable=False)
     film = db.relationship(
         "Film", back_populates="weeks", innerjoin=True, lazy="joined"
-    )
-    distributor_id = db.Column(
-        db.Integer, db.ForeignKey("distributor.id"), nullable=True
     )
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     rank = db.Column(db.Integer, nullable=False)

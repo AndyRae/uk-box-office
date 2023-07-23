@@ -18,6 +18,19 @@ countries = db.Table(
     ),
 )
 
+distributors = db.Table(
+    "distributors",
+    db.Column(
+        "film_id", db.Integer, db.ForeignKey("film.id"), primary_key=True
+    ),
+    db.Column(
+        "distributor_id",
+        db.Integer,
+        db.ForeignKey("distributor.id"),
+        primary_key=True,
+    ),
+)
+
 
 class Film(PkModel):  # type: ignore
     """
@@ -30,8 +43,7 @@ class Film(PkModel):  # type: ignore
         weeks: List of Film weeks that the film has been released in.
         countries: List of countries that the film has been released in.
         country_id: ID of the country that the film was released in.
-        distributor_id: ID of the distributor that released the film.
-        distributor: Distributor that released the film.
+        distributors: List of distributors that released the film.
 
     """
 
@@ -49,8 +61,13 @@ class Film(PkModel):  # type: ignore
         backref=db.backref("films", lazy="joined"),
     )
     country_id = db.Column(db.Integer, db.ForeignKey("country.id"))
-    distributor_id = db.Column(
-        db.Integer, db.ForeignKey("distributor.id"), nullable=True
+    distributors = db.relationship(
+        "Distributor",
+        secondary=distributors,
+        lazy="joined",
+        backref=db.backref("films", lazy="joined"),
+        primaryjoin="Film.id == distributors.c.film_id",
+        secondaryjoin="Distributor.id == distributors.c.distributor_id",
     )
     slug = db.Column(db.String(300), nullable=False, unique=True)
 

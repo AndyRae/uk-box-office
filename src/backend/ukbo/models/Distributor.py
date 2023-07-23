@@ -14,15 +14,11 @@ class Distributor(PkModel):  # type: ignore
     Attributes:
         name: Name of the distributor.
         slug: Slug of the distributor.
-        films: List of Films that the distributor has released.
-        weeks: List of Film weeks that the distributor has released films in.
 
     """
 
     __tablename__ = "distributor"
     name = db.Column(db.String(160), unique=True, nullable=False)
-    films = db.relationship("Film", backref="distributor", lazy="dynamic")
-    weeks = db.relationship("Film_Week", backref="distributor", lazy="dynamic")
     slug = db.Column(db.String(160), nullable=False, unique=True)
 
     def __init__(self, *args: str, **kwargs: str) -> None:

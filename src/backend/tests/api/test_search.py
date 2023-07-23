@@ -13,9 +13,16 @@ def test_search_film(app, client, add_test_film):
     result = client.get("/api/search?q=nope", follow_redirects=True)
     assert result.status_code == 200
     data = json.loads(result.data)
-    assert data["films"][0]["name"] == "Nope"
-    assert data["films"][0]["gross"] == 1000
-    assert data["films"][0]["distributor"]["name"] == "20th Century Fox"
+    assert data["films"]["count"] == 1
+    assert data["films"]["max_gross"] == 1000
+    assert len(data["films"]["distributors"]) == 1
+    assert len(data["films"]["countries"]) == 1
+    assert data["films"]["results"][0]["name"] == "Nope"
+    assert data["films"]["results"][0]["gross"] == 1000
+    assert (
+        data["films"]["results"][0]["distributors"][0]["name"]
+        == "20th Century Fox"
+    )
 
 
 def test_search_distributor(app, client, add_test_film):
@@ -61,6 +68,14 @@ def test_search_empty(app, client):
     result = client.get("/api/search?q=notfound", follow_redirects=True)
     assert result.status_code == 200
     data = json.loads(result.data)
-    assert data["films"] == []
+    assert data["films"] == {
+        "count": 0,
+        "countries": [],
+        "distributors": [],
+        "max_gross": 0,
+        "next": "",
+        "previous": "",
+        "results": [],
+    }
     assert data["distributors"] == []
     assert data["countries"] == []

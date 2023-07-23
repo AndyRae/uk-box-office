@@ -48,7 +48,7 @@ def all() -> Response:
         distributor = [int(id) for id in distributor.split(",")]
 
     query_filter = services.filters.QueryFilter(
-        distributor_id=distributor,
+        distributor_ids=distributor,
         country_ids=country,
         min_year=min_year,
         max_year=max_year,

@@ -41,7 +41,7 @@ export async function generateMetadata({
 
 export default async function Page({ params }: { params: { year: string } }) {
 	// Build Dates based on existing params or defaults.
-	const start = new Date(parseInt(params.year), 1, 1);
+	const start = new Date(parseInt(params.year), 0, 1);
 	const end = new Date(parseInt(params.year), 11, 31);
 
 	// Build Date Strings for API

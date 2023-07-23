@@ -57,7 +57,7 @@ def test_seed_films(app, tmp_path):
             assert len(models.Film.query.all()) == 1
             film = models.Film.query.first()
             assert film.name == "Test Film"
-            assert film.distributor.name == "Test Distributor"
+            assert film.distributors[0].name == "TEST DISTRIBUTOR"
             assert film.countries[0].name == "TEST COUNTRY"
 
 
@@ -284,7 +284,7 @@ def test_delete_film_task(app, add_test_distributor, add_test_country):
         services.film.add_film(
             "Nope",
             [country],
-            distributor=distributor,
+            [distributor],
         )
         # Get click context and run delete_film_task
         ctx = click.Context(click.Command("cmd"), obj={"prop": "A Context"})

@@ -17,7 +17,7 @@ def test_all_boxoffice(app, client, add_test_film):
         response = client.get("/api/boxoffice/all")
         data = json.loads(response.data)
         assert response.status_code == 200
-        assert data["results"][0]["film"] == "Nope"
+        assert data["results"][0]["film"]["name"] == "Nope"
         assert data["results"][0]["weekend_gross"] == 500
         assert data["results"][0]["week_gross"] == 1000
         assert data["results"][0]["total_gross"] == 1000
@@ -42,7 +42,7 @@ def test_filtered__all_boxoffice(app, client, add_test_film):
         )
         data = json.loads(response.data)
         assert response.status_code == 200
-        assert data["results"][0]["film"] == "Nope"
+        assert data["results"][0]["film"]["name"] == "Nope"
         assert data["results"][0]["weekend_gross"] == 500
         assert data["results"][0]["week_gross"] == 1000
         assert data["results"][0]["total_gross"] == 1000
@@ -86,11 +86,11 @@ def test_top_films(app, client, add_test_film):
         assert data["results"][0]["film"]["name"] == "Nope"
         assert data["results"][0]["film"]["gross"] == 1000
         assert (
-            data["results"][0]["film"]["distributor"]["name"]
+            data["results"][0]["film"]["distributors"][0]["name"]
             == "20th Century Fox"
         )
         assert (
-            data["results"][0]["film"]["distributor"]["slug"]
+            data["results"][0]["film"]["distributors"][0]["slug"]
             == "20th-century-fox"
         )
         assert (

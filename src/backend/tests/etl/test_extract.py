@@ -75,10 +75,8 @@ def test_check_file_new(
 
         distributor = make_distributor()
         countries = [make_country()]
-        film = make_film("Nope", distributor, countries)
-        film_week = make_film_week(
-            date=datetime.date(2022, 1, 20), film=film, distributor=distributor
-        )
+        film = make_film("Nope", [distributor], countries)
+        film_week = make_film_week(date=datetime.date(2022, 1, 20), film=film)
 
         db.session.add(distributor)
         db.session.add(film)
