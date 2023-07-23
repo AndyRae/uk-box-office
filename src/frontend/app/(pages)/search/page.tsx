@@ -5,7 +5,7 @@ import { Country } from 'interfaces/Country';
 
 import { paginate } from 'lib/utils/pagination';
 import { toTitleCase } from 'lib/utils/toTitleCase';
-import { useSearch } from 'lib/fetch/search';
+import { useSearch } from 'lib/dataFetching';
 
 import { FilmsTable } from 'components/tables/films-table';
 import { Searchbar } from 'components/search';

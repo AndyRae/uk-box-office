@@ -1,6 +1,6 @@
 // lib/apiConfig.ts
 
-import { BoxOfficeSummary, BoxOfficeWeek } from 'interfaces/BoxOffice'; // Import the TypeScript type/interface for BoxOfficeSummary
+import { BoxOfficeSummary, BoxOfficeWeek } from 'interfaces/BoxOffice';
 import request from './request';
 import {
 	getApi,
@@ -17,6 +17,7 @@ import {
 	getFilmIdEndpoint,
 	getFilmListEndpoint,
 	getFilmSlugEndpoint,
+	getSearchEndpoint,
 } from './endpoints';
 import { FilmWithWeeks, FilmListData } from 'interfaces/Film';
 import {
@@ -31,6 +32,7 @@ import {
 	CountryFilmsData,
 	CountryListData,
 } from 'interfaces/Country';
+import { SearchParams, SearchResults } from 'interfaces/Search';
 
 /**
  * Box Office
@@ -342,6 +344,53 @@ export const getCountryBoxOffice = async (
 	try {
 		const url = getCountryBoxOfficeEndpoint(slug, limit);
 		return await request<CountryBoxOffice>(url);
+	} catch (error) {
+		throw new Error('Failed to distributor');
+	}
+};
+
+/**
+ * Search
+ */
+/**
+ * Search for films, distributors, and countries.
+ * @param {string} query - Search query.
+ * @returns search results from the api.
+ * @example
+ * const { data, error } = useSearch('uk');
+ */
+export const useSearch = async (
+	searchParams: SearchParams
+): Promise<SearchResults> => {
+	const {
+		q,
+		distributor,
+		country,
+		min_box: minBox,
+		max_box: maxBox,
+		min_year: minYear,
+		max_year: maxYear,
+		p: page,
+		sort: sort,
+	} = searchParams;
+	const urlSearchParams = new URLSearchParams();
+
+	// Add query parameter
+	urlSearchParams.append('q', q);
+
+	// Add parameters if provided
+	distributor && urlSearchParams.append('distributor', distributor);
+	country && urlSearchParams.append('country', country);
+	minBox && urlSearchParams.append('min_box', minBox);
+	maxBox && urlSearchParams.append('max_box', maxBox);
+	minYear && urlSearchParams.append('min_year', minYear);
+	maxYear && urlSearchParams.append('max_year', maxYear);
+	page && urlSearchParams.append('p', page);
+	sort && urlSearchParams.append('sort', sort);
+
+	try {
+		const url = getSearchEndpoint(urlSearchParams.toString());
+		return await request<SearchResults>(url);
 	} catch (error) {
 		throw new Error('Failed to distributor');
 	}

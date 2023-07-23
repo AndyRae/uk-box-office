@@ -109,3 +109,8 @@ export const getCountryBoxOfficeEndpoint = (
 ): string => {
 	return `${getApi()}/country/${slug}/boxoffice?limit=${limit}`;
 };
+
+// Search
+export const getSearchEndpoint = (query: string): string => {
+	return `${getApi()}/search?${query}`;
+};
