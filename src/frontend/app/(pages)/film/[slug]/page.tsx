@@ -19,12 +19,12 @@ export async function generateMetadata({
 }) {
 	const data = await getFilm(params.slug);
 
-	const year = data.weeks[0].date.split('-')[0];
+	const year = data.weeks[0]?.date.split('-')[0];
 
 	const description = `${toTitleCase(
 		data.name
 	)} (${year}) was released in the UK on ${
-		data.weeks[0].date
+		data.weeks[0]?.date
 	}, and grossed £${data.gross.toLocaleString()} at the UK Box Office.`;
 
 	const title = `${toTitleCase(data.name)} ${year} | Box Office Data`;
@@ -66,11 +66,11 @@ export default async function Page({
 
 	// Unwrap first week date logic
 	const weekOne = data.weeks[0];
-	const weeksOnRelease = weekOne.weeks_on_release;
+	const weeksOnRelease = weekOne?.weeks_on_release;
 	const isFirstWeek = weeksOnRelease === 1 ? true : false;
-	const releaseDate = weekOne.date;
+	const releaseDate = weekOne?.date;
 
-	const multiple = (data.gross / weekOne.weekend_gross).toFixed(2);
+	const multiple = (data.gross / weekOne?.weekend_gross).toFixed(2);
 
 	// Rename data to make it easy to reuse charts
 	const cumulativeData: any[] = data.weeks.map(
@@ -80,7 +80,8 @@ export default async function Page({
 		})
 	);
 
-	const hasCountries = data.countries.length > 1;
+	const hasCountries = data.countries.length > 0;
+	const hasDistributors = data.distributors.length > 0;
 
 	return (
 		<div>
@@ -90,7 +91,7 @@ export default async function Page({
 				time={releaseDate}
 			/>
 
-			<div className='grid grid-cols-1 md:grid-cols-5 gap-3 md:gap-5'>
+			<div className='grid grid-cols-1 md:grid-cols-5 gap-3 md:gap-5 mb-4'>
 				<div className='col-span-2'>
 					<PageTitle>
 						{toTitleCase(data.name)}{' '}
@@ -98,27 +99,34 @@ export default async function Page({
 					</PageTitle>
 
 					<DescriptionList>
-						<DescriptionItem
-							title={'Release Date'}
-							text={<Date dateString={releaseDate} />}
-						/>
+						{weekOne && (
+							<DescriptionItem
+								title={'Release Date'}
+								text={<Date dateString={releaseDate} />}
+							/>
+						)}
 
 						<DescriptionItem
 							title={'Total Box Office'}
 							text={`£ ${data.gross.toLocaleString('en-GB')}`}
 						/>
 
-						<DescriptionItem title={'Multiple'} text={`x${multiple}`} />
+						{weekOne && (
+							<DescriptionItem title={'Multiple'} text={`x${multiple}`} />
+						)}
 
-						{data.distributor && (
+						{hasDistributors && (
 							<DescriptionItem
-								title={'Distributor'}
-								text={
-									<BadgeLink
-										text={toTitleCase(data.distributor.name)}
-										link={`/distributor/${data.distributor.slug}`}
-									/>
-								}
+								title={'Distributors'}
+								text={data.distributors.map((distributor) => {
+									return (
+										<BadgeLink
+											key={distributor.id}
+											text={toTitleCase(distributor.name)}
+											link={`/distributor/${distributor.slug}`}
+										/>
+									);
+								})}
 							/>
 						)}
 

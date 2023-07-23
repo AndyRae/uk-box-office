@@ -22,6 +22,7 @@ import {
 	StackedFilm,
 	TableData,
 	BoxOfficeGroup,
+	BoxOfficeWeekStrict,
 } from 'interfaces/BoxOffice';
 
 /**
@@ -34,11 +35,11 @@ export const groupStackedFilms = (data: BoxOfficeWeek[]): StackedFilm[] => {
 
 	// Reduce array to single films with box office
 	const groupedFilms = flow(
-		(arr) => groupBy(arr, 'film'),
+		(arr) => groupBy(arr, (item) => item.film.slug),
 		(groups) =>
 			map(groups, (group, key) => ({
-				film: key,
-				slug: group[0].film_slug,
+				film: group[0].film.name,
+				slug: key,
 				weekGross: sumBy(group, 'week_gross'),
 				weekendGross: sumBy(group, 'weekend_gross'),
 			})),
@@ -50,7 +51,7 @@ export const groupStackedFilms = (data: BoxOfficeWeek[]): StackedFilm[] => {
 
 	// Create the dataset objects - one for each film
 	const stackedData = groupedFilms.map((film, index: number) => {
-		const filmData = data.filter((item) => item.film_slug === film.slug);
+		const filmData = data.filter((item) => item.film.slug === film.slug);
 		const weekData = filmData.map((item) => {
 			return { x: item.date, y: item.week_gross };
 		});
@@ -93,15 +94,17 @@ export const groupForTable = (data: BoxOfficeWeek[]): TableData => {
 	// Grouping by film (and slug, distributor) - summing box office, max weeks.
 	var table = data
 		.reduce((acc: any[], curr) => {
-			// let item : FilmType;
 			let item: FilmType = acc.find(
-				(x: { film: any }) => x.film === curr['film']
+				(x: { slug: any }) => x.slug === curr.film.slug
 			);
 			if (!item) {
 				item = {
-					film: curr['film'],
-					slug: curr['film_slug'],
-					distributor: curr['distributor'],
+					film: curr['film']['name'],
+					slug: curr['film']['slug'],
+					distributor:
+						curr.film.distributors.length > 0
+							? curr.film.distributors[0].name
+							: '',
 					weeks: {},
 					weekend: {},
 					cinemas: {},
@@ -150,7 +153,7 @@ export const groupForTable = (data: BoxOfficeWeek[]): TableData => {
  * @returns array of grouped data by date.
  */
 export const groupbyDate = (
-	data: BoxOfficeWeek[] | BoxOfficeGroup[]
+	data: BoxOfficeWeek[] | BoxOfficeGroup[] | BoxOfficeWeekStrict[]
 ): { results: BoxOfficeGroup[] } => {
 	const results = flow(
 		(arr) => groupBy(arr, 'date'),
@@ -220,7 +223,9 @@ export const calculateNumberOfFilms = (data: BoxOfficeWeek[]): number => {
  * @param {*} data - array of box office data.
  * @returns total box office.
  */
-export const calculateNumberOfCinemas = (data: BoxOfficeWeek[]): number => {
+export const calculateNumberOfCinemas = (
+	data: BoxOfficeWeekStrict[]
+): number => {
 	return Math.max.apply(
 		Math,
 		data.map(function (o) {

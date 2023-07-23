@@ -29,9 +29,9 @@ export const CompareTable = ({ data }: TableProps): JSX.Element => {
 			{data?.map((film, index: number) => {
 				// Unwrap first week date logic
 				const weekOne = film.weeks[0];
-				const releaseDate = weekOne.date;
+				const releaseDate = weekOne?.date;
 
-				const multiple = (film.gross / weekOne.weekend_gross).toFixed(2);
+				const multiple = (film.gross / weekOne?.weekend_gross).toFixed(2);
 				const cinemas = calculateNumberOfCinemas(film.weeks);
 				const siteAverage = film.gross / cinemas;
 
@@ -51,15 +51,18 @@ export const CompareTable = ({ data }: TableProps): JSX.Element => {
 						<Td isHighlight>
 							<Link href={`/film/${film.slug}`}>{toTitleCase(film.name)}</Link>
 						</Td>
+						<Td>{weekOne && <Date dateString={releaseDate} />}</Td>
 						<Td>
-							<Date dateString={releaseDate} />
+							{film.distributors &&
+								film.distributors.map((distributor) =>
+									toTitleCase(distributor.name)
+								)}
 						</Td>
-						<Td>{film.distributor && toTitleCase(film.distributor.name)}</Td>
 						<Td isNumeric>{film.gross.toLocaleString()}</Td>
 						<Td isNumeric>{film.weeks.length}</Td>
-						<Td isNumeric>x{multiple}</Td>
-						<Td isNumeric>{cinemas}</Td>
-						<Td isNumeric>{siteAverage.toLocaleString()}</Td>
+						<Td isNumeric>x{weekOne ? multiple : 0}</Td>
+						<Td isNumeric>{weekOne ? cinemas : 0}</Td>
+						<Td isNumeric>{weekOne ? siteAverage.toLocaleString() : 0}</Td>
 					</Tr>
 				);
 			})}

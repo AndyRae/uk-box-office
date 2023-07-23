@@ -12,7 +12,7 @@ def test_load_distributors(app):
     Args:
         app: Flask app
     """
-    distributors = ["20th Century Fox", "Disney", "Disney"]
+    distributors = ["20TH CENTURY FOX", "Disney", "Disney"]
 
     with app.app_context():
         etl.load.load_distributors(distributors)
@@ -22,7 +22,7 @@ def test_load_distributors(app):
 
         all_distributors = models.Distributor.query.all()
 
-    assert response.name == "20th Century Fox"
+    assert response.name == "20TH CENTURY FOX"
     assert response.slug == "20th-century-fox"
     assert len(all_distributors) == 2
 
@@ -66,15 +66,15 @@ def test_load_films(app):
     with app.app_context():
         etl.load.load_films([film])
         response = (
-            models.Film.query.options(joinedload(models.Film.distributor))
+            models.Film.query.options(joinedload(models.Film.distributors))
             .filter_by(name=film["film"])
             .first()
         )
 
     assert response.name == "The Lion King"
     assert response.slug == "the-lion-king"
-    assert response.distributor.name == "Disney"
-    assert response.distributor.slug == "disney"
+    assert response.distributors[0].name == "DISNEY"
+    assert response.distributors[0].slug == "disney"
     assert response.countries[0].name == "UNITED KINGDOM"
     assert response.countries[0].slug == "united-kingdom"
 
@@ -110,10 +110,6 @@ def test_load_weeks(app):
             date=date, film=film
         ).first()
         week = models.Week.query.filter_by(date=date).first()
-
-        # Lazy loading is part of the session
-        assert film_week.distributor.name == "Disney"
-        assert film_week.distributor.slug == "disney"
 
     assert film_week.film.name == "The Lion King"
     assert film_week.film.slug == "the-lion-king"

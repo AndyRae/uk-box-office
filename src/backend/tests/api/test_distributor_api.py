@@ -81,8 +81,7 @@ def test_distributor_films_not_found(app, client):
     """
     with app.app_context():
         response = client.get("/api/distributor/20th-century-fox/films")
-        assert response.status_code == 200
-        assert b"[]" in response.data
+        assert response.status_code == 404
 
 
 def test_market_share(app, client, add_test_film):

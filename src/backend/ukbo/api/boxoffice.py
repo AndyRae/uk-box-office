@@ -26,19 +26,19 @@ def all() -> Response:
     start = request.args.get("start", None)
     end = request.args.get("end", None)
     page = request.args.get("page", 1)
-    distributor = request.args.get("distributor", None)
+    distributor_ids = request.args.get("distributor", None)
     country_ids = request.args.get("country", None)
 
     # Split the comma-separated list of IDs into a list
     if country_ids is not None:
         country_ids = [int(id) for id in country_ids.split(",")]
 
-    if distributor is not None:
-        distributor = [int(id) for id in distributor.split(",")]
+    if distributor_ids is not None:
+        distributor_ids = [int(id) for id in distributor_ids.split(",")]
 
     time_filter = services.filters.TimeFilter(start=start, end=end)
     query_filter = services.filters.QueryFilter(
-        distributor_id=distributor, country_ids=country_ids
+        distributor_ids=distributor_ids, country_ids=country_ids
     )
 
     return services.boxoffice.all(time_filter, query_filter, int(page))

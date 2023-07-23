@@ -22,8 +22,12 @@ def test_list(app, add_test_film):
         assert data["previous"] == ""
         assert data["results"][0]["name"] == "Nope"
         assert data["results"][0]["slug"] == "nope"
-        assert data["results"][0]["distributor"]["name"] == "20th Century Fox"
-        assert data["results"][0]["distributor"]["slug"] == "20th-century-fox"
+        assert (
+            data["results"][0]["distributors"][0]["name"] == "20th Century Fox"
+        )
+        assert (
+            data["results"][0]["distributors"][0]["slug"] == "20th-century-fox"
+        )
         assert data["results"][0]["countries"][0]["name"] == "United Kingdom"
         assert data["results"][0]["countries"][0]["slug"] == "united-kingdom"
 
@@ -43,11 +47,13 @@ def test_get(app, add_test_film):
             "id": 1,
             "name": "Nope",
             "slug": "nope",
-            "distributor": {
-                "id": 1,
-                "name": "20th Century Fox",
-                "slug": "20th-century-fox",
-            },
+            "distributors": [
+                {
+                    "id": 1,
+                    "name": "20th Century Fox",
+                    "slug": "20th-century-fox",
+                }
+            ],
             "countries": [
                 {
                     "id": 1,
@@ -59,10 +65,6 @@ def test_get(app, add_test_film):
             "weeks": [
                 {
                     "date": "2022-01-20",
-                    "film": "Nope",
-                    "film_slug": "nope",
-                    "distributor": "20th Century Fox",
-                    "distributor_slug": "20th-century-fox",
                     "id": 1,
                     "week_gross": 1000,
                     "weekend_gross": 500,
@@ -102,13 +104,13 @@ def test_add_film(app, add_test_distributor, add_test_country):
         response = services.film.add_film(
             "Nope",
             [country],
-            distributor,
+            [distributor],
         )
 
         assert response.name == "Nope"
         assert response.slug == "nope"
-        assert response.distributor.name == "20th Century Fox"
-        assert response.distributor.slug == "20th-century-fox"
+        assert response.distributors[0].name == "20th Century Fox"
+        assert response.distributors[0].slug == "20th-century-fox"
         assert response.countries[0].name == "United Kingdom"
         assert response.countries[0].slug == "united-kingdom"
 
@@ -138,7 +140,7 @@ def test_delete_film(app, add_test_distributor, add_test_country):
         response = services.film.add_film(
             "Nope",
             [country],
-            distributor,
+            [distributor],
         )
 
         response = services.film.delete_film(1)
@@ -163,12 +165,22 @@ def test_search(app, add_test_film):
     with app.app_context():
 
         response = services.film.search("Nope")
-        assert response[0]["name"] == "Nope"
-        assert response[0]["slug"] == "nope"
-        assert response[0]["distributor"]["name"] == "20th Century Fox"
-        assert response[0]["distributor"]["slug"] == "20th-century-fox"
-        assert response[0]["countries"][0]["name"] == "United Kingdom"
-        assert response[0]["countries"][0]["slug"] == "united-kingdom"
+        assert response["results"][0]["name"] == "Nope"
+        assert response["results"][0]["slug"] == "nope"
+        assert (
+            response["results"][0]["distributors"][0]["name"]
+            == "20th Century Fox"
+        )
+        assert (
+            response["results"][0]["distributors"][0]["slug"]
+            == "20th-century-fox"
+        )
+        assert (
+            response["results"][0]["countries"][0]["name"] == "United Kingdom"
+        )
+        assert (
+            response["results"][0]["countries"][0]["slug"] == "united-kingdom"
+        )
 
 
 def test_search_with_no_results(app, add_test_film):
@@ -182,4 +194,13 @@ def test_search_with_no_results(app, add_test_film):
     with app.app_context():
 
         response = services.film.search("Nope2")
-        assert response == []
+
+    assert response == {
+        "count": 0,
+        "countries": [],
+        "distributors": [],
+        "max_gross": 0,
+        "next": "",
+        "previous": "",
+        "results": [],
+    }

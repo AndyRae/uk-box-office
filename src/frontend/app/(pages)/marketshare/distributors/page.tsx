@@ -106,12 +106,16 @@ export default async function Page() {
 			<Tabs defaultValue={uniqueYears[0].toString()}>
 				<TabsList>
 					{uniqueYears.map((year) => {
-						return <TabsTrigger value={year.toString()}>{year}</TabsTrigger>;
+						return (
+							<TabsTrigger key={year} value={year.toString()}>
+								{year}
+							</TabsTrigger>
+						);
 					})}
 				</TabsList>
 
 				{uniqueYears.map((year) => {
-					var yearlyData = reducedData
+					const yearlyData = reducedData
 						.map((d: any) => {
 							return {
 								name: d.distributor,

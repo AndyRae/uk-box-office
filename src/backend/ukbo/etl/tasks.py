@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 from typing import Any
 
 import click
+import numpy as np
 import pandas as pd
 from dotenv import load_dotenv
 from flask import current_app
@@ -125,13 +126,20 @@ def seed_films(path: str) -> None:
         path: Path to the archive.csv file.
 
     """
-
     archive = pd.read_csv(path)
-    list_of_countries = archive["country"].unique()
+
+    # Replace NaN values with None for "distributor" and "country" columns
+    archive["distributor"].replace({np.nan: None}, inplace=True)
+    archive["country"].replace({np.nan: None}, inplace=True)
+
+    # Get unique lists of countries and distributors (excluding None)
+    list_of_countries = archive["country"].dropna().unique().tolist()
+    list_of_distributors = archive["distributor"].dropna().unique().tolist()
+
+    # Load countries and distributors to the database
     load.load_countries(list_of_countries)
     print("Seeded countries.")
 
-    list_of_distributors = archive["distributor"].unique()
     load.load_distributors(list_of_distributors)
     print("Seeded distributors.")
 
@@ -141,8 +149,12 @@ def seed_films(path: str) -> None:
         .reset_index()
         .rename(columns={0: "count"})
     )
+    list_of_films["distributor"].replace({np.nan: None}, inplace=True)
+    list_of_films["country"].replace({np.nan: None}, inplace=True)
+
     films = list_of_films.to_dict(orient="records")
     load.load_films(films)
+
     print("Seeded films.")
 
 

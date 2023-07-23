@@ -1,5 +1,5 @@
 import datetime
-from typing import Optional
+from typing import List, Optional
 
 import pandas as pd
 from flask import Response, abort, jsonify
@@ -77,9 +77,13 @@ def get_films(slug: str, page: int = 1, limit: int = 100) -> Response:
     query = query.filter(models.Distributor.slug == slug)
     distributor = query.first()
 
+    if distributor is None:
+        abort(404)
+
     query = db.session.query(models.Film).options(
         db.joinedload(models.Film.weeks)
     )
+    query = query.join(models.distributors)
     query = query.join(models.Distributor)
 
     query = query.filter(models.Distributor.slug == slug)
@@ -120,10 +124,10 @@ def get_box_office(slug: str, limit: int) -> Response:
         func.count(models.Film.id),
     ).group_by(func.extract("year", models.Film_Week.date))
 
-    query = query.join(
-        models.Film, models.Film.id == models.Film_Week.film_id
-    ).join(
-        models.Distributor, models.Distributor.id == models.Film.distributor_id
+    query = (
+        query.join(models.Film, models.Film.id == models.Film_Week.film_id)
+        .join(models.distributors)
+        .join(models.Distributor)
     )
 
     query = query.filter(models.Distributor.slug == slug)
@@ -150,29 +154,39 @@ def get_box_office(slug: str, limit: int) -> Response:
     )
 
 
-def add_distributor(distributor: str) -> Optional[models.Distributor]:
+def add_distributor(distributor: str) -> Optional[List[models.Distributor]]:
     """
     Add a distributor to the database.
-
-    Checks the database if the distributor exists - returns it.
-    If not - creates it, adds it to the database and returns it.
+    If the distributor is a list within a string separated by ``/``
+    It is split, and each one mapped to the full distributor name.
+    Checks the database if the distributor exists.
+    If not - creates it, adds it to the database.
 
     Args:
-        distributor: Name of the distributor to add.
+        distributor: Distributor to add.
 
-    Returns Distributor object.
+    Returns list of Distributor objects.
     """
     if distributor is None or (
         isinstance(distributor, str) and not distributor.strip()
     ):
         return None
 
-    distributor = distributor.strip()
-    slug = slugify(distributor)
+    distributors = [c.strip() for c in distributor.split("/")]
+    new_distributors = []
 
-    if instance := models.Distributor.query.filter_by(slug=slug).first():
-        return instance
-    return models.Distributor.create(name=distributor, commit=False)
+    for name in distributors:
+        name = spellcheck_distributor(name)
+        slug = slugify(name)
+        db_distributor = models.Distributor.query.filter_by(slug=slug).first()
+
+        if db_distributor and slug == db_distributor.slug:
+            new_distributors.append(db_distributor)
+        else:
+            new = models.Distributor.create(name=name, commit=False)
+            new_distributors.append(new)
+
+    return new_distributors
 
 
 def search(search_query: str) -> Response:
@@ -208,6 +222,8 @@ def market_share(year: Optional[str] = None) -> Response:
         func.sum(models.Film_Week.week_gross),
     )
 
+    query = query.join(models.Film)
+    query = query.join(models.distributors)
     query = query.join(models.Distributor)
     query = query.group_by(models.Distributor)
     query = query.group_by(func.extract("year", models.Film_Week.date))
@@ -255,7 +271,8 @@ def market_share_date(start: str, end: str) -> Response:
         models.Distributor,
         func.sum(models.Film_Week.week_gross),
     )
-
+    query = query.join(models.Film)
+    query = query.join(models.distributors)
     query = query.join(models.Distributor)
     query = query.filter(models.Film_Week.date >= start)
     query = query.filter(models.Film_Week.date <= end)

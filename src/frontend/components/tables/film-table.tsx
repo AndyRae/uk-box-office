@@ -28,7 +28,12 @@ export const FilmTable = ({
 					<Td isHighlight>
 						<Link href={`/film/${film.slug}`}>{toTitleCase(film.name)}</Link>
 					</Td>
-					<Td>{film.distributor && toTitleCase(film.distributor.name)}</Td>
+					<Td>
+						{film.distributors &&
+							film.distributors.map((distributor) =>
+								toTitleCase(distributor.name)
+							)}
+					</Td>
 					<Td isNumeric>{film.gross.toLocaleString('en-GB')}</Td>
 				</Tr>
 			))}

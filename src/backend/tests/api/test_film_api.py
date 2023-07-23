@@ -34,20 +34,18 @@ def test_single_film(app, client, add_test_film):
         assert data.get("name") == "Nope"
         assert data.get("slug") == "nope"
         assert data.get("gross") == 1000
-        assert data.get("distributor").get("name") == "20th Century Fox"
-        assert data.get("distributor").get("slug") == "20th-century-fox"
+        assert data.get("distributors")[0].get("name") == "20th Century Fox"
+        assert data.get("distributors")[0].get("slug") == "20th-century-fox"
         assert data.get("countries")[0].get("name") == "United Kingdom"
         assert data.get("countries")[0].get("slug") == "united-kingdom"
-        assert data.get("weeks")[0].get("film") == "Nope"
-        assert data.get("weeks")[0].get("film_slug") == "nope"
-        assert data.get("weeks")[0].get("date") == "2022-01-20"
-        assert data.get("weeks")[0].get("rank") == 1
-        assert data.get("weeks")[0].get("weekend_gross") == 500
-        assert data.get("weeks")[0].get("week_gross") == 1000
-        assert data.get("weeks")[0].get("total_gross") == 1000
-        assert data.get("weeks")[0].get("site_average") == 5.0
-        assert data.get("weeks")[0].get("number_of_cinemas") == 100
-        assert data.get("weeks")[0].get("weeks_on_release") == 1
+        assert data.get("weeks")[0]["date"] == "2022-01-20"
+        assert data.get("weeks")[0]["rank"] == 1
+        assert data.get("weeks")[0]["weekend_gross"] == 500
+        assert data.get("weeks")[0]["week_gross"] == 1000
+        assert data.get("weeks")[0]["total_gross"] == 1000
+        assert data.get("weeks")[0]["site_average"] == 5.0
+        assert data.get("weeks")[0]["number_of_cinemas"] == 100
+        assert data.get("weeks")[0]["weeks_on_release"] == 1
 
 
 def test_single_film_not_found(app, client):

@@ -18,7 +18,7 @@ def load_distributors(list_of_distributors: List[str]) -> None:
         None
     """
     for distributor in set(list_of_distributors):
-        distributor = str(distributor.strip())
+        distributor = str(distributor)
         services.distributor.add_distributor(distributor)
         db.session.commit()
 
@@ -55,7 +55,7 @@ def load_films(list_of_films: List[Dict[str, Any]]) -> None:
         distributor = services.distributor.add_distributor(film["distributor"])
         countries = services.country.add_country(film["country"])
         film = services.film.add_film(
-            film=film["film"], distributor=distributor, countries=countries
+            film=film["film"], distributors=distributor, countries=countries
         )
         db.session.commit()
 
@@ -99,23 +99,28 @@ def load_weeks(df: pd.DataFrame, **kwargs: Any) -> None:
     films_list = group_films.to_dict(orient="records")
 
     for film in films_list:
-        countries = (
-            services.country.add_country(film["country"])
-            if "country" in film
-            else ""
-        )
+
+        # if a film does not have a country
+        if pd.isna(film["country"]):
+            countries = None
+        else:
+            countries = (
+                services.country.add_country(film["country"])
+                if "country" in film
+                else ""
+            )
         # if a film does not have a distributor
         if pd.isna(film["distributor"]):
-            distributor = None
+            distributors = None
 
         else:
-            distributor = services.distributor.add_distributor(
+            distributors = services.distributor.add_distributor(
                 str(film["distributor"])
             )
 
-        title = services.film.add_film(film=str(film["film"]), countries=countries, distributor=distributor)  # type: ignore
+        title = services.film.add_film(film=str(film["film"]), countries=countries, distributors=distributors)  # type: ignore
 
-        record = {"film": title, "distributor": distributor}
+        record = {"film": title}
 
         for week in film["weeks"]:
             # Clear empty data.
