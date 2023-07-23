@@ -118,3 +118,12 @@ export const getSearchEndpoint = (query: string): string => {
 export const getSearchFilmEndpoint = (query: string): string => {
 	return `${getApi()}/search/film?q=${query}`;
 };
+
+// Forecast
+export const getForecastEndpoint = (
+	startDate: string,
+	endDate: string,
+	limit: number
+): string => {
+	return `${getApi()}/boxoffice/topline?start=${startDate}&end=${endDate}&limit=${limit}`;
+};

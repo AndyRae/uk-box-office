@@ -1,6 +1,4 @@
-// lib/apiConfig.ts
-
-import { BoxOfficeSummary, BoxOfficeWeek } from 'interfaces/BoxOffice';
+import { BoxOfficeSummary, BoxOfficeWeek, Topline } from 'interfaces/BoxOffice';
 import request from './request';
 import {
 	getApi,
@@ -17,6 +15,7 @@ import {
 	getFilmIdEndpoint,
 	getFilmListEndpoint,
 	getFilmSlugEndpoint,
+	getForecastEndpoint,
 	getSearchEndpoint,
 	getSearchFilmEndpoint,
 } from './endpoints';
@@ -402,6 +401,36 @@ export async function SearchFilms(term: string): Promise<FilmOption[]> {
 	try {
 		const url = getSearchFilmEndpoint(term);
 		return await request<FilmOption[]>(url);
+	} catch (error) {
+		throw new Error('Failed to distributor');
+	}
+}
+
+/**
+ * Forecast
+ */
+
+type ForecastData = {
+	results: Topline[];
+};
+
+/**
+ * Get the forecast data from the backend
+ * @param {string} start
+ * @param {string} end
+ * @param {number} limit
+ * @returns {Promise<ForecastData>}
+ * @example
+ * const data = await getForecast();
+ */
+export async function getForecast(
+	start: string,
+	end: string,
+	limit: number = 10
+): Promise<ForecastData> {
+	try {
+		const url = getForecastEndpoint(start, end, limit);
+		return await request<ForecastData>(url);
 	} catch (error) {
 		throw new Error('Failed to distributor');
 	}
