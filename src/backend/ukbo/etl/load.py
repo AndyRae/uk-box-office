@@ -99,11 +99,16 @@ def load_weeks(df: pd.DataFrame, **kwargs: Any) -> None:
     films_list = group_films.to_dict(orient="records")
 
     for film in films_list:
-        countries = (
-            services.country.add_country(film["country"])
-            if "country" in film
-            else ""
-        )
+
+        # if a film does not have a country
+        if pd.isna(film["country"]):
+            countries = None
+        else:
+            countries = (
+                services.country.add_country(film["country"])
+                if "country" in film
+                else ""
+            )
         # if a film does not have a distributor
         if pd.isna(film["distributor"]):
             distributors = None

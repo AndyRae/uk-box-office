@@ -163,13 +163,16 @@ def add_country(country: str) -> Optional[List[models.Country]]:
         return None
     new_countries: List[models.Country] = []
 
-    country = country.strip()
-    countries = country.split("/")
+    countries = [c.strip() for c in country.split("/")]
     for i in countries:
         i = i.strip()
         i = spellcheck_country(i)
         slug = slugify(i)
-        db_country = models.Country.query.filter_by(slug=slug).first()
+        db_country = (
+            db.session.query(models.Country)
+            .filter(models.Country.slug == slug)
+            .first()
+        )
 
         if db_country and slug == db_country.slug:
             new_countries.append(db_country)
