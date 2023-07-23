@@ -1,11 +1,11 @@
 import { redirect } from 'next/navigation';
-import { getLastWeek } from 'lib/dataFetching';
+import { fetchLastWeek } from 'lib/dataFetching';
 
 /**
  * Get the last week from the API and redirects to that week.
  */
 export default async function Page(): Promise<never> {
-	const data = await getLastWeek();
+	const data = await fetchLastWeek();
 
 	const lastWeek = data.results[0].date;
 	const [year, month, day] = lastWeek.split('-');

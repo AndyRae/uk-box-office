@@ -7,7 +7,7 @@ import { getDefaultColorArray } from 'lib/utils/colorGenerator';
 
 import MarketShare from 'interfaces/MarketShare';
 import { Metadata } from 'next';
-import { getMarketshare } from 'lib/dataFetching';
+import { fetchMarketshare } from 'lib/dataFetching';
 
 export const metadata: Metadata = {
 	title: 'Distributor Market Share | Box Office Data',
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-	const data = await getMarketshare();
+	const data = await fetchMarketshare();
 
 	// Map data to unique years.
 	const uniqueYears = [...new Set(data.results.map((d) => d.year))];

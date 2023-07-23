@@ -1,5 +1,5 @@
-import { BoxOfficeSummary, BoxOfficeWeek, Topline } from 'interfaces/BoxOffice';
 import request from './request';
+import { BoxOfficeSummary, BoxOfficeWeek, Topline } from 'interfaces/BoxOffice';
 import {
 	getApi,
 	getBoxOfficeLastWeekEndpoint,
@@ -10,7 +10,7 @@ import {
 	getCountryEndpoint,
 	getCountryFilmsEndpoint,
 	getCountryListEndpoint,
-	getDistributorBoxOfficeEndpoint,
+	getDistributorBoxOfficeEndpoint as fetchDistributorBoxOfficeEndpoint,
 	getDistributorEndpoint,
 	getDistributorFilmsEndpoint,
 	getDistributorListEndpoint,
@@ -42,8 +42,8 @@ import {
 	CountryListData,
 } from 'interfaces/Country';
 import { SearchParams, SearchResults } from 'interfaces/Search';
-import MarketShare from '../interfaces/MarketShare';
-import { StatusEvent } from '../interfaces/Event';
+import MarketShare from 'interfaces/MarketShare';
+import { StatusEvent } from 'interfaces/Event';
 
 /**
  * Box Office
@@ -55,7 +55,7 @@ import { StatusEvent } from '../interfaces/Event';
  * @param {number} yearLimit - Number of years to limit.
  * @returns boxoffice summary data from the api with pagination.
  * @example
- * const { data, error } = fetchBoxOfficeSummary('2021-01-01', '2021-01-31', 5);
+ * const data = fetchBoxOfficeSummary('2021-01-01', '2021-01-31', 5);
  */
 export const fetchBoxOfficeSummary = async (
 	start: string,
@@ -110,7 +110,9 @@ export const fetchBoxOfficeTopFilms = async (): Promise<TopFilm[]> => {
  * Fetches last week box office data.
  * @returns
  */
-export async function getLastWeek(): Promise<{ results: { date: string }[] }> {
+export async function fetchLastWeek(): Promise<{
+	results: { date: string }[];
+}> {
 	try {
 		const url = getBoxOfficeLastWeekEndpoint();
 		return await request<{ results: { date: string }[] }>(url);
@@ -177,9 +179,9 @@ export async function fetchBoxOfficeInfinite(
  * @param {number} limit - Number of items per page.
  * @returns paginated list of films from the api.
  * @example
- * const { data, error } = useFilmList(1, 10);
+ * const data = fetchFilmList(1, 10);
  */
-export const useFilmList = async (
+export const fetchFilmList = async (
 	page: number = 1,
 	limit: number = 10
 ): Promise<FilmListData> => {
@@ -192,13 +194,13 @@ export const useFilmList = async (
 };
 
 /**
- * Get a single film.
+ * Get a single film by slug
  * @param {string} slug - Film slug.
  * @returns a single film from the api.
  * @example
- * const film = await getFilm('the-dark-knight');
+ * const film = await fetchFilm('the-dark-knight');
  */
-export async function getFilm(slug: string): Promise<FilmWithWeeks> {
+export async function fetchFilm(slug: string): Promise<FilmWithWeeks> {
 	try {
 		const url = getFilmSlugEndpoint(slug);
 		return await request<FilmWithWeeks>(url);
@@ -208,13 +210,13 @@ export async function getFilm(slug: string): Promise<FilmWithWeeks> {
 }
 
 /**
- * Get a single film.
+ * Get a single film by Id
  * @param {string} id - Film id.
  * @returns a single film from the api.
  * @example
- * const film = await getFilm(100);
+ * const film = await fetchFilmId(100);
  */
-export async function getFilmId(id: number): Promise<FilmWithWeeks> {
+export async function fetchFilmId(id: number): Promise<FilmWithWeeks> {
 	try {
 		const url = getFilmIdEndpoint(id);
 		return await request<FilmWithWeeks>(url);
@@ -232,9 +234,9 @@ export async function getFilmId(id: number): Promise<FilmWithWeeks> {
  * @param {number} limit - Number of items per page.
  * @returns paginated list of distributors from the api.
  * @example
- * const { data, error } = useDistributorList(1, 10);
+ * const data = fetchDistributors(1, 10);
  */
-export const useDistributorList = async (
+export const fetchDistributors = async (
 	page: number = 1,
 	limit: number = 10
 ): Promise<DistributorListData> => {
@@ -251,9 +253,9 @@ export const useDistributorList = async (
  * @param {string} slug - Distributor slug.
  * @returns a single distributor from the api.
  * @example
- * const distributor = await getDistributor('warner-bros');
+ * const distributor = await fetchDistributor('warner-bros');
  */
-export async function getDistributor(slug: string): Promise<Distributor> {
+export async function fetchDistributor(slug: string): Promise<Distributor> {
 	try {
 		const url = getDistributorEndpoint(slug);
 		return await request<Distributor>(url);
@@ -268,14 +270,14 @@ export async function getDistributor(slug: string): Promise<Distributor> {
  * @param {number} limit - Years to go back .
  * @returns a distributors box office grouped by year
  * @example
- * const distributor = await getDistributorBoxOffice('warner-bros');
+ * const distributor = await fetchDistributorBoxOffice('warner-bros');
  */
 export async function getDistributorBoxOffice(
 	slug: string,
 	limit: number = 25
 ): Promise<DistributorBoxOffice> {
 	try {
-		const url = getDistributorBoxOfficeEndpoint(slug, limit);
+		const url = fetchDistributorBoxOfficeEndpoint(slug, limit);
 		return await request<DistributorBoxOffice>(url);
 	} catch (error) {
 		throw new Error('Failed to distributor');
@@ -289,9 +291,9 @@ export async function getDistributorBoxOffice(
  * @param {number} limit - Number of items per page.
  * @returns a single distributor and its films from the api.
  * @example
- * const { data, error } = useDistributorFilms('mubi', 1, 10);
+ * const data = fetchDistributorFilms('mubi', 1, 10);
  */
-export const useDistributorFilms = async (
+export const fetchDistributorFilms = async (
 	slug: string,
 	page: number = 1,
 	limit: number = 10
@@ -312,7 +314,7 @@ type MarketShareData = {
  * Get market share data from the backend.
  * @returns {Promise<MarketShareData>}
  */
-export async function getMarketshare(): Promise<MarketShareData> {
+export async function fetchMarketshare(): Promise<MarketShareData> {
 	try {
 		const url = getDistributorMarketShareEndpoint();
 		return await request<MarketShareData>(url);
@@ -326,14 +328,14 @@ export async function getMarketshare(): Promise<MarketShareData> {
  */
 
 /**
- * Get paginated list of countrys.
+ * Get paginated list of countries.
  * @param {number} page - Page number to start from.
  * @param {number} limit - Number of items per page.
  * @returns paginated list of countrys from the api.
  * @example
- * const { data, error } = useCountryList(1, 10);
+ * const { data, error } = fetchCountryList(1, 10);
  */
-export const useCountryList = async (
+export const fetchCountryList = async (
 	page: number = 1,
 	limit: number = 10
 ): Promise<CountryListData> => {
@@ -350,9 +352,9 @@ export const useCountryList = async (
  * @param {string} slug - Country slug.
  * @returns a single country from the api.
  * @example
- * const country = await getCountry('united-kingdom');
+ * const country = await fetchCountry('united-kingdom');
  */
-export async function getCountry(slug: string): Promise<Country> {
+export async function fetchCountry(slug: string): Promise<Country> {
 	try {
 		const url = getCountryEndpoint(slug);
 		return await request<Country>(url);
@@ -368,9 +370,9 @@ export async function getCountry(slug: string): Promise<Country> {
  * @param {number} limit - Number of items per page.
  * @returns a single country and its paginated films from the api.
  * @example
- * const { data, error } = useCountryFilms('uk', 1, 10);
+ * const { data, error } = fetchCountryFilms('uk', 1, 10);
  */
-export const useCountryFilms = async (
+export const fetchCountryFilms = async (
 	slug: string,
 	page: number,
 	limit: number
@@ -389,9 +391,9 @@ export const useCountryFilms = async (
  * @param {number} limit - Years to go back.
  * @returns a single country and box office from the api.
  * @example
- * const data = getCountryBoxOffice('uk', 10);
+ * const data = fetchCountryBoxOffice('uk', 10);
  */
-export const getCountryBoxOffice = async (
+export const fetchCountryBoxOffice = async (
 	slug: string,
 	limit: number
 ): Promise<CountryBoxOffice> => {
@@ -411,9 +413,9 @@ export const getCountryBoxOffice = async (
  * @param {string} query - Search query.
  * @returns search results from the api.
  * @example
- * const { data, error } = useSearch('uk');
+ * const { data, error } = fetchSearch('uk');
  */
-export const useSearch = async (
+export const fetchSearch = async (
 	searchParams: SearchParams
 ): Promise<SearchResults> => {
 	const {
@@ -451,7 +453,7 @@ export const useSearch = async (
 };
 
 // Make the options search request
-export async function SearchFilms(term: string): Promise<FilmOption[]> {
+export async function fetchSearchFilms(term: string): Promise<FilmOption[]> {
 	try {
 		const url = getSearchFilmEndpoint(term);
 		return await request<FilmOption[]>(url);
@@ -475,9 +477,9 @@ type ForecastData = {
  * @param {number} limit
  * @returns {Promise<ForecastData>}
  * @example
- * const data = await getForecast();
+ * const data = await fetchForecast();
  */
-export async function getForecast(
+export async function fetchForecast(
 	start: string,
 	end: string,
 	limit: number = 10
@@ -510,9 +512,9 @@ type EventsOverview = {
  * Get the events overview.
  * @returns the events overview from the api.
  * @example
- * const events = await getEvents());
+ * const events = await fetchEvents());
  */
-export async function getEvents(): Promise<EventsOverview> {
+export async function fetchEvents(): Promise<EventsOverview> {
 	try {
 		const url = getEventsEndpoint();
 		return await request<EventsOverview>(url);

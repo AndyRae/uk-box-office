@@ -12,8 +12,8 @@ import { Controls } from 'components/controls';
 import { StackedBarChart } from 'components/charts/stacked-bar';
 
 import {
-	getCountry,
-	getCountryBoxOffice,
+	fetchCountry,
+	fetchCountryBoxOffice,
 	fetchBoxOfficeInfinite,
 } from 'lib/dataFetching';
 import { parseDate } from 'lib/utils/dates';
@@ -24,7 +24,7 @@ export async function generateMetadata({
 }: {
 	params: { slug: string };
 }) {
-	const data = await getCountry(params.slug);
+	const data = await fetchCountry(params.slug);
 
 	const title = `${data.name} | Box Office Data`;
 	const description = `Get ${data.name} released films data at the UK Box Office.`;
@@ -65,8 +65,8 @@ export default async function Page({
 	searchParams: { p?: number; s?: string; e?: string };
 }): Promise<JSX.Element> {
 	let pageIndex = searchParams?.p ?? 1;
-	const data = await getCountry(params.slug);
-	const boxOfficeData = await getCountryBoxOffice(params.slug, 25);
+	const data = await fetchCountry(params.slug);
+	const boxOfficeData = await fetchCountryBoxOffice(params.slug, 25);
 
 	const boxOfficeTotal = boxOfficeData.results.reduce(
 		(acc, curr) => acc + curr.total,

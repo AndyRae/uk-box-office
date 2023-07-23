@@ -1,4 +1,4 @@
-import { useCountryFilms } from 'lib/dataFetching';
+import { fetchCountryFilms } from 'lib/dataFetching';
 import { FilmTable } from 'components/tables/film-table';
 import { Pagination } from 'components/ui/pagination';
 import { paginate } from 'lib/utils/pagination';
@@ -20,7 +20,7 @@ export const CountryFilmsTable = async ({
 }): Promise<JSX.Element> => {
 	const pageLimit = 15;
 
-	const data = await useCountryFilms(slug, pageIndex, pageLimit);
+	const data = await fetchCountryFilms(slug, pageIndex, pageLimit);
 
 	const pageNumbers = paginate(data!.count, pageIndex, pageLimit);
 

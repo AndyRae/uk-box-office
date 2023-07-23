@@ -1,4 +1,4 @@
-import { useFilmList } from 'lib/dataFetching';
+import { fetchFilmList } from 'lib/dataFetching';
 import { paginate } from 'lib/utils/pagination';
 import { Pagination } from 'components/ui/pagination';
 import { PageTitle } from 'components/ui/page-title';
@@ -20,7 +20,7 @@ export default async function Page({
 	let pageIndex = searchParams?.p ?? 1;
 
 	const pageLimit = 15;
-	const data = await useFilmList(pageIndex, pageLimit);
+	const data = await fetchFilmList(pageIndex, pageLimit);
 	const pageNumbers = paginate(data.count, pageIndex, pageLimit);
 
 	return (

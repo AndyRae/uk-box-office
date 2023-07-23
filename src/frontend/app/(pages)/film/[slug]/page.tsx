@@ -10,14 +10,14 @@ import { ExportCSV } from 'components/ui/export-csv';
 import { TimeLineChart } from 'components/charts/timeline';
 import { toTitleCase } from 'lib/utils/toTitleCase';
 import { ChartWrapper } from 'components/charts/chart-wrapper';
-import { getFilm } from 'lib/dataFetching';
+import { fetchFilm } from 'lib/dataFetching';
 
 export async function generateMetadata({
 	params,
 }: {
 	params: { slug: string };
 }) {
-	const data = await getFilm(params.slug);
+	const data = await fetchFilm(params.slug);
 
 	const year = data.weeks[0]?.date.split('-')[0];
 
@@ -62,7 +62,7 @@ export default async function Page({
 }: {
 	params: { slug: string };
 }): Promise<JSX.Element> {
-	const data = await getFilm(params.slug);
+	const data = await fetchFilm(params.slug);
 
 	// Unwrap first week date logic
 	const weekOne = data.weeks[0];

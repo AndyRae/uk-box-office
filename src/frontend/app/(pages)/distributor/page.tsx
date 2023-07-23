@@ -1,4 +1,4 @@
-import { useDistributorList } from 'lib/dataFetching';
+import { fetchDistributors } from 'lib/dataFetching';
 import { paginate } from 'lib/utils/pagination';
 import { Pagination } from 'components/ui/pagination';
 import { PageTitle } from 'components/ui/page-title';
@@ -18,7 +18,7 @@ export default async function Page({
 }: Props): Promise<JSX.Element> {
 	let pageIndex = searchParams?.p ?? 1;
 	const pageLimit = 15;
-	const data = await useDistributorList(pageIndex, pageLimit);
+	const data = await fetchDistributors(pageIndex, pageLimit);
 	const pageNumbers = paginate(data?.count, pageIndex, pageLimit);
 
 	return (

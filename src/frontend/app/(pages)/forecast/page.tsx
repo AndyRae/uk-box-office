@@ -4,7 +4,7 @@ import { PageContent } from 'components/ui/page-content';
 import { Topline } from 'interfaces/BoxOffice';
 import { Metadata } from 'next';
 import addDays from 'date-fns/addDays';
-import { getForecast } from 'lib/dataFetching';
+import { fetchForecast } from 'lib/dataFetching';
 
 export const metadata: Metadata = {
 	title: 'Forecast | Box Office Data',
@@ -39,7 +39,7 @@ export default async function Page(): Promise<JSX.Element> {
 	}-${start.getDate()}`;
 	const endDate = `${end.getFullYear()}-${end.getMonth() + 1}-${end.getDate()}`;
 
-	const data = await getForecast(startDate, endDate);
+	const data = await fetchForecast(startDate, endDate);
 
 	const filteredFutureData = updateWeekGross(data.results);
 

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { PageTitle } from 'components/ui/page-title';
-import { getFilmId } from 'lib/dataFetching';
+import { fetchFilmId } from 'lib/dataFetching';
 
 import AsyncSelect from 'react-select/async';
 import { CompareTable } from 'components/tables/compare-table';
@@ -15,13 +15,13 @@ import { ChartWrapper } from 'components/charts/chart-wrapper';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import debounce from 'lodash/debounce';
 import { FilmOption } from 'interfaces/Film';
-import { SearchFilms } from 'lib/dataFetching';
+import { fetchSearchFilms } from 'lib/dataFetching';
 
 // For parsing the options request response.
 async function FilmsToOptions(term: string): Promise<FilmOption[]> {
 	// Param Id can be present but empty.
 	if (term != '') {
-		const results = await SearchFilms(term);
+		const results = await fetchSearchFilms(term);
 		const parsed = results.map((film) => ({
 			value: film.value,
 			label: film.label,
@@ -69,7 +69,7 @@ export default function Page(): JSX.Element {
 		async function fetchData() {
 			if (ids) {
 				for (let i = 0; i < ids?.length; i++) {
-					const film = await getFilmId(Number(ids[i]));
+					const film = await fetchFilmId(Number(ids[i]));
 					films.push({ value: film.id.toString(), label: film.name });
 				}
 			}
@@ -90,7 +90,7 @@ export default function Page(): JSX.Element {
 
 		let filmsData = [];
 		for (let i = 0; i < data.length; i++) {
-			const filmresp = await getFilmId(data[i].value);
+			const filmresp = await fetchFilmId(data[i].value);
 			filmresp.color = colors.shift();
 			filmsData.push(filmresp);
 		}

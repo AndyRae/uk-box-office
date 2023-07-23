@@ -5,7 +5,7 @@ import { Country } from 'interfaces/Country';
 
 import { paginate } from 'lib/utils/pagination';
 import { toTitleCase } from 'lib/utils/toTitleCase';
-import { useSearch } from 'lib/dataFetching';
+import { fetchSearch } from 'lib/dataFetching';
 
 import { FilmsTable } from 'components/tables/films-table';
 import { Searchbar } from 'components/search';
@@ -19,7 +19,7 @@ export default async function Page({
 	searchParams: { q: string; p?: string };
 }): Promise<JSX.Element> {
 	const query = searchParams?.q ?? '';
-	const data = await useSearch(searchParams);
+	const data = await fetchSearch(searchParams);
 
 	let pageIndex = searchParams?.p ?? 1;
 
