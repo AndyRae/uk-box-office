@@ -76,7 +76,7 @@ export default async function Page({
 			year={parseInt(params.year)}
 			quarter={params.quarter}
 			results={results}
-			timeComparisonData={timeComparisonData}
+			timeComparisonData={timeComparisonData.results}
 		/>
 	);
 }

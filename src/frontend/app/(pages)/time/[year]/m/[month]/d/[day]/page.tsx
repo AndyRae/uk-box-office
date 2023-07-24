@@ -98,7 +98,7 @@ export default async function Page({
 			day={params.day}
 			results={results}
 			lastWeekResults={lastWeekResults}
-			timeComparisonData={timeComparisonData}
+			timeComparisonData={timeComparisonData.results}
 		/>
 	);
 }

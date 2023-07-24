@@ -77,7 +77,7 @@ export default async function Page({
 			quarter={params.quarter}
 			quarterend={params.quarterend}
 			results={results}
-			timeComparisonData={timeComparisonData}
+			timeComparisonData={timeComparisonData.results}
 		/>
 	);
 }

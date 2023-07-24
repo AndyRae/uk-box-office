@@ -89,7 +89,7 @@ export default async function Page({
 			year={parseInt(params.year)}
 			month={params.month}
 			results={results}
-			timeComparisonData={timeComparisonData}
+			timeComparisonData={timeComparisonData.results}
 		/>
 	);
 }
