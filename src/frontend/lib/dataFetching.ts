@@ -22,6 +22,7 @@ import {
 	getForecastEndpoint,
 	getSearchEndpoint,
 	getSearchFilmEndpoint,
+	getBoxOfficeInfiniteEndpoint,
 } from './endpoints';
 import {
 	FilmWithWeeks,
@@ -84,7 +85,7 @@ export const fetchBoxOfficePreviousYear = async (
 ): Promise<BoxOfficeSummary[]> => {
 	try {
 		const url = getBoxOfficePreviousYearEndpoint(start, end);
-		return await request<BoxOfficeSummary[]>(url);
+		return await request<BoxOfficeSummary[]>(url, { next: { revalidate: 60 } });
 	} catch (error) {
 		throw new Error('Failed to fetch box office summary');
 	}
@@ -94,10 +95,14 @@ export const fetchBoxOfficePreviousYear = async (
  * Get the top films from the backend
  * @returns {Promise<{ results: TopFilm[] }>}
  */
-export const fetchBoxOfficeTopFilms = async (): Promise<TopFilm[]> => {
+export const fetchBoxOfficeTopFilms = async (): Promise<{
+	results: TopFilm[];
+}> => {
 	try {
 		const url = getBoxOfficeTopFilmsEndpoint();
-		return await request<TopFilm[]>(url);
+		return await request<{ results: TopFilm[] }>(url, {
+			next: { revalidate: 60 },
+		});
 	} catch (error) {
 		throw new Error('Failed to fetch box office summary');
 	}
@@ -112,7 +117,9 @@ export async function fetchLastWeek(): Promise<{
 }> {
 	try {
 		const url = getBoxOfficeLastWeekEndpoint();
-		return await request<{ results: { date: string }[] }>(url);
+		return await request<{ results: { date: string }[] }>(url, {
+			next: { revalidate: 60 },
+		});
 	} catch (error) {
 		throw new Error('Failed to fetch box office summary');
 	}
@@ -132,7 +139,7 @@ export async function fetchBoxOfficeInfinite(
 	distributorId?: number,
 	countryIds?: number[]
 ) {
-	const backendUrl = `${getApi()}/boxoffice/all`;
+	const backendUrl = getBoxOfficeInfiniteEndpoint();
 	const allData: BoxOfficeWeek[] = [];
 
 	let nextPage = 1;
@@ -146,11 +153,11 @@ export async function fetchBoxOfficeInfinite(
 		if (countryIds) {
 			url += `&country=${countryIds.join(',')}`;
 		}
-		const response = await fetch(url, { cache: 'no-store' });
-		if (!response.ok) {
-			throw new Error('Failed to fetch box office data');
-		}
-		const data = await response.json();
+		const data = await request<{
+			results: BoxOfficeWeek[];
+			count: number;
+			next: string | null;
+		}>(url, { cache: 'no-store' });
 		allData.push(...data.results);
 		totalCount = data.count;
 		isLastPage = !data.next;

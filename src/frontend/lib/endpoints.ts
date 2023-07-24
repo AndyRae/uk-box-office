@@ -38,6 +38,10 @@ export const getBoxOfficeTopFilmsEndpoint = (): string => {
 	return `/boxoffice/topfilms`;
 };
 
+export const getBoxOfficeInfiniteEndpoint = (): string => {
+	return `/boxoffice/all`;
+};
+
 export const getBoxOfficeToplineEndpoint = (
 	startDate: string,
 	endDate: string,

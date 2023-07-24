@@ -14,7 +14,7 @@ export default async function Page(): Promise<JSX.Element> {
 	return (
 		<>
 			<PageTitle>All Time Top Films</PageTitle>
-			<TopFilmsTable data={data} />
+			<TopFilmsTable data={data.results} />
 		</>
 	);
 }

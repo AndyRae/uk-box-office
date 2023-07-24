@@ -12,6 +12,8 @@ interface RequestOptions {
 	method?: string;
 	headers?: HeadersInit;
 	body?: BodyInit;
+	cache?: RequestCache;
+	next?: { revalidate: number };
 }
 
 const defaultHeaders: HeadersInit = {
@@ -27,6 +29,8 @@ const request = async <T>(
 			method: options.method || 'GET',
 			headers: { ...defaultHeaders, ...options.headers },
 			body: options.body,
+			cache: options.cache || 'default',
+			next: options.next,
 		});
 
 		if (!response.ok) {
