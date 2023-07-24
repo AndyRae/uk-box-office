@@ -24,18 +24,18 @@ export const getBoxOfficeSummaryEndpoint = (
 	endDate: string,
 	limit: number
 ): string => {
-	return `${getApi()}/boxoffice/summary?start=${startDate}&end=${endDate}&limit=${limit}`;
+	return `/boxoffice/summary?start=${startDate}&end=${endDate}&limit=${limit}`;
 };
 
 export const getBoxOfficePreviousYearEndpoint = (
 	start: string,
 	end: string
 ): string => {
-	return `${getApi()}/boxoffice/previousyear?start=${start}&end=${end}`;
+	return `/boxoffice/previousyear?start=${start}&end=${end}`;
 };
 
 export const getBoxOfficeTopFilmsEndpoint = (): string => {
-	return `${getApi()}/boxoffice/topfilms`;
+	return `/boxoffice/topfilms`;
 };
 
 export const getBoxOfficeToplineEndpoint = (
@@ -43,24 +43,24 @@ export const getBoxOfficeToplineEndpoint = (
 	endDate: string,
 	limit: number
 ): string => {
-	return `${getApi()}/boxoffice/topline?start=${startDate}&end=${endDate}&limit=${limit}`;
+	return `/boxoffice/topline?start=${startDate}&end=${endDate}&limit=${limit}`;
 };
 
 export const getBoxOfficeLastWeekEndpoint = (): string => {
-	return `${getApi()}/boxoffice/all`;
+	return `/boxoffice/all`;
 };
 
 // Films
 export const getFilmListEndpoint = (page: number, limit: number): string => {
-	return `${getApi()}/film/?page=${page}&limit=${limit}`;
+	return `/film/?page=${page}&limit=${limit}`;
 };
 
 export const getFilmIdEndpoint = (id: number): string => {
-	return `${getApi()}/film/id/${id}`;
+	return `/film/id/${id}`;
 };
 
 export const getFilmSlugEndpoint = (slug: string): string => {
-	return `${getApi()}/film/slug/${slug}`;
+	return `/film/slug/${slug}`;
 };
 
 // Distributors
@@ -68,7 +68,7 @@ export const getDistributorListEndpoint = (
 	page: number,
 	limit: number
 ): string => {
-	return `${getApi()}/distributor/?page=${page}&limit=${limit}`;
+	return `/distributor/?page=${page}&limit=${limit}`;
 };
 
 export const getDistributorFilmsEndpoint = (
@@ -76,27 +76,27 @@ export const getDistributorFilmsEndpoint = (
 	page: number,
 	limit: number
 ): string => {
-	return `${getApi()}/distributor/${slug}/films?page=${page}&limit=${limit}`;
+	return `/distributor/${slug}/films?page=${page}&limit=${limit}`;
 };
 
 export const getDistributorEndpoint = (slug: string): string => {
-	return `${getApi()}/distributor/${slug}`;
+	return `/distributor/${slug}`;
 };
 
 export const getDistributorBoxOfficeEndpoint = (
 	slug: string,
 	limit: number
 ): string => {
-	return `${getApi()}/distributor/${slug}/boxoffice?limit=${limit}`;
+	return `/distributor/${slug}/boxoffice?limit=${limit}`;
 };
 
 export const getDistributorMarketShareEndpoint = (): string => {
-	return `${getApi()}/distributor/marketshare`;
+	return `/distributor/marketshare`;
 };
 
 // Countries
 export const getCountryListEndpoint = (page: number, limit: number): string => {
-	return `${getApi()}/country/?page=${page}&limit=${limit}`;
+	return `/country/?page=${page}&limit=${limit}`;
 };
 
 export const getCountryFilmsEndpoint = (
@@ -104,27 +104,27 @@ export const getCountryFilmsEndpoint = (
 	page: number,
 	limit: number
 ): string => {
-	return `${getApi()}/country/${slug}/films?page=${page}&limit=${limit}`;
+	return `/country/${slug}/films?page=${page}&limit=${limit}`;
 };
 
 export const getCountryEndpoint = (slug: string): string => {
-	return `${getApi()}/country/${slug}`;
+	return `/country/${slug}`;
 };
 
 export const getCountryBoxOfficeEndpoint = (
 	slug: string,
 	limit: number
 ): string => {
-	return `${getApi()}/country/${slug}/boxoffice?limit=${limit}`;
+	return `/country/${slug}/boxoffice?limit=${limit}`;
 };
 
 // Search
 export const getSearchEndpoint = (query: string): string => {
-	return `${getApi()}/search?q=${query}`;
+	return `/search?q=${query}`;
 };
 
 export const getSearchFilmEndpoint = (query: string): string => {
-	return `${getApi()}/search/film?q=${query}`;
+	return `/search/film?q=${query}`;
 };
 
 // Forecast
@@ -133,10 +133,10 @@ export const getForecastEndpoint = (
 	endDate: string,
 	limit: number
 ): string => {
-	return `${getApi()}/boxoffice/topline?start=${startDate}&end=${endDate}&limit=${limit}`;
+	return `/boxoffice/topline?start=${startDate}&end=${endDate}&limit=${limit}`;
 };
 
 // Events
 export const getEventsEndpoint = (): string => {
-	return `${getApi()}/events`;
+	return `/events`;
 };

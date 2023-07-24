@@ -176,7 +176,7 @@ export async function fetchBoxOfficeInfinite(
  * @param {number} limit - Number of items per page.
  * @returns paginated list of films from the api.
  * @example
- * const data = fetchFilmList(1, 10);
+ * const data = await fetchFilmList(1, 10);
  */
 export const fetchFilmList = async (
 	page: number = 1,
@@ -231,7 +231,7 @@ export async function fetchFilmId(id: number): Promise<FilmWithWeeks> {
  * @param {number} limit - Number of items per page.
  * @returns paginated list of distributors from the api.
  * @example
- * const data = fetchDistributors(1, 10);
+ * const data = await fetchDistributors(1, 10);
  */
 export const fetchDistributors = async (
 	page: number = 1,

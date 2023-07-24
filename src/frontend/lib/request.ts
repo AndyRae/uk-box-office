@@ -1,3 +1,5 @@
+import { getApi } from './endpoints';
+
 // Error class for API errors
 class APIError extends Error {
 	constructor(message: string, status: number) {
@@ -21,7 +23,7 @@ const request = async <T>(
 	options: RequestOptions = {}
 ): Promise<T> => {
 	try {
-		const response = await fetch(url, {
+		const response = await fetch(getApi() + url, {
 			method: options.method || 'GET',
 			headers: { ...defaultHeaders, ...options.headers },
 			body: options.body,
