@@ -235,7 +235,7 @@ def market_share(year: Optional[str] = None) -> Response:
         )
     else:
         query = query.filter(
-            models.Film_Week.date >= datetime.date(2002, 1, 1)
+            models.Film_Week.date >= datetime.date(2018, 1, 1)
         )
 
     data = query.all()
