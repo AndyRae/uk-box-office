@@ -14,7 +14,9 @@ export interface Topline {
 }
 
 export interface BoxOfficeWeek extends BoxOfficeWeekStrict {
-	film: Film;
+	film: string;
+	film_slug: string;
+	distributor: string;
 }
 
 export interface BoxOfficeWeekStrict {

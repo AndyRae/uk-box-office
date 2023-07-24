@@ -35,11 +35,11 @@ export const groupStackedFilms = (data: BoxOfficeWeek[]): StackedFilm[] => {
 
 	// Reduce array to single films with box office
 	const groupedFilms = flow(
-		(arr) => groupBy(arr, (item) => item.film.slug),
+		(arr) => groupBy(arr, 'film'),
 		(groups) =>
 			map(groups, (group, key) => ({
-				film: group[0].film.name,
-				slug: key,
+				film: key,
+				slug: group[0].film_slug,
 				weekGross: sumBy(group, 'week_gross'),
 				weekendGross: sumBy(group, 'weekend_gross'),
 			})),
@@ -51,7 +51,7 @@ export const groupStackedFilms = (data: BoxOfficeWeek[]): StackedFilm[] => {
 
 	// Create the dataset objects - one for each film
 	const stackedData = groupedFilms.map((film, index: number) => {
-		const filmData = data.filter((item) => item.film.slug === film.slug);
+		const filmData = data.filter((item) => item.film_slug === film.slug);
 		const weekData = filmData.map((item) => {
 			return { x: item.date, y: item.week_gross };
 		});
@@ -95,16 +95,13 @@ export const groupForTable = (data: BoxOfficeWeek[]): TableData => {
 	var table = data
 		.reduce((acc: any[], curr) => {
 			let item: FilmType = acc.find(
-				(x: { slug: any }) => x.slug === curr.film.slug
+				(x: { film: any }) => x.film === curr['film']
 			);
 			if (!item) {
 				item = {
-					film: curr['film']['name'],
-					slug: curr['film']['slug'],
-					distributor:
-						curr.film.distributors.length > 0
-							? curr.film.distributors[0].name
-							: '',
+					film: curr['film'],
+					slug: curr['film_slug'],
+					distributor: curr['distributor'],
 					weeks: {},
 					weekend: {},
 					cinemas: {},

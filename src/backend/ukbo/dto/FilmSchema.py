@@ -68,7 +68,15 @@ class FilmWeekSchema(ma.SQLAlchemyAutoSchema):
         model = models.Film_Week
 
     date = ma.Function(lambda obj: obj.date.strftime("%Y-%m-%d"))
-    film = ma.Nested(FilmSchemaStrict)
+    film_slug = ma.Function(lambda obj: obj.film.slug)
+    film = ma.Function(lambda obj: obj.film.name)
+    distributor = ma.Function(
+        lambda obj: ", ".join(
+            distributor.name for distributor in obj.film.distributors
+        )
+        if obj.film.distributors
+        else ""
+    )
 
 
 class FilmWeekSchemaArchive(ma.SQLAlchemyAutoSchema):
