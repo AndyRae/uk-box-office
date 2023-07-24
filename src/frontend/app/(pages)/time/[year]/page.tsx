@@ -63,7 +63,7 @@ export default async function Page({ params }: { params: { year: string } }) {
 		<TimePage
 			year={parseInt(params.year)}
 			results={results}
-			timeComparisonData={timeComparisonData}
+			timeComparisonData={timeComparisonData.results}
 		/>
 	);
 }

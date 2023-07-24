@@ -61,10 +61,10 @@ export const fetchBoxOfficeSummary = async (
 	start: string,
 	end: string,
 	yearLimit: number
-): Promise<BoxOfficeSummary[]> => {
+): Promise<{ results: BoxOfficeSummary[] }> => {
 	try {
 		const url = getBoxOfficeSummaryEndpoint(start, end, yearLimit);
-		return await request<BoxOfficeSummary[]>(url);
+		return await request<{ results: BoxOfficeSummary[] }>(url);
 	} catch (error) {
 		throw new Error('Failed to fetch box office summary');
 	}

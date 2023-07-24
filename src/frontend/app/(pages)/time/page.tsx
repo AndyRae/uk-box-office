@@ -25,7 +25,7 @@ export default async function Page(): Promise<JSX.Element> {
 	const data = await fetchBoxOfficeSummary(startDate, endDate, yearsToLookBack);
 
 	// Reverse for the graph so to be left to right.
-	const reversedData = data?.slice().reverse();
+	const reversedData = data?.results.slice().reverse();
 	return (
 		<>
 			<StructuredTimeData
@@ -66,9 +66,9 @@ export default async function Page(): Promise<JSX.Element> {
 
 			<hr className='my-10' />
 			<div className='mb-5'>
-				<ExportCSV data={data} filename={'alltime.csv'} />
+				<ExportCSV data={data.results} filename={'alltime.csv'} />
 			</div>
-			<YearsTable data={data} id={'yearstable'} />
+			<YearsTable data={data.results} id={'yearstable'} />
 		</>
 	);
 }
