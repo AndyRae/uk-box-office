@@ -70,7 +70,7 @@ export type BoxOfficeGroup = {
 };
 
 export interface BoxOfficeSummary {
-	admissions?: number;
+	admissions: number;
 	number_of_cinemas: number;
 	number_of_releases: number;
 	week_gross: number;

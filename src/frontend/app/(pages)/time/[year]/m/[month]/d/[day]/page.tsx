@@ -2,7 +2,7 @@ import { TimePage } from 'app/(pages)/time/time';
 import {
 	fetchBoxOfficeInfinite,
 	fetchBoxOfficeSummary,
-} from 'lib/fetch/boxoffice';
+} from 'lib/dataFetching';
 import addDays from 'date-fns/addDays';
 
 export async function generateMetadata({
