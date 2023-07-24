@@ -1,43 +1,16 @@
-import { getApi } from 'lib/fetch/api';
-
 import { ForecastChart } from 'components/charts/forecast';
 import { PageTitle } from 'components/ui/page-title';
 import { PageContent } from 'components/ui/page-content';
 import { Topline } from 'interfaces/BoxOffice';
 import { Metadata } from 'next';
 import addDays from 'date-fns/addDays';
+import { fetchForecast } from 'lib/dataFetching';
 
 export const metadata: Metadata = {
 	title: 'Forecast | Box Office Data',
 	description:
 		'UK Box Office forecast of the next 12 months of UK cinema box office revenue.',
 };
-
-type ForecastData = {
-	results: Topline[];
-};
-
-/**
- * Get the forecast data from the backend
- * @param {string} startDate
- * @param {string} endDate
- * @param {number} limit
- * @returns {Promise<ForecastData>}
- * @example
- * const data = await getForecast();
- */
-async function getForecast(
-	startDate: string,
-	endDate: string,
-	limit: number = 10
-): Promise<ForecastData> {
-	const url = getApi();
-	const res = await fetch(
-		`${url}/boxoffice/topline?start=${startDate}&end=${endDate}&limit=${limit}`,
-		{ next: { revalidate: 60 } }
-	);
-	return res.json();
-}
 
 /**
  * Sets future week_gross box office data to undefined.
@@ -66,7 +39,7 @@ export default async function Page(): Promise<JSX.Element> {
 	}-${start.getDate()}`;
 	const endDate = `${end.getFullYear()}-${end.getMonth() + 1}-${end.getDate()}`;
 
-	const data = await getForecast(startDate, endDate);
+	const data = await fetchForecast(startDate, endDate);
 
 	const filteredFutureData = updateWeekGross(data.results);
 

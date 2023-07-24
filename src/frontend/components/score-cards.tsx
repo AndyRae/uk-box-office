@@ -52,7 +52,7 @@ export const Scorecards = ({
 	tableData,
 	results,
 }: {
-	timeComparisonData?: { results: BoxOfficeSummary[] };
+	timeComparisonData?: BoxOfficeSummary[];
 	tableData: TableData;
 	results: BoxOfficeWeek[];
 }) => {
@@ -72,7 +72,7 @@ export const Scorecards = ({
 	let changeCinemas = 0;
 
 	if (timeComparisonData) {
-		const lastYear = timeComparisonData.results[0];
+		const lastYear = timeComparisonData[0];
 
 		changeNewFilms = Math.ceil(
 			((numberOfNewFilms - lastYear?.number_of_releases) /

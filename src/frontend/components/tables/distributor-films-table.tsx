@@ -1,4 +1,4 @@
-import { useDistributorFilms } from 'lib/fetch/distributors';
+import { fetchDistributorFilms } from 'lib/dataFetching';
 import { FilmTable } from 'components/tables/film-table';
 import { Pagination } from 'components/ui/pagination';
 import { paginate } from 'lib/utils/pagination';
@@ -20,7 +20,7 @@ export const DistributorFilmsTable = async ({
 }): Promise<JSX.Element> => {
 	const pageLimit = 15;
 
-	const data = await useDistributorFilms(slug, pageIndex, pageLimit);
+	const data = await fetchDistributorFilms(slug, pageIndex, pageLimit);
 
 	const pageNumbers = paginate(data.count, pageIndex, pageLimit);
 
