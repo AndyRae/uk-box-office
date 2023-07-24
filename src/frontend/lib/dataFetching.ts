@@ -84,10 +84,12 @@ export const fetchBoxOfficeSummary = async (
 export const fetchBoxOfficePreviousYear = async (
 	start: string,
 	end: string
-): Promise<BoxOfficeSummary[]> => {
+): Promise<{ results: BoxOfficeSummary[] }> => {
 	try {
 		const url = getBoxOfficePreviousYearEndpoint(start, end);
-		return await request<BoxOfficeSummary[]>(url, { cache: 'no-store' });
+		return await request<{ results: BoxOfficeSummary[] }>(url, {
+			cache: 'no-store',
+		});
 	} catch (error) {
 		throw new Error('Failed to fetch box office summary');
 	}

@@ -53,7 +53,7 @@ export default async function Dashboard({
 
 			{/* Scorecards grid. */}
 			<Scorecards
-				timeComparisonData={timeComparisonData}
+				timeComparisonData={timeComparisonData.results}
 				tableData={tableData}
 				results={results}
 			/>
