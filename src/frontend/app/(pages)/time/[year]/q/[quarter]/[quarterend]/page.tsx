@@ -43,18 +43,33 @@ export async function generateMetadata({
 export default async function Page({
 	params,
 }: {
-	params: { year: string; quarter: number; quarterend: number };
+	params: { year: string; quarter: string; quarterend: string };
 }) {
 	// Build Dates based on existing params or defaults.
-	const month = params.quarter * 3 - 2;
-	const endMonth = params.quarterend * 3;
+	const month = parseInt(params.quarter) * 3 - 2;
 
 	const start = new Date(parseInt(params.year), month - 1, 1);
-	const end = new Date(
-		parseInt(params.year),
-		endMonth - 1,
-		getLastDayofMonth(endMonth)
-	);
+
+	// Check if the passed year and quarter are the current year and current quarter
+	const currentYear = new Date().getFullYear();
+	const currentQuarter = Math.floor((new Date().getMonth() + 3) / 3);
+	const isCurrentYear = parseInt(params.year) === currentYear;
+	const isCurrentQuarter =
+		isCurrentYear && parseInt(params.quarterend) === currentQuarter;
+
+	let end: Date;
+	if (isCurrentQuarter) {
+		// If it's the current quarter, set the end date to today
+		end = new Date(); // Set the end date to today if it's the current quarter
+	} else {
+		// If it's not the current quarter, set the end date to the last day of the specified ending quarter
+		const endMonth = parseInt(params.quarterend) * 3;
+		end = new Date(
+			parseInt(params.year),
+			endMonth - 1,
+			getLastDayofMonth(endMonth)
+		);
+	}
 
 	// Build Date Strings for API
 	const startDate = `${start.getFullYear()}-${
@@ -74,8 +89,8 @@ export default async function Page({
 	return (
 		<TimePage
 			year={parseInt(params.year)}
-			quarter={params.quarter}
-			quarterend={params.quarterend}
+			quarter={parseInt(params.quarter)}
+			quarterend={parseInt(params.quarterend)}
 			results={results}
 			timeComparisonData={timeComparisonData.results}
 		/>
