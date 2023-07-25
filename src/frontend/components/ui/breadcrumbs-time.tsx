@@ -70,7 +70,7 @@ export function BreadcrumbsYears({ year }: { year: number }) {
 						<ul className='md:w-[60px] lg:w-[80px]'>
 							{years.map((y) => {
 								return (
-									<li className={listItemStyle}>
+									<li className={listItemStyle} key={y}>
 										<NavigationMenuLink key={y}>
 											<Link href={`/time/${y}`}>{y}</Link>
 										</NavigationMenuLink>
@@ -108,7 +108,7 @@ export function BreadcrumbsQuarters({
 						<ul className='w-[40px]'>
 							{quarters.map((q) => {
 								return (
-									<li className={listItemStyle}>
+									<li className={listItemStyle} key={q}>
 										<NavigationMenuLink key={q}>
 											<Link href={`/time/${year}/q/${q}`}>Q{q}</Link>
 										</NavigationMenuLink>
@@ -158,7 +158,7 @@ export function BreadcrumbsMonths({
 						<ul>
 							{Object.keys(months).map((m) => {
 								return (
-									<li className={listItemStyle}>
+									<li className={listItemStyle} key={m}>
 										<NavigationMenuLink>
 											<Link key={m} href={`/time/${year}/m/${m}`}>
 												{months[parseInt(m)]}
