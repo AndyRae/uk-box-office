@@ -34,7 +34,7 @@ export default async function Page({
 /**
  * Wrapping in suspense until NextJs app directory supports shallow routing.
  */
-export async function Dashboard({
+async function Dashboard({
 	searchParams,
 }: {
 	searchParams: { s?: string; e?: string };
