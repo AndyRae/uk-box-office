@@ -14,8 +14,27 @@ import { Scorecards } from 'components/score-cards';
 import addDays from 'date-fns/addDays';
 import { LastUpdated } from 'components/last-updated';
 import { DatasourceCard } from 'components/datasource';
+import * as React from 'react';
+import { Skeleton } from 'components/skeleton';
 
-export default async function Dashboard({
+export default async function Page({
+	searchParams,
+}: {
+	searchParams: { s?: string; e?: string };
+}): Promise<JSX.Element> {
+	const keyString = `${searchParams.s}-${searchParams.e}`;
+	return (
+		<React.Suspense key={keyString} fallback={<Skeleton />}>
+			{/* @ts-expect-error Server Component */}
+			<Dashboard searchParams={searchParams} />
+		</React.Suspense>
+	);
+}
+
+/**
+ * Wrapping in suspense until NextJs app directory supports shallow routing.
+ */
+export async function Dashboard({
 	searchParams,
 }: {
 	searchParams: { s?: string; e?: string };
@@ -29,7 +48,7 @@ export default async function Dashboard({
 	const end = searchParams?.e ?? e;
 
 	// Fetch data from the API
-	const { results } = await fetchBoxOfficeInfinite(start, end);
+	const { results, isReachedEnd } = await fetchBoxOfficeInfinite(start, end);
 	const timeComparisonData = await fetchBoxOfficePreviousYear(start, end);
 
 	// Group Data for the charts
