@@ -528,11 +528,11 @@ type EventsOverview = {
  * @example
  * const events = await fetchEvents());
  */
-export async function fetchEvents(): Promise<EventsOverview> {
+export async function fetchStatusEvents(): Promise<EventsOverview> {
 	try {
 		const url = getEventsEndpoint();
-		return await request<EventsOverview>(url, { cache: 'no-store' });
+		return await request<EventsOverview>(url, { next: { revalidate: 0 } });
 	} catch (error) {
-		throw new Error('Failed to distributor');
+		throw new Error('Failed to find events.');
 	}
 }
