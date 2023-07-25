@@ -1,5 +1,5 @@
 import { PageTitle } from 'components/ui/page-title';
-import { fetchEvents } from 'lib/dataFetching';
+import { fetchStatusEvents } from 'lib/dataFetching';
 import { EventsTable } from 'components/tables/events-table';
 import { StatusCard } from 'components/status-card';
 import { Metadata } from 'next';
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Page(): Promise<JSX.Element> {
-	const events = await fetchEvents();
+	const events = await fetchStatusEvents();
 
 	return (
 		<>

@@ -42,7 +42,7 @@ export const FilmTableDetailed = ({
 				let change: number | undefined;
 				if (comparisonData && comparisonData?.length > 0) {
 					const previousFilm = comparisonData!.find(
-						(object) => object.film.name === film.title
+						(object) => object.film === film.title
 					);
 					if (previousFilm) {
 						change = Math.ceil(

@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify
 from flask.wrappers import Response
 from ukbo import cache, services
 
@@ -11,7 +11,7 @@ def all() -> Response:
     Overview of all events.
 
     Returns:
-        JSON response of countries.
+        JSON response of events.
     """
     return services.events.overview()
 
@@ -23,9 +23,9 @@ def get(id: int) -> Response:
     Get one event.
 
     Args:
-        slug: Country slug to return.
+        id: Event id to return.
 
     Returns:
-        JSON response of a country.
+        JSON response of an event.
     """
     return jsonify(services.events.get(id))
