@@ -59,15 +59,30 @@ export async function generateMetadata({
 export default async function Page({
 	params,
 }: {
-	params: { year: string; month: number };
+	params: { year: string; month: string };
 }) {
 	// Build Dates based on existing params or defaults.
-	const start = new Date(parseInt(params.year), params.month - 1, 1);
-	const end = new Date(
-		parseInt(params.year),
-		params.month - 1,
-		getLastDayofMonth(params.month)
-	);
+	const start = new Date(parseInt(params.year), parseInt(params.month) - 1, 1);
+
+	// Check if the passed year and month are the current year and current month
+	const currentYear = new Date().getFullYear();
+	const currentMonth = new Date().getMonth() + 1;
+	const isCurrentYear = parseInt(params.year) === currentYear;
+	const isCurrentMonth =
+		isCurrentYear && parseInt(params.month) === currentMonth;
+
+	// Adjust the end date based on whether it's the current year and current month
+	let end: Date;
+	if (isCurrentMonth) {
+		end = new Date(); // Set the end date to today if it's the current month
+	} else {
+		end = new Date(
+			parseInt(params.year),
+			parseInt(params.month) - 1,
+			getLastDayofMonth(parseInt(params.month))
+		); // Set the end date to the last day of the specified month
+	}
+	console.log(isCurrentMonth);
 
 	// Build Date Strings for API
 	const startDate = `${start.getFullYear()}-${
@@ -87,7 +102,7 @@ export default async function Page({
 	return (
 		<TimePage
 			year={parseInt(params.year)}
-			month={params.month}
+			month={parseInt(params.month)}
 			results={results}
 			timeComparisonData={timeComparisonData.results}
 		/>
