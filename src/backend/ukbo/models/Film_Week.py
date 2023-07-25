@@ -31,7 +31,9 @@ class Film_Week(PkModel):  # type: ignore
     film = db.relationship(
         "Film", back_populates="weeks", innerjoin=True, lazy="joined"
     )
-    date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    date = db.Column(
+        db.DateTime, nullable=False, default=datetime.utcnow, index=True
+    )
     rank = db.Column(db.Integer, nullable=False)
     weeks_on_release = db.Column(db.Integer, nullable=False)
     number_of_cinemas = db.Column(db.Integer, nullable=False)
