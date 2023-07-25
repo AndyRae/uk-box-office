@@ -20,7 +20,7 @@ build==0.9.0
     # via pip-tools
 cachelib==0.9.0
     # via flask-caching
-certifi==2022.12.7
+certifi==2023.7.22
     # via requests
 cfgv==3.3.1
     # via pre-commit
