@@ -109,6 +109,17 @@ def forecast_command() -> None:
     click.echo("Built new forecast.")
 
 
+@click.command("marketshare")
+@with_appcontext
+def market_share_command() -> None:
+    """
+    Runs the market share task.
+
+    """
+    tasks.load_market_share()
+    click.echo("Loaded market share data.")
+
+
 @click.command("weekly-etl")
 @with_appcontext
 def weekly_etl_command() -> None:

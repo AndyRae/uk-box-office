@@ -40,17 +40,18 @@ def load_market_share_data(entity_type: str = "distributor") -> None:
     # Perform calculations and insert the results into the denormalized table
     for row in data:
         year, entity, total_gross = row
-        market_share_percentage = calculate_market_share(total_gross)
+        market_share_percentage = _calculate_market_share(total_gross, year)
 
-        insert_market_share_data(
-            year, entity, market_share_percentage, entity_type
+        _insert_market_share_data(
+            year, entity, market_share_percentage, total_gross, entity_type
         )
 
 
-def insert_market_share_data(
+def _insert_market_share_data(
     year: int,
     entity: Union[models.Distributor, models.Country],
     market_share: float,
+    gross: int,
     entity_type: str,
 ) -> None:
     """
@@ -58,7 +59,10 @@ def insert_market_share_data(
     """
     if entity_type == "distributor":
         market_share_data = models.DistributorMarketShareTable(
-            year=year, distributor_id=entity.id, market_share=market_share
+            year=year,
+            distributor_id=entity.id,
+            market_share=market_share,
+            gross=gross,
         )
     else:
         raise ValueError(
@@ -69,6 +73,18 @@ def insert_market_share_data(
     db.session.commit()
 
 
-def calculate_market_share(gross: int) -> int:
-    """ """
-    return 0
+def _calculate_market_share(gross: int, year: int) -> float:
+    """
+    Calculate the market share a given gross has for a year.
+
+    """
+    total_gross = (
+        db.session.query(func.sum(models.Week.week_gross))
+        .filter(func.extract("year", models.Week.date) == year)
+        .scalar()
+    )
+
+    if total_gross is None:
+        return 0.0
+
+    return (gross / total_gross) * 100.0

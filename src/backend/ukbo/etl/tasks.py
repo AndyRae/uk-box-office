@@ -90,6 +90,26 @@ def forecast_task() -> None:
             )
 
 
+@scheduler.task(
+    "cron",
+    id="marketshare",
+    week="*",
+    max_instances=1,
+    day_of_week="wed",
+    hour="18",
+    minute="20",
+    second=00,
+    timezone="UTC",
+)
+@with_appcontext
+def load_market_share() -> None:
+    """
+    Loads market share data.
+    """
+    services.market_share.load_market_share_data("distributor")
+    services.market_share.load_market_share_data("country")
+
+
 @with_appcontext
 def clear_db() -> None:
     """
