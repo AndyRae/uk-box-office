@@ -15,5 +15,6 @@ from . import (
     film,
     filters,
     forecast,
+    market_share,
     week,
 )

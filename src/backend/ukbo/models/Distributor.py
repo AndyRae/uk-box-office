@@ -21,6 +21,10 @@ class Distributor(PkModel):  # type: ignore
     name = db.Column(db.String(160), unique=True, nullable=False)
     slug = db.Column(db.String(160), nullable=False, unique=True)
 
+    market_share_data = db.relationship(
+        "DistributorMarketShare", back_populates="distributor"
+    )
+
     def __init__(self, *args: str, **kwargs: str) -> None:
         if "slug" not in kwargs:
             kwargs["slug"] = slugify(kwargs.get("name", ""))
