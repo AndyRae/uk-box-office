@@ -69,7 +69,7 @@ export default async function Page() {
 		var randomColor = colors.shift();
 		return {
 			label: d.distributor,
-			data: d.years.map((d) => d.marketPercentage).reverse(),
+			data: d.years.map((d) => d.marketPercentage),
 			fill: true,
 			backgroundColor: randomColor,
 			borderColor: randomColor,
