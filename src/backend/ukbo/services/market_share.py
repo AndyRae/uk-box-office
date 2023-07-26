@@ -18,16 +18,16 @@ def get_distributor(year: Optional[str] = None) -> Response:
     Returns:
         Returns (JSON): List of distributors and their market share.
     """
-    data = (
-        db.session.query(
-            models.DistributorMarketShare.year,
-            models.DistributorMarketShare.distributor,
-            models.DistributorMarketShare.gross,
-            models.DistributorMarketShare.market_share,
-        )
-        .filter(models.DistributorMarketShare.year == year)
-        .all()
+    query = db.session.query(
+        models.DistributorMarketShare.year,
+        models.Distributor,
+        models.DistributorMarketShare.gross,
+        models.DistributorMarketShare.market_share,
     )
+    if year is not None:
+        query = query.filter(models.DistributorMarketShare.year == year)
+
+    data = query.join(models.Distributor).all()
 
     if data is None:
         abort(404)
