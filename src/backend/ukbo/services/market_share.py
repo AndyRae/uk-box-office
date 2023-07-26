@@ -15,14 +15,13 @@ def load_market_share_data(entity_type: str = "distributor") -> None:
         models.Distributor,
         func.sum(models.Film_Week.week_gross),
     )
-
     query = query.join(models.Film)
 
-    if entity_type == "distributors":
+    if entity_type == "distributor":
         query = query.join(models.distributors)
         query = query.join(models.Distributor)
         query = query.group_by(models.Distributor)
-    elif entity_type == "countries":
+    elif entity_type == "country":
         query = query.join(models.countries)
         query = query.join(models.Country)
         query = query.group_by(models.Country)
@@ -40,10 +39,16 @@ def load_market_share_data(entity_type: str = "distributor") -> None:
     # Perform calculations and insert the results into the denormalized table
     for row in data:
         year, entity, total_gross = row
-        market_share_percentage = _calculate_market_share(total_gross, year)
+        market_share_percentage = _calculate_market_share(
+            total_gross, str(year)
+        )
 
         _insert_market_share_data(
-            year, entity, market_share_percentage, total_gross, entity_type
+            int(year),
+            entity,
+            market_share_percentage,
+            total_gross,
+            entity_type,
         )
 
 
@@ -73,7 +78,7 @@ def _insert_market_share_data(
     db.session.commit()
 
 
-def _calculate_market_share(gross: int, year: int) -> float:
+def _calculate_market_share(gross: int, year: str) -> float:
     """
     Calculate the market share a given gross has for a year.
 
