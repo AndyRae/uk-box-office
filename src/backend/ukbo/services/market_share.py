@@ -1,6 +1,7 @@
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Union
 
+from sqlalchemy.sql import func
 from ukbo import models
 from ukbo.extensions import db
 
@@ -9,8 +10,28 @@ def load_market_share_data(entity_type: str = "distributor") -> None:
     """
     Abstract load function.
     """
-    # Existing market_share query logic, but without the JSON response
-    query = db.session.query(models.Distributor)
+    query = db.session.query(
+        func.extract("year", models.Film_Week.date),
+        models.Distributor,
+        func.sum(models.Film_Week.week_gross),
+    )
+
+    query = query.join(models.Film)
+
+    if entity_type == "distributors":
+        query = query.join(models.distributors)
+        query = query.join(models.Distributor)
+        query = query.group_by(models.Distributor)
+    elif entity_type == "countries":
+        query = query.join(models.countries)
+        query = query.join(models.Country)
+        query = query.group_by(models.Country)
+    else:
+        raise ValueError("Invalid entity type.")
+
+    query = query.group_by(func.extract("year", models.Film_Week.date))
+    query = query.order_by(func.extract("year", models.Film_Week.date).desc())
+
     data = query.all()
 
     if not data:
@@ -28,7 +49,7 @@ def load_market_share_data(entity_type: str = "distributor") -> None:
 
 def insert_market_share_data(
     year: int,
-    entity: models.Distributor,
+    entity: Union[models.Distributor, models.Country],
     market_share: float,
     entity_type: str,
 ) -> None:
@@ -36,7 +57,6 @@ def insert_market_share_data(
     Abstract insert function.
     """
     if entity_type == "distributor":
-        # Create a new entry in the distributor market share table
         market_share_data = models.DistributorMarketShareTable(
             year=year, distributor_id=entity.id, market_share=market_share
         )
