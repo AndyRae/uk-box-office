@@ -1,14 +1,77 @@
-from datetime import datetime
 from typing import Optional, Union
 
+from flask import Response, abort, jsonify
 from sqlalchemy.sql import func
 from ukbo import models
+from ukbo.dto import DistributorSchema
 from ukbo.extensions import db
+
+
+def get_distributor(year: Optional[str] = None) -> Response:
+    """
+    Gets distributor market share data.
+
+    Args:
+        year (str, optional): The year for which to retrieve the market share data.
+        If not provided, all years are included.
+
+    Returns:
+        Returns (JSON): List of distributors and their market share.
+    """
+    data = (
+        db.session.query(
+            models.DistributorMarketShare.year,
+            models.DistributorMarketShare.distributor,
+            models.DistributorMarketShare.gross,
+            models.DistributorMarketShare.market_share,
+        )
+        .filter(models.DistributorMarketShare.year == year)
+        .all()
+    )
+
+    if data is None:
+        abort(404)
+
+    distributor_schema = DistributorSchema()  # type: ignore
+
+    return jsonify(
+        results=[
+            dict(
+                year=row[0],
+                distributor=distributor_schema.dump(row[1]),
+                gross=row[2],
+                market_share=row[3],
+            )
+            for row in data
+        ]
+    )
 
 
 def load_market_share_data(entity_type: str = "distributor") -> None:
     """
-    Abstract load function.
+    Abstract load function to load market share data into the corresponding table.
+
+    Args:
+        entity_type (str, optional): The type of entity for which to load market share data.
+            Possible values are "distributor" and "country". Defaults to "distributor".
+
+    Raises:
+        ValueError: If the provided entity_type is not one of the supported values.
+
+    Returns:
+        None
+
+    Notes:
+        - This function loads market share data into the respective table based on the entity_type.
+        - It calculates the market share for distributors or countries for each year and stores the results in the database.
+        - If entity_type is not provided, the function defaults to loading data for distributors.
+
+    Example:
+        To load market share data for countries:
+        >>> load_market_share_data(entity_type="country")
+
+        To load market share data for distributors (default):
+        >>> load_market_share_data()
     """
     query = db.session.query(
         func.extract("year", models.Film_Week.date),
@@ -60,7 +123,27 @@ def _insert_market_share_data(
     entity_type: str,
 ) -> None:
     """
-    Abstract insert function.
+    Abstract insert function to insert market share data into the corresponding table.
+
+    Args:
+        year (int): The year for which the market share data is being inserted.
+        entity (Union[models.Distributor, models.Country]): The entity (distributor or country)
+            for which the market share data is being inserted.
+        market_share (float): The market share percentage for the specified entity and year.
+        gross (int): The total gross amount for the specified entity and year.
+        entity_type (str): The type of entity for which the data is being inserted.
+            Possible values are "distributor" and "country".
+
+    Raises:
+        ValueError: If the provided entity_type is not one of the supported values.
+
+    Returns:
+        None
+
+    Example:
+        To insert market share data for a distributor:
+        >>> distributor = get_distributor_by_id(1)
+        >>> _insert_market_share_data(2023, distributor, 15.2, 1000000, "distributor")
     """
     if entity_type == "distributor":
         market_share_data = models.DistributorMarketShare(
@@ -70,12 +153,13 @@ def _insert_market_share_data(
             gross=gross,
         )
     elif entity_type == "country":
-        market_share_data = models.DistributorMarketShare(
-            year=year,
-            distributor_id=entity.id,
-            market_share=market_share,
-            gross=gross,
-        )
+        raise NotImplementedError("Not done country yet.")
+        # market_share_data = models.DistributorMarketShare(
+        #     year=year,
+        #     distributor_id=entity.id,
+        #     market_share=market_share,
+        #     gross=gross,
+        # )
     else:
         raise ValueError(
             "Invalid entity type. Supported values are 'distributor' and 'country'."
@@ -87,8 +171,22 @@ def _insert_market_share_data(
 
 def _calculate_market_share(gross: int, year: str) -> float:
     """
-    Calculate the market share a given gross has for a year.
+    Calculate the market share percentage for a given gross in a specific year.
 
+    Args:
+        gross (int): The gross amount of a specific entity (e.g., distributor or country)
+            for the given year.
+        year (str): The year for which the market share percentage is being calculated.
+
+    Returns:
+        float: The market share percentage of the specified gross for the given year.
+
+    Example:
+        To calculate the market share for a distributor's gross in the year 2023:
+        >>> distributor_gross = 2000000
+        >>> market_share_percentage = _calculate_market_share(distributor_gross, "2023")
+        >>> print(market_share_percentage)
+        12.34
     """
     total_gross = (
         db.session.query(func.sum(models.Week.week_gross))
@@ -101,7 +199,14 @@ def _calculate_market_share(gross: int, year: str) -> float:
 
 def clear_year(year: int) -> None:
     """
-    Deletes a given year of market share.
+    Deletes a given year of market share in the database.
+
+    Args:
+        year (str): The year for which the market share table is being deleted.
+
+    Returns:
+        None
+
     TODO: Add second table clear.
     """
     data = (

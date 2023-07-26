@@ -109,7 +109,7 @@ def load_market_share() -> None:
     current_year = datetime.now().year
     services.market_share.clear_year(current_year)
     services.market_share.load_market_share_data("distributor")
-    services.market_share.load_market_share_data("country")
+    # services.market_share.load_market_share_data("country")
 
 
 @with_appcontext
