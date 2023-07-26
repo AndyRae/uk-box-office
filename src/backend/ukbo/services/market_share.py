@@ -63,7 +63,14 @@ def _insert_market_share_data(
     Abstract insert function.
     """
     if entity_type == "distributor":
-        market_share_data = models.DistributorMarketShareTable(
+        market_share_data = models.DistributorMarketShare(
+            year=year,
+            distributor_id=entity.id,
+            market_share=market_share,
+            gross=gross,
+        )
+    elif entity_type == "country":
+        market_share_data = models.DistributorMarketShare(
             year=year,
             distributor_id=entity.id,
             market_share=market_share,
@@ -93,3 +100,21 @@ def _calculate_market_share(gross: int, year: str) -> float:
         return 0.0
 
     return (gross / total_gross) * 100.0
+
+
+def clear_year(year: int) -> None:
+    """
+    Deletes a given year of market share.
+    """
+    data = (
+        db.session.query(models.DistributorMarketShare)
+        .filter(models.DistributorMarketShare.year == year)
+        .all()
+    )
+    for i in data:
+        db.session.delete(i)
+
+    # data = db.session.query(models.).filter(models.DistributorMarketShare.year == year).all()
+    for i in data:
+        db.session.delete(i)
+    db.session.commit()

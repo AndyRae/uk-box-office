@@ -106,6 +106,8 @@ def load_market_share() -> None:
     """
     Loads market share data.
     """
+    current_year = datetime.now().year
+    services.market_share.clear_year(current_year)
     services.market_share.load_market_share_data("distributor")
     services.market_share.load_market_share_data("country")
 

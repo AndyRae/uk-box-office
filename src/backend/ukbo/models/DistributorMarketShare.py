@@ -3,7 +3,7 @@ from ukbo.extensions import db
 from .models import PkModel
 
 
-class DistributorMarketShareTable(PkModel):
+class DistributorMarketShare(PkModel):
     """
     Model for storing precomputed market share data for distributors.
     """

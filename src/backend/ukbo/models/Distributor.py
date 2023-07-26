@@ -22,7 +22,7 @@ class Distributor(PkModel):  # type: ignore
     slug = db.Column(db.String(160), nullable=False, unique=True)
 
     market_share_data = db.relationship(
-        "DistributorMarketShareTable", back_populates="distributor"
+        "DistributorMarketShare", back_populates="distributor"
     )
 
     def __init__(self, *args: str, **kwargs: str) -> None:
