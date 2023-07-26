@@ -20,3 +20,4 @@ class DistributorMarketShare(PkModel):
     distributor = db.relationship(
         "Distributor", back_populates="market_share_data"
     )
+    __table_args__ = (db.UniqueConstraint("distributor_id", "year"),)
