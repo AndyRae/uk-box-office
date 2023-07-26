@@ -1,15 +1,15 @@
 """Add dist market share
 
-Revision ID: 8f9f47266ca0
+Revision ID: 3661a8e9d4fa
 Revises: d3ebee3d9ad2
-Create Date: 2023-07-25 20:18:46.511714
+Create Date: 2023-07-26 18:42:56.243651
 
 """
 import sqlalchemy as sa
 from alembic import op
 
 # revision identifiers, used by Alembic.
-revision = "8f9f47266ca0"
+revision = "3661a8e9d4fa"
 down_revision = "d3ebee3d9ad2"
 branch_labels = None
 depends_on = None
