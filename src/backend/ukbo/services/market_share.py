@@ -57,13 +57,15 @@ def get_distributor(year: Optional[str] = None) -> Response:
 
         distributor_dict = distributor_data.setdefault(
             distributor.id,
-            {"distributor": distributor_schema.dump(distributor), "years": {}},
+            {"distributor": distributor_schema.dump(distributor), "years": []},
         )
 
-        distributor_dict["years"][year] = {
-            "gross": gross,
-            "market_share": market_share,
-        }
+        distributor_dict["years"].append(
+            {
+                "gross": gross,
+                "market_share": market_share,
+            }
+        )
 
     response_data = list(distributor_data.values())
 
