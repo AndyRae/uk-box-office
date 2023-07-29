@@ -26,8 +26,8 @@ export default async function Page() {
 	// Sort the data by total market share in descending order
 	const sortedData = [...data.results];
 	sortedData.sort((a, b) => {
-		const aTotal = a.years.reduce((acc, curr) => acc + curr.market_share, 0);
-		const bTotal = b.years.reduce((acc, curr) => acc + curr.market_share, 0);
+		const aTotal = a.years?.reduce((acc, curr) => acc + curr.market_share, 0);
+		const bTotal = b.years?.reduce((acc, curr) => acc + curr.market_share, 0);
 		return bTotal - aTotal;
 	});
 
@@ -39,7 +39,7 @@ export default async function Page() {
 	const graphData = top.map((distributor) => {
 		const randomColor = colors.shift();
 		const reduced = uniqueYears.map((year) => {
-			const yearData = distributor.years.find((d) => d.year === year);
+			const yearData = distributor.years?.find((d) => d.year === year);
 			return {
 				year,
 				marketPercentage: yearData ? yearData.market_share : 0,
