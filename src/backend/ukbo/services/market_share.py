@@ -62,6 +62,7 @@ def get_distributor(year: Optional[str] = None) -> Response:
 
         distributor_dict["years"].append(
             {
+                "year": year,
                 "gross": gross,
                 "market_share": market_share,
             }
