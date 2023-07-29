@@ -64,7 +64,7 @@ export default async function Page() {
 				)}
 			</div>
 
-			<Tabs defaultValue={uniqueYears[0].toString()}>
+			<Tabs defaultValue={uniqueYears[0]?.toString()}>
 				<TabsList>
 					{uniqueYears.map((year) => {
 						return (
