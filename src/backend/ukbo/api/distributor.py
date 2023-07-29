@@ -39,9 +39,7 @@ def market_share() -> Response:
     start = request.args.get("start", None)
     end = request.args.get("end", None)
     if None in [start, end]:
-        return services.distributor.market_share()
-        # Temp fix.
-        # return services.market_share.get_distributor()
+        return services.market_share.get_distributor()
 
     return services.distributor.market_share_date(start, end)
 
