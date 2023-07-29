@@ -20,7 +20,7 @@ export default async function Page() {
 	// Map data to unique years.
 	const numberOfTopDistributors = 12;
 	const uniqueYears = [
-		...new Set(data.results.flatMap((d) => d.years.map((y) => y.year))),
+		...new Set(data.results.flatMap((d) => d.years?.map((y) => y.year))),
 	].sort();
 
 	// Sort the data by total market share in descending order
