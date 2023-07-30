@@ -81,8 +81,8 @@ export default async function Page() {
 							return {
 								name: d.distributor.name,
 								slug: d.distributor.slug.toLowerCase().replace(/ /g, '-'),
-								marketShare: d.years.find((y) => y.year === year)?.gross,
-								marketPercentage: d.years.find((y) => y.year === year)
+								marketShare: d.years?.find((y) => y.year === year)?.gross,
+								marketPercentage: d.years?.find((y) => y.year === year)
 									?.market_share,
 							};
 						})
