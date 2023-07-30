@@ -5,8 +5,8 @@ import { toTitleCase } from 'lib/utils/toTitleCase';
 type MarketShare = {
 	name: string;
 	slug: string;
-	marketShare: number;
-	marketPercentage: number;
+	marketShare?: number;
+	marketPercentage?: number;
 };
 
 /**
@@ -36,8 +36,8 @@ export const MarketShareTable = ({
 								{toTitleCase(row.name)}
 							</Link>
 						</Td>
-						<Td isNumeric>{row.marketShare.toLocaleString('en-GB')}</Td>
-						<Td isNumeric>{Math.ceil(row.marketPercentage * 100)}%</Td>
+						<Td isNumeric>{row.marketShare?.toLocaleString('en-GB')}</Td>
+						<Td isNumeric>{row.marketPercentage?.toLocaleString('en-GB')}%</Td>
 					</Tr>
 				);
 			})}

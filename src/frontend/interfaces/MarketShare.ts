@@ -1,7 +1,12 @@
 import { Distributor } from './Distributor';
 
 export default interface MarketShare {
-	year: number;
-	gross: number;
 	distributor: Distributor;
+	years: [
+		{
+			gross: number;
+			market_share: number;
+			year: number;
+		}
+	];
 }
