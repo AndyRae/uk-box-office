@@ -60,7 +60,6 @@ class Film(PkModel):  # type: ignore
         lazy="joined",
         backref=db.backref("films", lazy="joined"),
     )
-    country_id = db.Column(db.Integer, db.ForeignKey("country.id"))
     distributors = db.relationship(
         "Distributor",
         secondary=distributors,
