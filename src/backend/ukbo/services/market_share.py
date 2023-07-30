@@ -35,7 +35,7 @@ def get_distributor(year: Optional[str] = None) -> Response:
         models.DistributorMarketShare.year,
         models.Distributor,
         models.DistributorMarketShare.market_share,
-    )
+    ).filter(models.DistributorMarketShare.year > 2001)
 
     # Filter to get only the top distributors with market share greater than 1%
     query = query.having(models.DistributorMarketShare.market_share > 0.1)
