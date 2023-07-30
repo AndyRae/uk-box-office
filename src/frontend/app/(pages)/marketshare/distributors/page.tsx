@@ -68,7 +68,7 @@ export default async function Page() {
 				<TabsList>
 					{uniqueYears.map((year) => {
 						return (
-							<TabsTrigger key={year} value={year.toString()}>
+							<TabsTrigger key={year} value={year?.toString()}>
 								{year}
 							</TabsTrigger>
 						);
@@ -89,7 +89,7 @@ export default async function Page() {
 						.slice(0, numberOfTopDistributors);
 
 					return (
-						<TabsContent value={year.toString()}>
+						<TabsContent value={year?.toString()}>
 							<div className='flex flex-row-reverse mt-3'>
 								{/* <ExportCSV
 									data={yearlyData}
