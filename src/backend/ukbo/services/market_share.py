@@ -1,7 +1,7 @@
 from typing import Optional, Union
 
 from flask import Response, abort, jsonify
-from sqlalchemy.sql import func
+from sqlalchemy.sql import func, text
 from ukbo import models
 from ukbo.dto import DistributorSchema
 from ukbo.extensions import db
@@ -21,30 +21,56 @@ def get_distributor(year: Optional[str] = None) -> Response:
     query = db.session.query(
         models.DistributorMarketShare.year,
         models.Distributor,
-        models.DistributorMarketShare.gross,
         models.DistributorMarketShare.market_share,
+        func.sum(models.DistributorMarketShare.gross),
     )
+
+    query = query.join(models.Distributor)
+
     if year is not None:
         query = query.filter(models.DistributorMarketShare.year == year)
 
-    data = query.join(models.Distributor).all()
+    # Group by distributor and year, and calculate the total market share for each distributor in each year
+    query = query.group_by(
+        models.DistributorMarketShare.year,
+        models.Distributor,
+        models.DistributorMarketShare.market_share,
+    )
+
+    # Filter to get only the top distributors with market share greater than 1%
+    query = query.having(models.DistributorMarketShare.market_share > 0.1)
+
+    data = query.all()
 
     if data is None:
         abort(404)
 
     distributor_schema = DistributorSchema()  # type: ignore
 
-    return jsonify(
-        results=[
-            dict(
-                year=row[0],
-                distributor=distributor_schema.dump(row[1]),
-                gross=row[2],
-                market_share=row[3],
-            )
-            for row in data
-        ]
-    )
+    # Prepare the response data
+    distributor_data = {}  # type: ignore
+    for entry in data:
+        year = entry[0]
+        distributor = entry[1]
+        market_share = entry[2]
+        gross = entry[3]
+
+        distributor_dict = distributor_data.setdefault(
+            distributor.id,
+            {"distributor": distributor_schema.dump(distributor), "years": []},
+        )
+
+        distributor_dict["years"].append(
+            {
+                "year": year,
+                "gross": gross,
+                "market_share": market_share,
+            }
+        )
+
+    response_data = list(distributor_data.values())
+
+    return jsonify(results=response_data)
 
 
 def load_market_share_data(entity_type: str = "distributor") -> None:

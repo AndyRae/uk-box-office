@@ -18,58 +18,36 @@ export default async function Page() {
 	const data = await fetchMarketshare();
 
 	// Map data to unique years.
-	const uniqueYears = [...new Set(data.results.map((d) => d.year))];
+	const numberOfTopDistributors = 12;
+	const uniqueYears = [
+		...new Set(data.results.flatMap((d) => d.years?.map((y) => y.year))),
+	].sort();
 
-	// the total for each year
-	const yearsTotal = data.results.reduce((acc: any, curr: any) => {
-		if (acc[curr.year]) {
-			acc[curr.year] += curr.gross;
-		} else {
-			acc[curr.year] = curr.gross;
-		}
-		return acc;
-	}, {});
-
-	// reduce the data to a single object for each distributor
-	const uniqueDistributors = [
-		...new Set(data.results.map((d) => d.distributor.name)),
-	];
-
-	// reduce the data to a single array for each distributor
-	const reducedData = uniqueDistributors.map((distributor) => {
-		const distributorData = data.results.filter(
-			(d) => d.distributor.name === distributor
-		);
-		const reduced = uniqueYears.map((year) => {
-			const yearData = distributorData.filter((d) => d.year === year);
-			const total = yearData.reduce((acc, curr) => acc + curr.gross, 0);
-			return {
-				year,
-				marketShare: total,
-				marketPercentage: total / yearsTotal[year],
-			};
-		});
-		return {
-			distributor,
-			years: reduced,
-		};
-	});
-
-	// order the data by market share (we only want the top 10)
-	reducedData.sort((a, b) => {
-		const aTotal = a.years.reduce((acc, curr) => acc + curr.marketShare, 0);
-		const bTotal = b.years.reduce((acc, curr) => acc + curr.marketShare, 0);
+	// Sort the data by total market share in descending order
+	const sortedData = [...data.results];
+	sortedData.sort((a, b) => {
+		const aTotal = a.years?.reduce((acc, curr) => acc + curr.market_share, 0);
+		const bTotal = b.years?.reduce((acc, curr) => acc + curr.market_share, 0);
 		return bTotal - aTotal;
 	});
 
-	var colors = getDefaultColorArray(10);
+	let colors = getDefaultColorArray(numberOfTopDistributors);
 
-	// construct dataset object for each distributor
-	var graphData = reducedData.slice(0, 10).map((d) => {
-		var randomColor = colors.shift();
+	// Select the top n distributors
+	const top = sortedData.slice(0, numberOfTopDistributors);
+
+	const graphData = top.map((distributor) => {
+		const randomColor = colors.shift();
+		const reduced = uniqueYears.map((year) => {
+			const yearData = distributor.years?.find((d) => d.year === year);
+			return {
+				year,
+				marketPercentage: yearData ? yearData.market_share : 0,
+			};
+		});
 		return {
-			label: d.distributor,
-			data: d.years.map((d) => d.marketPercentage),
+			label: distributor.distributor.name,
+			data: reduced.map((d) => d.marketPercentage),
 			fill: true,
 			backgroundColor: randomColor,
 			borderColor: randomColor,
@@ -86,11 +64,11 @@ export default async function Page() {
 				)}
 			</div>
 
-			<Tabs defaultValue={uniqueYears[0].toString()}>
+			<Tabs defaultValue={uniqueYears[0]?.toString()}>
 				<TabsList>
 					{uniqueYears.map((year) => {
 						return (
-							<TabsTrigger key={year} value={year.toString()}>
+							<TabsTrigger key={year} value={year?.toString()}>
 								{year}
 							</TabsTrigger>
 						);
@@ -98,29 +76,26 @@ export default async function Page() {
 				</TabsList>
 
 				{uniqueYears.map((year) => {
-					const yearlyData = reducedData
-						.map((d: any) => {
+					const yearlyData = top
+						.map((d: MarketShare) => {
 							return {
-								name: d.distributor,
-								slug: d.distributor.toLowerCase().replace(/ /g, '-'),
-								marketShare: d.years.find((y: MarketShare) => y.year === year)
-									.marketShare,
-								marketPercentage: d.years.find(
-									(y: MarketShare) => y.year === year
-								).marketPercentage,
+								name: d.distributor.name,
+								slug: d.distributor.slug.toLowerCase().replace(/ /g, '-'),
+								marketShare: d.years?.find((y) => y.year === year)?.gross,
+								marketPercentage: d.years?.find((y) => y.year === year)
+									?.market_share,
 							};
 						})
-						.sort((a, b) => b.marketShare - a.marketShare)
-						.slice(0, 10);
+						.slice(0, numberOfTopDistributors);
 
 					return (
-						<TabsContent value={year.toString()}>
+						<TabsContent value={year?.toString()}>
 							<div className='flex flex-row-reverse mt-3'>
-								<ExportCSV
+								{/* <ExportCSV
 									data={yearlyData}
 									filename={`${year}-distributor-market-share.csv`}
 									className='mb-3'
-								/>
+								/> */}
 							</div>
 							<MarketShareTable data={yearlyData} />
 						</TabsContent>
