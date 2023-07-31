@@ -178,7 +178,8 @@ yarn-error.log*
 
 
 src/data
-src/backend/data
 src/legacy/*.csv
 .DS_store
 .python-version
+*.xls
+src/backend/data/*.csv
