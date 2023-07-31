@@ -1,7 +1,7 @@
 import datetime
+import json
 from typing import List, Optional
 
-import numpy as np
 import pandas as pd
 from flask import Response, abort, jsonify
 from slugify import slugify  # type: ignore
@@ -253,3 +253,31 @@ def spellcheck_country(country: str) -> str:
         df = df[df["key"].str.match(country)]
         country = df["correction"].iloc[0]
     return country
+
+
+def seed_country_groups() -> None:
+    """
+    Seed country groups.
+    """
+    if data := db.session.query(models.CountryGroup).all():
+        raise ValueError()
+
+    with open("./data/country_groups.json", "r") as json_file:
+        data = json.load(json_file)
+        for group_data in data:
+            name = group_data["name"]
+            country_names = group_data["countries"]
+
+            group = models.CountryGroup.create(name=name)
+
+            for country_name in country_names:
+                if (
+                    country := db.session.query(models.Country)
+                    .filter(models.Country.name == country_name)
+                    .first()
+                ):
+                    group.countries.append(country)
+
+            db.session.add(group)
+
+        db.session.commit()
