@@ -59,8 +59,7 @@ def market_share_year(year: str) -> Response:
         int(year)
     except ValueError:
         return Response('{"error: "Year must be an integer."}', status=400)
-
-    return services.distributor.market_share(year)
+    raise NotImplementedError()
 
 
 @distributor.route("/<slug>", methods=["GET"])

@@ -1,3 +1,5 @@
+from typing import Optional
+
 import click
 from flask.cli import with_appcontext
 
@@ -110,13 +112,20 @@ def forecast_command() -> None:
 
 
 @click.command("marketshare")
+@click.option("--year", prompt=False, type=int)
 @with_appcontext
-def market_share_command() -> None:
+def market_share_command(year: Optional[int]) -> None:
     """
-    Runs the market share task.
+    Runs the weekly market share task.
+    If no year is provided, the entire database is calculated.
 
+    Args:
+        year (optional): Year to load in.
     """
-    tasks.load_market_share()
+    if year:
+        tasks.load_market_share(year)
+    else:
+        tasks.load_market_share(year=year)
     click.echo("Loaded market share data.")
 
 

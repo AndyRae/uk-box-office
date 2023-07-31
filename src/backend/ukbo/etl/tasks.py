@@ -3,7 +3,7 @@
 import os
 import urllib.request
 from datetime import datetime, timedelta
-from typing import Any
+from typing import Any, Optional
 
 import click
 import numpy as np
@@ -102,14 +102,28 @@ def forecast_task() -> None:
     timezone="UTC",
 )
 @with_appcontext
-def load_market_share() -> None:
+def reload_market_share() -> None:
     """
-    Loads market share data.
+    Loads market share data for the current year.
+    First deletes the current years data, and reloads it in.
     """
     current_year = datetime.now().year
-    services.market_share.clear_year(current_year)
-    services.market_share.load_market_share_data("distributor")
-    # services.market_share.load_market_share_data("country")
+    services.market_share.delete_data(current_year)
+    services.market_share.load_market_share_data(current_year, "distributor")
+    services.market_share.load_market_share_data(current_year, "country")
+
+
+def load_market_share(year: Optional[int]) -> None:
+    """
+    Loads market share data, first deletes the current data.
+    If no year is provided, the entire db is reloaded.
+
+    Args:
+        year (optional): The year to delete and load in.
+    """
+    services.market_share.delete_data(year)
+    services.market_share.load_market_share_data(year, "distributor")
+    services.market_share.load_market_share_data(year, "country")
 
 
 @with_appcontext

@@ -182,6 +182,38 @@ def add_country(country: str) -> Optional[List[models.Country]]:
     return new_countries
 
 
+def market_share(year: Optional[int]) -> Response:
+    """
+    Gets countries market share.
+
+    Args:
+        year (optional): Year to filter by.
+
+    Returns:
+        List of countries and their market share grouped by year.
+    """
+    query = db.session.query(
+        func.extract("year", models.Film_Week.date),
+        models.Country,
+        func.sum(models.Film_Week.week_gross),
+    )
+    query = query.join(models.Film)
+
+    query = query.join(models.countries)
+    query = query.join(models.Country)
+    query = query.group_by(models.Country)
+
+    query = query.group_by(func.extract("year", models.Film_Week.date))
+    query = query.order_by(func.extract("year", models.Film_Week.date).desc())
+
+    if year is not None:
+        query = query.filter(
+            func.extract("year", models.Film_Week.date) == year
+        )
+
+    return query.all()
+
+
 def search(search_query: str) -> Response:
     """
     Search countries by name.

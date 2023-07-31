@@ -2,7 +2,7 @@ from typing import Optional, Union
 
 from flask import Response, abort, jsonify
 from sqlalchemy.sql import func, text
-from ukbo import models
+from ukbo import models, services
 from ukbo.dto import DistributorSchema
 from ukbo.extensions import db
 
@@ -73,7 +73,9 @@ def get_distributor(year: Optional[str] = None) -> Response:
     return jsonify(results=response_data)
 
 
-def load_market_share_data(entity_type: str = "distributor") -> None:
+def load_market_share_data(
+    year: Optional[int], entity_type: str = "distributor"
+) -> None:
     """
     Abstract load function to load market share data into the corresponding table.
 
@@ -99,41 +101,25 @@ def load_market_share_data(entity_type: str = "distributor") -> None:
         To load market share data for distributors (default):
         >>> load_market_share_data()
     """
-    query = db.session.query(
-        func.extract("year", models.Film_Week.date),
-        models.Distributor,
-        func.sum(models.Film_Week.week_gross),
-    )
-    query = query.join(models.Film)
-
     if entity_type == "distributor":
-        query = query.join(models.distributors)
-        query = query.join(models.Distributor)
-        query = query.group_by(models.Distributor)
+        data = services.distributor.market_share(year)
     elif entity_type == "country":
-        query = query.join(models.countries)
-        query = query.join(models.Country)
-        query = query.group_by(models.Country)
+        data = services.country.market_share(year)
     else:
         raise ValueError("Invalid entity type.")
-
-    query = query.group_by(func.extract("year", models.Film_Week.date))
-    query = query.order_by(func.extract("year", models.Film_Week.date).desc())
-
-    data = query.all()
 
     if not data:
         return None
 
     # Perform calculations and insert the results into the denormalized table
     for row in data:
-        year, entity, total_gross = row
+        m_year, entity, total_gross = row
         market_share_percentage = _calculate_market_share(
-            total_gross, str(year)
+            total_gross, str(m_year)
         )
 
         _insert_market_share_data(
-            int(year),
+            int(m_year),
             entity,
             market_share_percentage,
             total_gross,
@@ -179,13 +165,12 @@ def _insert_market_share_data(
             gross=gross,
         )
     elif entity_type == "country":
-        raise NotImplementedError("Not done country yet.")
-        # market_share_data = models.DistributorMarketShare(
-        #     year=year,
-        #     distributor_id=entity.id,
-        #     market_share=market_share,
-        #     gross=gross,
-        # )
+        market_share_data = models.CountryMarketShare(
+            year=year,
+            country_id=entity.id,
+            market_share=market_share,
+            gross=gross,
+        )
     else:
         raise ValueError(
             "Invalid entity type. Supported values are 'distributor' and 'country'."
@@ -223,23 +208,32 @@ def _calculate_market_share(gross: int, year: str) -> float:
     return 0.0 if total_gross is None else (gross / total_gross) * 100.0
 
 
-def clear_year(year: int) -> None:
+def delete_data(year: Optional[int]) -> None:
     """
-    Deletes a given year of market share in the database.
+    Deletes market share data in the database.
+    If no year is provided, the entire db is deleted.
 
     Args:
-        year (str): The year for which the market share table is being deleted.
+        year (int) (optional): The year for which the market share table is being deleted.
 
     Returns:
         None
-
-    TODO: Add second table clear.
     """
-    data = (
-        db.session.query(models.DistributorMarketShare)
-        .filter(models.DistributorMarketShare.year == year)
-        .all()
-    )
+    # Distributor market share
+    query = db.session.query(models.DistributorMarketShare)
+    if year:
+        query = query.filter(models.DistributorMarketShare.year == year)
+    data = query.all()
+
+    for i in data:
+        db.session.delete(i)
+
+    # Country Market Share
+    query = db.session.query(models.CountryMarketShare)
+    if year:
+        query = query.filter(models.CountryMarketShare.year == year)
+    data = query.all()
+
     for i in data:
         db.session.delete(i)
 

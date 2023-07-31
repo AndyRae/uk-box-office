@@ -207,25 +207,26 @@ def search(search_query: str) -> Response:
     return [] if data is None else [distributor_schema.dump(ix) for ix in data]
 
 
-def market_share(year: Optional[str] = None) -> Response:
+def market_share(year: Optional[int]) -> Response:
     """
-    Gets the distributor market share for a year
+    Gets distributors market share.
 
     Args:
-        year: Year to get the market share for.
+        year: (optional) year to filter by.
 
-    Returns (JSON): List of distributors and their market share.
+    List of distributors and their market share grouped by year.
     """
     query = db.session.query(
         func.extract("year", models.Film_Week.date),
         models.Distributor,
         func.sum(models.Film_Week.week_gross),
     )
-
     query = query.join(models.Film)
+
     query = query.join(models.distributors)
     query = query.join(models.Distributor)
     query = query.group_by(models.Distributor)
+
     query = query.group_by(func.extract("year", models.Film_Week.date))
     query = query.order_by(func.extract("year", models.Film_Week.date).desc())
 
@@ -233,28 +234,8 @@ def market_share(year: Optional[str] = None) -> Response:
         query = query.filter(
             func.extract("year", models.Film_Week.date) == year
         )
-    else:
-        query = query.filter(
-            models.Film_Week.date >= datetime.date(2018, 1, 1)
-        )
 
-    data = query.all()
-
-    if data is None:
-        abort(404)
-
-    distributor_schema = DistributorSchema()
-
-    return jsonify(
-        results=[
-            dict(
-                year=row[0],
-                distributor=distributor_schema.dump(row[1]),
-                gross=row[2],
-            )
-            for row in data
-        ]
-    )
+    return query.all()
 
 
 def market_share_date(start: str, end: str) -> Response:
