@@ -21,8 +21,10 @@ class Country(PkModel):  # type: ignore
     name = db.Column(db.String(160), unique=True, nullable=False)
     slug = db.Column(db.String(160), nullable=False, unique=True)
 
-    market_share_data = db.relationship(
-        "CountryMarketShare", back_populates="country"
+    groups = db.relationship(
+        "CountryGroup",
+        secondary="country_group_countries",
+        back_populates="countries",
     )
 
     def __init__(self, *args: str, **kwargs: str) -> None:

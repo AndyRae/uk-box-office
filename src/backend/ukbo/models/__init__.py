@@ -8,7 +8,8 @@ The models are used to create the database tables, and to query the database.
 
 from . import models
 from .Country import Country
-from .CountryMarketShare import CountryMarketShare
+from .CountryGroup import CountryGroup, CountryGroupCountries
+from .CountryGroupMarketShare import CountryGroupMarketShare
 from .Distributor import Distributor
 from .DistributorMarketShare import DistributorMarketShare
 from .Event import Area, Event, State

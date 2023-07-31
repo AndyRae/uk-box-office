@@ -165,9 +165,9 @@ def _insert_market_share_data(
             gross=gross,
         )
     elif entity_type == "country":
-        market_share_data = models.CountryMarketShare(
+        market_share_data = models.CountryGroupMarketShare(
             year=year,
-            country_id=entity.id,
+            # country_id=entity.id,
             market_share=market_share,
             gross=gross,
         )
@@ -229,9 +229,9 @@ def delete_data(year: Optional[int]) -> None:
         db.session.delete(i)
 
     # Country Market Share
-    query = db.session.query(models.CountryMarketShare)
+    query = db.session.query(models.CountryGroupMarketShare)
     if year:
-        query = query.filter(models.CountryMarketShare.year == year)
+        query = query.filter(models.CountryGroupMarketShare.year == year)
     data = query.all()
 
     for i in data:
