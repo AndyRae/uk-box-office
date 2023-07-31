@@ -225,6 +225,17 @@ def seed_admissions(path: str) -> None:
 
 
 @with_appcontext
+def seed_country_groups(path: str) -> None:
+    """
+    Seeds country groups data.
+
+    Args:
+        path: Path to the country_groups.json file.
+    """
+    services.country.seed_country_groups(path)
+
+
+@with_appcontext
 def update_admissions(year: int, month: int, admissions: int) -> None:
     """
     Updates admissions data.

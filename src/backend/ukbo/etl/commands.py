@@ -209,3 +209,13 @@ def build_archive_command() -> None:
     """
     tasks.build_archive()
     click.echo("Built archive file.")
+
+
+@click.command("seed-country-groups")
+@click.option("--path", help="Path to country_groups.json", type=str)
+@with_appcontext
+def seed_country_groups(path: str = "./data/country_groups.json") -> None:
+    """
+    Seeds country groups.
+    """
+    tasks.seed_country_groups(path)

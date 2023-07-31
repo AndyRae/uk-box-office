@@ -134,5 +134,6 @@ def register_cli(app: Flask) -> None:
     app.cli.add_command(etl.commands.delete_film_command)
     app.cli.add_command(etl.commands.build_archive_command)
     app.cli.add_command(etl.commands.market_share_command)
+    app.cli.add_command(etl.commands.seed_country_groups)
 
     return None

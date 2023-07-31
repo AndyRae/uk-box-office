@@ -255,14 +255,17 @@ def spellcheck_country(country: str) -> str:
     return country
 
 
-def seed_country_groups() -> None:
+def seed_country_groups(path: str) -> None:
     """
     Seed country groups.
+
+    Args:
+        path: Path to the `country_groups.json` file
     """
     if data := db.session.query(models.CountryGroup).all():
         raise ValueError()
 
-    with open("./data/country_groups.json", "r") as json_file:
+    with open(path, "r") as json_file:
         data = json.load(json_file)
         for group_data in data:
             name = group_data["name"]
