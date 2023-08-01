@@ -135,6 +135,7 @@ def add_film(
         "name": film,
         "distributors": distributors,
         "countries": countries,
+        "country_of_origin": countries[0] if countries else None,
     }
 
     new = models.Film.create(**record, commit=False)
