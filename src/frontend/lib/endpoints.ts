@@ -124,7 +124,7 @@ export const getCountryBoxOfficeEndpoint = (
 
 // Search
 export const getSearchEndpoint = (query: string): string => {
-	return `/search?q=${query}`;
+	return `/search?${query}`;
 };
 
 export const getSearchFilmEndpoint = (query: string): string => {
