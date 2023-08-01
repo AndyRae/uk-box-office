@@ -31,7 +31,7 @@ def test_init_db_command(runner):
     Args:
         runner: CliRunner
     """
-    result = runner.invoke(etl.commands.init_db_command)
+    result = runner.invoke(etl.commands.clear_db_command)
     assert result.exit_code == 0
     assert "Initialised the database." in result.output
 

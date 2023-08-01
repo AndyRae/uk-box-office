@@ -8,7 +8,7 @@ from . import tasks
 
 @click.command("clear-db")
 @with_appcontext
-def init_db_command() -> None:
+def clear_db_command() -> None:
     """
     Drops all database tables.
 
@@ -19,9 +19,14 @@ def init_db_command() -> None:
 
 
 @click.command("fill-db")
-@click.option("--path", help="Path to archive.csv", type=str)
+@click.option(
+    "--path",
+    help="Path to archive.csv",
+    type=str,
+    default="./data/archive.csv",
+)
 @with_appcontext
-def fill_db_command(path: str = "./data/archive.csv") -> None:
+def fill_db_command(path: str) -> None:
     """
     Seeds database with archive data.
     """
@@ -30,9 +35,11 @@ def fill_db_command(path: str = "./data/archive.csv") -> None:
 
 
 @click.command("test-db")
-@click.option("--path", help="Path to test.csv", type=str)
+@click.option(
+    "--path", help="Path to test.csv", type=str, default="./data/test.csv"
+)
 @with_appcontext
-def test_db_command(path: str = "./data/test.csv") -> None:
+def test_db_command(path: str) -> None:
     """
     Seeds database with test data.
     """
@@ -41,9 +48,14 @@ def test_db_command(path: str = "./data/test.csv") -> None:
 
 
 @click.command("seed-films")
-@click.option("--path", help="Path to archive.csv", type=str)
+@click.option(
+    "--path",
+    help="Path to archive.csv",
+    type=str,
+    default="./data/archive.csv",
+)
 @with_appcontext
-def seed_films_command(path: str = "./data/archive.csv") -> None:
+def seed_films_command(path: str) -> None:
     """
     Seeds database with countries/distributors/films data.
     """
@@ -53,11 +65,14 @@ def seed_films_command(path: str = "./data/archive.csv") -> None:
 
 @click.command("seed-box-office")
 @click.option("--year", help="Year to seed", type=int)
-@click.option("--path", help="Path to archive.csv", type=str)
+@click.option(
+    "--path",
+    help="Path to archive.csv",
+    type=str,
+    default="./data/archive.csv",
+)
 @with_appcontext
-def seed_box_office_command(
-    year: int, path: str = "./data/archive.csv"
-) -> None:
+def seed_box_office_command(year: int, path: str) -> None:
     """
     Seeds database with box office data.
 
@@ -70,9 +85,14 @@ def seed_box_office_command(
 
 
 @click.command("seed-admissions")
-@click.option("--path", help="Path to admissions.csv", type=str)
+@click.option(
+    "--path",
+    help="Path to admissions.csv",
+    type=str,
+    default="./data/admissions.csv",
+)
 @with_appcontext
-def seed_admissions_command(path: str = "./data/admissions.csv") -> None:
+def seed_admissions_command(path: str) -> None:
     """
     Seeds database with admissions data.
     """
@@ -212,9 +232,14 @@ def build_archive_command() -> None:
 
 
 @click.command("seed-country-groups")
-@click.option("--path", help="Path to country_groups.json", type=str)
+@click.option(
+    "--path",
+    help="Path to country_groups.json",
+    type=str,
+    default="./data/country_groups.json",
+)
 @with_appcontext
-def seed_country_groups(path: str = "./data/country_groups.json") -> None:
+def seed_country_groups(path: str) -> None:
     """
     Seeds country groups.
     """

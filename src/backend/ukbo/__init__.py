@@ -119,7 +119,7 @@ def register_cli(app: Flask) -> None:
     """
     from ukbo import etl
 
-    app.cli.add_command(etl.commands.init_db_command)
+    app.cli.add_command(etl.commands.clear_db_command)
     app.cli.add_command(etl.commands.fill_db_command)
     app.cli.add_command(etl.commands.test_db_command)
     app.cli.add_command(etl.commands.seed_films_command)
