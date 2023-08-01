@@ -1,15 +1,15 @@
 """Add country groups
 
-Revision ID: 7717cd775d13
+Revision ID: fdac9f9ef28d
 Revises: d08b41311774
-Create Date: 2023-07-31 19:47:47.402405
+Create Date: 2023-08-01 17:37:08.696502
 
 """
 import sqlalchemy as sa
 from alembic import op
 
 # revision identifiers, used by Alembic.
-revision = "7717cd775d13"
+revision = "fdac9f9ef28d"
 down_revision = "d08b41311774"
 branch_labels = None
 depends_on = None
@@ -26,7 +26,6 @@ def upgrade():
     )
     op.create_table(
         "country_group_countries",
-        sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("country_group_id", sa.Integer(), nullable=False),
         sa.Column("country_id", sa.Integer(), nullable=False),
         sa.ForeignKeyConstraint(
@@ -37,7 +36,7 @@ def upgrade():
             ["country_id"],
             ["country.id"],
         ),
-        sa.PrimaryKeyConstraint("id", "country_group_id", "country_id"),
+        sa.PrimaryKeyConstraint("country_group_id", "country_id"),
     )
     op.create_table(
         "country_group_market_share",

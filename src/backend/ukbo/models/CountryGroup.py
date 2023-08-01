@@ -26,7 +26,7 @@ class CountryGroup(PkModel):
     )
 
 
-class CountryGroupCountries(PkModel):
+class CountryGroupCountries(db.Model):
     """
     Many-to-many table linking CountryGroup and Country.
     """
