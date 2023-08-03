@@ -20,6 +20,21 @@
       ],
       "jinja": true,
       "justMyCode": true
+    },
+    {
+      "name": "Flask CLI",
+      "type": "python",
+      "request": "launch",
+      "module": "flask",
+      "env": {
+        "FLASK_APP": "ukbo",
+        "FLASK_DEBUG": "1"
+      },
+      "args": [
+        "marketshare",
+      ],
+      "jinja": true,
+      "justMyCode": true
     }
   ]
 }
