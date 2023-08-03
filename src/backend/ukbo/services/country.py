@@ -192,13 +192,55 @@ def market_share(year: Optional[int]) -> Response:
     Returns:
         List of countries and their market share grouped by year.
     """
+    from sqlalchemy import and_, case
+    from sqlalchemy.orm import aliased
+
+    # Create aliases for the relationships
+    # country_of_origin_alias = aliased(models.Country)
+    # countries_alias = aliased(models.Country)
+    # # Define the case conditions
+    # uk_condition = case(
+    #     [
+    #         (
+    #             and_(
+    #                 country_of_origin_alias.name == "United Kingdom",
+    #                 # ~countries_alias.name.in_(["United States"]),
+    #             ),
+    #             1,
+    #         )
+    #     ],
+    #     else_=0,
+    # )
+    # query = db.session.query(
+    #     func.extract("year", models.Film_Week.date),
+    #     models.Country,
+    #     func.sum(models.Film_Week.week_gross),
+    #     uk_condition.label("uk_group")  # Add the uk_condition as a label to the query
+    # )
+    # # query = query.join(models.Film)
+    # # Explicitly join with the country_of_origin relationship and provide the ON condition
+    # query = query.join(
+    #     country_of_origin_alias,
+    #     models.Film.country_of_origin_id == country_of_origin_alias.id,
+    # )
+    # # Explicitly join with the countries relationship and provide the ON condition
+    # # query = query.join(
+    # #     models.countries,
+    # #     models.Film.countries,
+    # #     countries_alias,
+    # #     models.Country.name == countries_alias.name,
+    # # )
+    # query = query.group_by(
+    #     func.extract("year", models.Film_Week.date),
+    #     # models.Country,
+    #     uk_condition,  # Include the uk_condition in the group_by clause
+    # )
+    # data = query.all()
+    # return query.all()
     query = db.session.query(
-        func.extract("year", models.Film_Week.date),
         models.Country,
-        func.sum(models.Film_Week.week_gross),
     )
     query = query.join(models.Film)
-
     query = query.join(models.countries)
     query = query.join(models.Country)
     query = query.group_by(models.Country)
@@ -210,6 +252,7 @@ def market_share(year: Optional[int]) -> Response:
         query = query.filter(
             func.extract("year", models.Film_Week.date) == year
         )
+    # data = query.all()
 
     return query.all()
 
