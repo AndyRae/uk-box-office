@@ -133,31 +133,7 @@ def summary(start: str, end: str, limit: int = 0) -> Response:
         func.sum(models.Week.admissions),
     ).group_by(func.extract("year", models.Week.date))
 
-    if start != end:
-        if start is not None:
-            s = to_date(start)
-            query = query.filter(
-                func.extract("day", models.Week.date) >= s.day
-            )
-            query = query.filter(
-                func.extract("month", models.Week.date) >= s.month
-            )
-            query = query.filter(
-                func.extract("year", models.Week.date) >= (s.year - limit)
-            )
-
-        if end is not None:
-            e = to_date(end)
-            query = query.filter(
-                func.extract("day", models.Week.date) <= e.day
-            )
-            query = query.filter(
-                func.extract("month", models.Week.date) <= e.month
-            )
-            query = query.filter(
-                func.extract("year", models.Week.date) <= (e.year)
-            )
-    else:
+    if start == end:
         # Query for 1 week - so use the week number to filter.
         week_number = to_date(start).isocalendar()[1]
         query = query.filter(
@@ -171,6 +147,12 @@ def summary(start: str, end: str, limit: int = 0) -> Response:
             func.extract("year", models.Week.date) <= (to_date(end).year)
         )
 
+    elif start is not None and end is not None:
+        s = to_date(start)
+        e = to_date(end)
+        s = s.replace(year=s.year - limit)
+
+        query = query.filter(models.Week.date.between(s, e))
     data = query.order_by(func.extract("year", models.Week.date).desc()).all()
 
     return jsonify(
