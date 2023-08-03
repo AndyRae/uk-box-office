@@ -122,7 +122,7 @@ def load_market_share(year: Optional[int]) -> None:
         year (optional): The year to delete and load in.
     """
     services.market_share.delete_data(year)
-    services.market_share.load_market_share_data(year, "distributor")
+    # services.market_share.load_market_share_data(year, "distributor")
     services.market_share.load_market_share_data(year, "country")
 
 
