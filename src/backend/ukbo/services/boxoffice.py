@@ -4,7 +4,7 @@ from typing import List, Optional
 import pandas as pd
 from flask import jsonify
 from flask.wrappers import Response
-from sqlalchemy.sql import func
+from sqlalchemy.sql import func, or_
 from ukbo import models
 from ukbo.dto import (
     FilmSchema,
@@ -150,9 +150,25 @@ def summary(start: str, end: str, limit: int = 0) -> Response:
     elif start is not None and end is not None:
         s = to_date(start)
         e = to_date(end)
-        s = s.replace(year=s.year - limit)
 
-        query = query.filter(models.Week.date.between(s, e))
+        # Generate a list of filters for previous years
+        year_filters = []
+        current_year = e.year
+        for i in range(1, limit + 1):
+            previous_year_start = s.replace(year=current_year - i + 1)
+            previous_year_end = e.replace(year=current_year - i + 1)
+            year_filters.append(
+                models.Week.date.between(
+                    previous_year_start, previous_year_end
+                )
+            )
+
+        # Combine all the year filters
+        year_filter_condition = or_(*year_filters)
+
+        # Apply the year filter condition to the query
+        query = query.filter(year_filter_condition)
+
     data = query.order_by(func.extract("year", models.Week.date).desc()).all()
 
     return jsonify(
