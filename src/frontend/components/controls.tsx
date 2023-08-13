@@ -91,7 +91,7 @@ interface ControlsWrapperProps extends HTMLAttributes<HTMLDivElement> {}
 const ControlsWrapper = forwardRef<HTMLDivElement, ControlsWrapperProps>(
 	({ children }) => {
 		return (
-			<div className='flex flex-wrap mb-2 gap-y-2 items-center justify-center'>
+			<div className='flex flex-wrap mb-2 gap-y-4 items-center justify-center'>
 				{children}
 			</div>
 		);
