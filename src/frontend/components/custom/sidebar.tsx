@@ -30,7 +30,7 @@ export const Brand = (): JSX.Element => {
 
 const Announcement = (): JSX.Element => {
 	return (
-		<Card align='left' size='sm'>
+		<Card>
 			<div className='flex  mb-3'>
 				<span className='bg-bo-primary text-gray-50 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded'>
 					Beta
