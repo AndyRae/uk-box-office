@@ -16,7 +16,7 @@ import {
 	fetchCountryBoxOffice,
 	fetchBoxOfficeInfinite,
 } from 'lib/dataFetching';
-import { parseDate } from 'lib/utils/dates';
+import { parseDate } from 'lib/helpers/dates';
 import addDays from 'date-fns/addDays';
 
 export async function generateMetadata({

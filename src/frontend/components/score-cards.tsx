@@ -9,7 +9,7 @@ import {
 import {
 	calculateWeek1Releases,
 	calculateNumberOfCinemas,
-} from 'lib/utils/groupData';
+} from 'lib/helpers/groupData';
 
 import {
 	BoxOfficeSummary,

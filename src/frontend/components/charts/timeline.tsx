@@ -1,7 +1,7 @@
 'use client';
 
 import { Timeseries } from './timeseries';
-import { groupbyMonth, groupbyDate } from 'lib/utils/groupData';
+import { groupbyMonth, groupbyDate } from 'lib/helpers/groupData';
 import { useState, useEffect, useRef, MouseEvent } from 'react';
 import {
 	Tooltip,

@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { Distributor } from 'interfaces/Distributor';
 import { Country } from 'interfaces/Country';
 
-import { paginate } from 'lib/utils/pagination';
-import { toTitleCase } from 'lib/utils/toTitleCase';
+import { paginate } from 'lib/helpers/pagination';
+import { toTitleCase } from 'lib/helpers/toTitleCase';
 import { fetchSearch } from 'lib/dataFetching';
 
 import { FilmsTable } from 'components/tables/films-table';

@@ -1,5 +1,5 @@
 import { fetchDistributors } from 'lib/dataFetching';
-import { paginate } from 'lib/utils/pagination';
+import { paginate } from 'lib/helpers/pagination';
 import { Pagination } from 'components/ui/pagination';
 import { PageTitle } from 'components/ui/page-title';
 import { DistributorTable } from 'components/tables/distributor-table';

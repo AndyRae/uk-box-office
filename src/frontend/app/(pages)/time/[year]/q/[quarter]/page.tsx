@@ -3,7 +3,7 @@ import {
 	fetchBoxOfficeInfinite,
 	fetchBoxOfficeSummary,
 } from 'lib/dataFetching';
-import { getLastDayofMonth } from 'lib/utils/dates';
+import { getLastDayofMonth } from 'lib/helpers/dates';
 
 export async function generateMetadata({
 	params,

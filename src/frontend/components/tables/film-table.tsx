@@ -1,7 +1,7 @@
 import { Film } from 'interfaces/Film';
 import Link from 'next/link';
 import { BaseTable, Td, Tr } from './base-table';
-import { toTitleCase } from 'lib/utils/toTitleCase';
+import { toTitleCase } from 'lib/helpers/toTitleCase';
 
 /**
  * @description Film Table component

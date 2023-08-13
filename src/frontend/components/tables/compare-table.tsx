@@ -3,9 +3,9 @@
 import { BaseTable, Td, Tr } from 'components/tables/base-table';
 import { FilmWithWeeks } from 'interfaces/Film';
 import Link from 'next/link';
-import { calculateNumberOfCinemas } from 'lib/utils/groupData';
+import { calculateNumberOfCinemas } from 'lib/helpers/groupData';
 import { Date } from 'components/date';
-import { toTitleCase } from 'lib/utils/toTitleCase';
+import { toTitleCase } from 'lib/helpers/toTitleCase';
 
 type TableProps = {
 	data: FilmWithWeeks[];

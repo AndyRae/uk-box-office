@@ -7,7 +7,7 @@ import Select from 'react-select';
 import { Distributor } from 'interfaces/Distributor';
 import { Country } from 'interfaces/Country';
 
-import { toTitleCase } from 'lib/utils/toTitleCase';
+import { toTitleCase } from 'lib/helpers/toTitleCase';
 
 import { Icons } from 'components/icons';
 import { Button } from 'components/ui/button-new';

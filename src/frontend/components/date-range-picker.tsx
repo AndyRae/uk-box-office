@@ -4,7 +4,7 @@ import * as React from 'react';
 import { format, addDays } from 'date-fns';
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
-import { parseDate } from 'lib/utils/dates';
+import { parseDate } from 'lib/helpers/dates';
 
 import { DateRange } from 'react-day-picker';
 import clsx from 'clsx';

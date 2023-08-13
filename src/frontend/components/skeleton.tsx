@@ -9,7 +9,7 @@ import { FilmTableDetailed } from 'components/tables/film-table-detailed';
 import { LastUpdated } from 'components/last-updated';
 import { DatasourceCard } from 'components/datasource';
 
-import { parseDate } from 'lib/utils/dates';
+import { parseDate } from 'lib/helpers/dates';
 import addDays from 'date-fns/addDays';
 
 /**

@@ -3,7 +3,7 @@ import { ExportCSV } from 'components/ui/export-csv';
 import { MarketShareChart } from 'components/charts/market-share';
 import { MarketShareTable } from 'components/tables/market-share-table';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from 'components/ui/tabs';
-import { getDefaultColorArray } from 'lib/utils/colorGenerator';
+import { getDefaultColorArray } from 'lib/helpers/colorGenerator';
 
 import MarketShare from 'interfaces/MarketShare';
 import { Metadata } from 'next';
