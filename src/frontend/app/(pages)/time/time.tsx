@@ -111,16 +111,9 @@ const TimeMetric = ({
 }) => {
 	return (
 		<DescriptionItem title={title} text={text}>
-			<TooltipProvider>
-				<Tooltip>
-					<TooltipTrigger>
-						<MetricChange value={metricChange} />
-					</TooltipTrigger>
-					<TooltipContent>
-						<p>Change from last year</p>
-					</TooltipContent>
-				</Tooltip>
-			</TooltipProvider>
+			<p className='text-xs text-muted-foreground'>
+				<MetricChange value={metricChange} /> from last year
+			</p>
 		</DescriptionItem>
 	);
 };
