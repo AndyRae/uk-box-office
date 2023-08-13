@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { footerConfig, footerLink } from 'config/footer';
+import { footerConfig, footerLink } from '@/config/footer';
 import { Icons } from '@/components/icons';
 import { Brand } from './sidebar';
 

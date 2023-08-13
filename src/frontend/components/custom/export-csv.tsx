@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from './button';
+import { Button } from '@/components/ui/button';
 import dynamic from 'next/dynamic';
 import { Icons } from '@/components/icons';
 
@@ -31,7 +31,7 @@ export const ExportCSV = ({
 }: ExportCsvProps): JSX.Element => {
 	const Icon = Icons['spreadsheet'];
 	return (
-		<Button aria='export .csv' className={className}>
+		<Button className={className}>
 			<div className='px-1'>
 				<Icon />
 			</div>

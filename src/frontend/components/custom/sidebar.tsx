@@ -4,7 +4,7 @@ import { InlineLink } from './inline-link';
 import { Card } from '@/components/ui/card';
 import Link from 'next/link';
 import { Icons } from '@/components/icons';
-import { sidebarConfig } from 'config/sidebar';
+import { sidebarConfig } from '@/config/sidebar';
 
 /**
  * Brand component
