@@ -5,6 +5,7 @@ import { Card } from '@/components/ui/card';
 import Link from 'next/link';
 import { Icons } from '@/components/icons';
 import { sidebarConfig } from '@/config/sidebar';
+import { ModeToggle } from '@/components/ui/mode-toggle';
 
 /**
  * Brand component
@@ -75,6 +76,7 @@ const SidebarContent = (): JSX.Element => {
 				</nav>
 
 				<Searchbar />
+				<ModeToggle />
 			</div>
 		</div>
 	);
