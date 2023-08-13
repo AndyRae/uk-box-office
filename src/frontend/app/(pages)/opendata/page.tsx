@@ -1,8 +1,8 @@
-import { Button } from 'components/ui/button';
-import { PageTitle } from 'components/ui/page-title';
-import { PageContent } from 'components/ui/page-content';
-import { StructuredTimeData } from 'components/structured-data';
-import { ExternalLink, InlineLink } from 'components/ui/inline-link';
+import { Button } from '@/components/ui/button';
+import { PageTitle } from '@/components/ui/page-title';
+import { PageContent } from '@/components/ui/page-content';
+import { StructuredTimeData } from '@/components/structured-data';
+import { ExternalLink, InlineLink } from '@/components/ui/inline-link';
 import { getApi } from 'lib/endpoints';
 import { Metadata } from 'next';
 

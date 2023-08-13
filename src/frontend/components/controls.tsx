@@ -2,7 +2,7 @@
 
 import React, { forwardRef, HTMLAttributes } from 'react';
 import { Button } from './ui/button';
-import { parseDate } from 'lib/helpers/dates';
+import { parseDate } from '@/lib/helpers/dates';
 
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';

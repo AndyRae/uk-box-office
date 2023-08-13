@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { BaseTable, Td, Tr } from 'components/tables/base-table';
+import { BaseTable, Td, Tr } from '@/components/tables/base-table';
 import { CountryListData } from 'interfaces/Country';
 
 /**

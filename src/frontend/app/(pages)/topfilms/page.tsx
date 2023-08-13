@@ -1,5 +1,5 @@
-import { PageTitle } from 'components/ui/page-title';
-import { TopFilmsTable } from 'components/tables/top-films-table';
+import { PageTitle } from '@/components/ui/page-title';
+import { TopFilmsTable } from '@/components/tables/top-films-table';
 import { Metadata } from 'next';
 import { fetchBoxOfficeTopFilms } from 'lib/dataFetching';
 

@@ -2,7 +2,7 @@
 
 import { Button } from './button';
 import dynamic from 'next/dynamic';
-import { Icons } from 'components/icons';
+import { Icons } from '@/components/icons';
 
 // Needs to be a dynamic import to work in NextJS.
 const DynamicCSV = dynamic(

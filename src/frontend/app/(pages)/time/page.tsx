@@ -1,9 +1,9 @@
-import { PageTitle } from 'components/ui/page-title';
-import { PageContent } from 'components/ui/page-content';
-import { ExportCSV } from 'components/ui/export-csv';
-import { StructuredTimeData } from 'components/structured-data';
-import { AllTimeChart } from 'components/charts/all-time';
-import { YearsTable } from 'components/tables/years-table';
+import { PageTitle } from '@/components/ui/page-title';
+import { PageContent } from '@/components/ui/page-content';
+import { ExportCSV } from '@/components/ui/export-csv';
+import { StructuredTimeData } from '@/components/structured-data';
+import { AllTimeChart } from '@/components/charts/all-time';
+import { YearsTable } from '@/components/tables/years-table';
 
 import { Metadata } from 'next';
 import { fetchBoxOfficeSummary } from 'lib/dataFetching';

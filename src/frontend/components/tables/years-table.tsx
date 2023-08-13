@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { BaseTable, Td, Tr } from 'components/tables/base-table';
-import { MetricChange } from 'components/metric-change';
+import { BaseTable, Td, Tr } from '@/components/tables/base-table';
+import { MetricChange } from '@/components/metric-change';
 import Time from 'interfaces/Time';
 
 /**

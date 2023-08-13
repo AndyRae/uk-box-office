@@ -10,8 +10,12 @@ import { DateRange } from 'react-day-picker';
 import clsx from 'clsx';
 
 import { Button } from './ui/button-new';
-import { Calendar } from 'components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from 'components/ui/popover';
+import { Calendar } from '@/components/ui/calendar';
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from '@/components/ui/popover';
 import { Icons } from './icons';
 
 interface CalendarDateRangePickerProps

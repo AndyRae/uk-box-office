@@ -1,15 +1,15 @@
-import { BoxOfficeTable } from 'components/tables/box-office-table';
-import { DescriptionList } from 'components/ui/description-list';
-import { PageTitle } from 'components/ui/page-title';
-import { BadgeLink } from 'components/ui/badge-link';
-import { DescriptionItem } from 'components/ui/description-item';
-import { Date } from 'components/date';
-import { StructuredTimeData } from 'components/structured-data';
-import { DatasourceButton } from 'components/datasource';
-import { ExportCSV } from 'components/ui/export-csv';
-import { TimeLineChart } from 'components/charts/timeline';
+import { BoxOfficeTable } from '@/components/tables/box-office-table';
+import { DescriptionList } from '@/components/ui/description-list';
+import { PageTitle } from '@/components/ui/page-title';
+import { BadgeLink } from '@/components/ui/badge-link';
+import { DescriptionItem } from '@/components/ui/description-item';
+import { Date } from '@/components/date';
+import { StructuredTimeData } from '@/components/structured-data';
+import { DatasourceButton } from '@/components/datasource';
+import { ExportCSV } from '@/components/ui/export-csv';
+import { TimeLineChart } from '@/components/charts/timeline';
 import { toTitleCase } from 'lib/helpers/toTitleCase';
-import { ChartWrapper } from 'components/charts/chart-wrapper';
+import { ChartWrapper } from '@/components/charts/chart-wrapper';
 import { fetchFilm } from 'lib/dataFetching';
 
 export async function generateMetadata({

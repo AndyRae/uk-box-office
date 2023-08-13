@@ -1,6 +1,6 @@
 import { fetchCountryFilms } from 'lib/dataFetching';
-import { FilmTable } from 'components/tables/film-table';
-import { Pagination } from 'components/ui/pagination';
+import { FilmTable } from '@/components/tables/film-table';
+import { Pagination } from '@/components/ui/pagination';
 import { paginate } from 'lib/helpers/pagination';
 
 /**

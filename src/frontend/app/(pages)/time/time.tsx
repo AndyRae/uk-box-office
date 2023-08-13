@@ -1,27 +1,27 @@
 import { groupForTable, groupbyDate } from 'lib/helpers/groupData';
 
-import { BreadcrumbsTime } from 'components/ui/breadcrumbs-time';
-import { PageTitle } from 'components/ui/page-title';
+import { BreadcrumbsTime } from '@/components/ui/breadcrumbs-time';
+import { PageTitle } from '@/components/ui/page-title';
 import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
 	TooltipTrigger,
-} from 'components/ui/tooltip';
-import { ExportCSV } from 'components/ui/export-csv';
-import { DescriptionItem } from 'components/ui/description-item';
-import { DescriptionList } from 'components/ui/description-list';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from 'components/ui/tabs';
-import { StructuredTimeData } from 'components/structured-data';
-import { DatasourceButton } from 'components/datasource';
-import { MetricChange } from 'components/metric-change';
-import { StackedBarChart } from 'components/charts/stacked-bar';
-import { TimeLineChart } from 'components/charts/timeline';
-import { FilmTableDetailed } from 'components/tables/film-table-detailed';
-import { WeeksTable } from 'components/tables/weeks-table';
-import { PreviousTable } from 'components/tables/previous-years-table';
-import { PreviousYearsChart } from 'components/charts/previous-years';
-import { ChartWrapper } from 'components/charts/chart-wrapper';
+} from '@/components/ui/tooltip';
+import { ExportCSV } from '@/components/ui/export-csv';
+import { DescriptionItem } from '@/components/ui/description-item';
+import { DescriptionList } from '@/components/ui/description-list';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { StructuredTimeData } from '@/components/structured-data';
+import { DatasourceButton } from '@/components/datasource';
+import { MetricChange } from '@/components/metric-change';
+import { StackedBarChart } from '@/components/charts/stacked-bar';
+import { TimeLineChart } from '@/components/charts/timeline';
+import { FilmTableDetailed } from '@/components/tables/film-table-detailed';
+import { WeeksTable } from '@/components/tables/weeks-table';
+import { PreviousTable } from '@/components/tables/previous-years-table';
+import { PreviousYearsChart } from '@/components/charts/previous-years';
+import { ChartWrapper } from '@/components/charts/chart-wrapper';
 import { BoxOfficeWeek, BoxOfficeSummary } from 'interfaces/BoxOffice';
 
 type TimePageProps = {

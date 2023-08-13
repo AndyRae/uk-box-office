@@ -1,13 +1,13 @@
-import { MetricChange } from 'components/metric-change';
-import { TimeLineChart } from 'components/charts/timeline';
-import { StackedBarChart } from 'components/charts/stacked-bar';
-import { Card } from 'components/ui/card';
-import { ChartWrapper } from 'components/charts/chart-wrapper';
-import { Controls } from 'components/controls';
-import { Scorecards } from 'components/score-cards';
-import { FilmTableDetailed } from 'components/tables/film-table-detailed';
-import { LastUpdated } from 'components/last-updated';
-import { DatasourceCard } from 'components/datasource';
+import { MetricChange } from '@/components/metric-change';
+import { TimeLineChart } from '@/components/charts/timeline';
+import { StackedBarChart } from '@/components/charts/stacked-bar';
+import { Card } from '@/components/ui/card';
+import { ChartWrapper } from '@/components/charts/chart-wrapper';
+import { Controls } from '@/components/controls';
+import { Scorecards } from '@/components/score-cards';
+import { FilmTableDetailed } from '@/components/tables/film-table-detailed';
+import { LastUpdated } from '@/components/last-updated';
+import { DatasourceCard } from '@/components/datasource';
 
 import { parseDate } from 'lib/helpers/dates';
 import addDays from 'date-fns/addDays';

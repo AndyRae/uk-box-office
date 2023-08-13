@@ -1,8 +1,8 @@
 import { fetchFilmList } from 'lib/dataFetching';
 import { paginate } from 'lib/helpers/pagination';
-import { Pagination } from 'components/ui/pagination';
-import { PageTitle } from 'components/ui/page-title';
-import { FilmTable } from 'components/tables/film-table';
+import { Pagination } from '@/components/ui/pagination';
+import { PageTitle } from '@/components/ui/page-title';
+import { FilmTable } from '@/components/tables/film-table';
 
 type Props = {
 	params?: {

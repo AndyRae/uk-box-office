@@ -9,9 +9,9 @@ import { Country } from 'interfaces/Country';
 
 import { toTitleCase } from 'lib/helpers/toTitleCase';
 
-import { Icons } from 'components/icons';
-import { Button } from 'components/ui/button-new';
-import { Slider } from 'components/ui/slider';
+import { Icons } from '@/components/icons';
+import { Button } from '@/components/ui/button-new';
+import { Slider } from '@/components/ui/slider';
 import {
 	Select as SelectWrap,
 	SelectContent,
@@ -20,12 +20,12 @@ import {
 	SelectLabel,
 	SelectTrigger,
 	SelectValue,
-} from 'components/ui/select';
+} from '@/components/ui/select';
 import {
 	Collapsible,
 	CollapsibleContent,
 	CollapsibleTrigger,
-} from 'components/ui/collapsible';
+} from '@/components/ui/collapsible';
 
 type SelectOption = {
 	value: string;

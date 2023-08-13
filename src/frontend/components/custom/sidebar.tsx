@@ -1,9 +1,9 @@
-import { Searchbar } from 'components/search';
+import { Searchbar } from '@/components/search';
 import { SideBarLink } from './sidebar-link';
 import { InlineLink } from './inline-link';
-import { Card } from 'components/ui/card';
+import { Card } from '@/components/ui/card';
 import Link from 'next/link';
-import { Icons } from 'components/icons';
+import { Icons } from '@/components/icons';
 import { sidebarConfig } from 'config/sidebar';
 
 /**

@@ -1,7 +1,7 @@
 // These styles apply to every route in the application
 import 'styles/globals.css';
-import { Sidebar } from 'components/ui/sidebar';
-import { Footer } from 'components/ui/footer';
+import { Sidebar } from '@/components/ui/sidebar';
+import { Footer } from '@/components/ui/footer';
 import { Metadata } from 'next';
 import { Analytics } from '@vercel/analytics/react';
 

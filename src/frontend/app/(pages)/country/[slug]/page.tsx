@@ -1,15 +1,15 @@
-import { PageTitle } from 'components/ui/page-title';
-import { CountryFilmsTable } from 'components/tables/country-films-table';
-import { DescriptionList } from 'components/ui/description-list';
-import { DescriptionItem } from 'components/ui/description-item';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from 'components/ui/tabs';
-import { DatasourceButton } from 'components/datasource';
-import { ExportCSV } from 'components/ui/export-csv';
-import { PreviousChart } from 'components/charts/previous-chart';
-import { PreviousTable } from 'components/tables/previous-table';
-import { ChartWrapper } from 'components/charts/chart-wrapper';
-import { Controls } from 'components/controls';
-import { StackedBarChart } from 'components/charts/stacked-bar';
+import { PageTitle } from '@/components/ui/page-title';
+import { CountryFilmsTable } from '@/components/tables/country-films-table';
+import { DescriptionList } from '@/components/ui/description-list';
+import { DescriptionItem } from '@/components/ui/description-item';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { DatasourceButton } from '@/components/datasource';
+import { ExportCSV } from '@/components/ui/export-csv';
+import { PreviousChart } from '@/components/charts/previous-chart';
+import { PreviousTable } from '@/components/tables/previous-table';
+import { ChartWrapper } from '@/components/charts/chart-wrapper';
+import { Controls } from '@/components/controls';
+import { StackedBarChart } from '@/components/charts/stacked-bar';
 
 import {
 	fetchCountry,

@@ -1,10 +1,10 @@
 'use client';
 
-import { BaseTable, Td, Tr } from 'components/tables/base-table';
+import { BaseTable, Td, Tr } from '@/components/tables/base-table';
 import { FilmWithWeeks } from 'interfaces/Film';
 import Link from 'next/link';
 import { calculateNumberOfCinemas } from 'lib/helpers/groupData';
-import { Date } from 'components/date';
+import { Date } from '@/components/date';
 import { toTitleCase } from 'lib/helpers/toTitleCase';
 
 type TableProps = {

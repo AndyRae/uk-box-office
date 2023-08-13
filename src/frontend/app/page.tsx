@@ -3,19 +3,19 @@ import {
 	fetchBoxOfficePreviousYear,
 } from 'lib/dataFetching';
 import { groupForTable } from 'lib/helpers/groupData';
-import { Controls } from 'components/controls';
-import { FilmTableDetailed } from 'components/tables/film-table-detailed';
-import { TimeLineChart } from 'components/charts/timeline';
-import { StructuredTimeData } from 'components/structured-data';
-import { StackedBarChart } from 'components/charts/stacked-bar';
-import { ChartWrapper } from 'components/charts/chart-wrapper';
+import { Controls } from '@/components/controls';
+import { FilmTableDetailed } from '@/components/tables/film-table-detailed';
+import { TimeLineChart } from '@/components/charts/timeline';
+import { StructuredTimeData } from '@/components/structured-data';
+import { StackedBarChart } from '@/components/charts/stacked-bar';
+import { ChartWrapper } from '@/components/charts/chart-wrapper';
 import { parseDate } from 'lib/helpers/dates';
-import { Scorecards } from 'components/score-cards';
+import { Scorecards } from '@/components/score-cards';
 import addDays from 'date-fns/addDays';
-import { LastUpdated } from 'components/last-updated';
-import { DatasourceCard } from 'components/datasource';
+import { LastUpdated } from '@/components/last-updated';
+import { DatasourceCard } from '@/components/datasource';
 import * as React from 'react';
-import { Skeleton } from 'components/skeleton';
+import { Skeleton } from '@/components/skeleton';
 
 export default async function Page({
 	searchParams,

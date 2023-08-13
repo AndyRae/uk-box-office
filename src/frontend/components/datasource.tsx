@@ -1,6 +1,6 @@
-import { Button } from 'components/ui/button';
-import { Card } from 'components/ui/card';
-import { Icons } from 'components/icons';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Icons } from '@/components/icons';
 
 /**
  * Datasource Card component

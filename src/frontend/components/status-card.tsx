@@ -1,7 +1,7 @@
 import { StatusEvent } from 'interfaces/Event';
-import { Card } from 'components/ui/card';
-import { DateTime } from 'components/date';
-import { Icons } from 'components/icons';
+import { Card } from '@/components/ui/card';
+import { DateTime } from '@/components/date';
+import { Icons } from '@/components/icons';
 
 export const StatusCard = ({
 	status,
