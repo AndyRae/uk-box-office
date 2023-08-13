@@ -22,7 +22,7 @@ import { WeeksTable } from '@/components/tables/weeks-table';
 import { PreviousTable } from '@/components/tables/previous-years-table';
 import { PreviousYearsChart } from '@/components/charts/previous-years';
 import { ChartWrapper } from '@/components/charts/chart-wrapper';
-import { BoxOfficeWeek, BoxOfficeSummary } from 'interfaces/BoxOffice';
+import { BoxOfficeWeek, BoxOfficeSummary } from '@/interfaces/BoxOffice';
 
 type TimePageProps = {
 	year: number;

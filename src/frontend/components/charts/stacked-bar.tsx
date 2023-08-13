@@ -14,7 +14,7 @@ import {
 } from 'chart.js';
 import { useRef } from 'react';
 import { groupStackedFilms } from '@/lib/helpers/groupData';
-import { BoxOfficeWeek, StackedFilm } from 'interfaces/BoxOffice';
+import { BoxOfficeWeek, StackedFilm } from '@/interfaces/BoxOffice';
 
 ChartJS.register(
 	BarElement,

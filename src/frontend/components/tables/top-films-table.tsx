@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { BaseTable, Td, Tr } from '@/components/tables/base-table';
-import { TopFilm } from 'interfaces/Film';
+import { TopFilm } from '@/interfaces/Film';
 import { toTitleCase } from '@/lib/helpers/toTitleCase';
 
 /**

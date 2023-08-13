@@ -1,5 +1,9 @@
 import request from './request';
-import { BoxOfficeSummary, BoxOfficeWeek, Topline } from 'interfaces/BoxOffice';
+import {
+	BoxOfficeSummary,
+	BoxOfficeWeek,
+	Topline,
+} from '@/interfaces/BoxOffice';
 import {
 	getApi,
 	getBoxOfficeLastWeekEndpoint,
@@ -29,22 +33,22 @@ import {
 	FilmListData,
 	FilmOption,
 	TopFilm,
-} from 'interfaces/Film';
+} from '@/interfaces/Film';
 import {
 	Distributor,
 	DistributorBoxOffice,
 	DistributorFilmsData,
 	DistributorListData,
-} from 'interfaces/Distributor';
+} from '@/interfaces/Distributor';
 import {
 	Country,
 	CountryBoxOffice,
 	CountryFilmsData,
 	CountryListData,
-} from 'interfaces/Country';
-import { SearchParams, SearchResults } from 'interfaces/Search';
-import MarketShare from 'interfaces/MarketShare';
-import { StatusEvent } from 'interfaces/Event';
+} from '@/interfaces/Country';
+import { SearchParams, SearchResults } from '@/interfaces/Search';
+import MarketShare from '@/interfaces/MarketShare';
+import { StatusEvent } from '@/interfaces/Event';
 
 /**
  * Box Office

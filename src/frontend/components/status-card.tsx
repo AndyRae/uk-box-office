@@ -1,4 +1,4 @@
-import { StatusEvent } from 'interfaces/Event';
+import { StatusEvent } from '@/interfaces/Event';
 import { Card } from '@/components/ui/card';
 import { DateTime } from '@/components/date';
 import { Icons } from '@/components/icons';
@@ -14,9 +14,9 @@ export const StatusCard = ({
 	return (
 		<Card
 			title={status.area?.toString().toUpperCase()}
-			subtitle={status.date && <DateTime dateString={status.date} />}
-			size='lg'
-			status={status.state?.toString()}
+			// subtitle={status.date && <DateTime dateString={status.date} />}
+			// size='lg'
+			// status={status.state?.toString()}
 		>
 			<Icon /> {status.message}
 		</Card>

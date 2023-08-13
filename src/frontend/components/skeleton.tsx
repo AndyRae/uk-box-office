@@ -76,8 +76,8 @@ export const SkeletonCards = (): JSX.Element => {
 		<div className='grid animate-pulse md:grid-cols-2 mt-6 lg:grid-cols-4 gap-3 md:gap-5'>
 			<Card
 				title='Total Box Office'
-				subtitle='-'
-				status='transparent'
+				// subtitle='-'
+				// status='transparent'
 				className='border border-black dark:border-white'
 			>
 				<MetricChange value={0} />{' '}
@@ -85,8 +85,8 @@ export const SkeletonCards = (): JSX.Element => {
 
 			<Card
 				title='Weekend Box Office'
-				subtitle='-'
-				status='transparent'
+				// subtitle='-'
+				// status='transparent'
 				className='border border-black dark:border-white'
 			>
 				<MetricChange value={0} />{' '}
@@ -94,8 +94,8 @@ export const SkeletonCards = (): JSX.Element => {
 
 			<Card
 				title='New Releases'
-				subtitle='-'
-				status='transparent'
+				// subtitle='-'
+				// status='transparent'
 				className='border border-black dark:border-white'
 			>
 				<MetricChange value={0} />{' '}
@@ -103,8 +103,8 @@ export const SkeletonCards = (): JSX.Element => {
 
 			<Card
 				title='New Releases'
-				subtitle='-'
-				status='transparent'
+				// subtitle='-'
+				// status='transparent'
 				className='border border-black dark:border-white'
 			>
 				<MetricChange value={0} />{' '}

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
-import { Distributor } from 'interfaces/Distributor';
-import { Country } from 'interfaces/Country';
+import { Distributor } from '@/interfaces/Distributor';
+import { Country } from '@/interfaces/Country';
 
 import { paginate } from '@/lib/helpers/pagination';
 import { toTitleCase } from '@/lib/helpers/toTitleCase';

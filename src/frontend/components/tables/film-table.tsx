@@ -1,4 +1,4 @@
-import { Film } from 'interfaces/Film';
+import { Film } from '@/interfaces/Film';
 import Link from 'next/link';
 import { BaseTable, Td, Tr } from './base-table';
 import { toTitleCase } from '@/lib/helpers/toTitleCase';

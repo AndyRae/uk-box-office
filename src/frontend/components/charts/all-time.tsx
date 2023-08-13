@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { getElementAtEvent } from 'react-chartjs-2';
 import { BarChart } from '@/components/charts/bar';
 
-import Time from 'interfaces/Time';
+import Time from '@/interfaces/Time';
 
 /**
  * @description All Time Chart component as a bar chart.

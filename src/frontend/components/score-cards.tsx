@@ -15,7 +15,7 @@ import {
 	BoxOfficeSummary,
 	TableData,
 	BoxOfficeWeek,
-} from 'interfaces/BoxOffice';
+} from '@/interfaces/BoxOffice';
 
 const ScoreCard = ({
 	title,

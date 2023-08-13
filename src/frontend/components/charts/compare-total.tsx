@@ -1,7 +1,7 @@
 'use client';
 
 import { Timeseries } from '@/components/charts/timeseries';
-import { FilmWithWeeks } from 'interfaces/Film';
+import { FilmWithWeeks } from '@/interfaces/Film';
 
 type TimeLineChartProps = {
 	data: FilmWithWeeks[];

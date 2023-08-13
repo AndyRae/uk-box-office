@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/tooltip';
 import { useRouter } from 'next/navigation';
 import { getElementAtEvent } from 'react-chartjs-2';
-import { BoxOfficeWeek, BoxOfficeWeekStrict } from 'interfaces/BoxOffice';
+import { BoxOfficeWeek, BoxOfficeWeekStrict } from '@/interfaces/BoxOffice';
 import { Icons } from '@/components/icons';
 
 type TimeLineChartProps = {

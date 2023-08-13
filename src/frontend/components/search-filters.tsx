@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import Select from 'react-select';
 
-import { Distributor } from 'interfaces/Distributor';
-import { Country } from 'interfaces/Country';
+import { Distributor } from '@/interfaces/Distributor';
+import { Country } from '@/interfaces/Country';
 
 import { toTitleCase } from '@/lib/helpers/toTitleCase';
 

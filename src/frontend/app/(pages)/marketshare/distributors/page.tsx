@@ -5,7 +5,7 @@ import { MarketShareTable } from '@/components/tables/market-share-table';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { getDefaultColorArray } from '@/lib/helpers/colorGenerator';
 
-import MarketShare from 'interfaces/MarketShare';
+import MarketShare from '@/interfaces/MarketShare';
 import { Metadata } from 'next';
 import { fetchMarketshare } from '@/lib/dataFetching';
 

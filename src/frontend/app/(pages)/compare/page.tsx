@@ -14,7 +14,7 @@ import { DatasourceButton } from '@/components/datasource';
 import { ChartWrapper } from '@/components/charts/chart-wrapper';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import debounce from 'lodash/debounce';
-import { FilmOption } from 'interfaces/Film';
+import { FilmOption } from '@/interfaces/Film';
 import { fetchSearchFilms } from '@/lib/dataFetching';
 
 // For parsing the options request response.

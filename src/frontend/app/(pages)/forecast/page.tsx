@@ -1,7 +1,7 @@
 import { ForecastChart } from '@/components/charts/forecast';
 import { PageTitle } from '@/components/ui/page-title';
 import { PageContent } from '@/components/ui/page-content';
-import { Topline } from 'interfaces/BoxOffice';
+import { Topline } from '@/interfaces/BoxOffice';
 import { Metadata } from 'next';
 import addDays from 'date-fns/addDays';
 import { fetchForecast } from '@/lib/dataFetching';

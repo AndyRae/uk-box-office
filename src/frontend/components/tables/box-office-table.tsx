@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Date } from '@/components/date';
 import { BaseTable, Td, Tr } from '@/components/tables/base-table';
 import { MetricChange } from '@/components/metric-change';
-import { FilmWithWeeks } from 'interfaces/Film';
+import { FilmWithWeeks } from '@/interfaces/Film';
 
 /**
  * @description Box Office Table component

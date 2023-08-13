@@ -4,7 +4,7 @@ import { BarChart } from '@/components/charts/bar';
 import { MouseEvent, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { getElementAtEvent } from 'react-chartjs-2';
-import { BoxOfficeSummary } from 'interfaces/BoxOffice';
+import { BoxOfficeSummary } from '@/interfaces/BoxOffice';
 
 /**
  * @description Charts previous box office years as a horizontal bar chart.
