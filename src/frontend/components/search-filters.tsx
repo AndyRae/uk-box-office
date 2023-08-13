@@ -10,7 +10,7 @@ import { Country } from '@/interfaces/Country';
 import { toTitleCase } from '@/lib/helpers/toTitleCase';
 
 import { Icons } from '@/components/icons';
-import { Button } from '@/components/ui/button-new';
+import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import {
 	Select as SelectWrap,
@@ -20,7 +20,7 @@ import {
 	SelectLabel,
 	SelectTrigger,
 	SelectValue,
-} from '@/components/ui/select';
+} from '@/components/custom/select';
 import {
 	Collapsible,
 	CollapsibleContent,

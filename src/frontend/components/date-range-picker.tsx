@@ -9,7 +9,7 @@ import { parseDate } from '@/lib/helpers/dates';
 import { DateRange } from 'react-day-picker';
 import clsx from 'clsx';
 
-import { Button } from './ui/button-new';
+import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import {
 	Popover,
