@@ -1,4 +1,4 @@
-import { PageTitle } from '@/components/ui/page-title';
+import { PageTitle } from '@/components/custom/page-title';
 import { fetchStatusEvents } from '@/lib/dataFetching';
 import { EventsTable } from '@/components/tables/events-table';
 import { StatusCard } from '@/components/status-card';

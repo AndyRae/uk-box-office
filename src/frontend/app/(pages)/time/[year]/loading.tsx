@@ -1,4 +1,4 @@
-import { Spinner } from '@/components/ui/spinner';
+import { Spinner } from '@/components/custom/spinner';
 import { TimePage } from '../time';
 
 export default function Loading() {

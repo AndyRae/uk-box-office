@@ -1,4 +1,4 @@
-import { PageTitle } from '@/components/ui/page-title';
+import { PageTitle } from '@/components/custom/page-title';
 import { Searchbar } from '@/components/search';
 
 export default function NotFound(): JSX.Element {

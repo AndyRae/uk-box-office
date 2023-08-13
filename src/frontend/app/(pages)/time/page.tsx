@@ -1,6 +1,6 @@
-import { PageTitle } from '@/components/ui/page-title';
-import { PageContent } from '@/components/ui/page-content';
-import { ExportCSV } from '@/components/ui/export-csv';
+import { PageTitle } from '@/components/custom/page-title';
+import { PageContent } from '@/components/custom/page-content';
+import { ExportCSV } from '@/components/custom/export-csv';
 import { StructuredTimeData } from '@/components/structured-data';
 import { AllTimeChart } from '@/components/charts/all-time';
 import { YearsTable } from '@/components/tables/years-table';

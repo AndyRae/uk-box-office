@@ -1,4 +1,4 @@
-import { TimePage } from 'app/(pages)/time/time';
+import { TimePage } from '@/app/(pages)/time/time';
 import {
 	fetchBoxOfficeInfinite,
 	fetchBoxOfficeSummary,

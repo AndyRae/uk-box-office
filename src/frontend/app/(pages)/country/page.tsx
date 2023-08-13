@@ -1,8 +1,8 @@
 import { fetchCountryList } from '@/lib/dataFetching';
 import { paginate } from '@/lib/helpers/pagination';
 import { CountryTable } from '@/components/tables/country-table';
-import { Pagination } from '@/components/ui/pagination';
-import { PageTitle } from '@/components/ui/page-title';
+import { Pagination } from '@/components/custom/pagination';
+import { PageTitle } from '@/components/custom/page-title';
 
 export default async function Page({
 	searchParams,

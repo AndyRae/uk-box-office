@@ -1,6 +1,6 @@
-import { ExternalLink } from '@/components/ui/inline-link';
-import { PageTitle } from '@/components/ui/page-title';
-import { PageContent } from '@/components/ui/page-content';
+import { ExternalLink } from '@/components/custom/inline-link';
+import { PageTitle } from '@/components/custom/page-title';
+import { PageContent } from '@/components/custom/page-content';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

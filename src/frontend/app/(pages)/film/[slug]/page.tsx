@@ -1,12 +1,12 @@
 import { BoxOfficeTable } from '@/components/tables/box-office-table';
-import { DescriptionList } from '@/components/ui/description-list';
-import { PageTitle } from '@/components/ui/page-title';
-import { BadgeLink } from '@/components/ui/badge-link';
-import { DescriptionItem } from '@/components/ui/description-item';
+import { DescriptionList } from '@/components/custom/description-list';
+import { PageTitle } from '@/components/custom/page-title';
+import { BadgeLink } from '@/components/custom/badge-link';
+import { DescriptionItem } from '@/components/custom/description-item';
 import { Date } from '@/components/date';
 import { StructuredTimeData } from '@/components/structured-data';
 import { DatasourceButton } from '@/components/datasource';
-import { ExportCSV } from '@/components/ui/export-csv';
+import { ExportCSV } from '@/components/custom/export-csv';
 import { TimeLineChart } from '@/components/charts/timeline';
 import { toTitleCase } from '@/lib/helpers/toTitleCase';
 import { ChartWrapper } from '@/components/charts/chart-wrapper';

@@ -1,4 +1,4 @@
-import { PageTitle } from '@/components/ui/page-title';
+import { PageTitle } from '@/components/custom/page-title';
 import { TopFilmsTable } from '@/components/tables/top-films-table';
 import { Metadata } from 'next';
 import { fetchBoxOfficeTopFilms } from '@/lib/dataFetching';

@@ -1,13 +1,13 @@
-import { PageTitle } from '@/components/ui/page-title';
+import { PageTitle } from '@/components/custom/page-title';
 import { DistributorFilmsTable } from '@/components/tables/distributor-films-table';
 import { PreviousChart } from '@/components/charts/previous-chart';
-import { DescriptionList } from '@/components/ui/description-list';
-import { DescriptionItem } from '@/components/ui/description-item';
+import { DescriptionList } from '@/components/custom/description-list';
+import { DescriptionItem } from '@/components/custom/description-item';
 import { PreviousTable } from '@/components/tables/previous-table';
 import { StackedBarChart } from '@/components/charts/stacked-bar';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { DatasourceButton } from '@/components/datasource';
-import { ExportCSV } from '@/components/ui/export-csv';
+import { ExportCSV } from '@/components/custom/export-csv';
 import { ChartWrapper } from '@/components/charts/chart-wrapper';
 import { Controls } from '@/components/controls';
 

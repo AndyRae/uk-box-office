@@ -1,16 +1,16 @@
 import { groupForTable, groupbyDate } from '@/lib/helpers/groupData';
 
-import { BreadcrumbsTime } from '@/components/ui/breadcrumbs-time';
-import { PageTitle } from '@/components/ui/page-title';
+import { BreadcrumbsTime } from '@/components/custom/breadcrumbs-time';
+import { PageTitle } from '@/components/custom/page-title';
 import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
 	TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { ExportCSV } from '@/components/ui/export-csv';
-import { DescriptionItem } from '@/components/ui/description-item';
-import { DescriptionList } from '@/components/ui/description-list';
+import { ExportCSV } from '@/components/custom/export-csv';
+import { DescriptionItem } from '@/components/custom/description-item';
+import { DescriptionList } from '@/components/custom/description-list';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { StructuredTimeData } from '@/components/structured-data';
 import { DatasourceButton } from '@/components/datasource';

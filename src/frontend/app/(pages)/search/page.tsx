@@ -9,9 +9,9 @@ import { fetchSearch } from '@/lib/dataFetching';
 
 import { FilmsTable } from '@/components/tables/films-table';
 import { Searchbar } from '@/components/search';
-import { PageTitle } from '@/components/ui/page-title';
+import { PageTitle } from '@/components/custom/page-title';
 import { SearchFilters } from '@/components/search-filters';
-import { Pagination } from '@/components/ui/pagination';
+import { Pagination } from '@/components/custom/pagination';
 
 export default async function Page({
 	searchParams,
