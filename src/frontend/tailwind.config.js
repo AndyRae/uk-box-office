@@ -17,6 +17,9 @@ module.exports = {
 		},
 		extend: {
 			colors: {
+				'bo-black': '#070707',
+				'bo-primary': '#10b981', // green
+				'bo-metric-green': '#1A6622',
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
