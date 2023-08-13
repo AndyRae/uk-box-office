@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { BaseTable, Tr, Td } from '@/components/tables/base-table';
 import { Film } from 'interfaces/Film';
-import { toTitleCase } from 'lib/helpers/toTitleCase';
+import { toTitleCase } from '@/lib/helpers/toTitleCase';
 
 /**
  * @description Films Table component for search

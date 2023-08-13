@@ -6,7 +6,7 @@ import { AllTimeChart } from '@/components/charts/all-time';
 import { YearsTable } from '@/components/tables/years-table';
 
 import { Metadata } from 'next';
-import { fetchBoxOfficeSummary } from 'lib/dataFetching';
+import { fetchBoxOfficeSummary } from '@/lib/dataFetching';
 
 export const metadata: Metadata = {
 	title: 'All Time Box Office 2001 - 2023 | Box Office Data',

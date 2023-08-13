@@ -2,20 +2,20 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { PageTitle } from '@/components/ui/page-title';
-import { fetchFilmId } from 'lib/dataFetching';
+import { fetchFilmId } from '@/lib/dataFetching';
 
 import AsyncSelect from 'react-select/async';
 import { CompareTable } from '@/components/tables/compare-table';
 import { CompareTotalChart } from '@/components/charts/compare-total';
 import { CompareCumulativeChart } from '@/components/charts/compare-cumulative';
-import { getDefaultColorArray } from 'lib/helpers/colorGenerator';
+import { getDefaultColorArray } from '@/lib/helpers/colorGenerator';
 import { ExportCSV } from '@/components/ui/export-csv';
 import { DatasourceButton } from '@/components/datasource';
 import { ChartWrapper } from '@/components/charts/chart-wrapper';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import debounce from 'lodash/debounce';
 import { FilmOption } from 'interfaces/Film';
-import { fetchSearchFilms } from 'lib/dataFetching';
+import { fetchSearchFilms } from '@/lib/dataFetching';
 
 // For parsing the options request response.
 async function FilmsToOptions(term: string): Promise<FilmOption[]> {

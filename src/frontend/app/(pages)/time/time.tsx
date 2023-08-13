@@ -1,4 +1,4 @@
-import { groupForTable, groupbyDate } from 'lib/helpers/groupData';
+import { groupForTable, groupbyDate } from '@/lib/helpers/groupData';
 
 import { BreadcrumbsTime } from '@/components/ui/breadcrumbs-time';
 import { PageTitle } from '@/components/ui/page-title';

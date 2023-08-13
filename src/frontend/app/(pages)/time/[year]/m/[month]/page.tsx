@@ -2,8 +2,8 @@ import { TimePage } from 'app/(pages)/time/time';
 import {
 	fetchBoxOfficeInfinite,
 	fetchBoxOfficeSummary,
-} from 'lib/dataFetching';
-import { getLastDayofMonth } from 'lib/helpers/dates';
+} from '@/lib/dataFetching';
+import { getLastDayofMonth } from '@/lib/helpers/dates';
 
 export async function generateMetadata({
 	params,

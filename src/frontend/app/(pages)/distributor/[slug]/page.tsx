@@ -15,9 +15,9 @@ import {
 	fetchDistributor,
 	fetchDistributorBoxOffice,
 	fetchBoxOfficeInfinite,
-} from 'lib/dataFetching';
-import { parseDate } from 'lib/helpers/dates';
-import { toTitleCase } from 'lib/helpers/toTitleCase';
+} from '@/lib/dataFetching';
+import { parseDate } from '@/lib/helpers/dates';
+import { toTitleCase } from '@/lib/helpers/toTitleCase';
 import addDays from 'date-fns/addDays';
 
 export async function generateMetadata({

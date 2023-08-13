@@ -3,9 +3,9 @@ import Link from 'next/link';
 import { Distributor } from 'interfaces/Distributor';
 import { Country } from 'interfaces/Country';
 
-import { paginate } from 'lib/helpers/pagination';
-import { toTitleCase } from 'lib/helpers/toTitleCase';
-import { fetchSearch } from 'lib/dataFetching';
+import { paginate } from '@/lib/helpers/pagination';
+import { toTitleCase } from '@/lib/helpers/toTitleCase';
+import { fetchSearch } from '@/lib/dataFetching';
 
 import { FilmsTable } from '@/components/tables/films-table';
 import { Searchbar } from '@/components/search';

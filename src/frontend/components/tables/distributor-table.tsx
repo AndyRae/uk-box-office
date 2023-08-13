@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { BaseTable, Td, Tr } from '@/components/tables/base-table';
 import { DistributorListData } from 'interfaces/Distributor';
-import { toTitleCase } from 'lib/helpers/toTitleCase';
+import { toTitleCase } from '@/lib/helpers/toTitleCase';
 
 /**
  * Distributor List component

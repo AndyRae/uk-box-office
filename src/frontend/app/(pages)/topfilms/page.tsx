@@ -1,7 +1,7 @@
 import { PageTitle } from '@/components/ui/page-title';
 import { TopFilmsTable } from '@/components/tables/top-films-table';
 import { Metadata } from 'next';
-import { fetchBoxOfficeTopFilms } from 'lib/dataFetching';
+import { fetchBoxOfficeTopFilms } from '@/lib/dataFetching';
 
 export const metadata: Metadata = {
 	title: 'All Time Top Films | Box Office Data',

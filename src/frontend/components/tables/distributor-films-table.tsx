@@ -1,7 +1,7 @@
-import { fetchDistributorFilms } from 'lib/dataFetching';
+import { fetchDistributorFilms } from '@/lib/dataFetching';
 import { FilmTable } from '@/components/tables/film-table';
 import { Pagination } from '@/components/ui/pagination';
-import { paginate } from 'lib/helpers/pagination';
+import { paginate } from '@/lib/helpers/pagination';
 
 /**
  * @description Distributor Films List component

@@ -8,9 +8,9 @@ import { StructuredTimeData } from '@/components/structured-data';
 import { DatasourceButton } from '@/components/datasource';
 import { ExportCSV } from '@/components/ui/export-csv';
 import { TimeLineChart } from '@/components/charts/timeline';
-import { toTitleCase } from 'lib/helpers/toTitleCase';
+import { toTitleCase } from '@/lib/helpers/toTitleCase';
 import { ChartWrapper } from '@/components/charts/chart-wrapper';
-import { fetchFilm } from 'lib/dataFetching';
+import { fetchFilm } from '@/lib/dataFetching';
 
 export async function generateMetadata({
 	params,
