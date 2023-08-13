@@ -46,30 +46,34 @@ export const Controls = forwardRef<HTMLDivElement, ControlsProps>(
 				<CalendarDateRangePicker startParam={sDate} endParam={eDate} />
 
 				<Button
+					variant={'outline'}
 					onClick={() => changeDate(7)}
 					disabled={diffDays === 7}
-					className='ml-2 rounded-r-none'
+					className=''
 				>
 					1W
 				</Button>
 				<Button
+					variant={'outline'}
 					onClick={() => changeDate(30)}
 					disabled={diffDays === 30}
-					className='rounded-none pl-0 pr-0'
+					className=''
 				>
 					1M
 				</Button>
 				<Button
+					variant={'outline'}
 					onClick={() => changeDate(90)}
 					disabled={diffDays === 90}
-					className='rounded-none pr-0'
+					className=''
 				>
 					3M
 				</Button>
 				<Button
+					variant={'outline'}
 					onClick={() => changeDate(365)}
 					disabled={diffDays === 365}
-					className='rounded-l-none'
+					className=''
 				>
 					1Y
 				</Button>
@@ -87,7 +91,7 @@ interface ControlsWrapperProps extends HTMLAttributes<HTMLDivElement> {}
 const ControlsWrapper = forwardRef<HTMLDivElement, ControlsWrapperProps>(
 	({ children }) => {
 		return (
-			<div className='flex flex-wrap mb-2 gap-y-4 items-center justify-center'>
+			<div className='flex flex-wrap mb-2 gap-y-2 items-center justify-center'>
 				{children}
 			</div>
 		);

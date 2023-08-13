@@ -31,7 +31,7 @@ export const ExportCSV = ({
 }: ExportCsvProps): JSX.Element => {
 	const Icon = Icons['spreadsheet'];
 	return (
-		<Button className={className}>
+		<Button className={className} variant={'outline'}>
 			<div className='px-1'>
 				<Icon />
 			</div>
