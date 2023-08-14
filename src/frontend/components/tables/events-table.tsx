@@ -1,7 +1,7 @@
 import clsx from 'clsx';
-import { BaseTable, Td, Tr } from 'components/tables/base-table';
-import { StatusEvent } from 'interfaces/Event';
-import { DateTime } from 'components/date';
+import { BaseTable, Td, Tr } from '@/components/tables/base-table';
+import { StatusEvent } from '@/interfaces/Event';
+import { DateTime } from '@/components/date';
 
 type Status = 'default' | 'warning' | 'success' | 'error' | string;
 const statusStyle: { [key in Status]: string } = {

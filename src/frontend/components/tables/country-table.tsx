@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { BaseTable, Td, Tr } from 'components/tables/base-table';
-import { CountryListData } from 'interfaces/Country';
+import { BaseTable, Td, Tr } from '@/components/tables/base-table';
+import { CountryListData } from '@/interfaces/Country';
 
 /**
  * Country List component

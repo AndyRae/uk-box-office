@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { BaseTable, Td, Tr } from './base-table';
-import { MetricChange } from 'components/metric-change';
-import { BoxOfficeWeek, TableData } from 'interfaces/BoxOffice';
-import { toTitleCase } from 'lib/utils/toTitleCase';
+import { MetricChange } from '@/components/metric-change';
+import { BoxOfficeWeek, TableData } from '@/interfaces/BoxOffice';
+import { toTitleCase } from '@/lib/helpers/toTitleCase';
 
 /**
  * @description Film Table component for the time view.

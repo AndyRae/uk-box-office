@@ -1,21 +1,15 @@
-import { Card } from './ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { MetricChange } from './metric-change';
-import {
-	TooltipProvider,
-	Tooltip,
-	TooltipContent,
-	TooltipTrigger,
-} from './ui/tooltip';
 import {
 	calculateWeek1Releases,
 	calculateNumberOfCinemas,
-} from 'lib/utils/groupData';
+} from '@/lib/helpers/groupData';
 
 import {
 	BoxOfficeSummary,
 	TableData,
 	BoxOfficeWeek,
-} from 'interfaces/BoxOffice';
+} from '@/interfaces/BoxOffice';
 
 const ScoreCard = ({
 	title,
@@ -27,22 +21,16 @@ const ScoreCard = ({
 	metricChange?: any;
 }) => {
 	return (
-		<Card
-			title={title}
-			subtitle={subtitle}
-			status='transparent'
-			className='border border-black dark:border-white'
-		>
-			<TooltipProvider>
-				<Tooltip>
-					<TooltipTrigger>
-						<MetricChange value={metricChange} />
-					</TooltipTrigger>
-					<TooltipContent>
-						<p>Change from last year</p>
-					</TooltipContent>
-				</Tooltip>
-			</TooltipProvider>
+		<Card>
+			<CardHeader>
+				<CardTitle>{title}</CardTitle>
+			</CardHeader>
+			<CardContent>
+				<div className='text-2xl font-bold'>{subtitle}</div>
+				<p className='text-xs text-muted-foreground'>
+					<MetricChange value={metricChange} /> from last year
+				</p>
+			</CardContent>
 		</Card>
 	);
 };

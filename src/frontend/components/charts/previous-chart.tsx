@@ -1,6 +1,6 @@
 'use client';
 
-import { BarChart } from 'components/charts/bar';
+import { BarChart } from '@/components/charts/bar';
 import { MouseEvent, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { getElementAtEvent } from 'react-chartjs-2';

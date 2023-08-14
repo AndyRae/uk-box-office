@@ -1,7 +1,7 @@
 'use client';
 
 import { Timeseries } from './timeseries';
-import { Topline } from 'interfaces/BoxOffice';
+import { Topline } from '@/interfaces/BoxOffice';
 
 /**
  * ForecastChart

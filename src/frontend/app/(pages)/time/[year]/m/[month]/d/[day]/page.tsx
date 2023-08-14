@@ -1,8 +1,8 @@
-import { TimePage } from 'app/(pages)/time/time';
+import { TimePage } from '@/app/(pages)/time/time';
 import {
 	fetchBoxOfficeInfinite,
 	fetchBoxOfficeSummary,
-} from 'lib/dataFetching';
+} from '@/lib/dataFetching';
 import addDays from 'date-fns/addDays';
 
 export async function generateMetadata({

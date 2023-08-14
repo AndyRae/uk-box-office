@@ -1,8 +1,8 @@
 'use client';
 
-import { Button } from './button';
+import { Button } from '@/components/ui/button';
 import dynamic from 'next/dynamic';
-import { Icons } from 'components/icons';
+import { Icons } from '@/components/icons';
 
 // Needs to be a dynamic import to work in NextJS.
 const DynamicCSV = dynamic(
@@ -31,7 +31,7 @@ export const ExportCSV = ({
 }: ExportCsvProps): JSX.Element => {
 	const Icon = Icons['spreadsheet'];
 	return (
-		<Button aria='export .csv' className={className}>
+		<Button className={className} variant={'outline'}>
 			<div className='px-1'>
 				<Icon />
 			</div>

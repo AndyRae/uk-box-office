@@ -4,14 +4,18 @@ import * as React from 'react';
 import { format, addDays } from 'date-fns';
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
-import { parseDate } from 'lib/utils/dates';
+import { parseDate } from '@/lib/helpers/dates';
 
 import { DateRange } from 'react-day-picker';
 import clsx from 'clsx';
 
-import { Button } from './ui/button-new';
-import { Calendar } from 'components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from 'components/ui/popover';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from '@/components/ui/popover';
 import { Icons } from './icons';
 
 interface CalendarDateRangePickerProps

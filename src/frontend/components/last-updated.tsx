@@ -1,5 +1,3 @@
-import { Card } from 'components/ui/card';
-
 /**
  * @file LastUpdated.jsx
  * @description Last updated component for dashboard
@@ -21,16 +19,14 @@ export const LastUpdated = ({ date }: { date: string }): JSX.Element => {
 
 	return (
 		<div className='md:ml-auto'>
-			<Card size='sm' status='transparent'>
-				<div
-					className='text-xs italic text-gray-700 dark:text-gray-400'
-					suppressHydrationWarning
-				>
-					{diffDays === 0
-						? 'Updated today'
-						: `Updated ${diffDays} day${diffDays === 1 ? '' : 's'} ago`}
-				</div>
-			</Card>
+			<div
+				className='text-xs italic text-gray-700 dark:text-gray-400'
+				suppressHydrationWarning
+			>
+				{diffDays === 0
+					? 'Updated today'
+					: `Updated ${diffDays} day${diffDays === 1 ? '' : 's'} ago`}
+			</div>
 		</div>
 	);
 };

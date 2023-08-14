@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { Icons } from 'components/icons';
+import { Icons } from '@/components/icons';
 
 type SideBarLinkProps = {
 	name: string;

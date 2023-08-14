@@ -1,5 +1,5 @@
 // Quick links to display in the footer
-import { Icons } from 'components/icons';
+import { Icons } from '@/components/icons';
 
 export type footerLink = {
 	name: string;
