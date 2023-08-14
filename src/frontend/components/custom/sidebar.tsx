@@ -156,7 +156,7 @@ export const Sidebar = ({
 			>
 				<SidebarContent />
 			</aside>
-			<main className='grow'>{children}</main>
+			<main className='grow bg-white dark:bg-black'>{children}</main>
 		</div>
 	);
 };
