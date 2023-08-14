@@ -8,11 +8,6 @@ module.exports = {
 		'./src/**/*.{ts,tsx}',
 	],
 	theme: {
-		colors: {
-			'bo-black': '#070707',
-			'bo-primary': '#10b981', // green
-			'bo-metric-green': '#1A6622',
-		},
 		container: {
 			center: true,
 			padding: '2rem',
@@ -21,6 +16,11 @@ module.exports = {
 			},
 		},
 		extend: {
+			colors: {
+				'bo-black': '#070707',
+				'bo-primary': '#10b981', // green
+				'bo-metric-green': '#1A6622',
+			},
 			keyframes: {
 				'accordion-down': {
 					from: { height: 0 },
