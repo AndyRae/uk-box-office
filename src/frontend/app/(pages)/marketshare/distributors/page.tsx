@@ -7,7 +7,7 @@ import { getDefaultColorArray } from '@/lib/helpers/colorGenerator';
 
 import MarketShare from '@/interfaces/MarketShare';
 import { Metadata } from 'next';
-import { fetchMarketshare } from '@/lib/dataFetching';
+import { fetchMarketshare } from '@/lib/api/dataFetching';
 
 export const metadata: Metadata = {
 	title: 'Distributor Market Share | Box Office Data',

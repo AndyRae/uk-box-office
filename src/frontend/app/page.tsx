@@ -1,7 +1,7 @@
 import {
 	fetchBoxOfficeInfinite,
 	fetchBoxOfficePreviousYear,
-} from '@/lib/dataFetching';
+} from '@/lib/api/dataFetching';
 import { groupForTable } from '@/lib/helpers/groupData';
 import { Controls } from '@/components/controls';
 import { FilmTableDetailed } from '@/components/tables/film-table-detailed';

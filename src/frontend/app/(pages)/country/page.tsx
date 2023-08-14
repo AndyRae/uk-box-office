@@ -1,4 +1,4 @@
-import { fetchCountryList } from '@/lib/dataFetching';
+import { fetchCountryList } from '@/lib/api/dataFetching';
 import { paginate } from '@/lib/helpers/pagination';
 import { CountryTable } from '@/components/tables/country-table';
 import { Pagination } from '@/components/custom/pagination';

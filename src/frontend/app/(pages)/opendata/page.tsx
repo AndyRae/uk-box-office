@@ -3,7 +3,7 @@ import { PageTitle } from '@/components/custom/page-title';
 import { PageContent } from '@/components/custom/page-content';
 import { StructuredTimeData } from '@/components/structured-data';
 import { ExternalLink, InlineLink } from '@/components/custom/inline-link';
-import { getApi } from '@/lib/endpoints';
+import { getApi } from '@/lib/api/endpoints';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
