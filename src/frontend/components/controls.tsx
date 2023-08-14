@@ -71,6 +71,14 @@ export const Controls = forwardRef<HTMLDivElement, ControlsProps>(
 				</Button>
 				<Button
 					variant={'outline'}
+					onClick={() => changeDate(180)}
+					disabled={diffDays === 180}
+					className=''
+				>
+					6M
+				</Button>
+				<Button
+					variant={'outline'}
 					onClick={() => changeDate(365)}
 					disabled={diffDays === 365}
 					className=''
