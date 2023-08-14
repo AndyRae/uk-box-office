@@ -4,14 +4,14 @@ import { useState, useEffect } from 'react';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import Select from 'react-select';
 
-import { Distributor } from 'interfaces/Distributor';
-import { Country } from 'interfaces/Country';
+import { Distributor } from '@/interfaces/Distributor';
+import { Country } from '@/interfaces/Country';
 
-import { toTitleCase } from 'lib/utils/toTitleCase';
+import { toTitleCase } from '@/lib/helpers/toTitleCase';
 
-import { Icons } from 'components/icons';
-import { Button } from 'components/ui/button-new';
-import { Slider } from 'components/ui/slider';
+import { Icons } from '@/components/icons';
+import { Button } from '@/components/ui/button';
+import { Slider } from '@/components/ui/slider';
 import {
 	Select as SelectWrap,
 	SelectContent,
@@ -20,12 +20,12 @@ import {
 	SelectLabel,
 	SelectTrigger,
 	SelectValue,
-} from 'components/ui/select';
+} from '@/components/custom/select';
 import {
 	Collapsible,
 	CollapsibleContent,
 	CollapsibleTrigger,
-} from 'components/ui/collapsible';
+} from '@/components/ui/collapsible';
 
 type SelectOption = {
 	value: string;

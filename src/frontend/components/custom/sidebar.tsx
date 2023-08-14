@@ -1,10 +1,11 @@
-import { Searchbar } from 'components/search';
+import { Searchbar } from '@/components/search';
 import { SideBarLink } from './sidebar-link';
 import { InlineLink } from './inline-link';
-import { Card } from 'components/ui/card';
+import { Card } from '@/components/ui/card';
 import Link from 'next/link';
-import { Icons } from 'components/icons';
-import { sidebarConfig } from 'config/sidebar';
+import { Icons } from '@/components/icons';
+import { sidebarConfig } from '@/config/sidebar';
+import { ModeToggle } from '@/components/ui/mode-toggle';
 
 /**
  * Brand component
@@ -30,7 +31,7 @@ export const Brand = (): JSX.Element => {
 
 const Announcement = (): JSX.Element => {
 	return (
-		<Card align='left' size='sm'>
+		<Card>
 			<div className='flex  mb-3'>
 				<span className='bg-bo-primary text-gray-50 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded'>
 					Beta
@@ -75,6 +76,7 @@ const SidebarContent = (): JSX.Element => {
 				</nav>
 
 				<Searchbar />
+				<ModeToggle />
 			</div>
 		</div>
 	);

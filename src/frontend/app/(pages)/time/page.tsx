@@ -1,12 +1,12 @@
-import { PageTitle } from 'components/ui/page-title';
-import { PageContent } from 'components/ui/page-content';
-import { ExportCSV } from 'components/ui/export-csv';
-import { StructuredTimeData } from 'components/structured-data';
-import { AllTimeChart } from 'components/charts/all-time';
-import { YearsTable } from 'components/tables/years-table';
+import { PageTitle } from '@/components/custom/page-title';
+import { PageContent } from '@/components/custom/page-content';
+import { ExportCSV } from '@/components/custom/export-csv';
+import { StructuredTimeData } from '@/components/structured-data';
+import { AllTimeChart } from '@/components/charts/all-time';
+import { YearsTable } from '@/components/tables/years-table';
 
 import { Metadata } from 'next';
-import { fetchBoxOfficeSummary } from 'lib/dataFetching';
+import { fetchBoxOfficeSummary } from '@/lib/dataFetching';
 
 export const metadata: Metadata = {
 	title: 'All Time Box Office 2001 - 2023 | Box Office Data',

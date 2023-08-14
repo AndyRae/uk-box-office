@@ -23,7 +23,7 @@ import {
 	TableData,
 	BoxOfficeGroup,
 	BoxOfficeWeekStrict,
-} from 'interfaces/BoxOffice';
+} from '@/interfaces/BoxOffice';
 
 /**
  * Groups data for a stacked bar chart.

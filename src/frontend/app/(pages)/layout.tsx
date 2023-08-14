@@ -1,4 +1,4 @@
-import { Breadcrumbs } from 'components/ui/breadcrumbs';
+import { Breadcrumbs } from '@/components/custom/breadcrumbs';
 
 export default async function Layout({
 	children,

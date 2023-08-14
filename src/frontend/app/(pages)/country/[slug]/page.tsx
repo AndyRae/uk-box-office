@@ -1,22 +1,22 @@
-import { PageTitle } from 'components/ui/page-title';
-import { CountryFilmsTable } from 'components/tables/country-films-table';
-import { DescriptionList } from 'components/ui/description-list';
-import { DescriptionItem } from 'components/ui/description-item';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from 'components/ui/tabs';
-import { DatasourceButton } from 'components/datasource';
-import { ExportCSV } from 'components/ui/export-csv';
-import { PreviousChart } from 'components/charts/previous-chart';
-import { PreviousTable } from 'components/tables/previous-table';
-import { ChartWrapper } from 'components/charts/chart-wrapper';
-import { Controls } from 'components/controls';
-import { StackedBarChart } from 'components/charts/stacked-bar';
+import { PageTitle } from '@/components/custom/page-title';
+import { CountryFilmsTable } from '@/components/tables/country-films-table';
+import { DescriptionList } from '@/components/custom/description-list';
+import { DescriptionItem } from '@/components/custom/description-item';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { DatasourceButton } from '@/components/datasource';
+import { ExportCSV } from '@/components/custom/export-csv';
+import { PreviousChart } from '@/components/charts/previous-chart';
+import { PreviousTable } from '@/components/tables/previous-table';
+import { ChartWrapper } from '@/components/charts/chart-wrapper';
+import { Controls } from '@/components/controls';
+import { StackedBarChart } from '@/components/charts/stacked-bar';
 
 import {
 	fetchCountry,
 	fetchCountryBoxOffice,
 	fetchBoxOfficeInfinite,
-} from 'lib/dataFetching';
-import { parseDate } from 'lib/utils/dates';
+} from '@/lib/dataFetching';
+import { parseDate } from '@/lib/helpers/dates';
 import addDays from 'date-fns/addDays';
 
 export async function generateMetadata({

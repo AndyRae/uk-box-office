@@ -1,18 +1,18 @@
 'use client';
 
 import { Timeseries } from './timeseries';
-import { groupbyMonth, groupbyDate } from 'lib/utils/groupData';
+import { groupbyMonth, groupbyDate } from '@/lib/helpers/groupData';
 import { useState, useEffect, useRef, MouseEvent } from 'react';
 import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
 	TooltipTrigger,
-} from 'components/ui/tooltip';
+} from '@/components/ui/tooltip';
 import { useRouter } from 'next/navigation';
 import { getElementAtEvent } from 'react-chartjs-2';
-import { BoxOfficeWeek, BoxOfficeWeekStrict } from 'interfaces/BoxOffice';
-import { Icons } from 'components/icons';
+import { BoxOfficeWeek, BoxOfficeWeekStrict } from '@/interfaces/BoxOffice';
+import { Icons } from '@/components/icons';
 
 type TimeLineChartProps = {
 	data: BoxOfficeWeek[] | BoxOfficeWeekStrict[];

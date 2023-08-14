@@ -1,9 +1,10 @@
 // These styles apply to every route in the application
 import 'styles/globals.css';
-import { Sidebar } from 'components/ui/sidebar';
-import { Footer } from 'components/ui/footer';
+import { Sidebar } from '@/components/custom/sidebar';
+import { Footer } from '@/components/custom/footer';
 import { Metadata } from 'next';
 import { Analytics } from '@vercel/analytics/react';
+import { ThemeProvider } from '@/components/theme-provider';
 
 const title = 'Box Office Data Dashboard';
 const description =
@@ -17,12 +18,14 @@ export default function RootLayout({
 	return (
 		<html lang='en'>
 			<body>
-				<Sidebar>
-					<div className='px-4 pb-4 bg-white dark:bg-black dark:text-white'>
-						<div className='h-max min-h-screen py-6'>{children}</div>
-						<Footer />
-					</div>
-				</Sidebar>
+				<ThemeProvider attribute='class' defaultTheme='system' enableSystem>
+					<Sidebar>
+						<div className='px-4 pb-4'>
+							<div className='h-max min-h-screen py-6'>{children}</div>
+							<Footer />
+						</div>
+					</Sidebar>
+				</ThemeProvider>
 			</body>
 			<Analytics />
 		</html>

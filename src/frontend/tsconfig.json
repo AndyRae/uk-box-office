@@ -23,7 +23,12 @@
         "name": "next"
       }
     ],
-    "baseUrl": ".",
+    // "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    }
   },
   "include": [
     ".",
@@ -36,9 +41,4 @@
   "exclude": [
     "node_modules"
   ],
-  "paths": {
-    "@/*": [
-      "./*"
-    ]
-  }
 }

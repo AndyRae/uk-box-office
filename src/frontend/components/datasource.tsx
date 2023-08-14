@@ -1,6 +1,5 @@
-import { Button } from 'components/ui/button';
-import { Card } from 'components/ui/card';
-import { Icons } from 'components/icons';
+import { Button } from '@/components/ui/button';
+import { Icons } from '@/components/icons';
 
 /**
  * Datasource Card component
@@ -10,17 +9,15 @@ import { Icons } from 'components/icons';
 export const DatasourceCard = (): JSX.Element => {
 	return (
 		<div className='ml-2'>
-			<Card size='sm' status='transparent'>
-				<div className='text-xs italic text-gray-700 dark:text-gray-400'>
-					<a
-						href='https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures'
-						target='_blank'
-						rel='noopener noreferrer'
-					>
-						Data Source
-					</a>
-				</div>
-			</Card>
+			<div className='text-xs italic text-gray-700 dark:text-gray-400'>
+				<a
+					href='https://www.bfi.org.uk/industry-data-insights/weekend-box-office-figures'
+					target='_blank'
+					rel='noopener noreferrer'
+				>
+					Data Source
+				</a>
+			</div>
 		</div>
 	);
 };
@@ -33,7 +30,7 @@ export const DatasourceCard = (): JSX.Element => {
 export const DatasourceButton = ({ className }: { className?: string }) => {
 	const Icon = Icons['seedling'];
 	return (
-		<Button aria='data source' className={className}>
+		<Button className={className} variant={'outline'}>
 			<div className='px-1'>
 				<Icon />
 			</div>

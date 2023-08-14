@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import { BaseTable, Td, Tr } from 'components/tables/base-table';
-import { MetricChange } from 'components/metric-change';
-import { BoxOfficeSummary } from 'interfaces/BoxOffice';
+import { BaseTable, Td, Tr } from '@/components/tables/base-table';
+import { MetricChange } from '@/components/metric-change';
+import { BoxOfficeSummary } from '@/interfaces/BoxOffice';
 
 /**
  * @description Previous Table component for time.

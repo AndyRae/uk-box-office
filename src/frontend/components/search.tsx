@@ -2,7 +2,7 @@
 
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
-import { Icons } from 'components/icons';
+import { Icons } from '@/components/icons';
 
 type SearchbarProps = {
 	placeholder?: string;

@@ -1,17 +1,17 @@
 import Link from 'next/link';
 
-import { Distributor } from 'interfaces/Distributor';
-import { Country } from 'interfaces/Country';
+import { Distributor } from '@/interfaces/Distributor';
+import { Country } from '@/interfaces/Country';
 
-import { paginate } from 'lib/utils/pagination';
-import { toTitleCase } from 'lib/utils/toTitleCase';
-import { fetchSearch } from 'lib/dataFetching';
+import { paginate } from '@/lib/helpers/pagination';
+import { toTitleCase } from '@/lib/helpers/toTitleCase';
+import { fetchSearch } from '@/lib/dataFetching';
 
-import { FilmsTable } from 'components/tables/films-table';
-import { Searchbar } from 'components/search';
-import { PageTitle } from 'components/ui/page-title';
-import { SearchFilters } from 'components/search-filters';
-import { Pagination } from 'components/ui/pagination';
+import { FilmsTable } from '@/components/tables/films-table';
+import { Searchbar } from '@/components/search';
+import { PageTitle } from '@/components/custom/page-title';
+import { SearchFilters } from '@/components/search-filters';
+import { Pagination } from '@/components/custom/pagination';
 
 export default async function Page({
 	searchParams,

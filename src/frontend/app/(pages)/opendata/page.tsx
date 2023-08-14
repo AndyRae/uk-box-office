@@ -1,9 +1,9 @@
-import { Button } from 'components/ui/button';
-import { PageTitle } from 'components/ui/page-title';
-import { PageContent } from 'components/ui/page-content';
-import { StructuredTimeData } from 'components/structured-data';
-import { ExternalLink, InlineLink } from 'components/ui/inline-link';
-import { getApi } from 'lib/endpoints';
+import { Button } from '@/components/ui/button';
+import { PageTitle } from '@/components/custom/page-title';
+import { PageContent } from '@/components/custom/page-content';
+import { StructuredTimeData } from '@/components/structured-data';
+import { ExternalLink, InlineLink } from '@/components/custom/inline-link';
+import { getApi } from '@/lib/endpoints';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -44,7 +44,7 @@ export default function Page(): JSX.Element {
 					<InlineLink to='/contact'>let me know</InlineLink>; I'd love to see
 					what you do with it.
 				</p>
-				<Button aria='All Time Box Office'>
+				<Button>
 					<a href={`${getApi()}/boxoffice/archive`}>
 						All Time Box Office Data (.csv)
 					</a>

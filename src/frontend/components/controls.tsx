@@ -2,7 +2,7 @@
 
 import React, { forwardRef, HTMLAttributes } from 'react';
 import { Button } from './ui/button';
-import { parseDate } from 'lib/utils/dates';
+import { parseDate } from '@/lib/helpers/dates';
 
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
@@ -46,38 +46,42 @@ export const Controls = forwardRef<HTMLDivElement, ControlsProps>(
 				<CalendarDateRangePicker startParam={sDate} endParam={eDate} />
 
 				<Button
+					variant={'outline'}
 					onClick={() => changeDate(7)}
-					isActive={diffDays === 7}
-					aria='1 Week'
-					className='ml-2 rounded-r-none'
-					innerClassName='rounded-r-none'
+					disabled={diffDays === 7}
+					className=''
 				>
 					1W
 				</Button>
 				<Button
+					variant={'outline'}
 					onClick={() => changeDate(30)}
-					isActive={diffDays === 30}
-					aria='1 Month'
-					className='rounded-none pl-0 pr-0'
-					innerClassName='rounded-none'
+					disabled={diffDays === 30}
+					className=''
 				>
 					1M
 				</Button>
 				<Button
+					variant={'outline'}
 					onClick={() => changeDate(90)}
-					isActive={diffDays === 90}
-					aria='3 Months'
-					className='rounded-none pr-0'
-					innerClassName='rounded-none'
+					disabled={diffDays === 90}
+					className=''
 				>
 					3M
 				</Button>
 				<Button
+					variant={'outline'}
+					onClick={() => changeDate(180)}
+					disabled={diffDays === 180}
+					className=''
+				>
+					6M
+				</Button>
+				<Button
+					variant={'outline'}
 					onClick={() => changeDate(365)}
-					isActive={diffDays === 365}
-					aria='1 Year'
-					className='rounded-l-none'
-					innerClassName='rounded-l-none'
+					disabled={diffDays === 365}
+					className=''
 				>
 					1Y
 				</Button>
