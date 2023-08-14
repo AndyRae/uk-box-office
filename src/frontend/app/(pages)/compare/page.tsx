@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { PageTitle } from '@/components/custom/page-title';
-import { fetchFilmId } from '@/lib/dataFetching';
+import { fetchFilmId } from '@/lib/api/dataFetching';
 
 import AsyncSelect from 'react-select/async';
 import { CompareTable } from '@/components/tables/compare-table';
@@ -15,7 +15,7 @@ import { ChartWrapper } from '@/components/charts/chart-wrapper';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import debounce from 'lodash/debounce';
 import { FilmOption } from '@/interfaces/Film';
-import { fetchSearchFilms } from '@/lib/dataFetching';
+import { fetchSearchFilms } from '@/lib/api/dataFetching';
 
 // For parsing the options request response.
 async function FilmsToOptions(term: string): Promise<FilmOption[]> {

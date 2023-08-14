@@ -1,4 +1,4 @@
-import { fetchCountryFilms } from '@/lib/dataFetching';
+import { fetchCountryFilms } from '@/lib/api/dataFetching';
 import { FilmTable } from '@/components/tables/film-table';
 import { Pagination } from '@/components/custom/pagination';
 import { paginate } from '@/lib/helpers/pagination';

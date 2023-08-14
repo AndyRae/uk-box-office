@@ -1,5 +1,5 @@
 import { PageTitle } from '@/components/custom/page-title';
-import { fetchStatusEvents } from '@/lib/dataFetching';
+import { fetchStatusEvents } from '@/lib/api/dataFetching';
 import { EventsTable } from '@/components/tables/events-table';
 import { StatusCard } from '@/components/status-card';
 import { Metadata } from 'next';

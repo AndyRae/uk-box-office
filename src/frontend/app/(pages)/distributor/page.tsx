@@ -1,4 +1,4 @@
-import { fetchDistributors } from '@/lib/dataFetching';
+import { fetchDistributors } from '@/lib/api/dataFetching';
 import { paginate } from '@/lib/helpers/pagination';
 import { Pagination } from '@/components/custom/pagination';
 import { PageTitle } from '@/components/custom/page-title';

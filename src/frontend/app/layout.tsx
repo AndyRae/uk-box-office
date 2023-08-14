@@ -33,6 +33,7 @@ export default function RootLayout({
 }
 
 export const metadata: Metadata = {
+	metadataBase: new URL('https://boxofficedata.co.uk'),
 	title: title,
 	description: description,
 	openGraph: {
