@@ -11,6 +11,8 @@ import { TimeLineChart } from '@/components/charts/timeline';
 import { toTitleCase } from '@/lib/helpers/toTitleCase';
 import { ChartWrapper } from '@/components/charts/chart-wrapper';
 import { fetchFilm } from '@/lib/api/dataFetching';
+import { columns } from './columns';
+import { DataTable } from './data-table';
 
 export async function generateMetadata({
 	params,
@@ -181,7 +183,8 @@ export default async function Page({
 				)}
 			</div>
 
-			<BoxOfficeTable data={data} />
+			{/* <BoxOfficeTable data={data} /> */}
+			<DataTable columns={columns} data={data.weeks} />
 		</div>
 	);
 }
