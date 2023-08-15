@@ -2,7 +2,7 @@ import { TimePage } from '@/app/(pages)/time/time';
 import {
 	fetchBoxOfficeInfinite,
 	fetchBoxOfficeSummary,
-} from '@/lib/dataFetching';
+} from '@/lib/api/dataFetching';
 
 export async function generateMetadata({
 	params,

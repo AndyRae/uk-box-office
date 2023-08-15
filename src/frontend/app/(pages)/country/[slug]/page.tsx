@@ -15,7 +15,7 @@ import {
 	fetchCountry,
 	fetchCountryBoxOffice,
 	fetchBoxOfficeInfinite,
-} from '@/lib/dataFetching';
+} from '@/lib/api/dataFetching';
 import { parseDate } from '@/lib/helpers/dates';
 import addDays from 'date-fns/addDays';
 

@@ -29,7 +29,7 @@ const request = async <T>(
 			method: options.method || 'GET',
 			headers: { ...defaultHeaders, ...options.headers },
 			body: options.body,
-			cache: options.cache || 'default',
+			cache: options.cache,
 			next: options.next,
 		});
 

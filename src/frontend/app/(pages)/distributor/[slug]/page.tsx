@@ -15,7 +15,7 @@ import {
 	fetchDistributor,
 	fetchDistributorBoxOffice,
 	fetchBoxOfficeInfinite,
-} from '@/lib/dataFetching';
+} from '@/lib/api/dataFetching';
 import { parseDate } from '@/lib/helpers/dates';
 import { toTitleCase } from '@/lib/helpers/toTitleCase';
 import addDays from 'date-fns/addDays';
