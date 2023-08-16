@@ -1,13 +1,15 @@
 'use client';
 
 import { ColumnDef } from '@tanstack/react-table';
-import { BoxOfficeWeekStrict } from '@/interfaces/BoxOffice';
 import * as React from 'react';
 import { DataTableColumnHeader } from './data-table-column-header';
+import Link from 'next/link';
+import { Date } from '@/components/date';
+import { FilmWeek } from './page';
 
-export const columns: ColumnDef<BoxOfficeWeekStrict>[] = [
+export const columns: ColumnDef<FilmWeek>[] = [
 	{
-		accessorKey: 'weeks_on_release',
+		accessorKey: 'week',
 		header: ({ column }) => (
 			<DataTableColumnHeader
 				column={column}
@@ -20,6 +22,18 @@ export const columns: ColumnDef<BoxOfficeWeekStrict>[] = [
 	{
 		accessorKey: 'date',
 		header: 'Date',
+		cell: ({ row }) => {
+			const date: string = row.getValue('date');
+			const [year, month, day] = date.split('-');
+			return (
+				<Link
+					href={`/time/${year}/m/${parseInt(month, 10)}/d/${day}`}
+					className='font-medium'
+				>
+					<Date dateString={date} />
+				</Link>
+			);
+		},
 	},
 	{
 		accessorKey: 'rank',
@@ -39,7 +53,7 @@ export const columns: ColumnDef<BoxOfficeWeekStrict>[] = [
 		},
 	},
 	{
-		accessorKey: 'number_of_cinemas',
+		accessorKey: 'cinemas',
 		header: ({ column }) => (
 			<DataTableColumnHeader
 				column={column}
@@ -50,13 +64,13 @@ export const columns: ColumnDef<BoxOfficeWeekStrict>[] = [
 		cell: ({ row }) => {
 			return (
 				<div className='text-right font-medium tabular-nums'>
-					{row.getValue('number_of_cinemas')}
+					{row.getValue('cinemas')}
 				</div>
 			);
 		},
 	},
 	{
-		accessorKey: 'weekend_gross',
+		accessorKey: 'weekendGross',
 		header: ({ column }) => (
 			<DataTableColumnHeader
 				column={column}
@@ -65,7 +79,7 @@ export const columns: ColumnDef<BoxOfficeWeekStrict>[] = [
 			/>
 		),
 		cell: ({ row }) => {
-			const amount = parseFloat(row.getValue('weekend_gross'));
+			const amount = parseFloat(row.getValue('weekendGross'));
 			const formatted = new Intl.NumberFormat('en-GB').format(amount);
 
 			return (
@@ -74,7 +88,7 @@ export const columns: ColumnDef<BoxOfficeWeekStrict>[] = [
 		},
 	},
 	{
-		accessorKey: 'week_gross',
+		accessorKey: 'weekGross',
 		header: ({ column }) => (
 			<DataTableColumnHeader
 				column={column}
@@ -83,7 +97,7 @@ export const columns: ColumnDef<BoxOfficeWeekStrict>[] = [
 			/>
 		),
 		cell: ({ row }) => {
-			const amount = parseFloat(row.getValue('week_gross'));
+			const amount = parseFloat(row.getValue('weekGross'));
 			const formatted = new Intl.NumberFormat('en-GB').format(amount);
 
 			return (
@@ -92,7 +106,7 @@ export const columns: ColumnDef<BoxOfficeWeekStrict>[] = [
 		},
 	},
 	{
-		accessorKey: 'total_gross',
+		accessorKey: 'total',
 		header: ({ column }) => (
 			<DataTableColumnHeader
 				column={column}
@@ -101,7 +115,7 @@ export const columns: ColumnDef<BoxOfficeWeekStrict>[] = [
 			/>
 		),
 		cell: ({ row }) => {
-			const amount = parseFloat(row.getValue('total_gross'));
+			const amount = parseFloat(row.getValue('total'));
 			const formatted = new Intl.NumberFormat('en-GB').format(amount);
 
 			return (

@@ -59,6 +59,18 @@ export async function generateMetadata({
 	};
 }
 
+export type FilmWeek = {
+	week: number;
+	date: string;
+	rank: number;
+	cinemas: number;
+	weekendGross: number;
+	weekGross: number;
+	total: number;
+	siteAverage: number;
+	changeWeekend: number;
+};
+
 export default async function Page({
 	params,
 }: {
@@ -84,6 +96,29 @@ export default async function Page({
 
 	const hasCountries = data.countries.length > 0;
 	const hasDistributors = data.distributors.length > 0;
+
+	const tableData: FilmWeek[] = data.weeks.map((week, index: number) => {
+		const previousWeek = data.weeks[index - 1];
+		const changeWeekend = previousWeek
+			? Math.ceil(
+					((week.weekend_gross - previousWeek.weekend_gross) /
+						previousWeek.weekend_gross) *
+						100
+			  )
+			: 0;
+
+		return {
+			week: week.weeks_on_release,
+			date: week.date,
+			rank: week.rank,
+			cinemas: week.number_of_cinemas,
+			weekendGross: week.weekend_gross,
+			weekGross: week.week_gross,
+			total: week.total_gross,
+			siteAverage: week.site_average,
+			changeWeekend: changeWeekend,
+		};
+	});
 
 	return (
 		<div>
@@ -184,7 +219,7 @@ export default async function Page({
 			</div>
 
 			{/* <BoxOfficeTable data={data} /> */}
-			<DataTable columns={columns} data={data.weeks} />
+			<DataTable columns={columns} data={tableData} />
 		</div>
 	);
 }
