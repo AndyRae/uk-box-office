@@ -5,8 +5,19 @@ import * as React from 'react';
 import { DataTableColumnHeader } from '@/components/vendor/data-table-column-header';
 import Link from 'next/link';
 import { Date } from '@/components/date';
-import { FilmWeek } from '../../app/(pages)/film/[slug]/page';
 import { MetricChange } from '@/components/metric-change';
+
+export type FilmWeek = {
+	week: number;
+	date: string;
+	rank: number;
+	cinemas: number;
+	weekendGross: number;
+	weekGross: number;
+	total: number;
+	siteAverage: number;
+	changeWeekend: number;
+};
 
 export const columns: ColumnDef<FilmWeek>[] = [
 	{

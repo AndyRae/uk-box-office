@@ -1,3 +1,5 @@
+import { fetchFilm } from '@/lib/api/dataFetching';
+import { toTitleCase } from '@/lib/helpers/toTitleCase';
 import { DescriptionList } from '@/components/custom/description-list';
 import { PageTitle } from '@/components/custom/page-title';
 import { BadgeLink } from '@/components/custom/badge-link';
@@ -7,10 +9,8 @@ import { StructuredTimeData } from '@/components/structured-data';
 import { DatasourceButton } from '@/components/datasource';
 import { ExportCSV } from '@/components/custom/export-csv';
 import { TimeLineChart } from '@/components/charts/timeline';
-import { toTitleCase } from '@/lib/helpers/toTitleCase';
 import { ChartWrapper } from '@/components/charts/chart-wrapper';
-import { fetchFilm } from '@/lib/api/dataFetching';
-import { columns } from '@/components/tables/box-office';
+import { columns, FilmWeek } from '@/components/tables/box-office';
 import { DataTable } from '@/components/vendor/data-table';
 
 export async function generateMetadata({
@@ -57,18 +57,6 @@ export async function generateMetadata({
 		},
 	};
 }
-
-export type FilmWeek = {
-	week: number;
-	date: string;
-	rank: number;
-	cinemas: number;
-	weekendGross: number;
-	weekGross: number;
-	total: number;
-	siteAverage: number;
-	changeWeekend: number;
-};
 
 export default async function Page({
 	params,
