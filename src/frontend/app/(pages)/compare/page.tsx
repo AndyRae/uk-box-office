@@ -5,7 +5,6 @@ import { PageTitle } from '@/components/custom/page-title';
 import { fetchFilmId } from '@/lib/api/dataFetching';
 
 import AsyncSelect from 'react-select/async';
-import { CompareTable } from '@/components/tables/compare-table';
 import { CompareTotalChart } from '@/components/charts/compare-total';
 import { CompareCumulativeChart } from '@/components/charts/compare-cumulative';
 import { getDefaultColorArray } from '@/lib/helpers/colorGenerator';
@@ -163,10 +162,6 @@ export default function Page(): JSX.Element {
 
 					<div className='mt-6'>
 						<DataTable columns={columns} data={tableData} />
-					</div>
-
-					<div className='mt-6'>
-						<CompareTable data={filmData} />
 					</div>
 
 					<div className='grid md:grid-cols-1 lg:grid-cols-2 gap-3 md:gap-5 mt-3 md:mt-6'>
