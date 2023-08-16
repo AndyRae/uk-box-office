@@ -6,6 +6,7 @@ import { DataTableColumnHeader } from './data-table-column-header';
 import Link from 'next/link';
 import { Date } from '@/components/date';
 import { FilmWeek } from './page';
+import { MetricChange } from '@/components/metric-change';
 
 export const columns: ColumnDef<FilmWeek>[] = [
 	{
@@ -98,6 +99,43 @@ export const columns: ColumnDef<FilmWeek>[] = [
 		),
 		cell: ({ row }) => {
 			const amount = parseFloat(row.getValue('weekGross'));
+			const formatted = new Intl.NumberFormat('en-GB').format(amount);
+
+			return (
+				<div className='text-right font-medium tabular-nums'>{formatted}</div>
+			);
+		},
+	},
+	{
+		accessorKey: 'changeWeekend',
+		header: ({ column }) => (
+			<DataTableColumnHeader
+				column={column}
+				title='Change Weekend'
+				className='text-right tabular-nums'
+			/>
+		),
+		cell: ({ row }) => {
+			const amount = parseFloat(row.getValue('changeWeekend'));
+
+			return (
+				<div className='text-right font-medium tabular-nums'>
+					<MetricChange value={amount} />
+				</div>
+			);
+		},
+	},
+	{
+		accessorKey: 'siteAverage',
+		header: ({ column }) => (
+			<DataTableColumnHeader
+				column={column}
+				title='Site Average (£)'
+				className='text-right tabular-nums'
+			/>
+		),
+		cell: ({ row }) => {
+			const amount = parseFloat(row.getValue('siteAverage'));
 			const formatted = new Intl.NumberFormat('en-GB').format(amount);
 
 			return (
