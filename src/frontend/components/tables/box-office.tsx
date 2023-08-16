@@ -5,7 +5,7 @@ import * as React from 'react';
 import { DataTableColumnHeader } from '@/components/vendor/data-table-column-header';
 import Link from 'next/link';
 import { Date } from '@/components/date';
-import { FilmWeek } from './page';
+import { FilmWeek } from '../../app/(pages)/film/[slug]/page';
 import { MetricChange } from '@/components/metric-change';
 
 export const columns: ColumnDef<FilmWeek>[] = [

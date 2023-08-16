@@ -10,7 +10,7 @@ import { TimeLineChart } from '@/components/charts/timeline';
 import { toTitleCase } from '@/lib/helpers/toTitleCase';
 import { ChartWrapper } from '@/components/charts/chart-wrapper';
 import { fetchFilm } from '@/lib/api/dataFetching';
-import { columns } from './columns';
+import { columns } from '@/components/tables/box-office';
 import { DataTable } from '@/components/vendor/data-table';
 
 export async function generateMetadata({
@@ -80,7 +80,7 @@ export default async function Page({
 	// Unwrap first week date logic
 	const weekOne = data.weeks[0];
 	const weeksOnRelease = weekOne?.weeks_on_release;
-	const isFirstWeek = weeksOnRelease === 1 ? true : false;
+	const isFirstWeek = !!(weeksOnRelease === 1);
 	const releaseDate = weekOne?.date;
 
 	const multiple = (data.gross / weekOne?.weekend_gross).toFixed(2);
