@@ -5,13 +5,8 @@ import * as React from 'react';
 import { DataTableColumnHeader } from '@/components/vendor/data-table-column-header';
 import Link from 'next/link';
 import { Date } from '@/components/date';
-import { FilmWithWeeks } from '@/interfaces/Film';
-import { toTitleCase } from '../../lib/helpers/toTitleCase';
-import { Distributor } from '../../interfaces/Distributor';
-
-type TableProps = {
-	data: FilmWithWeeks[];
-};
+import { toTitleCase } from '@/lib/helpers/toTitleCase';
+import { Distributor } from '@/interfaces/Distributor';
 
 export type FilmCompare = {
 	color?: string;
