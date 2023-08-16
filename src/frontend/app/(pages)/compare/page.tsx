@@ -17,7 +17,7 @@ import debounce from 'lodash/debounce';
 import { FilmOption, FilmWithWeeks } from '@/interfaces/Film';
 import { fetchSearchFilms } from '@/lib/api/dataFetching';
 import { DataTable } from '@/components/vendor/data-table';
-import { columns } from '@/components/tables/compare';
+import { FilmCompare, columns } from '@/components/tables/compare';
 import { calculateNumberOfCinemas } from '@/lib/helpers/groupData';
 import { toTitleCase } from '@/lib/helpers/toTitleCase';
 
@@ -114,7 +114,7 @@ export default function Page(): JSX.Element {
 		router.push(pathName + `?id=${urlIds}`);
 	};
 
-	const tableData = filmData.map((film) => {
+	const tableData: FilmCompare[] = filmData.map((film) => {
 		const weekOne = film.weeks[0];
 		const releaseDate = weekOne?.date;
 
