@@ -2,7 +2,7 @@
 
 import { ColumnDef } from '@tanstack/react-table';
 import * as React from 'react';
-import { DataTableColumnHeader } from './data-table-column-header';
+import { DataTableColumnHeader } from '@/components/vendor/data-table-column-header';
 import Link from 'next/link';
 import { Date } from '@/components/date';
 import { FilmWeek } from './page';

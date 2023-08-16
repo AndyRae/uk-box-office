@@ -1,4 +1,3 @@
-import { BoxOfficeTable } from '@/components/tables/box-office-table';
 import { DescriptionList } from '@/components/custom/description-list';
 import { PageTitle } from '@/components/custom/page-title';
 import { BadgeLink } from '@/components/custom/badge-link';
@@ -12,7 +11,7 @@ import { toTitleCase } from '@/lib/helpers/toTitleCase';
 import { ChartWrapper } from '@/components/charts/chart-wrapper';
 import { fetchFilm } from '@/lib/api/dataFetching';
 import { columns } from './columns';
-import { DataTable } from './data-table';
+import { DataTable } from '@/components/vendor/data-table';
 
 export async function generateMetadata({
 	params,
@@ -218,7 +217,6 @@ export default async function Page({
 				)}
 			</div>
 
-			{/* <BoxOfficeTable data={data} /> */}
 			<DataTable columns={columns} data={tableData} />
 		</div>
 	);
