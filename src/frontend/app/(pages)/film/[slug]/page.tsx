@@ -1,4 +1,5 @@
-import { BoxOfficeTable } from '@/components/tables/box-office-table';
+import { fetchFilm } from '@/lib/api/dataFetching';
+import { toTitleCase } from '@/lib/helpers/toTitleCase';
 import { DescriptionList } from '@/components/custom/description-list';
 import { PageTitle } from '@/components/custom/page-title';
 import { BadgeLink } from '@/components/custom/badge-link';
@@ -8,9 +9,9 @@ import { StructuredTimeData } from '@/components/structured-data';
 import { DatasourceButton } from '@/components/datasource';
 import { ExportCSV } from '@/components/custom/export-csv';
 import { TimeLineChart } from '@/components/charts/timeline';
-import { toTitleCase } from '@/lib/helpers/toTitleCase';
 import { ChartWrapper } from '@/components/charts/chart-wrapper';
-import { fetchFilm } from '@/lib/api/dataFetching';
+import { columns, FilmWeek } from '@/components/tables/box-office';
+import { DataTable } from '@/components/vendor/data-table';
 
 export async function generateMetadata({
 	params,
@@ -67,7 +68,7 @@ export default async function Page({
 	// Unwrap first week date logic
 	const weekOne = data.weeks[0];
 	const weeksOnRelease = weekOne?.weeks_on_release;
-	const isFirstWeek = weeksOnRelease === 1 ? true : false;
+	const isFirstWeek = !!(weeksOnRelease === 1);
 	const releaseDate = weekOne?.date;
 
 	const multiple = (data.gross / weekOne?.weekend_gross).toFixed(2);
@@ -82,6 +83,29 @@ export default async function Page({
 
 	const hasCountries = data.countries.length > 0;
 	const hasDistributors = data.distributors.length > 0;
+
+	const tableData: FilmWeek[] = data.weeks.map((week, index: number) => {
+		const previousWeek = data.weeks[index - 1];
+		const changeWeekend = previousWeek
+			? Math.ceil(
+					((week.weekend_gross - previousWeek.weekend_gross) /
+						previousWeek.weekend_gross) *
+						100
+			  )
+			: 0;
+
+		return {
+			week: week.weeks_on_release,
+			date: week.date,
+			rank: week.rank,
+			cinemas: week.number_of_cinemas,
+			weekendGross: week.weekend_gross,
+			weekGross: week.week_gross,
+			total: week.total_gross,
+			siteAverage: week.site_average,
+			changeWeekend: changeWeekend,
+		};
+	});
 
 	return (
 		<div>
@@ -181,7 +205,7 @@ export default async function Page({
 				)}
 			</div>
 
-			<BoxOfficeTable data={data} />
+			<DataTable columns={columns} data={tableData} />
 		</div>
 	);
 }
