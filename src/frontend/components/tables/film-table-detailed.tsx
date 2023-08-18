@@ -16,7 +16,7 @@ export const FilmTableDetailed = ({
 	data,
 	comparisonData,
 }: {
-	data: TableData;
+	data: TableData[];
 	comparisonData?: BoxOfficeWeek[];
 }): JSX.Element => {
 	const columns = [
@@ -42,7 +42,7 @@ export const FilmTableDetailed = ({
 				let change: number | undefined;
 				if (comparisonData && comparisonData?.length > 0) {
 					const previousFilm = comparisonData!.find(
-						(object) => object.film === film.title
+						(object) => object.film === film.film.title
 					);
 					if (previousFilm) {
 						change = Math.ceil(
@@ -54,11 +54,11 @@ export const FilmTableDetailed = ({
 				}
 
 				return (
-					<Tr key={film.filmSlug} index={index}>
+					<Tr key={film.film.slug} index={index}>
 						<Td>{index + 1}</Td>
 						<Td isHighlight>
-							<Link href={`/film/${film.filmSlug}`}>
-								{toTitleCase(film.title)}
+							<Link href={`/film/${film.film.slug}`}>
+								{toTitleCase(film.film.title)}
 							</Link>
 						</Td>
 						<Td>{toTitleCase(film.distributor)}</Td>
