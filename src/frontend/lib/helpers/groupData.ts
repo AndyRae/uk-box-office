@@ -47,10 +47,10 @@ export const groupStackedFilms = (data: BoxOfficeWeek[]): StackedFilm[] => {
 		(arr) => arr.slice(0, filmsLimit)
 	)(data);
 
-	var colors = getDefaultColorArray(filmsLimit);
+	let colors = getDefaultColorArray(filmsLimit);
 
 	// Create the dataset objects - one for each film
-	const stackedData = groupedFilms.map((film, index: number) => {
+	return groupedFilms.map((film, index: number) => {
 		const filmData = data.filter((item) => item.film_slug === film.slug);
 		const weekData = filmData.map((item) => {
 			return { x: item.date, y: item.week_gross };
@@ -71,8 +71,6 @@ export const groupStackedFilms = (data: BoxOfficeWeek[]): StackedFilm[] => {
 			borderRadius: 4,
 		};
 	});
-
-	return stackedData;
 };
 
 type FilmType = {
@@ -90,9 +88,9 @@ type FilmType = {
  * @returns {TableData}Array of data sets objects for each film.
  * TODO: Refactor to use lodash - this is ancient.
  */
-export const groupForTable = (data: BoxOfficeWeek[]): TableData => {
+export const groupForTable = (data: BoxOfficeWeek[]): TableData[] => {
 	// Grouping by film (and slug, distributor) - summing box office, max weeks.
-	var table = data
+	const table = data
 		.reduce((acc: any[], curr) => {
 			let item: FilmType = acc.find(
 				(x: { film: any }) => x.film === curr['film']
@@ -118,8 +116,10 @@ export const groupForTable = (data: BoxOfficeWeek[]): TableData => {
 			return acc;
 		}, [])
 		.map((x: FilmType) => ({
-			title: x.film,
-			filmSlug: x.slug,
+			film: {
+				title: x.film,
+				slug: x.slug,
+			},
 			distributor: x.distributor,
 			weeks: Math.max(...Object.keys(x.weeks).map(Number)),
 			weekGross: Object.values(x.weeks).reduce(
@@ -137,11 +137,9 @@ export const groupForTable = (data: BoxOfficeWeek[]): TableData => {
 		}));
 
 	// Sort by box office
-	const tableData = table.sort(function (a, b) {
+	return table.sort(function (a, b) {
 		return b.weekGross - a.weekGross;
 	});
-
-	return tableData;
 };
 
 /**
@@ -229,4 +227,42 @@ export const calculateNumberOfCinemas = (
 			return o.number_of_cinemas;
 		})
 	);
+};
+
+const calculateChange = (
+	film: TableData,
+	comparisonData: BoxOfficeWeek[]
+): number | undefined => {
+	if (comparisonData && comparisonData.length > 0) {
+		const previousFilm = comparisonData.find(
+			(object) => object.film === film.film.title
+		);
+		if (previousFilm) {
+			return Math.ceil(
+				((film.weekendGross - previousFilm.weekend_gross) /
+					previousFilm.weekend_gross) *
+					100
+			);
+		}
+	}
+	return undefined;
+};
+
+export const groupForTableData = (
+	data: BoxOfficeWeek[],
+	comparisonData?: BoxOfficeWeek[]
+): any[] => {
+	const tdata = groupForTable(data);
+
+	return tdata.map((f, index) => {
+		let change;
+		if (comparisonData) {
+			change = calculateChange(f, comparisonData);
+		}
+
+		return {
+			change: change,
+			...f,
+		};
+	});
 };

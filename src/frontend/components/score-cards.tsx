@@ -41,7 +41,7 @@ export const Scorecards = ({
 	results,
 }: {
 	timeComparisonData?: BoxOfficeSummary[];
-	tableData: TableData;
+	tableData: TableData[];
 	results: BoxOfficeWeek[];
 }) => {
 	// Calculate totals
