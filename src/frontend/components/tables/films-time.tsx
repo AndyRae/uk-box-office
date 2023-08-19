@@ -2,10 +2,11 @@
 
 import { ColumnDef } from '@tanstack/react-table';
 import * as React from 'react';
-import { DataTableColumnHeader } from '@/components/vendor/data-table-column-header';
 import Link from 'next/link';
 import { TableData } from '@/interfaces/BoxOffice';
 import { toTitleCase } from '@/lib/helpers/toTitleCase';
+import { DataTableColumnHeader } from '@/components/vendor/data-table-column-header';
+import { MetricChange } from '@/components/metric-change';
 
 export type FilmWeek = {
 	week: number;
@@ -101,6 +102,26 @@ export const columns: ColumnDef<TableData>[] = [
 
 			return (
 				<div className='text-right font-medium tabular-nums'>{formatted}</div>
+			);
+		},
+	},
+	{
+		accessorKey: 'change',
+		header: ({ column }) => (
+			<DataTableColumnHeader
+				column={column}
+				title='Change Weekend'
+				className='text-right tabular-nums'
+			/>
+		),
+		cell: ({ row }) => {
+			const value = row.getValue('change');
+			const amount = value ? parseFloat(row.getValue('change')) : undefined;
+
+			return (
+				<div className='text-right font-medium tabular-nums'>
+					{amount && <MetricChange value={amount} />}
+				</div>
 			);
 		},
 	},
