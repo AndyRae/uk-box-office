@@ -6,6 +6,8 @@ import { Scorecards } from '@/components/score-cards';
 import { FilmTableDetailed } from '@/components/tables/film-table-detailed';
 import { LastUpdated } from '@/components/last-updated';
 import { DatasourceCard } from '@/components/datasource';
+import { columns } from '@/components/tables/dashboard';
+import { DataTable } from '@/components/vendor/data-table';
 
 import { parseDate } from '@/lib/helpers/dates';
 import addDays from 'date-fns/addDays';
@@ -58,8 +60,8 @@ export const Skeleton = () => {
 			</div>
 
 			{/* Table */}
-			<div className='mt-3 md:mt-6'>
-				<FilmTableDetailed data={[]} />
+			<div className='mt-3 md:mt-6 h-screen overflow-scroll'>
+				<DataTable columns={columns} data={[]} />
 			</div>
 		</div>
 	);
