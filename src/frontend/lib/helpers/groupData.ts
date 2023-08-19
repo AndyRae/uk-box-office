@@ -229,6 +229,12 @@ export const calculateNumberOfCinemas = (
 	);
 };
 
+/**
+ * Calculate the change in box office for a film between 2 periods.
+ * @param film
+ * @param comparisonData
+ * @returns
+ */
 const calculateChange = (
 	film: TableData,
 	comparisonData: BoxOfficeWeek[]
@@ -248,13 +254,19 @@ const calculateChange = (
 	return undefined;
 };
 
-export const groupForTableData = (
+/**
+ * Groups for table data, adding the calculate change between time periods.
+ * @param data
+ * @param comparisonData
+ * @returns
+ */
+export const groupForTableChange = (
 	data: BoxOfficeWeek[],
 	comparisonData?: BoxOfficeWeek[]
 ): any[] => {
 	const tdata = groupForTable(data);
 
-	return tdata.map((f, index) => {
+	return tdata.map((f) => {
 		let change;
 		if (comparisonData) {
 			change = calculateChange(f, comparisonData);
