@@ -3,7 +3,6 @@ import { StackedBarChart } from '@/components/charts/stacked-bar';
 import { ChartWrapper } from '@/components/charts/chart-wrapper';
 import { Controls } from '@/components/controls';
 import { Scorecards } from '@/components/score-cards';
-import { FilmTableDetailed } from '@/components/tables/film-table-detailed';
 import { LastUpdated } from '@/components/last-updated';
 import { DatasourceCard } from '@/components/datasource';
 import { columns } from '@/components/tables/dashboard';
