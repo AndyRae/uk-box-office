@@ -6,7 +6,7 @@ import { DataTableColumnHeader } from '@/components/vendor/data-table-column-hea
 import Link from 'next/link';
 import { Date } from '@/components/date';
 import { BoxOfficeGroup } from '@/interfaces/BoxOffice';
-import { MetricChange } from '@/components/metric-change';
+import { MetricChange } from '../metric-change';
 
 export const columns: ColumnDef<BoxOfficeGroup>[] = [
 	{
