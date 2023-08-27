@@ -23,6 +23,7 @@ import {
 	TableData,
 	BoxOfficeGroup,
 	BoxOfficeWeekStrict,
+	BoxOfficeSummary,
 } from '@/interfaces/BoxOffice';
 
 /**
@@ -165,6 +166,32 @@ export const groupbyDate = (
 };
 
 /**
+ * Groups box office data by date and adds a change metric.
+ * @param {*} data array of box office data.
+ * @returns array of grouped data by date.
+ */
+export const groupbyDateWithchange = (
+	data: BoxOfficeWeek[] | BoxOfficeGroup[] | BoxOfficeWeekStrict[]
+): BoxOfficeGroup[] => {
+	const { results } = groupbyDate(data);
+
+	return results.map((week, index: number) => {
+		const previousWeek = results[index + 1];
+		const changeWeekend = previousWeek
+			? Math.ceil(
+					((week.weekendGross - previousWeek.weekendGross) /
+						previousWeek.weekendGross) *
+						100
+			  )
+			: 0;
+		return {
+			...week,
+			changeWeekend: changeWeekend,
+		};
+	});
+};
+
+/**
  * Groups box office by month.
  * @param {*} data
  * @returns array of grouped data by month.
@@ -184,6 +211,31 @@ export const groupbyMonth = (
 	)(data);
 
 	return { results };
+};
+
+/**
+ * Given a list of box office sumary data, will add a change YOY field.
+ * @param data
+ */
+export const calculateYearChange = (
+	data: BoxOfficeSummary[]
+): BoxOfficeSummary[] => {
+	return data.map((year, index) => {
+		const previousYear = data[index + 1];
+		const changeYOY = previousYear
+			? Math.ceil(
+					((year.week_gross - previousYear.week_gross) /
+						previousYear.week_gross) *
+						100
+			  )
+			: 0;
+		const siteAverage = year.weekend_gross / year.number_of_cinemas;
+		return {
+			change: changeYOY,
+			siteAverage: siteAverage,
+			...year,
+		};
+	});
 };
 
 /**

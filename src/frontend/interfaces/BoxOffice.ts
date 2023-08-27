@@ -71,6 +71,7 @@ export type BoxOfficeGroup = {
 	weekGross: number;
 	weekendGross: number;
 	newReleases: number;
+	changeWeekend?: number;
 };
 
 export interface BoxOfficeSummary {
