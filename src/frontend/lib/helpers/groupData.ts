@@ -23,6 +23,7 @@ import {
 	TableData,
 	BoxOfficeGroup,
 	BoxOfficeWeekStrict,
+	BoxOfficeSummary,
 } from '@/interfaces/BoxOffice';
 
 /**
@@ -210,6 +211,32 @@ export const groupbyMonth = (
 	)(data);
 
 	return { results };
+};
+
+/**
+ *
+ * @param data
+ * @returns
+ */
+export const calculateYearChange = (
+	data: BoxOfficeSummary[]
+): BoxOfficeSummary[] => {
+	return data.map((year, index) => {
+		const previousYear = data[index + 1];
+		const changeYOY = previousYear
+			? Math.ceil(
+					((year.week_gross - previousYear.week_gross) /
+						previousYear.week_gross) *
+						100
+			  )
+			: 0;
+		const siteAverage = year.weekend_gross / year.number_of_cinemas;
+		return {
+			change: changeYOY,
+			siteAverage: siteAverage,
+			...year,
+		};
+	});
 };
 
 /**

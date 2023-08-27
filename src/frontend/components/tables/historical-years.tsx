@@ -4,42 +4,37 @@ import { ColumnDef } from '@tanstack/react-table';
 import * as React from 'react';
 import { DataTableColumnHeader } from '@/components/vendor/data-table-column-header';
 import Link from 'next/link';
-import { Date } from '@/components/date';
-import { BoxOfficeGroup } from '@/interfaces/BoxOffice';
-import { MetricChange } from '../metric-change';
+import { BoxOfficeSummary } from '@/interfaces/BoxOffice';
+import { MetricChange } from '@/components/metric-change';
 
-export const columns: ColumnDef<BoxOfficeGroup>[] = [
+export const columns: ColumnDef<BoxOfficeSummary>[] = [
 	{
-		accessorKey: 'date',
+		accessorKey: 'year',
 		header: ({ column }) => (
-			<DataTableColumnHeader column={column} title='Week ending' />
+			<DataTableColumnHeader column={column} title='Year' />
 		),
 		cell: ({ row }) => {
-			const date: string = row.getValue('date');
-			const [year, month, day] = date.split('-');
+			const year: number = row.getValue('year');
 			return (
-				<Link
-					href={`/time/${year}/m/${parseInt(month, 10)}/d/${day}`}
-					className='font-medium'
-				>
-					<Date dateString={date} />
+				<Link href={`/time/${year}`} className='font-medium'>
+					<div className='font-medium'>{year}</div>
 				</Link>
 			);
 		},
 		enableHiding: false,
-		enableSorting: false,
+		enableSorting: true,
 	},
 	{
-		accessorKey: 'weekendGross',
+		accessorKey: 'weekend_gross',
 		header: ({ column }) => (
 			<DataTableColumnHeader
 				column={column}
-				title='Weekend Gross (£)'
+				title='Weekend (£)'
 				className='text-right tabular-nums'
 			/>
 		),
 		cell: ({ row }) => {
-			const amount = parseFloat(row.getValue('weekendGross'));
+			const amount = parseFloat(row.getValue('weekend_gross'));
 			const formatted = new Intl.NumberFormat('en-GB').format(amount);
 
 			return (
@@ -48,16 +43,16 @@ export const columns: ColumnDef<BoxOfficeGroup>[] = [
 		},
 	},
 	{
-		accessorKey: 'weekGross',
+		accessorKey: 'week_gross',
 		header: ({ column }) => (
 			<DataTableColumnHeader
 				column={column}
-				title='Week Gross (£)'
+				title='Total (£)'
 				className='text-right tabular-nums'
 			/>
 		),
 		cell: ({ row }) => {
-			const amount = parseFloat(row.getValue('weekGross'));
+			const amount = parseFloat(row.getValue('week_gross'));
 			const formatted = new Intl.NumberFormat('en-GB').format(amount);
 
 			return (
@@ -66,16 +61,16 @@ export const columns: ColumnDef<BoxOfficeGroup>[] = [
 		},
 	},
 	{
-		accessorKey: 'changeWeekend',
+		accessorKey: 'change',
 		header: ({ column }) => (
 			<DataTableColumnHeader
 				column={column}
-				title='Week Change'
+				title='Change YOY'
 				className='text-right tabular-nums'
 			/>
 		),
 		cell: ({ row }) => {
-			const amount = parseFloat(row.getValue('changeWeekend'));
+			const amount = parseFloat(row.getValue('change'));
 
 			return (
 				<div className='text-right font-medium tabular-nums'>
@@ -85,18 +80,36 @@ export const columns: ColumnDef<BoxOfficeGroup>[] = [
 		},
 	},
 	{
-		accessorKey: 'newReleases',
+		accessorKey: 'siteAverage',
 		header: ({ column }) => (
 			<DataTableColumnHeader
 				column={column}
-				title='New Releases'
+				title='Site Average'
+				className='text-right tabular-nums'
+			/>
+		),
+		cell: ({ row }) => {
+			const value: number = row.getValue('siteAverage');
+			return (
+				<div className='text-right font-medium tabular-nums'>
+					{value.toLocaleString('en-GB', { maximumFractionDigits: 0 })}
+				</div>
+			);
+		},
+	},
+	{
+		accessorKey: 'number_of_cinemas',
+		header: ({ column }) => (
+			<DataTableColumnHeader
+				column={column}
+				title='Number of Cinemas'
 				className='text-right tabular-nums'
 			/>
 		),
 		cell: ({ row }) => {
 			return (
 				<div className='text-right font-medium tabular-nums'>
-					{row.getValue('newReleases')}
+					{row.getValue('number_of_cinemas')}
 				</div>
 			);
 		},
