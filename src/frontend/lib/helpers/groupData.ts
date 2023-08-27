@@ -165,6 +165,32 @@ export const groupbyDate = (
 };
 
 /**
+ * Groups box office data by date and adds a change metric.
+ * @param {*} data array of box office data.
+ * @returns array of grouped data by date.
+ */
+export const groupbyDateWithchange = (
+	data: BoxOfficeWeek[] | BoxOfficeGroup[] | BoxOfficeWeekStrict[]
+): BoxOfficeGroup[] => {
+	const { results } = groupbyDate(data);
+
+	return results.map((week, index: number) => {
+		const previousWeek = results[index + 1];
+		const changeWeekend = previousWeek
+			? Math.ceil(
+					((week.weekendGross - previousWeek.weekendGross) /
+						previousWeek.weekendGross) *
+						100
+			  )
+			: 0;
+		return {
+			...week,
+			changeWeekend: changeWeekend,
+		};
+	});
+};
+
+/**
  * Groups box office by month.
  * @param {*} data
  * @returns array of grouped data by month.

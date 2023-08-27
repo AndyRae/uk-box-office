@@ -1,4 +1,8 @@
-import { groupbyDate, groupForTableChange } from '@/lib/helpers/groupData';
+import {
+	groupbyDate,
+	groupbyDateWithchange,
+	groupForTableChange,
+} from '@/lib/helpers/groupData';
 
 import { BreadcrumbsTime } from '@/components/custom/breadcrumbs-time';
 import { PageTitle } from '@/components/custom/page-title';
@@ -18,6 +22,7 @@ import { ChartWrapper } from '@/components/charts/chart-wrapper';
 import { BoxOfficeWeek, BoxOfficeSummary } from '@/interfaces/BoxOffice';
 import { DataTable } from '@/components/vendor/data-table';
 import { columns } from '@/components/tables/films-time';
+import { columns as weeksColumns } from '@/components/tables/weeks';
 
 type TimePageProps = {
 	year: number;
@@ -256,7 +261,8 @@ const TimeTabs = ({
 }) => {
 	// Group Data
 	const tableData = groupForTableChange(results, lastWeekResults);
-	const { results: weekData } = groupbyDate(results);
+	// const { results: weekData } = groupbyDate(results);
+	const weekData = groupbyDateWithchange(results);
 
 	const isWeekView = weekData.length === 1;
 
@@ -291,6 +297,7 @@ const TimeTabs = ({
 					/>
 				</div>
 				<WeeksTable data={weekData} />
+				<DataTable columns={weeksColumns} data={weekData} />
 			</TabsContent>
 
 			<TabsContent value='tab3'>

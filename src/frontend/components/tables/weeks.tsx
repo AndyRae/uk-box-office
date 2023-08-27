@@ -65,25 +65,25 @@ export const columns: ColumnDef<BoxOfficeGroup>[] = [
 			);
 		},
 	},
-	// {
-	// 	accessorKey: 'changeWeekend',
-	// 	header: ({ column }) => (
-	// 		<DataTableColumnHeader
-	// 			column={column}
-	// 			title='Change Weekend'
-	// 			className='text-right tabular-nums'
-	// 		/>
-	// 	),
-	// 	cell: ({ row }) => {
-	// 		const amount = parseFloat(row.getValue('changeWeekend'));
+	{
+		accessorKey: 'changeWeekend',
+		header: ({ column }) => (
+			<DataTableColumnHeader
+				column={column}
+				title='Week Change'
+				className='text-right tabular-nums'
+			/>
+		),
+		cell: ({ row }) => {
+			const amount = parseFloat(row.getValue('changeWeekend'));
 
-	// 		return (
-	// 			<div className='text-right font-medium tabular-nums'>
-	// 				<MetricChange value={amount} />
-	// 			</div>
-	// 		);
-	// 	},
-	// },
+			return (
+				<div className='text-right font-medium tabular-nums'>
+					<MetricChange value={amount} />
+				</div>
+			);
+		},
+	},
 	{
 		accessorKey: 'newReleases',
 		header: ({ column }) => (
