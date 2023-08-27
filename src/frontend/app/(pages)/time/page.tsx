@@ -3,10 +3,12 @@ import { PageContent } from '@/components/custom/page-content';
 import { ExportCSV } from '@/components/custom/export-csv';
 import { StructuredTimeData } from '@/components/structured-data';
 import { AllTimeChart } from '@/components/charts/all-time';
-import { YearsTable } from '@/components/tables/years-table';
+import { columns } from '@/components/tables/years';
+import { DataTable } from '@/components/vendor/data-table';
 
 import { Metadata } from 'next';
 import { fetchBoxOfficeSummary } from '@/lib/api/dataFetching';
+import { calculateTimeChange } from '../../../lib/helpers/groupData';
 
 export const metadata: Metadata = {
 	title: 'All Time Box Office 2001 - 2023 | Box Office Data',
@@ -26,6 +28,8 @@ export default async function Page(): Promise<JSX.Element> {
 
 	// Reverse for the graph so to be left to right.
 	const reversedData = data?.results.slice().reverse();
+
+	const transformedData = calculateTimeChange(data.results);
 	return (
 		<>
 			<StructuredTimeData
@@ -68,7 +72,7 @@ export default async function Page(): Promise<JSX.Element> {
 			<div className='mb-5'>
 				<ExportCSV data={data.results} filename={'alltime.csv'} />
 			</div>
-			<YearsTable data={data.results} id={'yearstable'} />
+			<DataTable columns={columns} data={transformedData} />
 		</>
 	);
 }

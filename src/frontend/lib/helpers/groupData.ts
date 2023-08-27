@@ -239,6 +239,31 @@ export const calculateYearChange = (
 };
 
 /**
+ * Given a list of time data, will add a change field.
+ * @param data
+ */
+export const calculateTimeChange = (
+	data: BoxOfficeSummary[]
+): BoxOfficeSummary[] => {
+	return data.map((year, index) => {
+		const previousYear = data[index + 1];
+		const change = previousYear
+			? Math.ceil(
+					((year.week_gross - previousYear.week_gross) /
+						previousYear.week_gross) *
+						100
+			  )
+			: 0;
+		const ticketAverage = year.week_gross / year.admissions;
+		return {
+			change: change,
+			ticketAverage: ticketAverage,
+			...year,
+		};
+	});
+};
+
+/**
  * Calculates the number of week 1 releases.
  * @param {*} data array of box office data.
  * @returns number of week 1 releases.
