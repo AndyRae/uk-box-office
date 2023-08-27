@@ -1,7 +1,8 @@
 import { PageTitle } from '@/components/custom/page-title';
-import { TopFilmsTable } from '@/components/tables/top-films-table';
-import { Metadata } from 'next';
+import { columns } from '@/components/tables/top-films';
+import { DataTable } from '@/components/vendor/data-table';
 import { fetchBoxOfficeTopFilms } from '@/lib/api/dataFetching';
+import { Metadata } from 'next';
 
 export const metadata: Metadata = {
 	title: 'All Time Top Films | Box Office Data',
@@ -14,7 +15,7 @@ export default async function Page(): Promise<JSX.Element> {
 	return (
 		<>
 			<PageTitle>All Time Top Films</PageTitle>
-			<TopFilmsTable data={data.results} />
+			<DataTable columns={columns} data={data.results} />
 		</>
 	);
 }
