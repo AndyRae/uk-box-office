@@ -3,7 +3,6 @@ import { PageContent } from '@/components/custom/page-content';
 import { ExportCSV } from '@/components/custom/export-csv';
 import { StructuredTimeData } from '@/components/structured-data';
 import { AllTimeChart } from '@/components/charts/all-time';
-import { YearsTable } from '@/components/tables/years-table';
 import { columns } from '@/components/tables/years';
 import { DataTable } from '@/components/vendor/data-table';
 
@@ -73,7 +72,6 @@ export default async function Page(): Promise<JSX.Element> {
 			<div className='mb-5'>
 				<ExportCSV data={data.results} filename={'alltime.csv'} />
 			</div>
-			<YearsTable data={data.results} id={'yearstable'} />
 			<DataTable columns={columns} data={transformedData} />
 		</>
 	);
