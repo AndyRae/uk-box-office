@@ -214,9 +214,8 @@ export const groupbyMonth = (
 };
 
 /**
- *
+ * Given a list of box office sumary data, will add a change YOY field.
  * @param data
- * @returns
  */
 export const calculateYearChange = (
 	data: BoxOfficeSummary[]
