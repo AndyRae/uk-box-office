@@ -1,5 +1,4 @@
 import {
-	groupbyDate,
 	groupbyDateWithchange,
 	groupForTableChange,
 } from '@/lib/helpers/groupData';
@@ -15,7 +14,6 @@ import { DatasourceButton } from '@/components/datasource';
 import { MetricChange } from '@/components/metric-change';
 import { StackedBarChart } from '@/components/charts/stacked-bar';
 import { TimeLineChart } from '@/components/charts/timeline';
-import { WeeksTable } from '@/components/tables/weeks-table';
 import { PreviousTable } from '@/components/tables/previous-years-table';
 import { PreviousYearsChart } from '@/components/charts/previous-years';
 import { ChartWrapper } from '@/components/charts/chart-wrapper';
@@ -261,7 +259,6 @@ const TimeTabs = ({
 }) => {
 	// Group Data
 	const tableData = groupForTableChange(results, lastWeekResults);
-	// const { results: weekData } = groupbyDate(results);
 	const weekData = groupbyDateWithchange(results);
 
 	const isWeekView = weekData.length === 1;
@@ -296,7 +293,6 @@ const TimeTabs = ({
 						className='mr-2'
 					/>
 				</div>
-				<WeeksTable data={weekData} />
 				<DataTable columns={weeksColumns} data={weekData} />
 			</TabsContent>
 
