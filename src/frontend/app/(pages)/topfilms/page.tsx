@@ -1,5 +1,5 @@
 import { PageTitle } from '@/components/custom/page-title';
-import { columns } from '@/components/tables/top-films';
+import { columns } from '@/components/tables/films-top';
 import { DataTable } from '@/components/vendor/data-table';
 import { fetchBoxOfficeTopFilms } from '@/lib/api/dataFetching';
 import { Metadata } from 'next';
