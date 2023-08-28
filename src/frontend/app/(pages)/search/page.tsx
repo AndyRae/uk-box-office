@@ -7,11 +7,12 @@ import { paginate } from '@/lib/helpers/pagination';
 import { toTitleCase } from '@/lib/helpers/toTitleCase';
 import { fetchSearch } from '@/lib/api/dataFetching';
 
-import { FilmsTable } from '@/components/tables/films-table';
 import { Searchbar } from '@/components/search';
 import { PageTitle } from '@/components/custom/page-title';
 import { SearchFilters } from '@/components/search-filters';
 import { Pagination } from '@/components/custom/pagination';
+import { DataTable } from '@/components/vendor/data-table';
+import { columns } from '@/components/tables/films-search';
 
 export default async function Page({
 	searchParams,
@@ -87,7 +88,9 @@ export default async function Page({
 				maxGross={data.films.max_gross}
 			/>
 
-			{data!.films ? <FilmsTable data={data!.films.results} /> : null}
+			{data!.films ? (
+				<DataTable columns={columns} data={data!.films.results} />
+			) : null}
 			<Pagination pages={pageNumbers} pageIndex={pageIndex} />
 		</>
 	);
