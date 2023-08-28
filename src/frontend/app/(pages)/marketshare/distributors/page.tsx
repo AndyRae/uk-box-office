@@ -1,13 +1,14 @@
 import { PageTitle } from '@/components/custom/page-title';
 import { ExportCSV } from '@/components/custom/export-csv';
 import { MarketShareChart } from '@/components/charts/market-share';
-import { MarketShareTable } from '@/components/tables/market-share-table';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { getDefaultColorArray } from '@/lib/helpers/colorGenerator';
 
 import MarketShare from '@/interfaces/MarketShare';
 import { Metadata } from 'next';
 import { fetchMarketshare } from '@/lib/api/dataFetching';
+import { DataTable } from '@/components/vendor/data-table';
+import { columns } from '@/components/tables/market-share';
 
 export const metadata: Metadata = {
 	title: 'Distributor Market Share | Box Office Data',
@@ -97,7 +98,7 @@ export default async function Page() {
 									className='mb-3'
 								/> */}
 							</div>
-							<MarketShareTable data={yearlyData} />
+							<DataTable columns={columns} data={yearlyData} />
 						</TabsContent>
 					);
 				})}

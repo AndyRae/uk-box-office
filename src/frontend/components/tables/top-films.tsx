@@ -6,7 +6,7 @@ import { DataTableColumnHeader } from '@/components/vendor/data-table-column-hea
 import Link from 'next/link';
 import { toTitleCase } from '@/lib/helpers/toTitleCase';
 import { TopFilm } from '@/interfaces/Film';
-import { Distributor } from '../../interfaces/Distributor';
+import { Distributor } from '@/interfaces/Distributor';
 
 export const columns: ColumnDef<TopFilm>[] = [
 	{
