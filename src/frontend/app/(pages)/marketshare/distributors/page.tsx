@@ -1,7 +1,6 @@
 import { PageTitle } from '@/components/custom/page-title';
 import { ExportCSV } from '@/components/custom/export-csv';
 import { MarketShareChart } from '@/components/charts/market-share';
-import { MarketShareTable } from '@/components/tables/market-share-table';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { getDefaultColorArray } from '@/lib/helpers/colorGenerator';
 
