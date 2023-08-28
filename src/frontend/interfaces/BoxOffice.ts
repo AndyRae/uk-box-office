@@ -54,21 +54,24 @@ export type StackedFilm = {
 };
 
 export type TableData = {
-	title: string;
-	filmSlug: string;
+	film: {
+		title: string;
+		slug: string;
+	};
 	distributor: string;
 	weeks: number;
 	weekGross: number;
 	weekendGross: any;
 	numberOfCinemas: number;
 	siteAverage: number;
-}[];
+};
 
 export type BoxOfficeGroup = {
 	date: string;
 	weekGross: number;
 	weekendGross: number;
 	newReleases: number;
+	changeWeekend?: number;
 };
 
 export interface BoxOfficeSummary {

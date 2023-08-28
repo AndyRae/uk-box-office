@@ -4,7 +4,6 @@ import {
 } from '@/lib/api/dataFetching';
 import { groupForTable } from '@/lib/helpers/groupData';
 import { Controls } from '@/components/controls';
-import { FilmTableDetailed } from '@/components/tables/film-table-detailed';
 import { TimeLineChart } from '@/components/charts/timeline';
 import { StructuredTimeData } from '@/components/structured-data';
 import { StackedBarChart } from '@/components/charts/stacked-bar';
@@ -16,6 +15,8 @@ import { LastUpdated } from '@/components/last-updated';
 import { DatasourceCard } from '@/components/datasource';
 import * as React from 'react';
 import { Skeleton } from '@/components/skeleton';
+import { columns } from '@/components/tables/dashboard';
+import { DataTable } from '@/components/vendor/data-table';
 
 export default async function Page({
 	searchParams,
@@ -89,8 +90,8 @@ async function Dashboard({
 			</div>
 
 			{/* Table */}
-			<div className='mt-3 md:mt-6 h-screen'>
-				<FilmTableDetailed data={tableData} />
+			<div className='mt-3 md:mt-6 h-screen overflow-scroll'>
+				<DataTable columns={columns} data={tableData} />
 			</div>
 		</div>
 	);

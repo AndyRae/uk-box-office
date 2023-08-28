@@ -23,6 +23,7 @@ import {
 	TableData,
 	BoxOfficeGroup,
 	BoxOfficeWeekStrict,
+	BoxOfficeSummary,
 } from '@/interfaces/BoxOffice';
 
 /**
@@ -47,10 +48,10 @@ export const groupStackedFilms = (data: BoxOfficeWeek[]): StackedFilm[] => {
 		(arr) => arr.slice(0, filmsLimit)
 	)(data);
 
-	var colors = getDefaultColorArray(filmsLimit);
+	let colors = getDefaultColorArray(filmsLimit);
 
 	// Create the dataset objects - one for each film
-	const stackedData = groupedFilms.map((film, index: number) => {
+	return groupedFilms.map((film, index: number) => {
 		const filmData = data.filter((item) => item.film_slug === film.slug);
 		const weekData = filmData.map((item) => {
 			return { x: item.date, y: item.week_gross };
@@ -71,8 +72,6 @@ export const groupStackedFilms = (data: BoxOfficeWeek[]): StackedFilm[] => {
 			borderRadius: 4,
 		};
 	});
-
-	return stackedData;
 };
 
 type FilmType = {
@@ -90,9 +89,9 @@ type FilmType = {
  * @returns {TableData}Array of data sets objects for each film.
  * TODO: Refactor to use lodash - this is ancient.
  */
-export const groupForTable = (data: BoxOfficeWeek[]): TableData => {
+export const groupForTable = (data: BoxOfficeWeek[]): TableData[] => {
 	// Grouping by film (and slug, distributor) - summing box office, max weeks.
-	var table = data
+	const table = data
 		.reduce((acc: any[], curr) => {
 			let item: FilmType = acc.find(
 				(x: { film: any }) => x.film === curr['film']
@@ -118,8 +117,10 @@ export const groupForTable = (data: BoxOfficeWeek[]): TableData => {
 			return acc;
 		}, [])
 		.map((x: FilmType) => ({
-			title: x.film,
-			filmSlug: x.slug,
+			film: {
+				title: x.film,
+				slug: x.slug,
+			},
 			distributor: x.distributor,
 			weeks: Math.max(...Object.keys(x.weeks).map(Number)),
 			weekGross: Object.values(x.weeks).reduce(
@@ -137,11 +138,9 @@ export const groupForTable = (data: BoxOfficeWeek[]): TableData => {
 		}));
 
 	// Sort by box office
-	const tableData = table.sort(function (a, b) {
+	return table.sort(function (a, b) {
 		return b.weekGross - a.weekGross;
 	});
-
-	return tableData;
 };
 
 /**
@@ -167,6 +166,32 @@ export const groupbyDate = (
 };
 
 /**
+ * Groups box office data by date and adds a change metric.
+ * @param {*} data array of box office data.
+ * @returns array of grouped data by date.
+ */
+export const groupbyDateWithchange = (
+	data: BoxOfficeWeek[] | BoxOfficeGroup[] | BoxOfficeWeekStrict[]
+): BoxOfficeGroup[] => {
+	const { results } = groupbyDate(data);
+
+	return results.map((week, index: number) => {
+		const previousWeek = results[index + 1];
+		const changeWeekend = previousWeek
+			? Math.ceil(
+					((week.weekendGross - previousWeek.weekendGross) /
+						previousWeek.weekendGross) *
+						100
+			  )
+			: 0;
+		return {
+			...week,
+			changeWeekend: changeWeekend,
+		};
+	});
+};
+
+/**
  * Groups box office by month.
  * @param {*} data
  * @returns array of grouped data by month.
@@ -186,6 +211,56 @@ export const groupbyMonth = (
 	)(data);
 
 	return { results };
+};
+
+/**
+ * Given a list of box office sumary data, will add a change YOY field.
+ * @param data
+ */
+export const calculateYearChange = (
+	data: BoxOfficeSummary[]
+): BoxOfficeSummary[] => {
+	return data.map((year, index) => {
+		const previousYear = data[index + 1];
+		const changeYOY = previousYear
+			? Math.ceil(
+					((year.week_gross - previousYear.week_gross) /
+						previousYear.week_gross) *
+						100
+			  )
+			: 0;
+		const siteAverage = year.weekend_gross / year.number_of_cinemas;
+		return {
+			change: changeYOY,
+			siteAverage: siteAverage,
+			...year,
+		};
+	});
+};
+
+/**
+ * Given a list of time data, will add a change field.
+ * @param data
+ */
+export const calculateTimeChange = (
+	data: BoxOfficeSummary[]
+): BoxOfficeSummary[] => {
+	return data.map((year, index) => {
+		const previousYear = data[index + 1];
+		const change = previousYear
+			? Math.ceil(
+					((year.week_gross - previousYear.week_gross) /
+						previousYear.week_gross) *
+						100
+			  )
+			: 0;
+		const ticketAverage = year.week_gross / year.admissions;
+		return {
+			change: change,
+			ticketAverage: ticketAverage,
+			...year,
+		};
+	});
 };
 
 /**
@@ -229,4 +304,54 @@ export const calculateNumberOfCinemas = (
 			return o.number_of_cinemas;
 		})
 	);
+};
+
+/**
+ * Calculate the change in box office for a film between 2 periods.
+ * @param film
+ * @param comparisonData
+ * @returns
+ */
+const calculateChange = (
+	film: TableData,
+	comparisonData: BoxOfficeWeek[]
+): number | undefined => {
+	if (comparisonData && comparisonData.length > 0) {
+		const previousFilm = comparisonData.find(
+			(object) => object.film === film.film.title
+		);
+		if (previousFilm) {
+			return Math.ceil(
+				((film.weekendGross - previousFilm.weekend_gross) /
+					previousFilm.weekend_gross) *
+					100
+			);
+		}
+	}
+	return undefined;
+};
+
+/**
+ * Groups for table data, adding the calculate change between time periods.
+ * @param data
+ * @param comparisonData
+ * @returns
+ */
+export const groupForTableChange = (
+	data: BoxOfficeWeek[],
+	comparisonData?: BoxOfficeWeek[]
+): any[] => {
+	const tdata = groupForTable(data);
+
+	return tdata.map((f) => {
+		let change;
+		if (comparisonData) {
+			change = calculateChange(f, comparisonData);
+		}
+
+		return {
+			change: change,
+			...f,
+		};
+	});
 };

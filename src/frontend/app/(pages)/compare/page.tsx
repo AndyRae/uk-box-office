@@ -5,28 +5,30 @@ import { PageTitle } from '@/components/custom/page-title';
 import { fetchFilmId } from '@/lib/api/dataFetching';
 
 import AsyncSelect from 'react-select/async';
-import { CompareTable } from '@/components/tables/compare-table';
 import { CompareTotalChart } from '@/components/charts/compare-total';
 import { CompareCumulativeChart } from '@/components/charts/compare-cumulative';
 import { getDefaultColorArray } from '@/lib/helpers/colorGenerator';
 import { ExportCSV } from '@/components/custom/export-csv';
 import { DatasourceButton } from '@/components/datasource';
 import { ChartWrapper } from '@/components/charts/chart-wrapper';
+import { DataTable } from '@/components/vendor/data-table';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import debounce from 'lodash/debounce';
-import { FilmOption } from '@/interfaces/Film';
+import { FilmOption, FilmWithWeeks } from '@/interfaces/Film';
 import { fetchSearchFilms } from '@/lib/api/dataFetching';
+import { FilmCompare, columns } from '@/components/tables/compare';
+import { calculateNumberOfCinemas } from '@/lib/helpers/groupData';
+import { toTitleCase } from '@/lib/helpers/toTitleCase';
 
 // For parsing the options request response.
 async function FilmsToOptions(term: string): Promise<FilmOption[]> {
 	// Param Id can be present but empty.
 	if (term != '') {
 		const results = await fetchSearchFilms(term);
-		const parsed = results.map((film) => ({
+		return results.map((film) => ({
 			value: film.value,
-			label: film.label,
+			label: toTitleCase(film.label),
 		}));
-		return parsed;
 	}
 	return [];
 }
@@ -43,7 +45,7 @@ export default function Page(): JSX.Element {
 	const searchParams = useSearchParams();
 
 	// array of complete film objects
-	const [filmData, setFilmData] = useState<any[]>([]);
+	const [filmData, setFilmData] = useState<FilmWithWeeks[]>([]);
 
 	// array of Ids set by the select.
 	const [filmIds, setFilmIds] = useState<FilmOption[]>([]);
@@ -70,7 +72,10 @@ export default function Page(): JSX.Element {
 			if (ids) {
 				for (let i = 0; i < ids?.length; i++) {
 					const film = await fetchFilmId(Number(ids[i]));
-					films.push({ value: film.id.toString(), label: film.name });
+					films.push({
+						value: film.id.toString(),
+						label: toTitleCase(film.name),
+					});
 				}
 			}
 			setFilmIdData(films);
@@ -86,7 +91,7 @@ export default function Page(): JSX.Element {
 
 	async function getFilmData(data: any) {
 		// Interpolate colors
-		var colors = getDefaultColorArray(data.length);
+		let colors = getDefaultColorArray(data.length);
 
 		let filmsData = [];
 		for (let i = 0; i < data.length; i++) {
@@ -107,6 +112,26 @@ export default function Page(): JSX.Element {
 		const urlIds = data.map((film: FilmOption) => film.value);
 		router.push(pathName + `?id=${urlIds}`);
 	};
+
+	const tableData: FilmCompare[] = filmData.map((film) => {
+		const weekOne = film.weeks[0];
+		const releaseDate = weekOne?.date;
+
+		const multiple = (film.gross / weekOne?.weekend_gross).toFixed(2);
+		const cinemas = calculateNumberOfCinemas(film.weeks);
+		const siteAverage = film.gross / cinemas;
+		return {
+			color: film.color,
+			title: toTitleCase(film.name),
+			release: releaseDate,
+			distributor: film.distributors,
+			total: film.gross,
+			weeks: film.weeks.length,
+			multiple: multiple,
+			cinemas: cinemas,
+			siteAverage: siteAverage,
+		};
+	});
 
 	return (
 		<>
@@ -136,7 +161,7 @@ export default function Page(): JSX.Element {
 					</div>
 
 					<div className='mt-6'>
-						<CompareTable data={filmData} />
+						<DataTable columns={columns} data={tableData} />
 					</div>
 
 					<div className='grid md:grid-cols-1 lg:grid-cols-2 gap-3 md:gap-5 mt-3 md:mt-6'>

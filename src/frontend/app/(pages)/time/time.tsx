@@ -1,13 +1,11 @@
-import { groupForTable, groupbyDate } from '@/lib/helpers/groupData';
+import {
+	calculateYearChange,
+	groupbyDateWithchange,
+	groupForTableChange,
+} from '@/lib/helpers/groupData';
 
 import { BreadcrumbsTime } from '@/components/custom/breadcrumbs-time';
 import { PageTitle } from '@/components/custom/page-title';
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipProvider,
-	TooltipTrigger,
-} from '@/components/ui/tooltip';
 import { ExportCSV } from '@/components/custom/export-csv';
 import { DescriptionItem } from '@/components/custom/description-item';
 import { DescriptionList } from '@/components/custom/description-list';
@@ -17,12 +15,13 @@ import { DatasourceButton } from '@/components/datasource';
 import { MetricChange } from '@/components/metric-change';
 import { StackedBarChart } from '@/components/charts/stacked-bar';
 import { TimeLineChart } from '@/components/charts/timeline';
-import { FilmTableDetailed } from '@/components/tables/film-table-detailed';
-import { WeeksTable } from '@/components/tables/weeks-table';
-import { PreviousTable } from '@/components/tables/previous-years-table';
 import { PreviousYearsChart } from '@/components/charts/previous-years';
 import { ChartWrapper } from '@/components/charts/chart-wrapper';
 import { BoxOfficeWeek, BoxOfficeSummary } from '@/interfaces/BoxOffice';
+import { DataTable } from '@/components/vendor/data-table';
+import { columns } from '@/components/tables/films-time';
+import { columns as weeksColumns } from '@/components/tables/weeks';
+import { columns as historicalColumns } from '@/components/tables/historical-years';
 
 type TimePageProps = {
 	year: number;
@@ -260,8 +259,9 @@ const TimeTabs = ({
 	lastWeekResults?: BoxOfficeWeek[];
 }) => {
 	// Group Data
-	const tableData = groupForTable(results);
-	const { results: weekData } = groupbyDate(results);
+	const tableData = groupForTableChange(results, lastWeekResults);
+	const weekData = groupbyDateWithchange(results);
+	const yearData = calculateYearChange(timeComparisonData);
 
 	const isWeekView = weekData.length === 1;
 
@@ -282,10 +282,8 @@ const TimeTabs = ({
 						className='mr-2'
 					/>
 				</div>
-				<FilmTableDetailed
-					data={tableData}
-					comparisonData={isWeekView ? lastWeekResults : undefined}
-				/>
+
+				<DataTable data={tableData} columns={columns} />
 			</TabsContent>
 
 			<TabsContent value='tab2'>
@@ -297,7 +295,7 @@ const TimeTabs = ({
 						className='mr-2'
 					/>
 				</div>
-				<WeeksTable data={weekData} />
+				<DataTable columns={weeksColumns} data={weekData} />
 			</TabsContent>
 
 			<TabsContent value='tab3'>
@@ -309,7 +307,7 @@ const TimeTabs = ({
 						className='mr-2'
 					/>
 				</div>
-				<PreviousTable data={timeComparisonData} />
+				<DataTable columns={historicalColumns} data={yearData} />
 			</TabsContent>
 		</Tabs>
 	);
