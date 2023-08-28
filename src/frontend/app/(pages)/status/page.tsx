@@ -1,8 +1,11 @@
-import { PageTitle } from '@/components/custom/page-title';
-import { fetchStatusEvents } from '@/lib/api/dataFetching';
-import { EventsTable } from '@/components/tables/events-table';
-import { StatusCard } from '@/components/status-card';
 import { Metadata } from 'next';
+
+import { fetchStatusEvents } from '@/lib/api/dataFetching';
+
+import { PageTitle } from '@/components/custom/page-title';
+import { StatusCard } from '@/components/status-card';
+import { columns } from '@/components/tables/events';
+import { DataTable } from '@/components/vendor/data-table';
 
 export const metadata: Metadata = {
 	title: 'Status | Box Office Data',
@@ -22,7 +25,7 @@ export default async function Page(): Promise<JSX.Element> {
 
 			<div className='mt-6'>
 				<PageTitle>Logs</PageTitle>
-				<EventsTable events={events.latest.results} />
+				<DataTable columns={columns} data={events.latest.results} />
 			</div>
 		</>
 	);
