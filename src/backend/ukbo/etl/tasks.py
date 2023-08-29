@@ -19,27 +19,6 @@ from . import extract, load
 
 @scheduler.task(
     "cron",
-    id="welp",
-    week="*",
-    day_of_week="*",
-    max_instances=1,
-    hour="9-18",
-    minute="*",
-    second=00,
-    timezone="UTC",
-)
-def task_test() -> None:
-    """
-    Test task
-    """
-    with scheduler.app.app_context():
-        services.events.create(
-            models.Area.forecast, models.State.success, "Test task."
-        )
-
-
-@scheduler.task(
-    "cron",
     id="etl",
     week="*",
     max_instances=1,
