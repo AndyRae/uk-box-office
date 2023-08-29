@@ -10,7 +10,10 @@ import { Distributor } from '@/interfaces/Distributor';
 
 export type FilmCompare = {
 	color?: string;
-	title: string;
+	film: {
+		name: string;
+		slug: string;
+	};
 	release: string;
 	distributor: Distributor[];
 	total: number;
@@ -39,10 +42,18 @@ export const columns: ColumnDef<FilmCompare>[] = [
 		enableSorting: false,
 	},
 	{
-		accessorKey: 'title',
+		accessorKey: 'film',
 		header: ({ column }) => (
-			<DataTableColumnHeader column={column} title='Title' className='' />
+			<DataTableColumnHeader column={column} title='Title' />
 		),
+		cell: ({ row }) => {
+			const film: { name: string; slug: string } = row.getValue('film');
+			return (
+				<Link href={`/film/${film.slug}`} className='font-medium'>
+					{toTitleCase(film.name)}
+				</Link>
+			);
+		},
 		enableHiding: false,
 	},
 	{
@@ -81,7 +92,7 @@ export const columns: ColumnDef<FilmCompare>[] = [
 		header: ({ column }) => (
 			<DataTableColumnHeader
 				column={column}
-				title='Total Box Office (£)'
+				title='Box Office (£)'
 				className='text-right tabular-nums'
 			/>
 		),
