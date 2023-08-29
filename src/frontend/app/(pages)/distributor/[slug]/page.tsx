@@ -1,5 +1,4 @@
 import { PageTitle } from '@/components/custom/page-title';
-import { DistributorFilmsTable } from '@/components/tables/distributor-films-table';
 import { PreviousChart } from '@/components/charts/previous-chart';
 import { DescriptionList } from '@/components/custom/description-list';
 import { DescriptionItem } from '@/components/custom/description-item';
@@ -10,14 +9,19 @@ import { DatasourceButton } from '@/components/datasource';
 import { ExportCSV } from '@/components/custom/export-csv';
 import { ChartWrapper } from '@/components/charts/chart-wrapper';
 import { Controls } from '@/components/controls';
+import { DataTable } from '@/components/vendor/data-table';
+import { columns } from '@/components/tables/films';
+import { Pagination } from '@/components/custom/pagination';
 
 import {
 	fetchDistributor,
 	fetchDistributorBoxOffice,
 	fetchBoxOfficeInfinite,
+	fetchDistributorFilms,
 } from '@/lib/api/dataFetching';
 import { parseDate } from '@/lib/helpers/dates';
 import { toTitleCase } from '@/lib/helpers/toTitleCase';
+import { paginate } from '@/lib/helpers/pagination';
 import addDays from 'date-fns/addDays';
 
 export async function generateMetadata({
@@ -146,3 +150,31 @@ export default async function Page({
 		</div>
 	);
 }
+
+/**
+ * @description Distributor Films List component
+ * @param {String} slug - Distributor slug
+ * @returns {JSX.Element}
+ * @example
+ * <DistributorFilmsList slug={slug} />
+ */
+const DistributorFilmsTable = async ({
+	slug,
+	pageIndex,
+}: {
+	slug: string;
+	pageIndex: number;
+}): Promise<JSX.Element> => {
+	const pageLimit = 15;
+
+	const data = await fetchDistributorFilms(slug, pageIndex, pageLimit);
+
+	const pageNumbers = paginate(data.count, pageIndex, pageLimit);
+
+	return (
+		<>
+			{data && <DataTable columns={columns} data={data.results} />}
+			<Pagination pages={pageNumbers} pageIndex={pageIndex} />
+		</>
+	);
+};

@@ -2,7 +2,8 @@ import { fetchFilmList } from '@/lib/api/dataFetching';
 import { paginate } from '@/lib/helpers/pagination';
 import { Pagination } from '@/components/custom/pagination';
 import { PageTitle } from '@/components/custom/page-title';
-import { FilmTable } from '@/components/tables/film-table';
+import { DataTable } from '@/components/vendor/data-table';
+import { columns } from '@/components/tables/films';
 
 type Props = {
 	params?: {
@@ -26,7 +27,7 @@ export default async function Page({
 	return (
 		<>
 			<PageTitle>Films</PageTitle>
-			{data && <FilmTable films={data} />}
+			{data && <DataTable columns={columns} data={data.results} />}
 			<Pagination pages={pageNumbers} pageIndex={pageIndex} />
 		</>
 	);
