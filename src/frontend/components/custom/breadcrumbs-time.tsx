@@ -9,8 +9,7 @@ import {
 	NavigationMenuContent,
 	NavigationMenuTrigger,
 	NavigationMenuLink,
-	NavigationMenuViewport,
-} from './navigation-menu';
+} from '@/components/ui/navigation-menu';
 
 const listItemStyle =
 	'block items-center justify-center border-gray-400 border-b py-2 px-2 w-auto text-sm font-medium bg-gradient-to-br from-transparent to-transparent hover:from-bo-primary hover:to-cyan-500';
