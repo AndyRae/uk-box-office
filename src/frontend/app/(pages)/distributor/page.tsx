@@ -2,7 +2,8 @@ import { fetchDistributors } from '@/lib/api/dataFetching';
 import { paginate } from '@/lib/helpers/pagination';
 import { Pagination } from '@/components/custom/pagination';
 import { PageTitle } from '@/components/custom/page-title';
-import { DistributorTable } from '@/components/tables/distributor-table';
+import { DataTable } from '@/components/vendor/data-table';
+import { columns } from '@/components/tables/distributors';
 
 type Props = {
 	params?: {
@@ -24,7 +25,7 @@ export default async function Page({
 	return (
 		<>
 			<PageTitle>Distributors</PageTitle>
-			{data && <DistributorTable distributors={data} />}
+			{data && <DataTable columns={columns} data={data.results} />}
 			<Pagination pages={pageNumbers} pageIndex={pageIndex} />
 		</>
 	);
