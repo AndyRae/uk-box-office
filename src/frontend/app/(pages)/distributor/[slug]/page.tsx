@@ -158,7 +158,7 @@ export default async function Page({
  * @example
  * <DistributorFilmsList slug={slug} />
  */
-export const DistributorFilmsTable = async ({
+const DistributorFilmsTable = async ({
 	slug,
 	pageIndex,
 }: {
