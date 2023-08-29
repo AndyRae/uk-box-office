@@ -1,8 +1,9 @@
 import { fetchFilm } from '@/lib/api/dataFetching';
 import { toTitleCase } from '@/lib/helpers/toTitleCase';
+
 import { DescriptionList } from '@/components/custom/description-list';
 import { PageTitle } from '@/components/custom/page-title';
-import { BadgeLink } from '@/components/custom/badge-link';
+import { badgeVariants } from '@/components/ui/badge';
 import { DescriptionItem } from '@/components/custom/description-item';
 import { Date } from '@/components/date';
 import { StructuredTimeData } from '@/components/structured-data';
@@ -12,6 +13,8 @@ import { TimeLineChart } from '@/components/charts/timeline';
 import { ChartWrapper } from '@/components/charts/chart-wrapper';
 import { columns, FilmWeek } from '@/components/tables/box-office';
 import { DataTable } from '@/components/vendor/data-table';
+
+import Link from 'next/link';
 
 export async function generateMetadata({
 	params,
@@ -144,11 +147,12 @@ export default async function Page({
 								title={'Distributors'}
 								text={data.distributors.map((distributor) => {
 									return (
-										<BadgeLink
-											key={distributor.id}
-											text={toTitleCase(distributor.name)}
-											link={`/distributor/${distributor.slug}`}
-										/>
+										<Link
+											className={badgeVariants({ variant: 'default' })}
+											href={`/distributor/${distributor.slug}`}
+										>
+											{toTitleCase(distributor.name)}
+										</Link>
 									);
 								})}
 							/>
@@ -159,11 +163,12 @@ export default async function Page({
 								title={'Country'}
 								text={data.countries.map((country) => {
 									return (
-										<BadgeLink
-											key={country.id}
-											text={toTitleCase(country.name)}
-											link={`/country/${country.slug}`}
-										/>
+										<Link
+											className={badgeVariants({ variant: 'default' })}
+											href={`/country/${country.slug}`}
+										>
+											{toTitleCase(country.name)}
+										</Link>
 									);
 								})}
 							/>
@@ -172,7 +177,12 @@ export default async function Page({
 						<DescriptionItem
 							title={'Compare'}
 							text={
-								<BadgeLink text={'Compare'} link={`/compare?id=${data.id}`} />
+								<Link
+									className={badgeVariants({ variant: 'default' })}
+									href={`/compare?id=${data.id}`}
+								>
+									Compare
+								</Link>
 							}
 						/>
 					</DescriptionList>

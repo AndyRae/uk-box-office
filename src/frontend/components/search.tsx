@@ -3,6 +3,7 @@
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { Icons } from '@/components/icons';
+import { Input } from '@/components/ui/input';
 
 type SearchbarProps = {
 	placeholder?: string;
@@ -19,7 +20,7 @@ type SearchbarProps = {
  * <Searchbar placeholder='Search' value={null} />
  */
 export const Searchbar = ({
-	placeholder = 'Search',
+	placeholder = 'Search...',
 	// @ts-ignore
 	value = null,
 }: SearchbarProps): JSX.Element => {
@@ -41,11 +42,10 @@ export const Searchbar = ({
 		<form onSubmit={handleSubmit(onSubmit)}>
 			<div className='flex mt-2.5'>
 				<div className='relative w-full'>
-					<input
+					<Input
 						type='search'
 						id='search'
 						placeholder={placeholder}
-						className='block p-2 w-full text-sm text-gray-900 rounded-lg bg-white dark:bg-black dark:placeholder-gray-400 dark:text-white border-black border dark:border-white'
 						{...register('Search', {})}
 						required
 						minLength={3}

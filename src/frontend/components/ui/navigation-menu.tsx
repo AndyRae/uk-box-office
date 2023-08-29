@@ -1,9 +1,9 @@
 import * as React from 'react';
 import * as NavigationMenuPrimitive from '@radix-ui/react-navigation-menu';
-import clsx from 'clsx';
-import { Icons } from '../icons';
+import { cva } from 'class-variance-authority';
+import { ChevronDown } from 'lucide-react';
 
-const ArrowDown = Icons['chevronDown'];
+import { cn } from '@/lib/utils';
 
 const NavigationMenu = React.forwardRef<
 	React.ElementRef<typeof NavigationMenuPrimitive.Root>,
@@ -11,7 +11,10 @@ const NavigationMenu = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
 	<NavigationMenuPrimitive.Root
 		ref={ref}
-		className={clsx('relative z-10 flex items-center', className)}
+		className={cn(
+			'relative z-10 flex max-w-max flex-1 items-center justify-center',
+			className
+		)}
 		{...props}
 	>
 		{children}
@@ -26,8 +29,8 @@ const NavigationMenuList = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<NavigationMenuPrimitive.List
 		ref={ref}
-		className={clsx(
-			'group flex flex-1 list-none items-center justify-center',
+		className={cn(
+			'group flex flex-1 list-none items-center justify-center space-x-1',
 			className
 		)}
 		{...props}
@@ -37,8 +40,9 @@ NavigationMenuList.displayName = NavigationMenuPrimitive.List.displayName;
 
 const NavigationMenuItem = NavigationMenuPrimitive.Item;
 
-const navigationMenuTriggerStyle =
-	'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus:outline-none disabled:opacity-50 disabled:pointer-events-none text-gray-500 dark:text-gray-500 dark:hover:text-slate-100 group w-max';
+const navigationMenuTriggerStyle = cva(
+	'group inline-flex h-10 w-max items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-medium transition-colors hover:bg-slate-100 hover:text-slate-900 focus:bg-slate-100 focus:text-slate-900 focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-slate-100/50 data-[state=open]:bg-slate-100/50 dark:bg-slate-950 dark:hover:bg-slate-800 dark:hover:text-slate-50 dark:focus:bg-slate-800 dark:focus:text-slate-50 dark:data-[active]:bg-slate-800/50 dark:data-[state=open]:bg-slate-800/50'
+);
 
 const NavigationMenuTrigger = React.forwardRef<
 	React.ElementRef<typeof NavigationMenuPrimitive.Trigger>,
@@ -46,10 +50,15 @@ const NavigationMenuTrigger = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
 	<NavigationMenuPrimitive.Trigger
 		ref={ref}
-		className={clsx(navigationMenuTriggerStyle, 'group', className)}
+		className={cn(navigationMenuTriggerStyle(), 'group', className)}
 		{...props}
 	>
-		{children} <ArrowDown />
+		{children}
+		{''}
+		<ChevronDown
+			className='relative top-[1px] ml-1 h-3 w-3 transition duration-200 group-data-[state=open]:rotate-180'
+			aria-hidden='true'
+		/>
 	</NavigationMenuPrimitive.Trigger>
 ));
 NavigationMenuTrigger.displayName = NavigationMenuPrimitive.Trigger.displayName;
@@ -60,8 +69,8 @@ const NavigationMenuContent = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<NavigationMenuPrimitive.Content
 		ref={ref}
-		className={clsx(
-			'top-0 w-full md:w-auto data-[motion^=from-]:animate-in data-[motion^=to-]:animate-out data-[motion^=from-]:fade-in data-[motion^=to-]:fade-out data-[motion=to-start]:slide-out-to-left-52 data-[motion=to-end]:slide-out-to-right-52 data-[motion=from-start]:slide-in-from-left-52 data-[motion=from-end]:slide-in-from-right-52 absolute',
+		className={cn(
+			'left-0 top-0 w-full data-[motion^=from-]:animate-in data-[motion^=to-]:animate-out data-[motion^=from-]:fade-in data-[motion^=to-]:fade-out data-[motion=from-end]:slide-in-from-right-52 data-[motion=from-start]:slide-in-from-left-52 data-[motion=to-end]:slide-out-to-right-52 data-[motion=to-start]:slide-out-to-left-52 md:absolute md:w-auto',
 			className
 		)}
 		{...props}
@@ -75,14 +84,10 @@ const NavigationMenuViewport = React.forwardRef<
 	React.ElementRef<typeof NavigationMenuPrimitive.Viewport>,
 	React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Viewport>
 >(({ className, ...props }, ref) => (
-	<div
-		className={clsx(
-			'absolute left-0 top-full flex justify-center w-24 md:w-auto'
-		)}
-	>
+	<div className={cn('absolute left-0 top-full flex justify-center')}>
 		<NavigationMenuPrimitive.Viewport
-			className={clsx(
-				'origin-top-center relative w-full mt-1.5 h-[var(--radix-navigation-menu-viewport-height)] overflow-hidden rounded-md border bg-white shadow-lg data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:zoom-in-90 data-[state=closed]:zoom-out-95 dark:border-white dark:bg-black md:w-[var(--radix-navigation-menu-viewport-width)]',
+			className={cn(
+				'origin-top-center relative mt-1.5 h-[var(--radix-navigation-menu-viewport-height)] w-full overflow-hidden rounded-md border border-slate-200 bg-white text-slate-950 shadow-lg data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-90 md:w-[var(--radix-navigation-menu-viewport-width)] dark:border-slate-800 dark:bg-slate-950 dark:text-slate-50',
 				className
 			)}
 			ref={ref}
@@ -99,13 +104,13 @@ const NavigationMenuIndicator = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<NavigationMenuPrimitive.Indicator
 		ref={ref}
-		className={clsx(
-			'top-full z-[1] flex h-1.5 items-end justify-center overflow-hidden data-[state=visible]:animate-in data-[state=hidden]:animate-out data-[state=visible]:fade-in data-[state=hidden]:fade-out',
+		className={cn(
+			'top-full z-[1] flex h-1.5 items-end justify-center overflow-hidden data-[state=visible]:animate-in data-[state=hidden]:animate-out data-[state=hidden]:fade-out data-[state=visible]:fade-in',
 			className
 		)}
 		{...props}
 	>
-		<div className='relative top-[60%] h-2 w-2 rotate-45 rounded-tl-sm shadow-md' />
+		<div className='relative top-[60%] h-2 w-2 rotate-45 rounded-tl-sm bg-slate-200 shadow-md dark:bg-slate-800' />
 	</NavigationMenuPrimitive.Indicator>
 ));
 NavigationMenuIndicator.displayName =
