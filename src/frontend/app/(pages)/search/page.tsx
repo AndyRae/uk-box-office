@@ -12,7 +12,7 @@ import { PageTitle } from '@/components/custom/page-title';
 import { SearchFilters } from '@/components/search-filters';
 import { Pagination } from '@/components/custom/pagination';
 import { DataTable } from '@/components/vendor/data-table';
-import { columns } from '@/components/tables/films-search';
+import { columns } from '@/components/tables/films';
 
 export default async function Page({
 	searchParams,

@@ -43,7 +43,12 @@ export const columns: ColumnDef<Film>[] = [
 			const distributors: Distributor[] = row.getValue('distributors');
 			return (
 				<div className='font-medium'>
-					{distributors.map((distributor) => toTitleCase(distributor.name))}
+					{distributors.map((distributor, index) => (
+						<React.Fragment key={distributor.id}>
+							{index > 0 && ', '}
+							{toTitleCase(distributor.name)}
+						</React.Fragment>
+					))}
 				</div>
 			);
 		},
@@ -58,7 +63,12 @@ export const columns: ColumnDef<Film>[] = [
 			const countries: Country[] = row.getValue('countries');
 			return (
 				<div className='font-medium'>
-					{countries.map((country) => toTitleCase(country.name))}
+					{countries.map((country, index) => (
+						<React.Fragment key={country.id}>
+							{index > 0 && ', '}
+							{toTitleCase(country.name)}
+						</React.Fragment>
+					))}
 				</div>
 			);
 		},
