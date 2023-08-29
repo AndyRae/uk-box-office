@@ -13,12 +13,12 @@ import { Pagination } from '@/components/custom/pagination';
 import { DataTable } from '@/components/vendor/data-table';
 import { columns } from '@/components/tables/films';
 
-import { fetchCountryFilms } from '@/lib/api/dataFetching';
 import { paginate } from '@/lib/helpers/pagination';
 
 import {
 	fetchCountry,
 	fetchCountryBoxOffice,
+	fetchCountryFilms,
 	fetchBoxOfficeInfinite,
 } from '@/lib/api/dataFetching';
 import { parseDate } from '@/lib/helpers/dates';
