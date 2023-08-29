@@ -76,7 +76,7 @@ const SidebarContent = (): JSX.Element => {
 				</nav>
 
 				<Searchbar />
-				<ModeToggle />
+				{/* <ModeToggle /> */}
 			</div>
 		</div>
 	);

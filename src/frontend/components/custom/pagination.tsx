@@ -1,5 +1,7 @@
 'use client';
+
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import { Button } from '@/components/ui/button';
 
 type PaginationProps = {
 	pages: number[];
@@ -50,39 +52,39 @@ export const Pagination = ({
 			<ul className='inline-flex -space-x-px py-5'>
 				{pageNumber > 1 && (
 					<li>
-						<button
+						<Button
 							onClick={() => setPageIndex(pageNumber - 1)}
-							className='py-2 px-3 ml-0 leading-tight rounded-l-lg border border-gray-300 bg-gradient-to-br from-transparent to-transparent hover:from-bo-primary hover:to-cyan-500 hover:text-white dark:border-gray-700 transition-all duration-300'
+							variant={'outline'}
+							className='rounded-r-none'
 						>
 							Previous
-						</button>
+						</Button>
 					</li>
 				)}
 				{pages.map((page, index) => {
 					const isActive = pageNumber === page;
+					const variant = isActive ? 'default' : 'outline';
 					return (
 						<li key={index}>
-							<button
+							<Button
 								onClick={() => setPageIndex(page)}
-								className={`py-2 px-3 leading-tight border border-gray-300 bg-gradient-to-br  hover:from-bo-primary hover:to-cyan-500 hover:text-white dark:border-gray-700 transition-all duration-300 ${
-									isActive
-										? 'from-bo-primary to-cyan-500 text-white'
-										: 'from-transparent to-transparent'
-								}`}
+								variant={variant}
+								className='rounded-none'
 							>
 								{page}
-							</button>
+							</Button>
 						</li>
 					);
 				})}
 				{pageNumber < pages[pages.length - 1] && (
 					<li>
-						<button
+						<Button
 							onClick={() => setPageIndex(pageNumber + 1)}
-							className='py-2 px-3 leading-tight rounded-r-lg border border-gray-300 bg-gradient-to-br from-transparent to-transparent hover:from-bo-primary hover:to-cyan-500 hover:text-white dark:border-gray-700 transition-all duration-300'
+							variant={'outline'}
+							className='rounded-l-none'
 						>
 							Next
-						</button>
+						</Button>
 					</li>
 				)}
 			</ul>

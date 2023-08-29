@@ -16,11 +16,11 @@ import {
 	Select as SelectWrap,
 	SelectContent,
 	SelectGroup,
-	SelectItem,
 	SelectLabel,
+	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from '@/components/custom/select';
+} from '@/components/ui/select';
 import {
 	Collapsible,
 	CollapsibleContent,

@@ -49,7 +49,7 @@ export const Controls = forwardRef<HTMLDivElement, ControlsProps>(
 					variant={'outline'}
 					onClick={() => changeDate(7)}
 					disabled={diffDays === 7}
-					className=''
+					className='rounded-r-none sm:ml-4'
 				>
 					1W
 				</Button>
@@ -57,7 +57,7 @@ export const Controls = forwardRef<HTMLDivElement, ControlsProps>(
 					variant={'outline'}
 					onClick={() => changeDate(30)}
 					disabled={diffDays === 30}
-					className=''
+					className='rounded-none'
 				>
 					1M
 				</Button>
@@ -65,7 +65,7 @@ export const Controls = forwardRef<HTMLDivElement, ControlsProps>(
 					variant={'outline'}
 					onClick={() => changeDate(90)}
 					disabled={diffDays === 90}
-					className=''
+					className='rounded-none'
 				>
 					3M
 				</Button>
@@ -73,7 +73,7 @@ export const Controls = forwardRef<HTMLDivElement, ControlsProps>(
 					variant={'outline'}
 					onClick={() => changeDate(180)}
 					disabled={diffDays === 180}
-					className=''
+					className='rounded-none'
 				>
 					6M
 				</Button>
@@ -81,7 +81,7 @@ export const Controls = forwardRef<HTMLDivElement, ControlsProps>(
 					variant={'outline'}
 					onClick={() => changeDate(365)}
 					disabled={diffDays === 365}
-					className=''
+					className='rounded-l-none'
 				>
 					1Y
 				</Button>
