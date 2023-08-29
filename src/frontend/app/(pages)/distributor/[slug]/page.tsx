@@ -2,7 +2,6 @@ import { PageTitle } from '@/components/custom/page-title';
 import { PreviousChart } from '@/components/charts/previous-chart';
 import { DescriptionList } from '@/components/custom/description-list';
 import { DescriptionItem } from '@/components/custom/description-item';
-import { PreviousTable } from '@/components/tables/previous-table';
 import { StackedBarChart } from '@/components/charts/stacked-bar';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { DatasourceButton } from '@/components/datasource';
@@ -11,6 +10,7 @@ import { ChartWrapper } from '@/components/charts/chart-wrapper';
 import { Controls } from '@/components/controls';
 import { DataTable } from '@/components/vendor/data-table';
 import { columns } from '@/components/tables/films';
+import { columns as previousColumns } from '@/components/tables/previous';
 import { Pagination } from '@/components/custom/pagination';
 
 import {
@@ -93,6 +93,20 @@ export default async function Page({
 	const end = searchParams?.e ?? e;
 	const { results } = await fetchBoxOfficeInfinite(start, end, data.id);
 
+	// Add change YOY column
+	const boxOfficeWithChange = boxOfficeData.results.map((year, index) => {
+		const previousYear = boxOfficeData.results[index + 1];
+		const changeYOY = previousYear
+			? Math.ceil(
+					((year.total - previousYear.total) / previousYear.total) * 100
+			  )
+			: 0;
+		return {
+			change: changeYOY,
+			...year,
+		};
+	});
+
 	return (
 		<div>
 			<div className='grid grid-cols-1 md:grid-cols-5 gap-3 md:gap-5 mb-4'>
@@ -137,7 +151,7 @@ export default async function Page({
 						</TabsContent>
 
 						<TabsContent value='tab3' className='h-[30rem]'>
-							<PreviousTable data={boxOfficeData.results} />
+							<DataTable columns={previousColumns} data={boxOfficeWithChange} />
 						</TabsContent>
 					</Tabs>
 				</div>

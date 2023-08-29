@@ -5,13 +5,13 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { DatasourceButton } from '@/components/datasource';
 import { ExportCSV } from '@/components/custom/export-csv';
 import { PreviousChart } from '@/components/charts/previous-chart';
-import { PreviousTable } from '@/components/tables/previous-table';
 import { ChartWrapper } from '@/components/charts/chart-wrapper';
 import { Controls } from '@/components/controls';
 import { StackedBarChart } from '@/components/charts/stacked-bar';
 import { Pagination } from '@/components/custom/pagination';
 import { DataTable } from '@/components/vendor/data-table';
 import { columns } from '@/components/tables/films';
+import { columns as previousColumns } from '@/components/tables/previous';
 
 import { paginate } from '@/lib/helpers/pagination';
 
@@ -94,6 +94,20 @@ export default async function Page({
 		data.id,
 	]);
 
+	// Add change YOY column
+	const boxOfficeWithChange = boxOfficeData.results.map((year, index) => {
+		const previousYear = boxOfficeData.results[index + 1];
+		const changeYOY = previousYear
+			? Math.ceil(
+					((year.total - previousYear.total) / previousYear.total) * 100
+			  )
+			: 0;
+		return {
+			change: changeYOY,
+			...year,
+		};
+	});
+
 	return (
 		<div>
 			<div className='grid grid-cols-1 md:grid-cols-5 gap-3 md:gap-5 mb-5'>
@@ -137,7 +151,7 @@ export default async function Page({
 						</TabsContent>
 
 						<TabsContent value='tab3' className='h-[30rem]'>
-							<PreviousTable data={boxOfficeData.results} />
+							<DataTable columns={previousColumns} data={boxOfficeWithChange} />
 						</TabsContent>
 					</Tabs>
 				</div>
