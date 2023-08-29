@@ -10,6 +10,7 @@ import {
 	NavigationMenuTrigger,
 	NavigationMenuLink,
 } from '@/components/ui/navigation-menu';
+import { buttonVariants } from '@/components/ui/button';
 
 const listItemStyle =
 	'block items-center justify-center border-gray-400 border-b py-2 px-2 w-auto text-sm font-medium bg-gradient-to-br from-transparent to-transparent hover:from-bo-primary hover:to-cyan-500';
@@ -24,26 +25,18 @@ export function BreadcrumbsTime({
 	quarter?: number;
 }) {
 	return (
-		<div className='flex items-center gap-x-2 my-5 py-3.5 lg:py-3'>
+		<div className='flex items-center content-center gap-x-2 my-5 py-3.5 lg:py-3'>
 			<div className='flex justify-start gap-x-1 text-sm font-medium'>
-				<Link
-					href={'/'}
-					className='animate-[highlight_1s_ease-in-out_1] capitalize py-0.5  text-gray-500 dark:text-gray-500'
-				>
+				<Link className={buttonVariants({ variant: 'link' })} href={'/'}>
 					Dashboard
 				</Link>
-				<span className='text-gray-600 px-1.5'>/</span>
-				<Link
-					href={'/time'}
-					className='animate-[highlight_1s_ease-in-out_1] capitalize py-0.5  text-gray-500 dark:text-gray-500'
-				>
+				<Link className={buttonVariants({ variant: 'link' })} href={'/time'}>
 					Time
 				</Link>
-				<span className='text-gray-600 px-1.5'>/</span>
 				<BreadcrumbsYears year={year} />
-				<span className='text-gray-600 px-1.5'>/</span>
+
 				<BreadcrumbsQuarters year={year} month={month} quarter={quarter} />
-				<span className='text-gray-600 px-1.5'>/</span>
+
 				<BreadcrumbsMonths year={year} month={month} />
 			</div>
 		</div>
