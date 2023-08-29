@@ -10,7 +10,7 @@ import { ChartWrapper } from '@/components/charts/chart-wrapper';
 import { Controls } from '@/components/controls';
 import { DataTable } from '@/components/vendor/data-table';
 import { columns } from '@/components/tables/films';
-import { columns as previousColumns } from '@/components/tables/previous';
+import { columns as previousColumns } from '@/components/tables/historical';
 import { Pagination } from '@/components/custom/pagination';
 
 import {
@@ -137,7 +137,7 @@ export default async function Page({
 						<TabsList>
 							<TabsTrigger value='tab1'>Years</TabsTrigger>
 							<TabsTrigger value='tab2'>Films</TabsTrigger>
-							<TabsTrigger value='tab3'>Table</TabsTrigger>
+							<TabsTrigger value='tab3'>Historical</TabsTrigger>
 						</TabsList>
 						<TabsContent value='tab1' className='h-[30rem]'>
 							<PreviousChart data={boxOfficeData.results} />
