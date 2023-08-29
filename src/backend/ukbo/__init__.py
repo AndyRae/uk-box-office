@@ -41,7 +41,6 @@ def create_app(config: str = "") -> Flask:
         app.config.from_object(settings.TestConfig)
 
     register_extensions(app)
-    scheduler.init_app(app)
 
     with app.app_context():
         return run_app(app)
@@ -69,8 +68,7 @@ def run_app(app: Flask) -> Flask:
 
     from ukbo.etl import tasks
 
-    if not app.config["TESTING"]:
-        scheduler.start()
+    scheduler.start()
 
     return app
 
@@ -90,6 +88,7 @@ def register_extensions(app: Flask) -> None:
     limiter.init_app(app)
     ma.init_app(app)
     migrate.init_app(app, db)
+    scheduler.init_app(app)
     return None
 
 
