@@ -16,7 +16,7 @@ import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import debounce from 'lodash/debounce';
 import { FilmOption, FilmWithWeeks } from '@/interfaces/Film';
 import { fetchSearchFilms } from '@/lib/api/dataFetching';
-import { FilmCompare, columns } from '@/components/tables/compare';
+import { FilmCompare, columns } from '@/components/tables/comparison';
 import { calculateNumberOfCinemas } from '@/lib/helpers/groupData';
 import { toTitleCase } from '@/lib/helpers/toTitleCase';
 
