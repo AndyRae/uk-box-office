@@ -158,7 +158,6 @@ export default async function Page({
 			</div>
 
 			<div className='mt-4'>
-				/* @ts-expect-error Server Component */
 				<DistributorFilmsTable slug={params.slug} pageIndex={pageIndex} />
 			</div>
 		</div>
