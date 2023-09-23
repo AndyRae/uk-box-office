@@ -15,6 +15,7 @@ def all() -> Response:
     Request Arguments (optional):
         page (int): Page number to return.
         limit (int): Number of films to return.
+        sort (string): Field and order to sort by.
 
     Returns:
         JSON response of films.
