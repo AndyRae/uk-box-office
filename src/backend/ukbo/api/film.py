@@ -21,7 +21,9 @@ def all() -> Response:
     """
     page = int(request.args.get("page", 1))
     limit = int(request.args.get("limit", 100))
-    return services.film.list_all(page, limit)
+    sort = request.args.get("sort", None)
+
+    return services.film.list_all(sort, page, limit)
 
 
 @film.route("slug/<slug>")

@@ -19,20 +19,40 @@ from ukbo.extensions import db
 from ukbo.services.filters import QueryFilter
 
 
-def list_all(page: int = 1, limit: int = 100) -> Response:
+def list_all(sort: Optional[str], page: int = 1, limit: int = 100) -> Response:
     """
     Paginated list of all films.
 
     Args:
+        sort: To sort by.
         page: Page number
         limit: Number of results per page
 
     Returns (JSON): Paginated list of films.
     """
     query = db.session.query(models.Film)
-    data = query.order_by(models.Film.name.asc()).paginate(
-        page=page, per_page=limit, error_out=False
-    )
+
+    # Apply sorting
+    # Define the sorting options and their corresponding ordering expressions
+    sorting_options = {
+        "asc_name": models.Film.name.asc(),
+        "desc_name": models.Film.name.desc(),
+        "asc_box": func.max(models.Film_Week.total_gross).asc(),
+        "desc_box": func.max(models.Film_Week.total_gross).desc(),
+    }
+
+    if sort is not None:
+        sort_option = sorting_options.get(sort)
+        if sort_option is None:
+            # Handle invalid sorting option
+            return jsonify(error="Invalid sorting option"), 400
+        # Join the table when sorting by gross
+        query = query.join(models.Film_Week).group_by(models.Film.id)
+        query = query.order_by(sort_option)
+    else:
+        query = query.order_by(models.Film.name.asc())
+
+    data = query.paginate(page=page, per_page=limit, error_out=False)
 
     if data is None:
         abort(404)
