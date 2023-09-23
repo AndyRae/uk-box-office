@@ -122,7 +122,10 @@ export default function Page(): JSX.Element {
 		const siteAverage = film.gross / cinemas;
 		return {
 			color: film.color,
-			title: toTitleCase(film.name),
+			film: {
+				name: toTitleCase(film.name),
+				slug: film.slug,
+			},
 			release: releaseDate,
 			distributor: film.distributors,
 			total: film.gross,

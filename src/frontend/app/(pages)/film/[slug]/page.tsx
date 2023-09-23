@@ -13,6 +13,8 @@ import { TimeLineChart } from '@/components/charts/timeline';
 import { ChartWrapper } from '@/components/charts/chart-wrapper';
 import { columns, FilmWeek } from '@/components/tables/box-office';
 import { DataTable } from '@/components/vendor/data-table';
+import { buttonVariants } from '@/components/ui/button';
+import { Icons } from '@/components/icons';
 
 import Link from 'next/link';
 
@@ -110,6 +112,8 @@ export default async function Page({
 		};
 	});
 
+	const Icon = Icons['compare'];
+
 	return (
 		<div>
 			<StructuredTimeData
@@ -173,25 +177,23 @@ export default async function Page({
 								})}
 							/>
 						)}
-
-						<DescriptionItem
-							title={'Compare'}
-							text={
-								<Link
-									className={badgeVariants({ variant: 'default' })}
-									href={`/compare?id=${data.id}`}
-								>
-									Compare
-								</Link>
-							}
-						/>
 					</DescriptionList>
+
+					<Link
+						className={buttonVariants({ variant: 'outline' })}
+						href={`/compare?id=${data.id}`}
+					>
+						<div className='px-1'>
+							<Icon />
+						</div>
+						Compare
+					</Link>
 
 					{data.weeks && (
 						<ExportCSV
 							data={data.weeks}
 							filename={`${data.name}_data.csv`}
-							className='mr-2'
+							className='mr-2 ml-2'
 						/>
 					)}
 					<DatasourceButton />

@@ -35,11 +35,9 @@ export const columns: ColumnDef<TopFilm>[] = [
 		),
 		cell: ({ row }) => {
 			const film: { name: string; slug: string } = row.getValue('film');
-			const title: string = film.name;
-			const slug: string = film.slug;
 			return (
-				<Link href={`/film/${slug}`} className='font-medium'>
-					{toTitleCase(title)}
+				<Link href={`/film/${film.slug}`} className='font-medium'>
+					{toTitleCase(film.name)}
 				</Link>
 			);
 		},
