@@ -26,7 +26,6 @@ export default async function Page({
 	const keyString = `${searchParams.s}-${searchParams.e}`;
 	return (
 		<React.Suspense key={keyString} fallback={<Skeleton />}>
-			/* @ts-expect-error Server Component */
 			<Dashboard searchParams={searchParams} />
 		</React.Suspense>
 	);

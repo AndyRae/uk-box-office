@@ -15,13 +15,16 @@ def all() -> Response:
     Request Arguments (optional):
         page (int): Page number to return.
         limit (int): Number of films to return.
+        sort (string): Field and order to sort by.
 
     Returns:
         JSON response of films.
     """
     page = int(request.args.get("page", 1))
     limit = int(request.args.get("limit", 100))
-    return services.film.list_all(page, limit)
+    sort = request.args.get("sort", None)
+
+    return services.film.list_all(sort, page, limit)
 
 
 @film.route("slug/<slug>")
