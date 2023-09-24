@@ -37,8 +37,8 @@ def list_all(sort: Optional[str], page: int = 1, limit: int = 100) -> Response:
     sorting_options = {
         "asc_name": models.Film.name.asc(),
         "desc_name": models.Film.name.desc(),
-        "asc_box": func.max(models.Film_Week.total_gross).asc(),
-        "desc_box": func.max(models.Film_Week.total_gross).desc(),
+        "asc_gross": func.max(models.Film_Week.total_gross).asc(),
+        "desc_gross": func.max(models.Film_Week.total_gross).desc(),
     }
 
     if sort is not None:
