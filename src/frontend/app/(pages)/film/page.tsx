@@ -2,7 +2,7 @@ import { fetchFilmList } from '@/lib/api/dataFetching';
 import { paginate } from '@/lib/helpers/pagination';
 import { Pagination } from '@/components/custom/pagination';
 import { PageTitle } from '@/components/custom/page-title';
-import { FilmTable } from '@/components/tables/filmtable';
+import { FilmTable } from '@/components/tables/films';
 
 type Props = {
 	params?: {
