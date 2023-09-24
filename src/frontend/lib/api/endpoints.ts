@@ -55,8 +55,12 @@ export const getBoxOfficeLastWeekEndpoint = (): string => {
 };
 
 // Films
-export const getFilmListEndpoint = (page: number, limit: number): string => {
-	return `/film/?page=${page}&limit=${limit}`;
+export const getFilmListEndpoint = (
+	page: number,
+	limit: number,
+	sort: string
+): string => {
+	return `/film/?page=${page}&limit=${limit}&sort=${sort}`;
 };
 
 export const getFilmIdEndpoint = (id: number): string => {

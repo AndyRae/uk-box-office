@@ -189,16 +189,18 @@ export async function fetchBoxOfficeInfinite(
  * Get paginated list of all films.
  * @param {number} page - Page number to start from.
  * @param {number} limit - Number of items per page.
+ * @param {string} sort - Field and method to sort by.
  * @returns paginated list of films from the api.
  * @example
- * const data = await fetchFilmList(1, 10);
+ * const data = await fetchFilmList(1, 10, desc_name);
  */
 export const fetchFilmList = async (
 	page: number = 1,
-	limit: number = 10
+	limit: number = 10,
+	sort: string = 'asc_name'
 ): Promise<FilmListData> => {
 	try {
-		const url = getFilmListEndpoint(page, limit);
+		const url = getFilmListEndpoint(page, limit, sort);
 		return await request<FilmListData>(url, { next: { revalidate: 60 } });
 	} catch (error) {
 		throw new Error('Failed to film');
