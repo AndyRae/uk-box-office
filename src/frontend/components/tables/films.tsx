@@ -32,7 +32,7 @@ export const columns: ColumnDef<Film>[] = [
 			);
 		},
 		enableHiding: false,
-		enableSorting: false,
+		enableSorting: true,
 	},
 	{
 		accessorKey: 'distributors',
@@ -91,6 +91,6 @@ export const columns: ColumnDef<Film>[] = [
 				<div className='text-right font-medium tabular-nums'>{formatted}</div>
 			);
 		},
-		enableSorting: false,
+		enableSorting: true,
 	},
 ];
