@@ -13,6 +13,9 @@ export const metadata: Metadata = {
 
 export default async function Page(): Promise<JSX.Element> {
 	const events = await fetchStatusEvents();
+	if (!events) {
+		return <></>;
+	}
 
 	return (
 		<>

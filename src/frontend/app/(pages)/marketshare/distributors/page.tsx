@@ -21,11 +21,11 @@ export default async function Page() {
 	// Map data to unique years.
 	const numberOfTopDistributors = 12;
 	const uniqueYears = [
-		...new Set(data.results.flatMap((d) => d.years?.map((y) => y.year))),
+		...new Set(data?.results.flatMap((d) => d.years?.map((y) => y.year))),
 	].sort();
 
 	// Sort the data by total market share in descending order
-	const sortedData = [...data.results];
+	const sortedData = data ? [...data.results] : [];
 	sortedData.sort((a, b) => {
 		const aTotal = a.years?.reduce((acc, curr) => acc + curr.market_share, 0);
 		const bTotal = b.years?.reduce((acc, curr) => acc + curr.market_share, 0);

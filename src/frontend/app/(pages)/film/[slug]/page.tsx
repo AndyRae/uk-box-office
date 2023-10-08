@@ -25,15 +25,17 @@ export async function generateMetadata({
 }) {
 	const data = await fetchFilm(params.slug);
 
-	const year = data.weeks[0]?.date.split('-')[0];
+	const year = data?.weeks[0]?.date.split('-')[0];
 
 	const description = `${toTitleCase(
-		data.name
+		data ? data.name : ''
 	)} (${year}) was released in the UK on ${
-		data.weeks[0]?.date
-	}, and grossed £${data.gross.toLocaleString()} at the UK Box Office.`;
+		data?.weeks[0]?.date
+	}, and grossed £${data?.gross.toLocaleString()} at the UK Box Office.`;
 
-	const title = `${toTitleCase(data.name)} ${year} | Box Office Data`;
+	const title = `${toTitleCase(
+		data ? data.name : ''
+	)} ${year} | Box Office Data`;
 
 	return {
 		title: title,
@@ -71,53 +73,56 @@ export default async function Page({
 	const data = await fetchFilm(params.slug);
 
 	// Unwrap first week date logic
-	const weekOne = data.weeks[0];
+	const weekOne = data?.weeks[0];
 	const weeksOnRelease = weekOne?.weeks_on_release;
 	const isFirstWeek = !!(weeksOnRelease === 1);
-	const releaseDate = weekOne?.date;
+	const releaseDate = weekOne ? weekOne.date : '';
 
-	const multiple = (data.gross / weekOne?.weekend_gross).toFixed(2);
+	const multiple =
+		data && weekOne ? (data.gross / weekOne?.weekend_gross).toFixed(2) : 0;
 
 	// Rename data to make it easy to reuse charts
-	const cumulativeData: any[] = data.weeks.map(
+	const cumulativeData: any[] | undefined = data?.weeks.map(
 		({ total_gross: week_gross, date }) => ({
 			date,
 			week_gross,
 		})
 	);
 
-	const hasCountries = data.countries.length > 0;
-	const hasDistributors = data.distributors.length > 0;
+	const hasCountries = data ? data.countries.length > 0 : false;
+	const hasDistributors = data ? data.distributors.length > 0 : false;
 
-	const tableData: FilmWeek[] = data.weeks.map((week, index: number) => {
-		const previousWeek = data.weeks[index - 1];
-		const changeWeekend = previousWeek
-			? Math.ceil(
-					((week.weekend_gross - previousWeek.weekend_gross) /
-						previousWeek.weekend_gross) *
-						100
-			  )
-			: 0;
+	const tableData: FilmWeek[] | undefined = data?.weeks.map(
+		(week, index: number) => {
+			const previousWeek = data.weeks[index - 1];
+			const changeWeekend = previousWeek
+				? Math.ceil(
+						((week.weekend_gross - previousWeek.weekend_gross) /
+							previousWeek.weekend_gross) *
+							100
+				  )
+				: 0;
 
-		return {
-			week: week.weeks_on_release,
-			date: week.date,
-			rank: week.rank,
-			cinemas: week.number_of_cinemas,
-			weekendGross: week.weekend_gross,
-			weekGross: week.week_gross,
-			total: week.total_gross,
-			siteAverage: week.site_average,
-			changeWeekend: changeWeekend,
-		};
-	});
+			return {
+				week: week.weeks_on_release,
+				date: week.date,
+				rank: week.rank,
+				cinemas: week.number_of_cinemas,
+				weekendGross: week.weekend_gross,
+				weekGross: week.week_gross,
+				total: week.total_gross,
+				siteAverage: week.site_average,
+				changeWeekend: changeWeekend,
+			};
+		}
+	);
 
 	const Icon = Icons['compare'];
 
 	return (
 		<div>
 			<StructuredTimeData
-				title={`${data.name}`}
+				title={`${data?.name}`}
 				endpoint={`/film/${params.slug}`}
 				time={releaseDate}
 			/>
@@ -125,8 +130,8 @@ export default async function Page({
 			<div className='grid grid-cols-1 md:grid-cols-5 gap-3 md:gap-5 mb-4'>
 				<div className='col-span-2'>
 					<PageTitle>
-						{toTitleCase(data.name)}{' '}
-						{isFirstWeek && `(${releaseDate.split('-')[0]})`}
+						{toTitleCase(data ? data.name : '')}{' '}
+						{isFirstWeek && `(${releaseDate?.split('-')[0]})`}
 					</PageTitle>
 
 					<DescriptionList>
@@ -139,7 +144,7 @@ export default async function Page({
 
 						<DescriptionItem
 							title={'Total Box Office'}
-							text={`£ ${data.gross.toLocaleString('en-GB')}`}
+							text={`£ ${data?.gross.toLocaleString('en-GB')}`}
 						/>
 
 						{weekOne && (
@@ -149,7 +154,7 @@ export default async function Page({
 						{hasDistributors && (
 							<DescriptionItem
 								title={'Distributors'}
-								text={data.distributors.map((distributor) => {
+								text={data?.distributors.map((distributor) => {
 									return (
 										<Link
 											className={badgeVariants({ variant: 'default' })}
@@ -165,7 +170,7 @@ export default async function Page({
 						{hasCountries && (
 							<DescriptionItem
 								title={'Country'}
-								text={data.countries.map((country) => {
+								text={data?.countries.map((country) => {
 									return (
 										<Link
 											className={badgeVariants({ variant: 'default' })}
@@ -181,7 +186,7 @@ export default async function Page({
 
 					<Link
 						className={buttonVariants({ variant: 'outline' })}
-						href={`/compare?id=${data.id}`}
+						href={`/compare?id=${data?.id}`}
 					>
 						<div className='px-1'>
 							<Icon />
@@ -189,7 +194,7 @@ export default async function Page({
 						Compare
 					</Link>
 
-					{data.weeks && (
+					{data?.weeks && (
 						<ExportCSV
 							data={data.weeks}
 							filename={`${data.name}_data.csv`}
@@ -200,24 +205,26 @@ export default async function Page({
 				</div>
 
 				{/* Charts */}
-				{data.weeks.length >= 2 && (
+				{data && data.weeks.length >= 2 && (
 					<div className='col-span-3 flex flex-col gap-4 divide-y divide-gray-200 dark:divide-gray-700'>
 						<ChartWrapper title='Weekly Box Office' className='mb-4'>
 							<TimeLineChart data={data.weeks} />
 						</ChartWrapper>
 
-						<ChartWrapper title='Cumulative Box Office' className='py-4 mb-8'>
-							<TimeLineChart
-								data={cumulativeData}
-								color='#1E3A8A'
-								allowRollUp={false}
-							/>
-						</ChartWrapper>
+						{cumulativeData && (
+							<ChartWrapper title='Cumulative Box Office' className='py-4 mb-8'>
+								<TimeLineChart
+									data={cumulativeData}
+									color='#1E3A8A'
+									allowRollUp={false}
+								/>
+							</ChartWrapper>
+						)}
 					</div>
 				)}
 			</div>
 
-			<DataTable columns={columns} data={tableData} />
+			{tableData && <DataTable columns={columns} data={tableData} />}
 		</div>
 	);
 }
