@@ -78,7 +78,9 @@ class SortFilter(Filter):
         }
 
     def requires_join(self) -> bool:
-        """ """
+        """
+        Determines if this film requires the join.
+        """
         return self.sort in {"asc_gross", "desc_gross"}
 
     def add_filter(
