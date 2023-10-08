@@ -72,10 +72,12 @@ export default function Page(): JSX.Element {
 			if (ids) {
 				for (let i = 0; i < ids?.length; i++) {
 					const film = await fetchFilmId(Number(ids[i]));
-					films.push({
-						value: film.id.toString(),
-						label: toTitleCase(film.name),
-					});
+					if (film) {
+						films.push({
+							value: film.id.toString(),
+							label: toTitleCase(film.name),
+						});
+					}
 				}
 			}
 			setFilmIdData(films);

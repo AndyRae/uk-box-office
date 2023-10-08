@@ -41,7 +41,7 @@ export default async function Page(): Promise<JSX.Element> {
 
 	const data = await fetchForecast(startDate, endDate);
 
-	const filteredFutureData = updateWeekGross(data.results);
+	const filteredFutureData = data ? updateWeekGross(data.results) : [];
 
 	return (
 		<>

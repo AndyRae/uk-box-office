@@ -32,7 +32,7 @@ export async function generateMetadata({
 }) {
 	const data = await fetchDistributor(params.slug);
 
-	const name = toTitleCase(data.name);
+	const name = toTitleCase(data ? data?.name : '');
 	const title = `${name} | Box Office Data`;
 	const description = `Get ${name} distributed films data at the UK Box Office.`;
 
@@ -76,11 +76,11 @@ export default async function Page({
 	const data = await fetchDistributor(params.slug);
 	const boxOfficeData = await fetchDistributorBoxOffice(params.slug, 25);
 
-	const boxOfficeTotal = boxOfficeData.results.reduce(
+	const boxOfficeTotal = boxOfficeData?.results.reduce(
 		(acc, curr) => acc + curr.total,
 		0
 	);
-	const filmsCount = boxOfficeData.results.reduce(
+	const filmsCount = boxOfficeData?.results.reduce(
 		(acc, curr) => acc + curr.count,
 		0
 	);
@@ -93,10 +93,11 @@ export default async function Page({
 	// Get dates from the searchparams.
 	const start = searchParams?.s ?? s;
 	const end = searchParams?.e ?? e;
-	const { results } = await fetchBoxOfficeInfinite(start, end, [data.id]);
+	const dist = data ? data.id : 0;
+	const { results } = await fetchBoxOfficeInfinite(start, end, [dist]);
 
 	// Add change YOY column
-	const boxOfficeWithChange = boxOfficeData.results.map((year, index) => {
+	const boxOfficeWithChange = boxOfficeData?.results.map((year, index) => {
 		const previousYear = boxOfficeData.results[index + 1];
 		const changeYOY = previousYear
 			? Math.ceil(
@@ -113,22 +114,22 @@ export default async function Page({
 		<div>
 			<div className='grid grid-cols-1 md:grid-cols-5 gap-3 md:gap-5 mb-4'>
 				<div className='col-span-2'>
-					<PageTitle>{toTitleCase(data.name)}</PageTitle>
+					<PageTitle>{toTitleCase(data ? data?.name : '')}</PageTitle>
 					<DescriptionList>
 						<DescriptionItem
 							title='Total Box Office'
-							text={`£ ${boxOfficeTotal.toLocaleString('en-GB')}`}
+							text={`£ ${boxOfficeTotal?.toLocaleString('en-GB')}`}
 						/>
 
 						<DescriptionItem
 							title='Number of Films'
-							text={filmsCount.toLocaleString('en-GB')}
+							text={filmsCount?.toLocaleString('en-GB')}
 						/>
 					</DescriptionList>
 
 					<ExportCSV
-						data={boxOfficeData.results}
-						filename={`${data.name}_data.csv`}
+						data={boxOfficeData?.results}
+						filename={`${data?.name}_data.csv`}
 						className='mr-2'
 					/>
 					<DatasourceButton />
@@ -142,7 +143,7 @@ export default async function Page({
 							<TabsTrigger value='tab3'>Historical</TabsTrigger>
 						</TabsList>
 						<TabsContent value='tab1' className='h-[30rem]'>
-							<PreviousChart data={boxOfficeData.results} />
+							{boxOfficeData && <PreviousChart data={boxOfficeData.results} />}
 						</TabsContent>
 
 						<TabsContent value='tab2' className='h-[30rem]'>
@@ -153,7 +154,12 @@ export default async function Page({
 						</TabsContent>
 
 						<TabsContent value='tab3' className='h-[30rem]'>
-							<DataTable columns={previousColumns} data={boxOfficeWithChange} />
+							{boxOfficeWithChange && (
+								<DataTable
+									columns={previousColumns}
+									data={boxOfficeWithChange}
+								/>
+							)}
 						</TabsContent>
 					</Tabs>
 				</div>
@@ -190,7 +196,7 @@ const DistributorFilmsTable = async ({
 
 	const data = await fetchDistributorFilms(slug, pageIndex, pageLimit, sort);
 
-	const pageNumbers = paginate(data.count, pageIndex, pageLimit);
+	const pageNumbers = data ? paginate(data.count, pageIndex, pageLimit) : [0];
 
 	return (
 		<>
