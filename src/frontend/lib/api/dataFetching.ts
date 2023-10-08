@@ -395,10 +395,11 @@ export async function fetchCountry(slug: string): Promise<Country> {
 export const fetchCountryFilms = async (
 	slug: string,
 	page: number,
-	limit: number
+	limit: number,
+	sort: string = 'asc_name'
 ): Promise<CountryFilmsData> => {
 	try {
-		const url = getCountryFilmsEndpoint(slug, page, limit);
+		const url = getCountryFilmsEndpoint(slug, page, limit, sort);
 		return await request<CountryFilmsData>(url, { next: { revalidate: 60 } });
 	} catch (error) {
 		throw new Error('Failed to country');

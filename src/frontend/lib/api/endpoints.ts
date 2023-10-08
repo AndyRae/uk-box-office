@@ -110,9 +110,10 @@ export const getCountryListEndpoint = (page: number, limit: number): string => {
 export const getCountryFilmsEndpoint = (
 	slug: string,
 	page: number,
-	limit: number
+	limit: number,
+	sort: string
 ): string => {
-	return `/country/${slug}/films?page=${page}&limit=${limit}`;
+	return `/country/${slug}/films?page=${page}&limit=${limit}&sort=${sort}`;
 };
 
 export const getCountryEndpoint = (slug: string): string => {
