@@ -10,7 +10,7 @@
   /* .compare-select-container {
   } */
   .compare-select-container .compare-select__control {
-    @apply bg-white text-sm text-black dark:text-white dark:bg-black rounded-lg min-h-[2.5rem]
+    @apply bg-white border-slate-200 text-sm text-black dark:text-white dark:bg-slate-950 dark:border-slate-800 rounded-md min-h-[2.5rem]
   }
 
   .compare-select-container .compare-select__control--is-focused {

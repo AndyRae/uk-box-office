@@ -62,9 +62,13 @@ export async function generateMetadata({
 
 export default async function Page({
 	params,
+	searchParams,
 }: {
 	params: { year: string; month: number; day: number };
+	searchParams: { country: string; distributor: string };
 }) {
+	const countries = searchParams?.country?.split(',').map(Number);
+	const distributors = searchParams?.distributor?.split(',').map(Number);
 	// Build Dates based on existing params or defaults.
 	const start = new Date(parseInt(params.year), params.month - 1, params.day);
 	const sLastWeek = addDays(start, -7);
@@ -78,17 +82,25 @@ export default async function Page({
 		sLastWeek.getMonth() + 1
 	}-${sLastWeek.getDate()}`;
 
-	// Fetch Data
+	// Fetch data
+	let yearsToGoBack = 25;
+	// If a filter is applied, don't show comparison data.
+	if (countries != undefined || distributors != undefined) {
+		yearsToGoBack = 1;
+	}
+
 	const { results, isReachedEnd, percentFetched } =
-		await fetchBoxOfficeInfinite(startDate, startDate);
+		await fetchBoxOfficeInfinite(startDate, startDate, distributors, countries);
 	const { results: lastWeekResults } = await fetchBoxOfficeInfinite(
 		startLastWeek,
-		startLastWeek
+		startLastWeek,
+		distributors,
+		countries
 	);
 	const timeComparisonData = await fetchBoxOfficeSummary(
 		startDate,
 		startDate,
-		25 // Years to go back.
+		yearsToGoBack
 	);
 
 	return (

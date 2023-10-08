@@ -1,9 +1,10 @@
 import {
 	fetchBoxOfficeInfinite,
 	fetchBoxOfficePreviousYear,
+	fetchCountryList,
 } from '@/lib/api/dataFetching';
 import { groupForTable } from '@/lib/helpers/groupData';
-import { Controls } from '@/components/controls';
+import { DashboardControls } from '@/components/controls';
 import { TimeLineChart } from '@/components/charts/timeline';
 import { StructuredTimeData } from '@/components/structured-data';
 import { StackedBarChart } from '@/components/charts/stacked-bar';
@@ -17,6 +18,8 @@ import * as React from 'react';
 import { Skeleton } from '@/components/skeleton';
 import { columns } from '@/components/tables/dashboard';
 import { DataTable } from '@/components/vendor/data-table';
+import { CountryFilter } from '@/components/country-filter';
+import { mapToValues } from '@/lib/helpers/filters';
 
 export default async function Page({
 	searchParams,
@@ -37,7 +40,12 @@ export default async function Page({
 async function Dashboard({
 	searchParams,
 }: {
-	searchParams: { s?: string; e?: string };
+	searchParams: {
+		s?: string;
+		e?: string;
+		country?: string;
+		distributor?: string;
+	};
 }): Promise<JSX.Element> {
 	// Calculate defaults at 90 days.
 	const s = parseDate(addDays(new Date(), -90));
@@ -46,10 +54,24 @@ async function Dashboard({
 	// Get dates from the searchparams.
 	const start = searchParams?.s ?? s;
 	const end = searchParams?.e ?? e;
+	const countries = searchParams?.country?.split(',').map(Number);
+	const distributors = searchParams?.distributor?.split(',').map(Number);
 
 	// Fetch data from the API
-	const { results, isReachedEnd } = await fetchBoxOfficeInfinite(start, end);
-	const timeComparisonData = await fetchBoxOfficePreviousYear(start, end);
+	const { results, isReachedEnd } = await fetchBoxOfficeInfinite(
+		start,
+		end,
+		distributors,
+		countries
+	);
+	let timeComparisonData = await fetchBoxOfficePreviousYear(start, end);
+	const countryData = await fetchCountryList(1, 100);
+	const countryOptions = mapToValues(countryData.results);
+
+	// If a filter is applied, don't show comparison data.
+	if (countries != undefined || distributors != undefined) {
+		timeComparisonData = { results: [] };
+	}
 
 	// Group Data for the charts
 	const tableData = groupForTable(results);
@@ -65,10 +87,11 @@ async function Dashboard({
 			/>
 
 			{/* Controls */}
-			<Controls start={start} end={end}>
+			<DashboardControls start={start} end={end}>
+				<CountryFilter countries={countryOptions} />
 				<LastUpdated date={lastUpdated} />
 				<DatasourceCard />
-			</Controls>
+			</DashboardControls>
 
 			{/* Scorecards grid. */}
 			<Scorecards
