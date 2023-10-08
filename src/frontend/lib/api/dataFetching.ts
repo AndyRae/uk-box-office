@@ -314,10 +314,11 @@ export async function fetchDistributorBoxOffice(
 export const fetchDistributorFilms = async (
 	slug: string,
 	page: number = 1,
-	limit: number = 10
+	limit: number = 10,
+	sort: string
 ): Promise<DistributorFilmsData> => {
 	try {
-		const url = getDistributorFilmsEndpoint(slug, page, limit);
+		const url = getDistributorFilmsEndpoint(slug, page, limit, sort);
 		return await request<DistributorFilmsData>(url, {
 			next: { revalidate: 60 },
 		});

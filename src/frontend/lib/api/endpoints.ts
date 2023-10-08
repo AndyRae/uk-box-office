@@ -82,9 +82,10 @@ export const getDistributorListEndpoint = (
 export const getDistributorFilmsEndpoint = (
 	slug: string,
 	page: number,
-	limit: number
+	limit: number,
+	sort: string
 ): string => {
-	return `/distributor/${slug}/films?page=${page}&limit=${limit}`;
+	return `/distributor/${slug}/films?page=${page}&limit=${limit}&sort=${sort}`;
 };
 
 export const getDistributorEndpoint = (slug: string): string => {
