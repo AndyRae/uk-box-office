@@ -116,13 +116,15 @@ const TimeMetric = ({
 }: {
 	title: string;
 	text: any;
-	metricChange: number;
+	metricChange?: number;
 }) => {
 	return (
 		<DescriptionItem title={title} text={text}>
-			<p className='text-xs text-muted-foreground'>
-				<MetricChange value={metricChange} /> from last year
-			</p>
+			{metricChange && (
+				<p className='text-xs text-muted-foreground'>
+					<MetricChange value={metricChange} /> from last year
+				</p>
+			)}
 		</DescriptionItem>
 	);
 };
@@ -140,6 +142,9 @@ const TimeMetrics = ({
 	const admissions = thisYear?.admissions ?? 0;
 	const numberOfCinemas = thisYear?.number_of_cinemas ?? 0;
 	const averageTicketPrice = parseInt((boxOffice / admissions!).toFixed(2));
+
+	let showMetrics = false; // A flag to determine whether to show metrics
+	const hasAdmissions = admissions ? true : false;
 
 	// Time Comparison Data
 	let changeNewFilms = 0;
@@ -178,35 +183,34 @@ const TimeMetrics = ({
 				(lastYear.week_gross / lastYear.admissions!)) *
 				100
 		);
+		showMetrics = true;
 	}
-
-	const hasAdmissions = admissions ? true : false;
 
 	return (
 		<DescriptionList>
 			<TimeMetric
 				title={'Total Box Office'}
 				text={`£ ${boxOffice?.toLocaleString()}`}
-				metricChange={changeWeek}
+				metricChange={showMetrics ? changeWeek : undefined}
 			/>
 
 			<TimeMetric
 				title={'Weekend Box Office'}
 				text={`£ ${weekendBoxOffice?.toLocaleString()}`}
-				metricChange={changeWeekend}
+				metricChange={showMetrics ? changeWeekend : undefined}
 			/>
 
 			<TimeMetric
 				title={'New Releases'}
 				text={numberOfNewFilms}
-				metricChange={changeNewFilms}
+				metricChange={showMetrics ? changeNewFilms : undefined}
 			/>
 
 			{hasAdmissions && (
 				<TimeMetric
 					title={'Admissions'}
 					text={admissions?.toLocaleString()}
-					metricChange={changeAdmissions}
+					metricChange={showMetrics ? changeAdmissions : undefined}
 				/>
 			)}
 
@@ -214,14 +218,14 @@ const TimeMetrics = ({
 				<TimeMetric
 					title={'Average Ticket Price'}
 					text={`£ ${averageTicketPrice?.toLocaleString()}`}
-					metricChange={changeAverageTicketPrice}
+					metricChange={showMetrics ? changeAverageTicketPrice : undefined}
 				/>
 			)}
 
 			<TimeMetric
 				title={'Cinemas'}
 				text={numberOfCinemas}
-				metricChange={changeCinemas}
+				metricChange={showMetrics ? changeCinemas : undefined}
 			/>
 		</DescriptionList>
 	);
