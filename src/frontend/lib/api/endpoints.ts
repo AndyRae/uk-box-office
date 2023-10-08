@@ -1,3 +1,5 @@
+import { FilmSortOption } from '@/interfaces/Film';
+
 /**
  * Returns the backend URL based on the environment
  * @returns {string} The backend URL
@@ -58,7 +60,7 @@ export const getBoxOfficeLastWeekEndpoint = (): string => {
 export const getFilmListEndpoint = (
 	page: number,
 	limit: number,
-	sort: string
+	sort: FilmSortOption
 ): string => {
 	return `/film/?page=${page}&limit=${limit}&sort=${sort}`;
 };
@@ -83,7 +85,7 @@ export const getDistributorFilmsEndpoint = (
 	slug: string,
 	page: number,
 	limit: number,
-	sort: string
+	sort: FilmSortOption
 ): string => {
 	return `/distributor/${slug}/films?page=${page}&limit=${limit}&sort=${sort}`;
 };
@@ -112,7 +114,7 @@ export const getCountryFilmsEndpoint = (
 	slug: string,
 	page: number,
 	limit: number,
-	sort: string
+	sort: FilmSortOption
 ): string => {
 	return `/country/${slug}/films?page=${page}&limit=${limit}&sort=${sort}`;
 };
