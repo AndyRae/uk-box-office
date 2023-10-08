@@ -42,9 +42,13 @@ export async function generateMetadata({
 
 export default async function Page({
 	params,
+	searchParams,
 }: {
 	params: { year: string; quarter: string; quarterend: string };
+	searchParams: { country: string; distributor: string };
 }) {
+	const countries = searchParams?.country?.split(',').map(Number);
+	const distributors = searchParams?.distributor?.split(',').map(Number);
 	// Build Dates based on existing params or defaults.
 	const month = parseInt(params.quarter) * 3 - 2;
 
@@ -79,7 +83,7 @@ export default async function Page({
 
 	// Fetch data
 	const { results, isReachedEnd, percentFetched } =
-		await fetchBoxOfficeInfinite(startDate, endDate);
+		await fetchBoxOfficeInfinite(startDate, endDate, distributors, countries);
 	const timeComparisonData = await fetchBoxOfficeSummary(
 		startDate,
 		endDate,

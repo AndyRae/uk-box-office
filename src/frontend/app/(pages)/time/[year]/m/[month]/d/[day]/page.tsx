@@ -62,9 +62,13 @@ export async function generateMetadata({
 
 export default async function Page({
 	params,
+	searchParams,
 }: {
 	params: { year: string; month: number; day: number };
+	searchParams: { country: string; distributor: string };
 }) {
+	const countries = searchParams?.country?.split(',').map(Number);
+	const distributors = searchParams?.distributor?.split(',').map(Number);
 	// Build Dates based on existing params or defaults.
 	const start = new Date(parseInt(params.year), params.month - 1, params.day);
 	const sLastWeek = addDays(start, -7);

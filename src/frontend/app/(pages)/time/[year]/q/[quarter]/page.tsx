@@ -42,9 +42,13 @@ export async function generateMetadata({
 
 export default async function Page({
 	params,
+	searchParams,
 }: {
 	params: { year: string; quarter: string };
+	searchParams: { country: string; distributor: string };
 }): Promise<JSX.Element> {
+	const countries = searchParams?.country?.split(',').map(Number);
+	const distributors = searchParams?.distributor?.split(',').map(Number);
 	// Build Dates based on existing params or defaults.
 	const month = parseInt(params.quarter) * 3 - 2;
 	const endMonth = parseInt(params.quarter) * 3;
