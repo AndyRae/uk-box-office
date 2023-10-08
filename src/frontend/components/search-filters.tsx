@@ -7,7 +7,7 @@ import Select from 'react-select';
 import { Distributor } from '@/interfaces/Distributor';
 import { Country } from '@/interfaces/Country';
 
-import { toTitleCase } from '@/lib/helpers/toTitleCase';
+import { mapToValues } from '@/lib/helpers/filters';
 
 import { Icons } from '@/components/icons';
 import { Button } from '@/components/ui/button';
@@ -26,18 +26,7 @@ import {
 	CollapsibleContent,
 	CollapsibleTrigger,
 } from '@/components/ui/collapsible';
-
-type SelectOption = {
-	value: string;
-	label: string;
-};
-
-const mapToValues = (array: any[]) => {
-	return array.map((item) => ({
-		value: item.id.toString(),
-		label: toTitleCase(item.name),
-	}));
-};
+import { SelectOption } from '@/interfaces/Filter';
 
 export const SearchFilters = ({
 	query,
