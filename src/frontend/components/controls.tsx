@@ -8,6 +8,7 @@ import addDays from 'date-fns/addDays';
 import { Button } from '@/components/ui/button';
 import { CalendarDateRangePicker } from '@/components/date-range-picker';
 import { parseDate } from '@/lib/helpers/dates';
+import clsx from 'clsx';
 
 interface ControlsProps extends HTMLAttributes<HTMLDivElement> {
 	start: string;
@@ -96,10 +97,12 @@ interface ControlsWrapperProps extends HTMLAttributes<HTMLDivElement> {}
 /**
  * Wrapper for controls.
  */
-const ControlsWrapper = forwardRef<HTMLDivElement, ControlsWrapperProps>(
-	({ children }) => {
+export const ControlsWrapper = forwardRef<HTMLDivElement, ControlsWrapperProps>(
+	({ children, className }) => {
 		return (
-			<div className='flex flex-wrap mb-2 gap-y-4 items-center justify-center'>
+			<div
+				className={clsx('flex flex-wrap mb-2 gap-y-4 items-center', className)}
+			>
 				{children}
 			</div>
 		);

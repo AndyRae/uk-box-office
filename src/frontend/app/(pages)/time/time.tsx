@@ -22,6 +22,10 @@ import { DataTable } from '@/components/vendor/data-table';
 import { columns } from '@/components/tables/films-time';
 import { columns as weeksColumns } from '@/components/tables/weeks';
 import { columns as historicalColumns } from '@/components/tables/historical-years';
+import { CountryFilter } from '@/components/country-filter';
+import { ControlsWrapper } from '@/components/controls';
+import { fetchCountryList } from '@/lib/api/dataFetching';
+import { mapToValues } from '@/lib/helpers/filters';
 
 type TimePageProps = {
 	year: number;
@@ -38,7 +42,7 @@ type TimePageProps = {
  * Time Page
  * @returns {JSX.Element}
  */
-export const TimePage = ({
+export const TimePage = async ({
 	year,
 	month = undefined,
 	day = undefined,
@@ -47,7 +51,7 @@ export const TimePage = ({
 	results,
 	lastWeekResults,
 	timeComparisonData,
-}: TimePageProps): JSX.Element => {
+}: TimePageProps): Promise<JSX.Element> => {
 	type MonthsType = {
 		[key: number]: string;
 	};
@@ -71,6 +75,9 @@ export const TimePage = ({
 		quarter ? `Q${quarter}` : month ? months[month as keyof MonthsType] : ''
 	}${quarterend ? ` - Q${quarterend}` : ''} ${year}`;
 
+	const countryData = await fetchCountryList(1, 100);
+	const countryOptions = mapToValues(countryData.results);
+
 	return (
 		<>
 			<StructuredTimeData
@@ -78,7 +85,10 @@ export const TimePage = ({
 				endpoint={'/time'}
 				time={pageTitle}
 			/>
-			<BreadcrumbsTime year={year} month={month} quarter={quarter} />
+			<ControlsWrapper className='hidden md:flex'>
+				<BreadcrumbsTime year={year} month={month} quarter={quarter} />
+				<CountryFilter countries={countryOptions} />
+			</ControlsWrapper>
 
 			<div className='grid grid-cols-1 md:grid-cols-5 gap-3 md:gap-5'>
 				<div className='col-span-2'>
