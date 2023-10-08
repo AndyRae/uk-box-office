@@ -23,6 +23,7 @@ import { parseDate } from '@/lib/helpers/dates';
 import { toTitleCase } from '@/lib/helpers/toTitleCase';
 import { paginate } from '@/lib/helpers/pagination';
 import addDays from 'date-fns/addDays';
+import { FilmSortOption } from '@/interfaces/Film';
 
 export async function generateMetadata({
 	params,
@@ -68,7 +69,7 @@ export default async function Page({
 	searchParams,
 }: {
 	params: { slug: string };
-	searchParams: { p?: number; s?: string; e?: string; sort: string };
+	searchParams: { p?: number; s?: string; e?: string; sort: FilmSortOption };
 }): Promise<JSX.Element> {
 	let pageIndex = searchParams?.p ?? 1;
 	const sort = searchParams?.sort ?? 'asc_name';
@@ -183,7 +184,7 @@ const DistributorFilmsTable = async ({
 }: {
 	slug: string;
 	pageIndex: number;
-	sort: string;
+	sort: FilmSortOption;
 }): Promise<JSX.Element> => {
 	const pageLimit = 15;
 

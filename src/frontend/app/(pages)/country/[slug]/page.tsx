@@ -24,6 +24,7 @@ import {
 import { parseDate } from '@/lib/helpers/dates';
 import addDays from 'date-fns/addDays';
 import { toTitleCase } from '@/lib/helpers/toTitleCase';
+import { FilmSortOption } from '@/interfaces/Film';
 
 export async function generateMetadata({
 	params,
@@ -69,7 +70,7 @@ export default async function Page({
 	searchParams,
 }: {
 	params: { slug: string };
-	searchParams: { p?: number; s?: string; e?: string; sort?: string };
+	searchParams: { p?: number; s?: string; e?: string; sort?: FilmSortOption };
 }): Promise<JSX.Element> {
 	let pageIndex = searchParams?.p ?? 1;
 	const data = await fetchCountry(params.slug);
@@ -178,7 +179,7 @@ const CountryFilmsTable = async ({
 }: {
 	slug: string;
 	pageIndex: number;
-	sort: string;
+	sort: FilmSortOption;
 }): Promise<JSX.Element> => {
 	const pageLimit = 15;
 

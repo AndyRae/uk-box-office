@@ -36,3 +36,9 @@ export type FilmOption = {
 	value: string;
 	label: string;
 };
+
+export type FilmSortOption =
+	| 'asc_name'
+	| 'desc_name'
+	| 'asc_gross'
+	| 'desc_gross';

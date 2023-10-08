@@ -33,6 +33,7 @@ import {
 	FilmListData,
 	FilmOption,
 	TopFilm,
+	FilmSortOption,
 } from '@/interfaces/Film';
 import {
 	Distributor,
@@ -315,7 +316,7 @@ export const fetchDistributorFilms = async (
 	slug: string,
 	page: number = 1,
 	limit: number = 10,
-	sort: string
+	sort: FilmSortOption
 ): Promise<DistributorFilmsData> => {
 	try {
 		const url = getDistributorFilmsEndpoint(slug, page, limit, sort);
@@ -397,7 +398,7 @@ export const fetchCountryFilms = async (
 	slug: string,
 	page: number,
 	limit: number,
-	sort: string = 'asc_name'
+	sort: FilmSortOption
 ): Promise<CountryFilmsData> => {
 	try {
 		const url = getCountryFilmsEndpoint(slug, page, limit, sort);
