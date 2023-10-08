@@ -1,6 +1,7 @@
 import {
 	fetchBoxOfficeInfinite,
 	fetchBoxOfficePreviousYear,
+	fetchCountryList,
 } from '@/lib/api/dataFetching';
 import { groupForTable } from '@/lib/helpers/groupData';
 import { DashboardControls } from '@/components/controls';
@@ -18,6 +19,7 @@ import { Skeleton } from '@/components/skeleton';
 import { columns } from '@/components/tables/dashboard';
 import { DataTable } from '@/components/vendor/data-table';
 import { CountryFilter } from '@/components/country-filter';
+import { mapToValues } from '@/lib/helpers/filters';
 
 export default async function Page({
 	searchParams,
@@ -63,6 +65,8 @@ async function Dashboard({
 		countries
 	);
 	const timeComparisonData = await fetchBoxOfficePreviousYear(start, end);
+	const countryData = await fetchCountryList(1, 100);
+	const countryOptions = mapToValues(countryData.results);
 
 	// Group Data for the charts
 	const tableData = groupForTable(results);
@@ -79,7 +83,7 @@ async function Dashboard({
 
 			{/* Controls */}
 			<DashboardControls start={start} end={end}>
-				<CountryFilter />
+				<CountryFilter countries={countryOptions} />
 				<LastUpdated date={lastUpdated} />
 				<DatasourceCard />
 			</DashboardControls>
