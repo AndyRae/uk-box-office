@@ -2,9 +2,7 @@
 
 import * as React from 'react';
 import { format, addDays } from 'date-fns';
-import { useRouter } from 'next/navigation';
-import { usePathname } from 'next/navigation';
-import { parseDate } from '@/lib/helpers/dates';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 
 import { DateRange } from 'react-day-picker';
 import clsx from 'clsx';
@@ -16,7 +14,8 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from '@/components/ui/popover';
-import { Icons } from './icons';
+import { Icons } from '@/components/icons';
+import { parseDate } from '@/lib/helpers/dates';
 
 interface CalendarDateRangePickerProps
 	extends React.HTMLAttributes<HTMLDivElement> {
@@ -30,7 +29,9 @@ export function CalendarDateRangePicker({
 	className,
 }: CalendarDateRangePickerProps) {
 	const router = useRouter();
-	const pathname = usePathname();
+	const pathName = usePathname();
+	const searchParams = useSearchParams();
+	const queryParams = new URLSearchParams(searchParams);
 
 	const minDays = 547; // 547 days is 18 months
 	const fromDate = addDays(new Date(), -minDays);
@@ -42,9 +43,12 @@ export function CalendarDateRangePicker({
 
 	const handleSelect = (date: any) => {
 		setDate(date);
-		router.push(
-			`${pathname}?s=${parseDate(date.from)}&e=${parseDate(date.to)}`
-		);
+
+		queryParams.set('s', parseDate(date.from));
+		queryParams.set('e', parseDate(date.to));
+
+		const url = `${pathName}?${queryParams.toString()}`;
+		router.push(url);
 	};
 
 	const CalendarIcon = Icons['calendar'];
