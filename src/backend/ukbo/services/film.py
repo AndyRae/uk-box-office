@@ -1,11 +1,10 @@
 import uuid
 from typing import Any, Dict, List, Optional
 
-import flask_sqlalchemy
 import pandas as pd
 from flask import Response, abort, jsonify
 from slugify import slugify  # type: ignore
-from sqlalchemy import extract, func
+from sqlalchemy import func
 from sqlalchemy.orm import joinedload
 from ukbo import models, services
 from ukbo.dto import (
@@ -16,7 +15,6 @@ from ukbo.dto import (
     FilmSchemaValues,
 )
 from ukbo.extensions import db
-from ukbo.services.filters import QueryFilter
 
 
 def list_all(sort: Optional[str], page: int = 1, limit: int = 100) -> Response:
@@ -205,6 +203,7 @@ def delete_film(id: int) -> bool:
 def search(
     search_query: str,
     query_filter: services.filters.QueryFilter = services.filters.QueryFilter(),
+    sort_filter: services.filters.SortFilter = services.filters.SortFilter(),
     limit: int = 15,
     page: int = 1,
 ) -> Response:
@@ -221,7 +220,7 @@ def search(
     query = query.filter(models.Film.name.ilike(f"%{search_query}%"))
 
     # apply filters
-    query = add_filters(query, query_filter)
+    query = services.filters.apply_filters(query, query_filter, sort_filter)
 
     # Execute the query to retrieve all films
     all_films = query.options(joinedload(models.Film.distributors)).all()
@@ -258,74 +257,6 @@ def search(
         "countries": countries,
         "max_gross": highest_gross_value,
     }
-
-
-def add_filters(
-    query: flask_sqlalchemy.query.Query, query_filter: QueryFilter
-) -> flask_sqlalchemy.query.Query:
-    """
-    Adds filters and sorting to a query if they are present.
-
-    Args:
-        query: The query that will be executed.
-        query_filter: The set of filters to apply
-
-    Returns: The query with filters applied.
-    """
-    if query_filter.distributor_ids is not None:
-        query = query.join(models.distributors).join(models.Distributor)
-        query = query.filter(
-            models.Distributor.id.in_(query_filter.distributor_ids)
-        )
-
-    if query_filter.country_ids is not None:
-        query = query.join(models.countries).join(models.Country)
-        query = query.filter(models.Country.id.in_(query_filter.country_ids))
-
-    if (
-        query_filter.min_year is not None
-        or query_filter.max_year is not None
-        or query_filter.min_box is not None
-        or query_filter.max_box is not None
-        or query_filter.sort is not None
-    ):
-        query = query.join(models.Film_Week).group_by(models.Film.id)
-
-    if query_filter.min_year is not None:
-        query = query.filter(
-            extract("year", models.Film_Week.date) >= query_filter.min_year
-        )
-
-    if query_filter.max_year is not None:
-        query = query.filter(
-            extract("year", models.Film_Week.date) <= query_filter.max_year
-        )
-
-    if query_filter.min_box is not None:
-        query = query.having(
-            func.max(models.Film_Week.total_gross) >= query_filter.min_box
-        )
-
-    if query_filter.max_box is not None:
-        query = query.having(
-            func.max(models.Film_Week.total_gross) <= query_filter.max_box
-        )
-
-    # Apply sorting
-    # Define the sorting options and their corresponding ordering expressions
-    sorting_options = {
-        "asc_name": models.Film.name.asc(),
-        "desc_name": models.Film.name.desc(),
-        "asc_box": func.max(models.Film_Week.total_gross).asc(),
-        "desc_box": func.max(models.Film_Week.total_gross).desc(),
-    }
-
-    if query_filter.sort is not None:
-        sort_option = sorting_options.get(query_filter.sort)
-        if sort_option is not None:
-            query = query.order_by(sort_option)
-
-    return query
 
 
 def unique_countries(films: List[models.Film]) -> List[Dict[str, Any]]:

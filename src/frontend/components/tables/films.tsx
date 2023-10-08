@@ -3,7 +3,7 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { ColumnDef, SortingState, OnChangeFn } from '@tanstack/react-table';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 
 import { toTitleCase } from '@/lib/helpers/toTitleCase';
 
@@ -17,18 +17,27 @@ import { DataTableColumnHeader } from '@/components/vendor/data-table-column-hea
 export const FilmTable = ({ data }: any) => {
 	const router = useRouter();
 	const pathName = usePathname();
+	const searchParams = useSearchParams();
 
+	/**
+	 * Custom sorting to handle on the backend.
+	 * @param handleSorting
+	 */
 	const customSetSorting: OnChangeFn<SortingState> = (handleSorting) => {
 		if (handleSorting instanceof Function) {
 			const [sortingItem] = handleSorting([]);
+
+			// Get the current query params so we don't override them all
+			const queryParams = new URLSearchParams(searchParams);
 
 			if (sortingItem) {
 				const { id, desc } = sortingItem;
 
 				// Generate the URL parameter based on the sorting state
 				const sortParam = desc ? `desc_${id}` : `asc_${id}`;
+				queryParams.set('sort', sortParam);
 
-				const url = `${pathName}?sort=${sortParam}`;
+				const url = `${pathName}?${queryParams.toString()}`;
 				router.push(url);
 			}
 		}

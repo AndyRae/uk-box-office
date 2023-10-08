@@ -54,10 +54,12 @@ def all() -> Response:
         max_year=max_year,
         min_box=min_box,
         max_box=max_box,
-        sort=sort,
     )
+    sort_filter = services.filters.SortFilter(sort=sort)
 
-    films = services.film.search(query, query_filter, page=int(page))
+    films = services.film.search(
+        query, query_filter, sort_filter, page=int(page)
+    )
     distributors = services.distributor.search(query)
     countries = services.country.search(query)
 

@@ -86,8 +86,8 @@ export const SearchFilters = ({
 			setCountry(mapToValues(selected));
 		}
 
-		const minBox = searchParams.get('min_box');
-		const maxBox = searchParams.get('max_box');
+		const minBox = searchParams.get('min_gross');
+		const maxBox = searchParams.get('max_gross');
 		const minYear = searchParams.get('min_year');
 		const maxYear = searchParams.get('max_year');
 
@@ -124,8 +124,8 @@ export const SearchFilters = ({
 				param: 'country',
 				mapFn: (filter: SelectOption[]) => filter.map((c) => c.value),
 			},
-			{ filter: selectedMinBox, param: 'min_box' },
-			{ filter: selectedMaxBox, param: 'max_box' },
+			{ filter: selectedMinBox, param: 'min_gross' },
+			{ filter: selectedMaxBox, param: 'max_gross' },
 			{ filter: selectedMinYear, param: 'min_year' },
 			{ filter: selectedMaxYear, param: 'max_year' },
 		];
@@ -252,8 +252,8 @@ const SortSelect = ({
 					<SelectLabel>Sort</SelectLabel>
 					<SelectItem value='asc_name'>Name Ascending</SelectItem>
 					<SelectItem value='desc_name'>Name Descending</SelectItem>
-					<SelectItem value='asc_box'>Box Office Low to High</SelectItem>
-					<SelectItem value='desc_box'>Box Office High to Low</SelectItem>
+					<SelectItem value='asc_gross'>Box Office Low to High</SelectItem>
+					<SelectItem value='desc_gross'>Box Office High to Low</SelectItem>
 				</SelectGroup>
 			</SelectContent>
 		</SelectWrap>

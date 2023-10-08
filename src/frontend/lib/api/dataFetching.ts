@@ -33,6 +33,7 @@ import {
 	FilmListData,
 	FilmOption,
 	TopFilm,
+	FilmSortOption,
 } from '@/interfaces/Film';
 import {
 	Distributor,
@@ -197,7 +198,7 @@ export async function fetchBoxOfficeInfinite(
 export const fetchFilmList = async (
 	page: number = 1,
 	limit: number = 10,
-	sort: string = 'asc_name'
+	sort: FilmSortOption = 'asc_name'
 ): Promise<FilmListData> => {
 	try {
 		const url = getFilmListEndpoint(page, limit, sort);
@@ -314,10 +315,11 @@ export async function fetchDistributorBoxOffice(
 export const fetchDistributorFilms = async (
 	slug: string,
 	page: number = 1,
-	limit: number = 10
+	limit: number = 10,
+	sort: FilmSortOption
 ): Promise<DistributorFilmsData> => {
 	try {
-		const url = getDistributorFilmsEndpoint(slug, page, limit);
+		const url = getDistributorFilmsEndpoint(slug, page, limit, sort);
 		return await request<DistributorFilmsData>(url, {
 			next: { revalidate: 60 },
 		});
@@ -395,10 +397,11 @@ export async function fetchCountry(slug: string): Promise<Country> {
 export const fetchCountryFilms = async (
 	slug: string,
 	page: number,
-	limit: number
+	limit: number,
+	sort: FilmSortOption
 ): Promise<CountryFilmsData> => {
 	try {
-		const url = getCountryFilmsEndpoint(slug, page, limit);
+		const url = getCountryFilmsEndpoint(slug, page, limit, sort);
 		return await request<CountryFilmsData>(url, { next: { revalidate: 60 } });
 	} catch (error) {
 		throw new Error('Failed to country');

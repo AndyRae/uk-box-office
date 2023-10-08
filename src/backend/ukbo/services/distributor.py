@@ -5,7 +5,7 @@ import pandas as pd
 from flask import Response, abort, jsonify
 from slugify import slugify  # type: ignore
 from sqlalchemy.sql import func
-from ukbo import models
+from ukbo import models, services
 from ukbo.dto import DistributorSchema, FilmSchemaStrict
 from ukbo.extensions import db
 
@@ -62,7 +62,12 @@ def get(slug: str) -> Response:
     return distributor_schema.dump(data)
 
 
-def get_films(slug: str, page: int = 1, limit: int = 100) -> Response:
+def get_films(
+    slug: str,
+    sort_filter: services.filters.SortFilter = services.filters.SortFilter(),
+    page: int = 1,
+    limit: int = 100,
+) -> Response:
     """
     Get a distributor list of films from slug.
 
@@ -87,9 +92,11 @@ def get_films(slug: str, page: int = 1, limit: int = 100) -> Response:
     query = query.join(models.Distributor)
 
     query = query.filter(models.Distributor.slug == slug)
-    data = query.order_by(models.Film.id.desc()).paginate(
-        page=page, per_page=limit, error_out=False
-    )
+
+    # Apply sorting
+    query = services.filters.apply_filters(query, sort_filter)
+
+    data = query.paginate(page=page, per_page=limit, error_out=False)
 
     next_page = (page + 1) if data.has_next else ""
     previous_page = (page - 1) if data.has_prev else ""

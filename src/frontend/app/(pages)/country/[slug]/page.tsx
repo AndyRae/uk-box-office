@@ -10,7 +10,7 @@ import { Controls } from '@/components/controls';
 import { StackedBarChart } from '@/components/charts/stacked-bar';
 import { Pagination } from '@/components/custom/pagination';
 import { DataTable } from '@/components/vendor/data-table';
-import { columns } from '@/components/tables/films';
+import { FilmTable } from '@/components/tables/films';
 import { columns as previousColumns } from '@/components/tables/historical';
 
 import { paginate } from '@/lib/helpers/pagination';
@@ -23,6 +23,8 @@ import {
 } from '@/lib/api/dataFetching';
 import { parseDate } from '@/lib/helpers/dates';
 import addDays from 'date-fns/addDays';
+import { toTitleCase } from '@/lib/helpers/toTitleCase';
+import { FilmSortOption } from '@/interfaces/Film';
 
 export async function generateMetadata({
 	params,
@@ -30,9 +32,10 @@ export async function generateMetadata({
 	params: { slug: string };
 }) {
 	const data = await fetchCountry(params.slug);
+	const country = toTitleCase(data.name);
 
-	const title = `${data.name} | Box Office Data`;
-	const description = `Get ${data.name} released films data at the UK Box Office.`;
+	const title = `${country} | Box Office Data`;
+	const description = `Get ${country} released films data at the UK Box Office.`;
 
 	return {
 		title: title,
@@ -67,11 +70,12 @@ export default async function Page({
 	searchParams,
 }: {
 	params: { slug: string };
-	searchParams: { p?: number; s?: string; e?: string };
+	searchParams: { p?: number; s?: string; e?: string; sort?: FilmSortOption };
 }): Promise<JSX.Element> {
 	let pageIndex = searchParams?.p ?? 1;
 	const data = await fetchCountry(params.slug);
 	const boxOfficeData = await fetchCountryBoxOffice(params.slug, 25);
+	const sort = searchParams?.sort ?? 'asc_name';
 
 	const boxOfficeTotal = boxOfficeData.results.reduce(
 		(acc, curr) => acc + curr.total,
@@ -112,7 +116,7 @@ export default async function Page({
 		<div>
 			<div className='grid grid-cols-1 md:grid-cols-5 gap-3 md:gap-5 mb-5'>
 				<div className='col-span-2 max-h-96'>
-					<PageTitle>{data.name}</PageTitle>
+					<PageTitle>{toTitleCase(data.name)}</PageTitle>
 					<DescriptionList>
 						<DescriptionItem
 							title='Total Box Office'
@@ -156,7 +160,7 @@ export default async function Page({
 					</Tabs>
 				</div>
 			</div>
-			<CountryFilmsTable slug={params.slug} pageIndex={pageIndex} />
+			<CountryFilmsTable slug={params.slug} pageIndex={pageIndex} sort={sort} />
 		</div>
 	);
 }
@@ -171,19 +175,21 @@ export default async function Page({
 const CountryFilmsTable = async ({
 	slug,
 	pageIndex,
+	sort,
 }: {
 	slug: string;
 	pageIndex: number;
+	sort: FilmSortOption;
 }): Promise<JSX.Element> => {
 	const pageLimit = 15;
 
-	const data = await fetchCountryFilms(slug, pageIndex, pageLimit);
+	const data = await fetchCountryFilms(slug, pageIndex, pageLimit, sort);
 
 	const pageNumbers = paginate(data!.count, pageIndex, pageLimit);
 
 	return (
 		<>
-			{data && <DataTable columns={columns} data={data.results} />}
+			{data && <FilmTable data={data.results} />}
 			<Pagination pages={pageNumbers} pageIndex={pageIndex} />
 		</>
 	);

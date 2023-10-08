@@ -23,6 +23,7 @@ import { parseDate } from '@/lib/helpers/dates';
 import { toTitleCase } from '@/lib/helpers/toTitleCase';
 import { paginate } from '@/lib/helpers/pagination';
 import addDays from 'date-fns/addDays';
+import { FilmSortOption } from '@/interfaces/Film';
 
 export async function generateMetadata({
 	params,
@@ -68,9 +69,10 @@ export default async function Page({
 	searchParams,
 }: {
 	params: { slug: string };
-	searchParams: { p?: number; s?: string; e?: string };
+	searchParams: { p?: number; s?: string; e?: string; sort: FilmSortOption };
 }): Promise<JSX.Element> {
 	let pageIndex = searchParams?.p ?? 1;
+	const sort = searchParams?.sort ?? 'asc_name';
 	const data = await fetchDistributor(params.slug);
 	const boxOfficeData = await fetchDistributorBoxOffice(params.slug, 25);
 
@@ -158,7 +160,11 @@ export default async function Page({
 			</div>
 
 			<div className='mt-4'>
-				<DistributorFilmsTable slug={params.slug} pageIndex={pageIndex} />
+				<DistributorFilmsTable
+					slug={params.slug}
+					pageIndex={pageIndex}
+					sort={sort}
+				/>
 			</div>
 		</div>
 	);
@@ -174,13 +180,15 @@ export default async function Page({
 const DistributorFilmsTable = async ({
 	slug,
 	pageIndex,
+	sort,
 }: {
 	slug: string;
 	pageIndex: number;
+	sort: FilmSortOption;
 }): Promise<JSX.Element> => {
 	const pageLimit = 15;
 
-	const data = await fetchDistributorFilms(slug, pageIndex, pageLimit);
+	const data = await fetchDistributorFilms(slug, pageIndex, pageLimit, sort);
 
 	const pageNumbers = paginate(data.count, pageIndex, pageLimit);
 
