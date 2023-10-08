@@ -20,6 +20,8 @@ const ScoreCard = ({
 	subtitle: string | number;
 	metricChange?: any;
 }) => {
+	const isMetricChangeValid = !isNaN(metricChange);
+
 	return (
 		<Card>
 			<CardHeader>
@@ -27,9 +29,11 @@ const ScoreCard = ({
 			</CardHeader>
 			<CardContent>
 				<div className='text-2xl font-bold'>{subtitle}</div>
-				<p className='text-xs text-muted-foreground'>
-					<MetricChange value={metricChange} /> from last year
-				</p>
+				{isMetricChangeValid && (
+					<p className='text-xs text-muted-foreground'>
+						<MetricChange value={metricChange} /> from last year
+					</p>
+				)}
 			</CardContent>
 		</Card>
 	);
