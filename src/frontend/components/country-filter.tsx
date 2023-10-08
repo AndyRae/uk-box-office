@@ -23,7 +23,13 @@ export const CountryFilter = forwardRef<HTMLDivElement, FilterProps>(
 			setCountry(data);
 
 			const urlIds = data.map((option: SelectOption) => option.value);
-			queryParams.set('country', urlIds);
+
+			// Check if they exist so not to push an empty parameter.
+			if (urlIds.length === 0) {
+				queryParams.delete('country');
+			} else {
+				queryParams.set('country', urlIds);
+			}
 
 			const url = `${pathName}?${queryParams.toString()}`;
 			router.push(url);
