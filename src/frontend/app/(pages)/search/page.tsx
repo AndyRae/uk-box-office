@@ -11,8 +11,7 @@ import { Searchbar } from '@/components/search';
 import { PageTitle } from '@/components/custom/page-title';
 import { SearchFilters } from '@/components/search-filters';
 import { Pagination } from '@/components/custom/pagination';
-import { DataTable } from '@/components/vendor/data-table';
-import { columns } from '@/components/tables/films';
+import { FilmTable } from '@/components/tables/films';
 
 export default async function Page({
 	searchParams,
@@ -88,9 +87,7 @@ export default async function Page({
 				maxGross={data.films.max_gross}
 			/>
 
-			{data!.films ? (
-				<DataTable columns={columns} data={data!.films.results} />
-			) : null}
+			{data!.films ? <FilmTable data={data!.films.results} /> : null}
 			<Pagination pages={pageNumbers} pageIndex={pageIndex} />
 		</>
 	);
