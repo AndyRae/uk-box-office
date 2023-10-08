@@ -1,5 +1,10 @@
 from typing import List, Optional
 
+import flask_sqlalchemy
+from flask import jsonify
+from sqlalchemy import func
+from ukbo import models
+
 
 class TimeFilter:
     """
@@ -13,6 +18,40 @@ class TimeFilter:
     def __init__(self, start: Optional[str] = None, end: Optional[str] = None):
         self.start = start
         self.end = end
+
+
+class SortFilter:
+    """
+    Class representing a sort filter.
+
+    Attributes:
+        sort: (Optional[str]): The field and type to sort by.
+    """
+
+    def __init__(self, sort: Optional[str] = None) -> None:
+        self.sort = sort
+        self.sorting_options = {
+            "asc_name": models.Film.name.asc(),
+            "desc_name": models.Film.name.desc(),
+            "asc_gross": func.max(models.Film_Week.total_gross).asc(),
+            "desc_gross": func.max(models.Film_Week.total_gross).desc(),
+        }
+
+    def add_filter(
+        self, query: flask_sqlalchemy.query.Query
+    ) -> flask_sqlalchemy.query.Query:
+        """ """
+        if self.sort is not None:
+            sort_option = self.sorting_options.get(self.sort)
+            if sort_option is None:
+                # Handle invalid sorting option
+                return jsonify(error="Invalid sorting option"), 400
+            # Join the table when sorting by gross
+            query = query.join(models.Film_Week).group_by(models.Film.id)
+            query = query.order_by(sort_option)
+        else:
+            query = query.order_by(models.Film.name.asc())
+        return query
 
 
 class QueryFilter:
