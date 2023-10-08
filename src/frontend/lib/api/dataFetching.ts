@@ -138,9 +138,11 @@ export async function fetchLastWeek(): Promise<{
  * Loops through the box office api infinitely and returns box office data.
  * @param {string} startDate - Start date for the query.
  * @param {string} endDate - End date for the query.
+ * @param {number[]} distributorId - List of distributor ids to filter by.
+ * @param {number[]} countryId - List of country ids to filter by.
  * @returns boxoffice data from the api with pagination.
  * @example
- * const { data, error } = fetchBoxOfficeInfinite('2021-01-01', '2021-01-31');
+ * const { data, error } = fetchBoxOfficeInfinite('2021-01-01', '2021-01-31', [1,11], [2,13]);
  */
 export async function fetchBoxOfficeInfinite(
 	startDate: string,

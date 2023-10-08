@@ -39,9 +39,17 @@ export async function generateMetadata({
 	};
 }
 
-export default async function Page({ params }: { params: { year: string } }) {
+export default async function Page({
+	params,
+	searchParams,
+}: {
+	params: { year: string };
+	searchParams: { country: string; distributor: string };
+}) {
 	// Build Dates based on existing params or defaults.
 	const start = new Date(parseInt(params.year), 0, 1);
+	const countries = searchParams?.country?.split(',').map(Number);
+	const distributors = searchParams?.distributor?.split(',').map(Number);
 
 	// Check if the passed year is the current year
 	const currentYear = new Date().getFullYear();
@@ -58,7 +66,7 @@ export default async function Page({ params }: { params: { year: string } }) {
 
 	// Fetch data
 	const { results, isReachedEnd, percentFetched } =
-		await fetchBoxOfficeInfinite(startDate, endDate);
+		await fetchBoxOfficeInfinite(startDate, endDate, distributors, countries);
 	const timeComparisonData = await fetchBoxOfficeSummary(
 		startDate,
 		endDate,
