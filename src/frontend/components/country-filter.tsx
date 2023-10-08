@@ -30,7 +30,7 @@ export const CountryFilter = forwardRef<HTMLDivElement, FilterProps>(
 		};
 
 		return (
-			<>
+			<div className='px-4'>
 				<Select
 					isMulti
 					value={selectedCountry}
@@ -43,7 +43,7 @@ export const CountryFilter = forwardRef<HTMLDivElement, FilterProps>(
 					noOptionsMessage={() => 'Countries...'}
 					placeholder='Filter Countries'
 				/>
-			</>
+			</div>
 		);
 	}
 );
