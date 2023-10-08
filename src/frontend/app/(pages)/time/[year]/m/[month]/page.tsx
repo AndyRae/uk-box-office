@@ -86,7 +86,6 @@ export default async function Page({
 			getLastDayofMonth(parseInt(params.month))
 		); // Set the end date to the last day of the specified month
 	}
-	console.log(isCurrentMonth);
 
 	// Build Date Strings for API
 	const startDate = `${start.getFullYear()}-${
@@ -96,7 +95,7 @@ export default async function Page({
 
 	// Fetch data
 	const { results, isReachedEnd, percentFetched } =
-		await fetchBoxOfficeInfinite(startDate, endDate);
+		await fetchBoxOfficeInfinite(startDate, endDate, distributors, countries);
 	const timeComparisonData = await fetchBoxOfficeSummary(
 		startDate,
 		endDate,

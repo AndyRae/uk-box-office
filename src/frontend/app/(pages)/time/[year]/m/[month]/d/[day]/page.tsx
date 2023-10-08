@@ -84,10 +84,12 @@ export default async function Page({
 
 	// Fetch Data
 	const { results, isReachedEnd, percentFetched } =
-		await fetchBoxOfficeInfinite(startDate, startDate);
+		await fetchBoxOfficeInfinite(startDate, startDate, distributors, countries);
 	const { results: lastWeekResults } = await fetchBoxOfficeInfinite(
 		startLastWeek,
-		startLastWeek
+		startLastWeek,
+		distributors,
+		countries
 	);
 	const timeComparisonData = await fetchBoxOfficeSummary(
 		startDate,

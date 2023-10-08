@@ -82,7 +82,7 @@ export default async function Page({
 
 	// Fetch data
 	const { results, isReachedEnd, percentFetched } =
-		await fetchBoxOfficeInfinite(startDate, endDate);
+		await fetchBoxOfficeInfinite(startDate, endDate, distributors, countries);
 	const timeComparisonData = await fetchBoxOfficeSummary(
 		startDate,
 		endDate,
