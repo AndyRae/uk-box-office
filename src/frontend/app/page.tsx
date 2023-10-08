@@ -3,7 +3,7 @@ import {
 	fetchBoxOfficePreviousYear,
 } from '@/lib/api/dataFetching';
 import { groupForTable } from '@/lib/helpers/groupData';
-import { Controls } from '@/components/controls';
+import { DashboardControls } from '@/components/controls';
 import { TimeLineChart } from '@/components/charts/timeline';
 import { StructuredTimeData } from '@/components/structured-data';
 import { StackedBarChart } from '@/components/charts/stacked-bar';
@@ -17,6 +17,7 @@ import * as React from 'react';
 import { Skeleton } from '@/components/skeleton';
 import { columns } from '@/components/tables/dashboard';
 import { DataTable } from '@/components/vendor/data-table';
+import { CountryFilter } from '@/components/country-filter';
 
 export default async function Page({
 	searchParams,
@@ -77,10 +78,11 @@ async function Dashboard({
 			/>
 
 			{/* Controls */}
-			<Controls start={start} end={end}>
+			<DashboardControls start={start} end={end}>
+				<CountryFilter />
 				<LastUpdated date={lastUpdated} />
 				<DatasourceCard />
-			</Controls>
+			</DashboardControls>
 
 			{/* Scorecards grid. */}
 			<Scorecards

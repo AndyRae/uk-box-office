@@ -6,7 +6,7 @@ import { DatasourceButton } from '@/components/datasource';
 import { ExportCSV } from '@/components/custom/export-csv';
 import { PreviousChart } from '@/components/charts/previous-chart';
 import { ChartWrapper } from '@/components/charts/chart-wrapper';
-import { Controls } from '@/components/controls';
+import { DashboardControls } from '@/components/controls';
 import { StackedBarChart } from '@/components/charts/stacked-bar';
 import { Pagination } from '@/components/custom/pagination';
 import { DataTable } from '@/components/vendor/data-table';
@@ -148,7 +148,7 @@ export default async function Page({
 						</TabsContent>
 
 						<TabsContent value='tab2' className='h-[30rem]'>
-							<Controls start={start} end={end} />
+							<DashboardControls start={start} end={end} />
 							<ChartWrapper chartClassName='mt-6'>
 								<StackedBarChart data={results} height='md' />
 							</ChartWrapper>

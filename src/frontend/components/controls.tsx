@@ -17,9 +17,9 @@ interface ControlsProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 /**
- *
+ * Control buttons for the dashboard.
  */
-export const Controls = forwardRef<HTMLDivElement, ControlsProps>(
+export const DashboardControls = forwardRef<HTMLDivElement, ControlsProps>(
 	({ start, end, children }) => {
 		const router = useRouter();
 		const pathname = usePathname();
