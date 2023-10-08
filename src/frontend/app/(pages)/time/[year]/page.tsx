@@ -65,18 +65,19 @@ export default async function Page({
 	const endDate = `${end.getFullYear()}-${end.getMonth() + 1}-${end.getDate()}`;
 
 	// Fetch data
-	const { results, isReachedEnd, percentFetched } =
-		await fetchBoxOfficeInfinite(startDate, endDate, distributors, countries);
-	let timeComparisonData = await fetchBoxOfficeSummary(
-		startDate,
-		endDate,
-		25 // Years to go back.
-	);
-
+	let yearsToGoBack = 25;
 	// If a filter is applied, don't show comparison data.
 	if (countries != undefined || distributors != undefined) {
-		timeComparisonData = { results: [] };
+		yearsToGoBack = 1;
 	}
+
+	const { results, isReachedEnd, percentFetched } =
+		await fetchBoxOfficeInfinite(startDate, endDate, distributors, countries);
+	const timeComparisonData = await fetchBoxOfficeSummary(
+		startDate,
+		endDate,
+		yearsToGoBack
+	);
 
 	return (
 		<TimePage

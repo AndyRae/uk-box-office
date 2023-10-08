@@ -82,7 +82,13 @@ export default async function Page({
 		sLastWeek.getMonth() + 1
 	}-${sLastWeek.getDate()}`;
 
-	// Fetch Data
+	// Fetch data
+	let yearsToGoBack = 25;
+	// If a filter is applied, don't show comparison data.
+	if (countries != undefined || distributors != undefined) {
+		yearsToGoBack = 1;
+	}
+
 	const { results, isReachedEnd, percentFetched } =
 		await fetchBoxOfficeInfinite(startDate, startDate, distributors, countries);
 	const { results: lastWeekResults } = await fetchBoxOfficeInfinite(
@@ -91,16 +97,11 @@ export default async function Page({
 		distributors,
 		countries
 	);
-	let timeComparisonData = await fetchBoxOfficeSummary(
+	const timeComparisonData = await fetchBoxOfficeSummary(
 		startDate,
 		startDate,
-		25 // Years to go back.
+		yearsToGoBack
 	);
-
-	// If a filter is applied, don't show comparison data.
-	if (countries != undefined || distributors != undefined) {
-		timeComparisonData = { results: [] };
-	}
 
 	return (
 		<TimePage

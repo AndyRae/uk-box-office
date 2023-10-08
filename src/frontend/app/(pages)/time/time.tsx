@@ -140,7 +140,6 @@ const TimeMetrics = ({
 	const admissions = thisYear?.admissions ?? 0;
 	const numberOfCinemas = thisYear?.number_of_cinemas ?? 0;
 	const averageTicketPrice = parseInt((boxOffice / admissions!).toFixed(2));
-	const siteAverage = Math.ceil(boxOffice / numberOfCinemas);
 
 	// Time Comparison Data
 	let changeNewFilms = 0;
@@ -252,9 +251,11 @@ const TimeCharts = ({
 				<StackedBarChart data={results} />
 			</ChartWrapper>
 
-			<ChartWrapper title='Previous Years' className='my-4'>
-				<PreviousYearsChart data={timeComparisonData} />
-			</ChartWrapper>
+			{timeComparisonData.length > 1 && (
+				<ChartWrapper title='Previous Years' className='my-4'>
+					<PreviousYearsChart data={timeComparisonData} />
+				</ChartWrapper>
+			)}
 		</div>
 	);
 };
