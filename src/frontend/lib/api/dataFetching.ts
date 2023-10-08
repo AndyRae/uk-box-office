@@ -74,7 +74,8 @@ export const fetchBoxOfficeSummary = async (
 			next: { revalidate: 60 },
 		});
 	} catch (error) {
-		throw new Error('Failed to fetch box office summary');
+		console.warn(error);
+		return { results: [] };
 	}
 };
 
@@ -96,7 +97,8 @@ export const fetchBoxOfficePreviousYear = async (
 			cache: 'no-store',
 		});
 	} catch (error) {
-		throw new Error('Failed to fetch box office summary');
+		console.warn(error);
+		return { results: [] };
 	}
 };
 
@@ -113,7 +115,8 @@ export const fetchBoxOfficeTopFilms = async (): Promise<{
 			next: { revalidate: 60 },
 		});
 	} catch (error) {
-		throw new Error('Failed to fetch box office summary');
+		console.warn(error);
+		return { results: [] };
 	}
 };
 
@@ -130,7 +133,8 @@ export async function fetchLastWeek(): Promise<{
 			cache: 'no-store',
 		});
 	} catch (error) {
-		throw new Error('Failed to fetch box office summary');
+		console.warn(error);
+		return { results: [] };
 	}
 }
 
@@ -206,7 +210,13 @@ export const fetchFilmList = async (
 		const url = getFilmListEndpoint(page, limit, sort);
 		return await request<FilmListData>(url, { next: { revalidate: 60 } });
 	} catch (error) {
-		throw new Error('Failed to film');
+		console.warn(error);
+		return {
+			count: 0,
+			next: 0,
+			previous: 0,
+			results: [],
+		};
 	}
 };
 
@@ -217,12 +227,15 @@ export const fetchFilmList = async (
  * @example
  * const film = await fetchFilm('the-dark-knight');
  */
-export async function fetchFilm(slug: string): Promise<FilmWithWeeks> {
+export async function fetchFilm(
+	slug: string
+): Promise<FilmWithWeeks | undefined> {
 	try {
 		const url = getFilmSlugEndpoint(slug);
 		return await request<FilmWithWeeks>(url, { next: { revalidate: 60 } });
 	} catch (error) {
-		throw new Error('Failed to film');
+		console.warn(error);
+		return;
 	}
 }
 
@@ -233,12 +246,15 @@ export async function fetchFilm(slug: string): Promise<FilmWithWeeks> {
  * @example
  * const film = await fetchFilmId(100);
  */
-export async function fetchFilmId(id: number): Promise<FilmWithWeeks> {
+export async function fetchFilmId(
+	id: number
+): Promise<FilmWithWeeks | undefined> {
 	try {
 		const url = getFilmIdEndpoint(id);
 		return await request<FilmWithWeeks>(url, { next: { revalidate: 60 } });
 	} catch (error) {
-		throw new Error('Failed to film');
+		console.warn(error);
+		return;
 	}
 }
 
@@ -263,7 +279,13 @@ export const fetchDistributors = async (
 			next: { revalidate: 60 },
 		});
 	} catch (error) {
-		throw new Error('Failed to distributor');
+		console.warn(error);
+		return {
+			count: 0,
+			next: 0,
+			previous: 0,
+			results: [],
+		};
 	}
 };
 
@@ -274,12 +296,15 @@ export const fetchDistributors = async (
  * @example
  * const distributor = await fetchDistributor('warner-bros');
  */
-export async function fetchDistributor(slug: string): Promise<Distributor> {
+export async function fetchDistributor(
+	slug: string
+): Promise<Distributor | undefined> {
 	try {
 		const url = getDistributorEndpoint(slug);
 		return await request<Distributor>(url, { next: { revalidate: 60 } });
 	} catch (error) {
-		throw new Error('Failed to distributor');
+		console.warn(error);
+		return;
 	}
 }
 
@@ -294,14 +319,15 @@ export async function fetchDistributor(slug: string): Promise<Distributor> {
 export async function fetchDistributorBoxOffice(
 	slug: string,
 	limit: number = 25
-): Promise<DistributorBoxOffice> {
+): Promise<DistributorBoxOffice | undefined> {
 	try {
 		const url = fetchDistributorBoxOfficeEndpoint(slug, limit);
 		return await request<DistributorBoxOffice>(url, {
 			next: { revalidate: 60 },
 		});
 	} catch (error) {
-		throw new Error('Failed to distributor');
+		console.warn(error);
+		return;
 	}
 }
 
@@ -319,14 +345,15 @@ export const fetchDistributorFilms = async (
 	page: number = 1,
 	limit: number = 10,
 	sort: FilmSortOption
-): Promise<DistributorFilmsData> => {
+): Promise<DistributorFilmsData | undefined> => {
 	try {
 		const url = getDistributorFilmsEndpoint(slug, page, limit, sort);
 		return await request<DistributorFilmsData>(url, {
 			next: { revalidate: 60 },
 		});
 	} catch (error) {
-		throw new Error('Failed to distributor');
+		console.warn(error);
+		return;
 	}
 };
 
@@ -338,12 +365,13 @@ type MarketShareData = {
  * Get market share data from the backend.
  * @returns {Promise<MarketShareData>}
  */
-export async function fetchMarketshare(): Promise<MarketShareData> {
+export async function fetchMarketshare(): Promise<MarketShareData | undefined> {
 	try {
 		const url = getDistributorMarketShareEndpoint();
 		return await request<MarketShareData>(url, { next: { revalidate: 60 } });
 	} catch (error) {
-		throw new Error('Failed to distributor');
+		console.warn(error);
+		return;
 	}
 }
 
@@ -367,7 +395,13 @@ export const fetchCountryList = async (
 		const url = getCountryListEndpoint(page, limit);
 		return await request<CountryListData>(url, { next: { revalidate: 60 } });
 	} catch (error) {
-		throw new Error('Failed to country');
+		console.warn(error);
+		return {
+			count: 0,
+			next: 0,
+			previous: 0,
+			results: [],
+		};
 	}
 };
 
@@ -378,12 +412,13 @@ export const fetchCountryList = async (
  * @example
  * const country = await fetchCountry('united-kingdom');
  */
-export async function fetchCountry(slug: string): Promise<Country> {
+export async function fetchCountry(slug: string): Promise<Country | undefined> {
 	try {
 		const url = getCountryEndpoint(slug);
 		return await request<Country>(url, { next: { revalidate: 60 } });
 	} catch (error) {
-		throw new Error('Failed to country');
+		console.warn(error);
+		return;
 	}
 }
 
@@ -401,12 +436,13 @@ export const fetchCountryFilms = async (
 	page: number,
 	limit: number,
 	sort: FilmSortOption
-): Promise<CountryFilmsData> => {
+): Promise<CountryFilmsData | undefined> => {
 	try {
 		const url = getCountryFilmsEndpoint(slug, page, limit, sort);
 		return await request<CountryFilmsData>(url, { next: { revalidate: 60 } });
 	} catch (error) {
-		throw new Error('Failed to country');
+		console.warn(error);
+		return;
 	}
 };
 
@@ -421,12 +457,13 @@ export const fetchCountryFilms = async (
 export const fetchCountryBoxOffice = async (
 	slug: string,
 	limit: number
-): Promise<CountryBoxOffice> => {
+): Promise<CountryBoxOffice | undefined> => {
 	try {
 		const url = getCountryBoxOfficeEndpoint(slug, limit);
 		return await request<CountryBoxOffice>(url, { next: { revalidate: 60 } });
 	} catch (error) {
-		throw new Error('Failed to distributor');
+		console.warn(error);
+		return;
 	}
 };
 
@@ -442,7 +479,7 @@ export const fetchCountryBoxOffice = async (
  */
 export const fetchSearch = async (
 	searchParams: SearchParams
-): Promise<SearchResults> => {
+): Promise<SearchResults | undefined> => {
 	const {
 		q,
 		distributor,
@@ -473,17 +510,21 @@ export const fetchSearch = async (
 		const url = getSearchEndpoint(urlSearchParams.toString());
 		return await request<SearchResults>(url, { cache: 'no-store' });
 	} catch (error) {
-		throw new Error('Failed to distributor');
+		console.warn(error);
+		return;
 	}
 };
 
 // Make the options search request
-export async function fetchSearchFilms(term: string): Promise<FilmOption[]> {
+export async function fetchSearchFilms(
+	term: string
+): Promise<FilmOption[] | undefined> {
 	try {
 		const url = getSearchFilmEndpoint(term);
 		return await request<FilmOption[]>(url, { cache: 'no-store' });
 	} catch (error) {
-		throw new Error('Failed to distributor');
+		console.warn(error);
+		return;
 	}
 }
 
@@ -508,12 +549,13 @@ export async function fetchForecast(
 	start: string,
 	end: string,
 	limit: number = 10
-): Promise<ForecastData> {
+): Promise<ForecastData | undefined> {
 	try {
 		const url = getForecastEndpoint(start, end, limit);
 		return await request<ForecastData>(url, { next: { revalidate: 60 } });
 	} catch (error) {
-		throw new Error('Failed to distributor');
+		console.warn(error);
+		return;
 	}
 }
 
@@ -539,11 +581,12 @@ type EventsOverview = {
  * @example
  * const events = await fetchEvents());
  */
-export async function fetchStatusEvents(): Promise<EventsOverview> {
+export async function fetchStatusEvents(): Promise<EventsOverview | undefined> {
 	try {
 		const url = getEventsEndpoint();
 		return await request<EventsOverview>(url, { next: { revalidate: 0 } });
 	} catch (error) {
-		throw new Error('Failed to find events.');
+		console.warn(error);
+		return;
 	}
 }
