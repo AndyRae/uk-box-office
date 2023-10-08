@@ -7,7 +7,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { DatasourceButton } from '@/components/datasource';
 import { ExportCSV } from '@/components/custom/export-csv';
 import { ChartWrapper } from '@/components/charts/chart-wrapper';
-import { Controls } from '@/components/controls';
+import { DashboardControls } from '@/components/controls';
 import { DataTable } from '@/components/vendor/data-table';
 import { columns } from '@/components/tables/films';
 import { columns as previousColumns } from '@/components/tables/historical';
@@ -93,7 +93,7 @@ export default async function Page({
 	// Get dates from the searchparams.
 	const start = searchParams?.s ?? s;
 	const end = searchParams?.e ?? e;
-	const { results } = await fetchBoxOfficeInfinite(start, end, data.id);
+	const { results } = await fetchBoxOfficeInfinite(start, end, [data.id]);
 
 	// Add change YOY column
 	const boxOfficeWithChange = boxOfficeData.results.map((year, index) => {
@@ -146,7 +146,7 @@ export default async function Page({
 						</TabsContent>
 
 						<TabsContent value='tab2' className='h-[30rem]'>
-							<Controls start={start} end={end} />
+							<DashboardControls start={start} end={end} />
 							<ChartWrapper chartClassName='mt-6'>
 								<StackedBarChart data={results} height='md' />
 							</ChartWrapper>

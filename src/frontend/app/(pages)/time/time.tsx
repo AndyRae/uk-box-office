@@ -22,6 +22,10 @@ import { DataTable } from '@/components/vendor/data-table';
 import { columns } from '@/components/tables/films-time';
 import { columns as weeksColumns } from '@/components/tables/weeks';
 import { columns as historicalColumns } from '@/components/tables/historical-years';
+import { CountryFilter } from '@/components/country-filter';
+import { ControlsWrapper } from '@/components/controls';
+import { fetchCountryList } from '@/lib/api/dataFetching';
+import { mapToValues } from '@/lib/helpers/filters';
 
 type TimePageProps = {
 	year: number;
@@ -38,7 +42,7 @@ type TimePageProps = {
  * Time Page
  * @returns {JSX.Element}
  */
-export const TimePage = ({
+export const TimePage = async ({
 	year,
 	month = undefined,
 	day = undefined,
@@ -47,7 +51,7 @@ export const TimePage = ({
 	results,
 	lastWeekResults,
 	timeComparisonData,
-}: TimePageProps): JSX.Element => {
+}: TimePageProps): Promise<JSX.Element> => {
 	type MonthsType = {
 		[key: number]: string;
 	};
@@ -71,6 +75,9 @@ export const TimePage = ({
 		quarter ? `Q${quarter}` : month ? months[month as keyof MonthsType] : ''
 	}${quarterend ? ` - Q${quarterend}` : ''} ${year}`;
 
+	const countryData = await fetchCountryList(1, 100);
+	const countryOptions = mapToValues(countryData.results);
+
 	return (
 		<>
 			<StructuredTimeData
@@ -78,7 +85,10 @@ export const TimePage = ({
 				endpoint={'/time'}
 				time={pageTitle}
 			/>
-			<BreadcrumbsTime year={year} month={month} quarter={quarter} />
+			<ControlsWrapper className='hidden md:flex'>
+				<BreadcrumbsTime year={year} month={month} quarter={quarter} />
+				<CountryFilter countries={countryOptions} />
+			</ControlsWrapper>
 
 			<div className='grid grid-cols-1 md:grid-cols-5 gap-3 md:gap-5'>
 				<div className='col-span-2'>
@@ -106,13 +116,15 @@ const TimeMetric = ({
 }: {
 	title: string;
 	text: any;
-	metricChange: number;
+	metricChange?: number;
 }) => {
 	return (
 		<DescriptionItem title={title} text={text}>
-			<p className='text-xs text-muted-foreground'>
-				<MetricChange value={metricChange} /> from last year
-			</p>
+			{metricChange && (
+				<p className='text-xs text-muted-foreground'>
+					<MetricChange value={metricChange} /> from last year
+				</p>
+			)}
 		</DescriptionItem>
 	);
 };
@@ -130,7 +142,9 @@ const TimeMetrics = ({
 	const admissions = thisYear?.admissions ?? 0;
 	const numberOfCinemas = thisYear?.number_of_cinemas ?? 0;
 	const averageTicketPrice = parseInt((boxOffice / admissions!).toFixed(2));
-	const siteAverage = Math.ceil(boxOffice / numberOfCinemas);
+
+	let showMetrics = false; // A flag to determine whether to show metrics
+	const hasAdmissions = admissions ? true : false;
 
 	// Time Comparison Data
 	let changeNewFilms = 0;
@@ -169,35 +183,34 @@ const TimeMetrics = ({
 				(lastYear.week_gross / lastYear.admissions!)) *
 				100
 		);
+		showMetrics = true;
 	}
-
-	const hasAdmissions = admissions ? true : false;
 
 	return (
 		<DescriptionList>
 			<TimeMetric
 				title={'Total Box Office'}
 				text={`£ ${boxOffice?.toLocaleString()}`}
-				metricChange={changeWeek}
+				metricChange={showMetrics ? changeWeek : undefined}
 			/>
 
 			<TimeMetric
 				title={'Weekend Box Office'}
 				text={`£ ${weekendBoxOffice?.toLocaleString()}`}
-				metricChange={changeWeekend}
+				metricChange={showMetrics ? changeWeekend : undefined}
 			/>
 
 			<TimeMetric
 				title={'New Releases'}
 				text={numberOfNewFilms}
-				metricChange={changeNewFilms}
+				metricChange={showMetrics ? changeNewFilms : undefined}
 			/>
 
 			{hasAdmissions && (
 				<TimeMetric
 					title={'Admissions'}
 					text={admissions?.toLocaleString()}
-					metricChange={changeAdmissions}
+					metricChange={showMetrics ? changeAdmissions : undefined}
 				/>
 			)}
 
@@ -205,14 +218,14 @@ const TimeMetrics = ({
 				<TimeMetric
 					title={'Average Ticket Price'}
 					text={`£ ${averageTicketPrice?.toLocaleString()}`}
-					metricChange={changeAverageTicketPrice}
+					metricChange={showMetrics ? changeAverageTicketPrice : undefined}
 				/>
 			)}
 
 			<TimeMetric
 				title={'Cinemas'}
 				text={numberOfCinemas}
-				metricChange={changeCinemas}
+				metricChange={showMetrics ? changeCinemas : undefined}
 			/>
 		</DescriptionList>
 	);
@@ -242,9 +255,11 @@ const TimeCharts = ({
 				<StackedBarChart data={results} />
 			</ChartWrapper>
 
-			<ChartWrapper title='Previous Years' className='my-4'>
-				<PreviousYearsChart data={timeComparisonData} />
-			</ChartWrapper>
+			{timeComparisonData.length > 1 && (
+				<ChartWrapper title='Previous Years' className='my-4'>
+					<PreviousYearsChart data={timeComparisonData} />
+				</ChartWrapper>
+			)}
 		</div>
 	);
 };

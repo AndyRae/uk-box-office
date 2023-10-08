@@ -1,7 +1,7 @@
 import { TimeLineChart } from '@/components/charts/timeline';
 import { StackedBarChart } from '@/components/charts/stacked-bar';
 import { ChartWrapper } from '@/components/charts/chart-wrapper';
-import { Controls } from '@/components/controls';
+import { DashboardControls } from '@/components/controls';
 import { Scorecards } from '@/components/score-cards';
 import { LastUpdated } from '@/components/last-updated';
 import { DatasourceCard } from '@/components/datasource';
@@ -35,10 +35,10 @@ export const Skeleton = () => {
 	return (
 		<div className='transition ease-in-out animate-pulse'>
 			{/* Controls */}
-			<Controls start={start} end={end}>
+			<DashboardControls start={start} end={end}>
 				<LastUpdated date={lastUpdated} />
 				<DatasourceCard />
-			</Controls>
+			</DashboardControls>
 
 			{/* Scorecards grid. */}
 			<Scorecards

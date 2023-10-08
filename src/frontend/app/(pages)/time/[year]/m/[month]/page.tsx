@@ -58,9 +58,13 @@ export async function generateMetadata({
 
 export default async function Page({
 	params,
+	searchParams,
 }: {
 	params: { year: string; month: string };
+	searchParams: { country: string; distributor: string };
 }) {
+	const countries = searchParams?.country?.split(',').map(Number);
+	const distributors = searchParams?.distributor?.split(',').map(Number);
 	// Build Dates based on existing params or defaults.
 	const start = new Date(parseInt(params.year), parseInt(params.month) - 1, 1);
 
@@ -82,7 +86,6 @@ export default async function Page({
 			getLastDayofMonth(parseInt(params.month))
 		); // Set the end date to the last day of the specified month
 	}
-	console.log(isCurrentMonth);
 
 	// Build Date Strings for API
 	const startDate = `${start.getFullYear()}-${
@@ -91,12 +94,18 @@ export default async function Page({
 	const endDate = `${end.getFullYear()}-${end.getMonth() + 1}-${end.getDate()}`;
 
 	// Fetch data
+	let yearsToGoBack = 25;
+	// If a filter is applied, don't show comparison data.
+	if (countries != undefined || distributors != undefined) {
+		yearsToGoBack = 1;
+	}
+
 	const { results, isReachedEnd, percentFetched } =
-		await fetchBoxOfficeInfinite(startDate, endDate);
+		await fetchBoxOfficeInfinite(startDate, endDate, distributors, countries);
 	const timeComparisonData = await fetchBoxOfficeSummary(
 		startDate,
 		endDate,
-		25 // Years to go back.
+		yearsToGoBack
 	);
 
 	return (
