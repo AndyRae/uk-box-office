@@ -8,6 +8,7 @@ import {
 	getCoreRowModel,
 	useReactTable,
 	getSortedRowModel,
+	OnChangeFn,
 } from '@tanstack/react-table';
 
 import {
@@ -23,11 +24,13 @@ import { DataTableViewOptions } from './data-table-view-options';
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
+	onSortingChange?: OnChangeFn<SortingState>;
 }
 
 export function DataTable<TData, TValue>({
 	columns,
 	data,
+	onSortingChange,
 }: DataTableProps<TData, TValue>) {
 	const [sorting, setSorting] = React.useState<SortingState>([]);
 
@@ -35,7 +38,7 @@ export function DataTable<TData, TValue>({
 		data,
 		columns,
 		getCoreRowModel: getCoreRowModel(),
-		onSortingChange: setSorting,
+		onSortingChange: onSortingChange || setSorting,
 		getSortedRowModel: getSortedRowModel(),
 		state: {
 			sorting,

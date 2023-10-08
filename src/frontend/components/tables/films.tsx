@@ -2,7 +2,8 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-import { ColumnDef } from '@tanstack/react-table';
+import { ColumnDef, SortingState, OnChangeFn } from '@tanstack/react-table';
+import { useRouter, usePathname } from 'next/navigation';
 
 import { toTitleCase } from '@/lib/helpers/toTitleCase';
 
@@ -10,7 +11,41 @@ import { Country } from '@/interfaces/Country';
 import { Distributor } from '@/interfaces/Distributor';
 import { Film } from '@/interfaces/Film';
 
+import { DataTable } from '@/components/vendor/data-table';
 import { DataTableColumnHeader } from '@/components/vendor/data-table-column-header';
+
+export const FilmTable = ({ data }: any) => {
+	const router = useRouter();
+	const pathName = usePathname();
+
+	const customSetSorting: OnChangeFn<SortingState> = (handleSorting) => {
+		if (handleSorting instanceof Function) {
+			const [sortingItem] = handleSorting([]);
+
+			if (sortingItem) {
+				const { id, desc } = sortingItem;
+
+				// Generate the URL parameter based on the sorting state
+				const sortParam = desc ? `desc_${id}` : `asc_${id}`;
+
+				const url = `${pathName}?sort=${sortParam}`;
+				router.push(url);
+			}
+		}
+	};
+
+	return (
+		<>
+			{data && (
+				<DataTable
+					columns={columns}
+					data={data}
+					onSortingChange={customSetSorting}
+				/>
+			)}
+		</>
+	);
+};
 
 export const columns: ColumnDef<Film>[] = [
 	{
@@ -32,7 +67,7 @@ export const columns: ColumnDef<Film>[] = [
 			);
 		},
 		enableHiding: false,
-		enableSorting: false,
+		enableSorting: true,
 	},
 	{
 		accessorKey: 'distributors',
@@ -91,6 +126,6 @@ export const columns: ColumnDef<Film>[] = [
 				<div className='text-right font-medium tabular-nums'>{formatted}</div>
 			);
 		},
-		enableSorting: false,
+		enableSorting: true,
 	},
 ];
