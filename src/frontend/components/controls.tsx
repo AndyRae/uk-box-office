@@ -1,15 +1,13 @@
 'use client';
 
 import React, { forwardRef, HTMLAttributes } from 'react';
-import { Button } from './ui/button';
-import { parseDate } from '@/lib/helpers/dates';
-
-import { useRouter } from 'next/navigation';
-import { usePathname } from 'next/navigation';
-
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { parseISO } from 'date-fns';
 import addDays from 'date-fns/addDays';
-import { CalendarDateRangePicker } from './date-range-picker';
+
+import { Button } from '@/components/ui/button';
+import { CalendarDateRangePicker } from '@/components/date-range-picker';
+import { parseDate } from '@/lib/helpers/dates';
 
 interface ControlsProps extends HTMLAttributes<HTMLDivElement> {
 	start: string;
@@ -22,16 +20,18 @@ interface ControlsProps extends HTMLAttributes<HTMLDivElement> {
 export const DashboardControls = forwardRef<HTMLDivElement, ControlsProps>(
 	({ start, end, children }) => {
 		const router = useRouter();
-		const pathname = usePathname();
+		const pathName = usePathname();
+		const searchParams = useSearchParams();
+		const queryParams = new URLSearchParams(searchParams);
 
 		// Pushes new date to URL
 		const changeDate = async (days: number) => {
 			const today = new Date();
-			router.push(
-				`${pathname}?s=${parseDate(addDays(today, -days))}&e=${parseDate(
-					today
-				)}`
-			);
+			queryParams.set('s', parseDate(addDays(today, -days)));
+			queryParams.set('e', parseDate(today));
+
+			const url = `${pathName}?${queryParams.toString()}`;
+			router.push(url);
 		};
 
 		// Work out the difference between the last two dates
