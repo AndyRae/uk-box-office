@@ -6,7 +6,7 @@ import pandas as pd
 from flask import Response, abort, jsonify
 from slugify import slugify  # type: ignore
 from sqlalchemy import func
-from ukbo import models
+from ukbo import models, services
 from ukbo.dto import CountrySchema, FilmSchemaStrict
 from ukbo.extensions import db
 
@@ -63,7 +63,12 @@ def get(slug: str) -> Response:
     return country_schema.dump(data)
 
 
-def get_films(slug: str, page: int = 1, limit: int = 100) -> Response:
+def get_films(
+    slug: str,
+    sort_filter: services.filters.SortFilter = services.filters.SortFilter(),
+    page: int = 1,
+    limit: int = 100,
+) -> Response:
     """
     Get a countries list of films from slug.
 
@@ -82,9 +87,11 @@ def get_films(slug: str, page: int = 1, limit: int = 100) -> Response:
         db.selectinload(models.Film.weeks)
     )
     query = query.filter(models.Film.countries.contains(country))
-    data = query.order_by(models.Film.id.desc()).paginate(
-        page=page, per_page=limit, error_out=False
-    )
+
+    # Apply sorting
+    query = services.filters.apply_filters(query, sort_filter)
+
+    data = query.paginate(page=page, per_page=limit, error_out=False)
 
     next_page = (page + 1) if data.has_next else ""
     previous_page = (page - 1) if data.has_prev else ""
