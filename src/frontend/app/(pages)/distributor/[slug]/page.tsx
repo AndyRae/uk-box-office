@@ -93,7 +93,7 @@ export default async function Page({
 	// Get dates from the searchparams.
 	const start = searchParams?.s ?? s;
 	const end = searchParams?.e ?? e;
-	const { results } = await fetchBoxOfficeInfinite(start, end, data.id);
+	const { results } = await fetchBoxOfficeInfinite(start, end, [data.id]);
 
 	// Add change YOY column
 	const boxOfficeWithChange = boxOfficeData.results.map((year, index) => {

@@ -145,7 +145,7 @@ export async function fetchLastWeek(): Promise<{
 export async function fetchBoxOfficeInfinite(
 	startDate: string,
 	endDate: string,
-	distributorId?: number,
+	distributorId?: number[],
 	countryIds?: number[]
 ) {
 	const backendUrl = getBoxOfficeInfiniteEndpoint();

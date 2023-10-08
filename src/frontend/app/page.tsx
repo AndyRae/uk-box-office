@@ -37,7 +37,12 @@ export default async function Page({
 async function Dashboard({
 	searchParams,
 }: {
-	searchParams: { s?: string; e?: string };
+	searchParams: {
+		s?: string;
+		e?: string;
+		country?: string;
+		distributor?: string;
+	};
 }): Promise<JSX.Element> {
 	// Calculate defaults at 90 days.
 	const s = parseDate(addDays(new Date(), -90));
@@ -46,9 +51,16 @@ async function Dashboard({
 	// Get dates from the searchparams.
 	const start = searchParams?.s ?? s;
 	const end = searchParams?.e ?? e;
+	const countries = searchParams?.country?.split(',').map(Number);
+	const distributors = searchParams?.distributor?.split(',').map(Number);
 
 	// Fetch data from the API
-	const { results, isReachedEnd } = await fetchBoxOfficeInfinite(start, end);
+	const { results, isReachedEnd } = await fetchBoxOfficeInfinite(
+		start,
+		end,
+		distributors,
+		countries
+	);
 	const timeComparisonData = await fetchBoxOfficePreviousYear(start, end);
 
 	// Group Data for the charts
