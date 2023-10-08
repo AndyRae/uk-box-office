@@ -40,7 +40,14 @@ class SortFilter:
     def add_filter(
         self, query: flask_sqlalchemy.query.Query
     ) -> flask_sqlalchemy.query.Query:
-        """ """
+        """
+        Adds filters and sorting to a query if they are present.
+
+        Args:
+            query: The query that will be executed.
+
+        Returns: The query with filters applied.
+        """
         if self.sort is not None:
             sort_option = self.sorting_options.get(self.sort)
             if sort_option is None:
