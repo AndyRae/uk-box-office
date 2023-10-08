@@ -24,7 +24,9 @@ export default async function Page({
 	let pageIndex = searchParams?.p ?? 1;
 
 	const pageLimit = 15;
-	const pageNumbers = paginate(data.films.count, Number(pageIndex), pageLimit);
+	const pageNumbers = data
+		? paginate(data.films.count, Number(pageIndex), pageLimit)
+		: [0];
 
 	return (
 		<>
@@ -79,13 +81,14 @@ export default async function Page({
 			{data!.films.results.length > 0 && (
 				<h2 className='text-2xl font-bold py-5 capitalize'>Films</h2>
 			)}
-
-			<SearchFilters
-				query={query}
-				distributors={data.films.distributors}
-				countries={data.films.countries}
-				maxGross={data.films.max_gross}
-			/>
+			{data && (
+				<SearchFilters
+					query={query}
+					distributors={data.films.distributors}
+					countries={data.films.countries}
+					maxGross={data.films.max_gross}
+				/>
+			)}
 
 			{data!.films ? <FilmTable data={data!.films.results} /> : null}
 			<Pagination pages={pageNumbers} pageIndex={pageIndex} />
