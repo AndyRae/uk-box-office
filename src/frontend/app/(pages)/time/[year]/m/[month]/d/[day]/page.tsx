@@ -91,11 +91,16 @@ export default async function Page({
 		distributors,
 		countries
 	);
-	const timeComparisonData = await fetchBoxOfficeSummary(
+	let timeComparisonData = await fetchBoxOfficeSummary(
 		startDate,
 		startDate,
 		25 // Years to go back.
 	);
+
+	// If a filter is applied, don't show comparison data.
+	if (countries != undefined || distributors != undefined) {
+		timeComparisonData = { results: [] };
+	}
 
 	return (
 		<TimePage

@@ -67,11 +67,16 @@ export default async function Page({
 	// Fetch data
 	const { results, isReachedEnd, percentFetched } =
 		await fetchBoxOfficeInfinite(startDate, endDate, distributors, countries);
-	const timeComparisonData = await fetchBoxOfficeSummary(
+	let timeComparisonData = await fetchBoxOfficeSummary(
 		startDate,
 		endDate,
 		25 // Years to go back.
 	);
+
+	// If a filter is applied, don't show comparison data.
+	if (countries != undefined || distributors != undefined) {
+		timeComparisonData = { results: [] };
+	}
 
 	return (
 		<TimePage

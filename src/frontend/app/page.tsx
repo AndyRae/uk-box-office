@@ -64,9 +64,14 @@ async function Dashboard({
 		distributors,
 		countries
 	);
-	const timeComparisonData = await fetchBoxOfficePreviousYear(start, end);
+	let timeComparisonData = await fetchBoxOfficePreviousYear(start, end);
 	const countryData = await fetchCountryList(1, 100);
 	const countryOptions = mapToValues(countryData.results);
+
+	// If a filter is applied, don't show comparison data.
+	if (countries != undefined || distributors != undefined) {
+		timeComparisonData = { results: [] };
+	}
 
 	// Group Data for the charts
 	const tableData = groupForTable(results);
