@@ -25,6 +25,9 @@ async function FilmsToOptions(term: string): Promise<FilmOption[]> {
 	// Param Id can be present but empty.
 	if (term != '') {
 		const results = await fetchSearchFilms(term);
+		if (!results) {
+			return [];
+		}
 		return results.map((film) => ({
 			value: film.value,
 			label: toTitleCase(film.label),
@@ -98,8 +101,10 @@ export default function Page(): JSX.Element {
 		let filmsData = [];
 		for (let i = 0; i < data.length; i++) {
 			const filmresp = await fetchFilmId(data[i].value);
-			filmresp.color = colors.shift();
-			filmsData.push(filmresp);
+			if (filmresp) {
+				filmresp.color = colors.shift();
+				filmsData.push(filmresp);
+			}
 		}
 
 		setFilmData([...filmsData]);
