@@ -203,6 +203,7 @@ def delete_film(id: int) -> bool:
 def search(
     search_query: str,
     query_filter: services.filters.QueryFilter = services.filters.QueryFilter(),
+    sort_filter: services.filters.SortFilter = services.filters.SortFilter(),
     limit: int = 15,
     page: int = 1,
 ) -> Response:
@@ -219,7 +220,7 @@ def search(
     query = query.filter(models.Film.name.ilike(f"%{search_query}%"))
 
     # apply filters
-    query = query_filter.add_filter(query)
+    query = services.filters.apply_filters(query, query_filter, sort_filter)
 
     # Execute the query to retrieve all films
     all_films = query.options(joinedload(models.Film.distributors)).all()
