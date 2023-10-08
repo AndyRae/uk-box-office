@@ -83,6 +83,9 @@ def get_films(
     query = query.filter(models.Country.slug == slug)
     country = query.first()
 
+    if country is None:
+        abort(404)
+
     query = db.session.query(models.Film).options(
         db.selectinload(models.Film.weeks)
     )

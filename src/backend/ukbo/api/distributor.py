@@ -95,7 +95,11 @@ def get_films(slug: str) -> Response:
     """
     page = int(request.args.get("page", 1))
     limit = int(request.args.get("limit", 100))
-    return services.distributor.get_films(slug, page, limit)
+    sort = request.args.get("sort", None)
+
+    # build sort filter
+    sort_filter = services.filters.SortFilter(sort=sort)
+    return services.distributor.get_films(slug, sort_filter, page, limit)
 
 
 @distributor.route("/<slug>/boxoffice", methods=["GET"])
