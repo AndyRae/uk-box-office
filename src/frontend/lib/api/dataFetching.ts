@@ -198,7 +198,7 @@ export async function fetchBoxOfficeInfinite(
 export const fetchFilmList = async (
 	page: number = 1,
 	limit: number = 10,
-	sort: string = 'asc_name'
+	sort: FilmSortOption = 'asc_name'
 ): Promise<FilmListData> => {
 	try {
 		const url = getFilmListEndpoint(page, limit, sort);
