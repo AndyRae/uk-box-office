@@ -9,7 +9,7 @@ import { ExportCSV } from '@/components/custom/export-csv';
 import { ChartWrapper } from '@/components/charts/chart-wrapper';
 import { DashboardControls } from '@/components/controls';
 import { DataTable } from '@/components/vendor/data-table';
-import { columns } from '@/components/tables/films';
+import { FilmTable } from '@/components/tables/films';
 import { columns as previousColumns } from '@/components/tables/historical';
 import { Pagination } from '@/components/custom/pagination';
 
@@ -200,7 +200,7 @@ const DistributorFilmsTable = async ({
 
 	return (
 		<>
-			{data && <DataTable columns={columns} data={data.results} />}
+			{data && <FilmTable data={data.results} />}
 			<Pagination pages={pageNumbers} pageIndex={pageIndex} />
 		</>
 	);
