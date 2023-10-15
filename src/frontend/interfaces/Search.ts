@@ -20,8 +20,8 @@ export interface SearchParams {
 	q: string;
 	distributor?: string;
 	country?: string;
-	max_box?: string;
-	min_box?: string;
+	max_gross?: string;
+	min_gross?: string;
 	p?: string;
 	min_year?: string;
 	max_year?: string;

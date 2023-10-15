@@ -484,8 +484,8 @@ export const fetchSearch = async (
 		q,
 		distributor,
 		country,
-		min_box: minBox,
-		max_box: maxBox,
+		min_gross: minGross,
+		max_gross: maxGross,
 		min_year: minYear,
 		max_year: maxYear,
 		p: page,
@@ -499,8 +499,8 @@ export const fetchSearch = async (
 	// Add parameters if provided
 	distributor && urlSearchParams.append('distributor', distributor);
 	country && urlSearchParams.append('country', country);
-	minBox && urlSearchParams.append('min_box', minBox);
-	maxBox && urlSearchParams.append('max_box', maxBox);
+	minGross && urlSearchParams.append('min_gross', minGross);
+	maxGross && urlSearchParams.append('max_gross', maxGross);
 	minYear && urlSearchParams.append('min_year', minYear);
 	maxYear && urlSearchParams.append('max_year', maxYear);
 	page && urlSearchParams.append('p', page);
