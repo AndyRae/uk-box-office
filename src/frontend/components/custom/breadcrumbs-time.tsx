@@ -34,11 +34,15 @@ export function BreadcrumbsTime() {
 				<Link className={buttonVariants({ variant: 'link' })} href={'/time'}>
 					Time
 				</Link>
-				<BreadcrumbsYears year={year} />
+				{params.year && (
+					<>
+						<BreadcrumbsYears year={year} />
 
-				<BreadcrumbsQuarters year={year} month={month} quarter={quarter} />
+						<BreadcrumbsQuarters year={year} month={month} quarter={quarter} />
 
-				<BreadcrumbsMonths year={year} month={month} />
+						<BreadcrumbsMonths year={year} month={month} />
+					</>
+				)}
 			</div>
 		</div>
 	);
