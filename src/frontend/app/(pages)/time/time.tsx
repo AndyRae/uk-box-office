@@ -143,8 +143,8 @@ const TimeMetrics = ({
 	const numberOfCinemas = thisYear?.number_of_cinemas ?? 0;
 	const averageTicketPrice = parseInt((boxOffice / admissions!).toFixed(2));
 
-	let showMetrics = false; // A flag to determine whether to show metrics
-	const hasAdmissions = admissions ? true : false;
+	let showMetrics = false;
+	const hasAdmissions = !!admissions;
 
 	// Time Comparison Data
 	let changeNewFilms = 0;
