@@ -153,7 +153,7 @@ export default async function Page({
 							</ChartWrapper>
 						</TabsContent>
 
-						<TabsContent value='tab3' className='h-[30rem]'>
+						<TabsContent value='tab3' className='h-[30rem] overflow-scroll'>
 							{boxOfficeWithChange && (
 								<DataTable
 									columns={previousColumns}
