@@ -90,7 +90,10 @@ export const columns: ColumnDef<Time>[] = [
 		),
 		cell: ({ row }) => {
 			const value: number = row.getValue('admissions');
-			return <div className='text-right font-medium tabular-nums'>{value}</div>;
+			const formatted = new Intl.NumberFormat('en-GB').format(value);
+			return (
+				<div className='text-right font-medium tabular-nums'>{formatted}</div>
+			);
 		},
 	},
 	{
