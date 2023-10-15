@@ -17,7 +17,6 @@ import * as React from 'react';
 
 import { columns } from '@/components/tables/dashboard';
 import { DataTable } from '@/components/vendor/data-table';
-import { mapToValues } from '@/lib/helpers/filters';
 import { Skeleton } from '@/components/skeleton';
 
 export default async function Page({
@@ -64,8 +63,6 @@ async function Dashboard({
 		countries
 	);
 	let timeComparisonData = await fetchBoxOfficePreviousYear(start, end);
-	const countryData = await fetchCountryList(1, 100);
-	const countryOptions = mapToValues(countryData.results);
 
 	// If a filter is applied, don't show comparison data.
 	if (countries != undefined || distributors != undefined) {
