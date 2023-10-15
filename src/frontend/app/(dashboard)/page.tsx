@@ -4,7 +4,7 @@ import {
 	fetchCountryList,
 } from '@/lib/api/dataFetching';
 import { groupForTable } from '@/lib/helpers/groupData';
-import { DashboardControls } from '@/components/controls';
+
 import { TimeLineChart } from '@/components/charts/timeline';
 import { StructuredTimeData } from '@/components/structured-data';
 import { StackedBarChart } from '@/components/charts/stacked-bar';
@@ -12,14 +12,13 @@ import { ChartWrapper } from '@/components/charts/chart-wrapper';
 import { parseDate } from '@/lib/helpers/dates';
 import { Scorecards } from '@/components/score-cards';
 import addDays from 'date-fns/addDays';
-import { LastUpdated } from '@/components/last-updated';
-import { DatasourceCard } from '@/components/datasource';
+
 import * as React from 'react';
-import { Skeleton } from '@/components/skeleton';
+
 import { columns } from '@/components/tables/dashboard';
 import { DataTable } from '@/components/vendor/data-table';
-import { CountryFilter } from '@/components/country-filter';
 import { mapToValues } from '@/lib/helpers/filters';
+import { Skeleton } from '@/components/skeleton';
 
 export default async function Page({
 	searchParams,
@@ -76,22 +75,9 @@ async function Dashboard({
 	// Group Data for the charts
 	const tableData = groupForTable(results);
 
-	const lastUpdated = results[0]?.date;
-
 	return (
 		<div className='transition ease-in-out'>
-			<StructuredTimeData
-				title='Box Office Data'
-				endpoint='/'
-				time={lastUpdated}
-			/>
-
-			{/* Controls */}
-			<DashboardControls start={start} end={end}>
-				<CountryFilter countries={countryOptions} />
-				<LastUpdated date={lastUpdated} />
-				<DatasourceCard />
-			</DashboardControls>
+			<StructuredTimeData title='Box Office Data' endpoint='/' time={e} />
 
 			{/* Scorecards grid. */}
 			<Scorecards

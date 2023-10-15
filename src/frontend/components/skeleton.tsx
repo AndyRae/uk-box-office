@@ -1,22 +1,14 @@
 import { TimeLineChart } from '@/components/charts/timeline';
 import { StackedBarChart } from '@/components/charts/stacked-bar';
 import { ChartWrapper } from '@/components/charts/chart-wrapper';
-import { DashboardControls } from '@/components/controls';
 import { Scorecards } from '@/components/score-cards';
-import { LastUpdated } from '@/components/last-updated';
-import { DatasourceCard } from '@/components/datasource';
 import { columns } from '@/components/tables/dashboard';
 import { DataTable } from '@/components/vendor/data-table';
-
-import { parseDate } from '@/lib/helpers/dates';
-import addDays from 'date-fns/addDays';
 
 /**
  * Dashboard Skeleton.
  */
 export const Skeleton = () => {
-	const start = parseDate(addDays(new Date(), -90));
-	const end = parseDate(new Date());
 	const timeComparisonData = {
 		results: [
 			{
@@ -30,16 +22,8 @@ export const Skeleton = () => {
 		],
 	};
 
-	const lastUpdated = '';
-
 	return (
-		<div className='transition ease-in-out animate-pulse'>
-			{/* Controls */}
-			<DashboardControls start={start} end={end}>
-				<LastUpdated date={lastUpdated} />
-				<DatasourceCard />
-			</DashboardControls>
-
+		<div className='transition ease-in-out animate-pulse w-full'>
 			{/* Scorecards grid. */}
 			<Scorecards
 				timeComparisonData={timeComparisonData.results}

@@ -25,6 +25,9 @@ export const DashboardControls = forwardRef<HTMLDivElement, ControlsProps>(
 		const searchParams = useSearchParams();
 		const queryParams = new URLSearchParams(searchParams);
 
+		start = searchParams.get('s') ?? start;
+		end = searchParams.get('e') ?? end;
+
 		// Pushes new date to URL
 		const changeDate = async (days: number) => {
 			const today = new Date();
@@ -100,9 +103,7 @@ interface ControlsWrapperProps extends HTMLAttributes<HTMLDivElement> {}
 export const ControlsWrapper = forwardRef<HTMLDivElement, ControlsWrapperProps>(
 	({ children, className }) => {
 		return (
-			<div
-				className={clsx('flex flex-wrap mb-2 gap-y-4 items-center', className)}
-			>
+			<div className={clsx('flex flex-wrap mb-2 items-center', className)}>
 				{children}
 			</div>
 		);
