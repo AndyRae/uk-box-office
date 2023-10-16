@@ -2,6 +2,8 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
+
 import {
 	NavigationMenu,
 	NavigationMenuList,
@@ -15,15 +17,14 @@ import { buttonVariants } from '@/components/ui/button';
 const listItemStyle =
 	'block items-center justify-center border-gray-400 border-b py-2 px-2 w-auto text-sm font-medium bg-gradient-to-br from-transparent to-transparent hover:from-bo-primary hover:to-cyan-500';
 
-export function BreadcrumbsTime({
-	year = 2022,
-	month = 1,
-	quarter,
-}: {
-	year?: number;
-	month?: number;
-	quarter?: number;
-}) {
+export function BreadcrumbsTime() {
+	const params = useParams();
+	const year = parseInt(params.year as string);
+	const month = params.month ? parseInt(params.month as string) : undefined;
+	const quarter = params.quarter
+		? parseInt(params.quarter as string)
+		: undefined;
+
 	return (
 		<div className='flex items-center content-center gap-x-2 my-5 py-3.5 lg:py-3'>
 			<div className='flex justify-start gap-x-1 text-sm font-medium'>
@@ -33,11 +34,15 @@ export function BreadcrumbsTime({
 				<Link className={buttonVariants({ variant: 'link' })} href={'/time'}>
 					Time
 				</Link>
-				<BreadcrumbsYears year={year} />
+				{params.year && (
+					<>
+						<BreadcrumbsYears year={year} />
 
-				<BreadcrumbsQuarters year={year} month={month} quarter={quarter} />
+						<BreadcrumbsQuarters year={year} month={month} quarter={quarter} />
 
-				<BreadcrumbsMonths year={year} month={month} />
+						<BreadcrumbsMonths year={year} month={month} />
+					</>
+				)}
 			</div>
 		</div>
 	);
@@ -79,7 +84,7 @@ export function BreadcrumbsYears({ year }: { year: number }) {
 
 export function BreadcrumbsQuarters({
 	year,
-	month,
+	month = 1,
 	quarter,
 }: {
 	year: number;

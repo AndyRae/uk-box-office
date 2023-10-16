@@ -4,7 +4,6 @@ import {
 	groupForTableChange,
 } from '@/lib/helpers/groupData';
 
-import { BreadcrumbsTime } from '@/components/custom/breadcrumbs-time';
 import { PageTitle } from '@/components/custom/page-title';
 import { ExportCSV } from '@/components/custom/export-csv';
 import { DescriptionItem } from '@/components/custom/description-item';
@@ -22,10 +21,7 @@ import { DataTable } from '@/components/vendor/data-table';
 import { columns } from '@/components/tables/films-time';
 import { columns as weeksColumns } from '@/components/tables/weeks';
 import { columns as historicalColumns } from '@/components/tables/historical-years';
-import { CountryFilter } from '@/components/country-filter';
-import { ControlsWrapper } from '@/components/controls';
-import { fetchCountryList } from '@/lib/api/dataFetching';
-import { mapToValues } from '@/lib/helpers/filters';
+import { Suspense } from 'react';
 
 type TimePageProps = {
 	year: number;
@@ -38,11 +34,21 @@ type TimePageProps = {
 	timeComparisonData: BoxOfficeSummary[];
 };
 
+export const TimePage = (props: TimePageProps) => {
+	return (
+		<Suspense
+			fallback={<Time year={2023} results={[]} timeComparisonData={[]} />}
+		>
+			<Time {...props} />
+		</Suspense>
+	);
+};
+
 /**
  * Time Page
  * @returns {JSX.Element}
  */
-export const TimePage = async ({
+export const Time = async ({
 	year,
 	month = undefined,
 	day = undefined,
@@ -75,9 +81,6 @@ export const TimePage = async ({
 		quarter ? `Q${quarter}` : month ? months[month as keyof MonthsType] : ''
 	}${quarterend ? ` - Q${quarterend}` : ''} ${year}`;
 
-	const countryData = await fetchCountryList(1, 100);
-	const countryOptions = mapToValues(countryData.results);
-
 	return (
 		<>
 			<StructuredTimeData
@@ -85,10 +88,6 @@ export const TimePage = async ({
 				endpoint={'/time'}
 				time={pageTitle}
 			/>
-			<ControlsWrapper className='hidden md:flex'>
-				<BreadcrumbsTime year={year} month={month} quarter={quarter} />
-				<CountryFilter countries={countryOptions} />
-			</ControlsWrapper>
 
 			<div className='grid grid-cols-1 md:grid-cols-5 gap-3 md:gap-5'>
 				<div className='col-span-2'>
@@ -143,8 +142,8 @@ const TimeMetrics = ({
 	const numberOfCinemas = thisYear?.number_of_cinemas ?? 0;
 	const averageTicketPrice = parseInt((boxOffice / admissions!).toFixed(2));
 
-	let showMetrics = false; // A flag to determine whether to show metrics
-	const hasAdmissions = admissions ? true : false;
+	let showMetrics = false;
+	const hasAdmissions = !!admissions;
 
 	// Time Comparison Data
 	let changeNewFilms = 0;
@@ -277,8 +276,6 @@ const TimeTabs = ({
 	const tableData = groupForTableChange(results, lastWeekResults);
 	const weekData = groupbyDateWithchange(results);
 	const yearData = calculateYearChange(timeComparisonData);
-
-	const isWeekView = weekData.length === 1;
 
 	return (
 		<Tabs defaultValue='tab1'>

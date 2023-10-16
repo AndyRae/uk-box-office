@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, forwardRef, HTMLAttributes } from 'react';
+import { useState, useEffect, forwardRef, HTMLAttributes } from 'react';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import Select from 'react-select';
 
@@ -18,6 +18,15 @@ export const CountryFilter = forwardRef<HTMLDivElement, FilterProps>(
 		const queryParams = new URLSearchParams(searchParams);
 
 		const [selectedCountry, setCountry] = useState<SelectOption[]>([]);
+
+		// Run on start to set the selected list of countries.
+		useEffect(() => {
+			const ids = searchParams.get('country')?.split(',').filter(Boolean);
+			const filteredList = countries.filter((option) =>
+				ids?.includes(option.value)
+			);
+			setCountry(filteredList);
+		}, []);
 
 		const handleSelectCountry = async (data: any) => {
 			setCountry(data);

@@ -1,4 +1,4 @@
-import { TimePage } from '@/app/(pages)/time/time';
+import { TimePage } from '@/app/(time)/time/time';
 import {
 	fetchBoxOfficeInfinite,
 	fetchBoxOfficeSummary,
@@ -8,10 +8,10 @@ import { getLastDayofMonth } from '@/lib/helpers/dates';
 export async function generateMetadata({
 	params,
 }: {
-	params: { year: string; quarter: string; quarterend: string };
+	params: { year: string; quarter: string };
 }) {
-	const title = `Q${params.quarter}-Q${params.quarterend} ${params.year} | Box Office Data`;
-	const description = `Q${params.quarter}-Q${params.quarterend} ${params.year} | Box Office Data`;
+	const title = `Q${params.quarter} ${params.year} | Box Office Data`;
+	const description = `Q${params.quarter} ${params.year} | Box Office Data`;
 
 	return {
 		title: title,
@@ -44,13 +44,14 @@ export default async function Page({
 	params,
 	searchParams,
 }: {
-	params: { year: string; quarter: string; quarterend: string };
+	params: { year: string; quarter: string };
 	searchParams: { country: string; distributor: string };
-}) {
+}): Promise<JSX.Element> {
 	const countries = searchParams?.country?.split(',').map(Number);
 	const distributors = searchParams?.distributor?.split(',').map(Number);
 	// Build Dates based on existing params or defaults.
 	const month = parseInt(params.quarter) * 3 - 2;
+	const endMonth = parseInt(params.quarter) * 3;
 
 	const start = new Date(parseInt(params.year), month - 1, 1);
 
@@ -59,20 +60,18 @@ export default async function Page({
 	const currentQuarter = Math.floor((new Date().getMonth() + 3) / 3);
 	const isCurrentYear = parseInt(params.year) === currentYear;
 	const isCurrentQuarter =
-		isCurrentYear && parseInt(params.quarterend) === currentQuarter;
+		isCurrentYear && parseInt(params.quarter) === currentQuarter;
 
+	// Adjust the end date based on whether it's the current year and current quarter
 	let end: Date;
 	if (isCurrentQuarter) {
-		// If it's the current quarter, set the end date to today
 		end = new Date(); // Set the end date to today if it's the current quarter
 	} else {
-		// If it's not the current quarter, set the end date to the last day of the specified ending quarter
-		const endMonth = parseInt(params.quarterend) * 3;
 		end = new Date(
 			parseInt(params.year),
 			endMonth - 1,
 			getLastDayofMonth(endMonth)
-		);
+		); // Set the end date to the last day of the specified quarter
 	}
 
 	// Build Date Strings for API
@@ -100,7 +99,6 @@ export default async function Page({
 		<TimePage
 			year={parseInt(params.year)}
 			quarter={parseInt(params.quarter)}
-			quarterend={parseInt(params.quarterend)}
 			results={results}
 			timeComparisonData={timeComparisonData.results}
 		/>

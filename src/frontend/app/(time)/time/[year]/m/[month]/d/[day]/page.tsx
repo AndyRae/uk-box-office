@@ -1,14 +1,14 @@
-import { TimePage } from '@/app/(pages)/time/time';
+import { TimePage } from '@/app/(time)/time/time';
 import {
 	fetchBoxOfficeInfinite,
 	fetchBoxOfficeSummary,
 } from '@/lib/api/dataFetching';
-import { getLastDayofMonth } from '@/lib/helpers/dates';
+import addDays from 'date-fns/addDays';
 
 export async function generateMetadata({
 	params,
 }: {
-	params: { year: string; month: string };
+	params: { year: number; month: string; day: number };
 }) {
 	const months = [
 		'January',
@@ -26,8 +26,12 @@ export async function generateMetadata({
 	];
 	const m = parseInt(params.month);
 
-	const title = `${months[m - 1]} ${params.year} | Box Office Data`;
-	const description = `${months[m - 1]} ${params.year} | Box Office Data`;
+	const title = `${params.day} ${months[m - 1]} ${
+		params.year
+	} | Box Office Data`;
+	const description = `${params.day} ${months[m - 1]} ${
+		params.year
+	} | Box Office Data`;
 
 	return {
 		title: title,
@@ -60,38 +64,23 @@ export default async function Page({
 	params,
 	searchParams,
 }: {
-	params: { year: string; month: string };
+	params: { year: string; month: number; day: number };
 	searchParams: { country: string; distributor: string };
 }) {
 	const countries = searchParams?.country?.split(',').map(Number);
 	const distributors = searchParams?.distributor?.split(',').map(Number);
 	// Build Dates based on existing params or defaults.
-	const start = new Date(parseInt(params.year), parseInt(params.month) - 1, 1);
-
-	// Check if the passed year and month are the current year and current month
-	const currentYear = new Date().getFullYear();
-	const currentMonth = new Date().getMonth() + 1;
-	const isCurrentYear = parseInt(params.year) === currentYear;
-	const isCurrentMonth =
-		isCurrentYear && parseInt(params.month) === currentMonth;
-
-	// Adjust the end date based on whether it's the current year and current month
-	let end: Date;
-	if (isCurrentMonth) {
-		end = new Date(); // Set the end date to today if it's the current month
-	} else {
-		end = new Date(
-			parseInt(params.year),
-			parseInt(params.month) - 1,
-			getLastDayofMonth(parseInt(params.month))
-		); // Set the end date to the last day of the specified month
-	}
+	const start = new Date(parseInt(params.year), params.month - 1, params.day);
+	const sLastWeek = addDays(start, -7);
 
 	// Build Date Strings for API
 	const startDate = `${start.getFullYear()}-${
 		start.getMonth() + 1
 	}-${start.getDate()}`;
-	const endDate = `${end.getFullYear()}-${end.getMonth() + 1}-${end.getDate()}`;
+
+	const startLastWeek = `${sLastWeek.getFullYear()}-${
+		sLastWeek.getMonth() + 1
+	}-${sLastWeek.getDate()}`;
 
 	// Fetch data
 	let yearsToGoBack = 25;
@@ -101,18 +90,26 @@ export default async function Page({
 	}
 
 	const { results, isReachedEnd, percentFetched } =
-		await fetchBoxOfficeInfinite(startDate, endDate, distributors, countries);
+		await fetchBoxOfficeInfinite(startDate, startDate, distributors, countries);
+	const { results: lastWeekResults } = await fetchBoxOfficeInfinite(
+		startLastWeek,
+		startLastWeek,
+		distributors,
+		countries
+	);
 	const timeComparisonData = await fetchBoxOfficeSummary(
 		startDate,
-		endDate,
+		startDate,
 		yearsToGoBack
 	);
 
 	return (
 		<TimePage
 			year={parseInt(params.year)}
-			month={parseInt(params.month)}
+			month={params.month}
+			day={params.day}
 			results={results}
+			lastWeekResults={lastWeekResults}
 			timeComparisonData={timeComparisonData.results}
 		/>
 	);

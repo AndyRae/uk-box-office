@@ -114,8 +114,8 @@ class QueryFilter:
         country_ids (Optional[List[int]]): IDs of the countries to filter by.
         min_year (Optional[int]): Low of the year number to filter by.
         max_year (Optional[int]): High of the year number to filter by.
-        min_box (Optional[int]): Low of the box office number to filter by.
-        max_box (Optional[int]): High of the box office number to filter by.
+        min_gross (Optional[int]): Low of the box office number to filter by.
+        max_gross (Optional[int]): High of the box office number to filter by.
         sort (Optional[str]): Field / order to sort by.
     """
 
@@ -125,15 +125,15 @@ class QueryFilter:
         country_ids: Optional[List[int]] = None,
         min_year: Optional[int] = None,
         max_year: Optional[int] = None,
-        min_box: Optional[int] = None,
-        max_box: Optional[int] = None,
+        min_gross: Optional[int] = None,
+        max_gross: Optional[int] = None,
     ):
         self.distributor_ids = distributor_ids
         self.country_ids = country_ids
         self.min_year = min_year
         self.max_year = max_year
-        self.min_box = min_box
-        self.max_box = max_box
+        self.min_box = min_gross
+        self.max_box = max_gross
 
     def requires_join(self) -> bool:
         """

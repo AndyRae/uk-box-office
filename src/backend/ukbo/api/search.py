@@ -34,8 +34,8 @@ def all() -> Response:
     country = request.args.get("country", None)
     min_year = request.args.get("min_year", None)
     max_year = request.args.get("max_year", None)
-    min_box = request.args.get("min_box", None)
-    max_box = request.args.get("max_box", None)
+    min_gross = request.args.get("min_gross", None)
+    max_gross = request.args.get("max_gross", None)
 
     # Build sorting
     sort = request.args.get("sort", None)
@@ -52,8 +52,8 @@ def all() -> Response:
         country_ids=country,
         min_year=min_year,
         max_year=max_year,
-        min_box=min_box,
-        max_box=max_box,
+        min_gross=min_gross,
+        max_gross=max_gross,
     )
     sort_filter = services.filters.SortFilter(sort=sort)
 
