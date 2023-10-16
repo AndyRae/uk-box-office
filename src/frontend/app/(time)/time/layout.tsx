@@ -19,13 +19,8 @@ export default async function Layout({
 		<>
 			<ControlsWrapper className='hidden md:flex'>
 				<BreadcrumbsTime />
-				{/* <Suspense
-					fallback={
-						<TimePage year={2023} results={[]} timeComparisonData={[]} />
-					}
-				> */}
+
 				<CountryFilter countries={countryOptions} />
-				{/* </Suspense> */}
 			</ControlsWrapper>
 			{children}
 		</>
