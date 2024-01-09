@@ -85,7 +85,7 @@ flask-sqlalchemy==3.0.2
     # via
     #   -r requirements.in
     #   flask-migrate
-fonttools==4.38.0
+fonttools==4.43.0
     # via matplotlib
 greenlet==2.0.2
     # via sqlalchemy
