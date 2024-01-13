@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model alembic_version {
+  version_num String @id(map: "alembic_version_pkc") @db.VarChar(32)
+}
+
+model countries {
+  country_id Int
+  film_id    Int
+  country    country @relation(fields: [country_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  film       film    @relation(fields: [film_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([country_id, film_id])
+}
+
+model country {
+  id        Int         @id @default(autoincrement())
+  name      String      @unique @db.VarChar(160)
+  slug      String      @unique @db.VarChar(160)
+  countries countries[]
+  film      film[]
+}
+
+model distributor {
+  id                       Int                        @id @default(autoincrement())
+  name                     String                     @unique @db.VarChar(160)
+  slug                     String                     @unique @db.VarChar(160)
+  distributor_market_share distributor_market_share[]
+  distributors             distributors[]
+}
+
+model distributor_market_share {
+  id             Int         @id @default(autoincrement())
+  year           Int
+  distributor_id Int
+  market_share   Float
+  gross          Int
+  distributor    distributor @relation(fields: [distributor_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([distributor_id, year])
+}
+
+model distributors {
+  film_id        Int
+  distributor_id Int
+  distributor    distributor @relation(fields: [distributor_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  film           film        @relation(fields: [film_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([film_id, distributor_id])
+}
+
+model event {
+  id      Int      @id @default(autoincrement())
+  date    DateTime @db.Timestamp(6)
+  area    String   @db.VarChar(160)
+  message String?
+  state   state
+}
+
+model film {
+  id           Int            @id @default(autoincrement())
+  name         String         @db.VarChar(160)
+  country_id   Int?
+  slug         String         @unique @db.VarChar(300)
+  countries    countries[]
+  distributors distributors[]
+  country      country?       @relation(fields: [country_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  film_week    film_week[]
+}
+
+model film_week {
+  id                Int      @id @default(autoincrement())
+  film_id           Int
+  date              DateTime @db.Timestamp(6)
+  rank              Int
+  weeks_on_release  Int
+  number_of_cinemas Int
+  weekend_gross     Int
+  week_gross        Int
+  total_gross       Int
+  site_average      Float
+  film              film     @relation(fields: [film_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([date], map: "ix_film_week_date")
+}
+
+model week {
+  id                 Int      @id @default(autoincrement())
+  date               DateTime @unique @db.Timestamp(6)
+  number_of_cinemas  Int?
+  number_of_releases Int?
+  weekend_gross      Int?
+  week_gross         Int?
+  forecast_high      Int?
+  forecast_medium    Int?
+  forecast_low       Int?
+  admissions         Int?
+}
+
+enum state {
+  success
+  warning
+  error
+}
