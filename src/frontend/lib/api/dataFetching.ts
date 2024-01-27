@@ -5,7 +5,6 @@ import {
 	Topline,
 } from '@/interfaces/BoxOffice';
 import {
-	getApi,
 	getBoxOfficeLastWeekEndpoint,
 	getBoxOfficePreviousYearEndpoint,
 	getBoxOfficeSummaryEndpoint,
@@ -50,6 +49,7 @@ import {
 import { SearchParams, SearchResults } from '@/interfaces/Search';
 import MarketShare from '@/interfaces/MarketShare';
 import { StatusEvent } from '@/interfaces/Event';
+import { getCountry } from '@/db/country';
 
 /**
  * Box Office
@@ -413,6 +413,18 @@ export const fetchCountryList = async (
  * const country = await fetchCountry('united-kingdom');
  */
 export async function fetchCountry(slug: string): Promise<Country | undefined> {
+	if (process.env.USE_PRISMA) {
+		try {
+			const country = await getCountry(slug);
+			if (country === null) {
+				throw new Error(`Country with slug '${slug}' not found.`);
+			}
+			return country;
+		} catch (error) {
+			console.warn(error);
+			return;
+		}
+	}
 	try {
 		const url = getCountryEndpoint(slug);
 		return await request<Country>(url, { next: { revalidate: 60 } });
