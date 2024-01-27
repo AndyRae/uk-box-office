@@ -49,7 +49,7 @@ import {
 import { SearchParams, SearchResults } from '@/interfaces/Search';
 import MarketShare from '@/interfaces/MarketShare';
 import { StatusEvent } from '@/interfaces/Event';
-import { getCountry } from '@/db/country';
+import { getBoxOffice, getCountry } from '@/db/country';
 
 /**
  * Box Office
@@ -470,6 +470,18 @@ export const fetchCountryBoxOffice = async (
 	slug: string,
 	limit: number
 ): Promise<CountryBoxOffice | undefined> => {
+	if (process.env.USE_PRISMA) {
+		try {
+			const results = await getBoxOffice(slug, limit);
+			if (results === null) {
+				throw new Error();
+			}
+			return results;
+		} catch (error) {
+			console.warn(error);
+			return;
+		}
+	}
 	try {
 		const url = getCountryBoxOfficeEndpoint(slug, limit);
 		return await request<CountryBoxOffice>(url, { next: { revalidate: 60 } });
