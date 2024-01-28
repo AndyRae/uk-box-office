@@ -49,7 +49,7 @@ import {
 import { SearchParams, SearchResults } from '@/interfaces/Search';
 import MarketShare from '@/interfaces/MarketShare';
 import { StatusEvent } from '@/interfaces/Event';
-import { getBoxOffice, getCountry } from '@/db/country';
+import { getBoxOffice, get } from '@/db/country';
 
 /**
  * Box Office
@@ -415,7 +415,7 @@ export const fetchCountryList = async (
 export async function fetchCountry(slug: string): Promise<Country | undefined> {
 	if (process.env.USE_PRISMA) {
 		try {
-			const country = await getCountry(slug);
+			const country = await get(slug);
 			if (country === null) {
 				throw new Error(`Country with slug '${slug}' not found.`);
 			}
