@@ -49,7 +49,7 @@ import {
 import { SearchParams, SearchResults } from '@/interfaces/Search';
 import MarketShare from '@/interfaces/MarketShare';
 import { StatusEvent } from '@/interfaces/Event';
-import { getBoxOffice, get } from '@/db/country';
+import { getBoxOffice, get, list } from '@/db/country';
 
 /**
  * Box Office
@@ -391,6 +391,23 @@ export const fetchCountryList = async (
 	page: number = 1,
 	limit: number = 10
 ): Promise<CountryListData> => {
+	if (process.env.USE_PRISMA) {
+		try {
+			const countries = await list(page, limit);
+			if (list === null) {
+				throw new Error();
+			}
+			return countries;
+		} catch (error) {
+			console.warn(error);
+			return {
+				count: 0,
+				next: 0,
+				previous: 0,
+				results: [],
+			};
+		}
+	}
 	try {
 		const url = getCountryListEndpoint(page, limit);
 		return await request<CountryListData>(url, { next: { revalidate: 60 } });

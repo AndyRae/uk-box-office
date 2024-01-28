@@ -6,6 +6,30 @@ export const get = async (slug: string) => {
 	});
 };
 
+export async function list(page: number = 1, limit: number = 100) {
+	const skip = (page - 1) * limit;
+
+	const countries = await db.country.findMany({
+		skip: skip,
+		take: limit,
+		orderBy: {
+			name: 'asc',
+		},
+	});
+
+	const totalCountries = await db.country.count();
+
+	const next_page = page * limit < totalCountries ? page + 1 : undefined;
+	const previous_page = page > 1 ? page - 1 : undefined;
+
+	return {
+		count: totalCountries,
+		next: next_page,
+		previous: previous_page,
+		results: countries,
+	};
+}
+
 export async function getBoxOffice(slug: string, limit: number) {
 	const now = new Date();
 	now.setFullYear(now.getFullYear() - limit);
