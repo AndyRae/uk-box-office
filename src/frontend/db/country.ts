@@ -1,4 +1,5 @@
 import { db } from '@/db/db';
+import { FilmSortOption } from '@/interfaces/Film';
 
 export const get = async (slug: string) => {
 	return await db.country.findFirst({
@@ -89,5 +90,93 @@ export async function getBoxOffice(slug: string, limit: number) {
 
 	return {
 		results: results,
+	};
+}
+
+export async function getFilms(
+	slug: string,
+	page: number,
+	limit: number,
+	sort: FilmSortOption
+) {
+	const country = await db.country.findUnique({
+		where: {
+			slug: slug,
+		},
+	});
+
+	if (!country) {
+		// Handle country not found
+		return null;
+	}
+
+	const films = await db.film.findMany({
+		include: {
+			distributors: {
+				select: {
+					distributor: true,
+				},
+			},
+			countries: {
+				select: {
+					country: true,
+				},
+			},
+			film_week: {
+				select: {
+					total_gross: true,
+				},
+			},
+		},
+		where: {
+			countries: {
+				some: {
+					country: {
+						id: country.id,
+					},
+				},
+			},
+		},
+		skip: (page - 1) * limit,
+		take: limit,
+	});
+
+	const filmsWithGross = films.map((film) => ({
+		...film,
+		gross: film.film_week.reduce(
+			(acc, week) => acc + (week.total_gross || 0),
+			0
+		),
+		countries: film.countries.map((country) => ({
+			id: country.country.id,
+			name: country.country.name,
+			slug: country.country.slug,
+		})),
+		distributors: film.distributors.map((distributor) => ({
+			id: distributor.distributor.id,
+			name: distributor.distributor.name,
+			slug: distributor.distributor.slug,
+		})),
+	}));
+
+	const totalFilms = await db.film.count({
+		where: {
+			countries: {
+				some: {
+					country_id: country.id,
+				},
+			},
+		},
+	});
+
+	const next_page = page * limit < totalFilms ? page + 1 : undefined;
+	const previous_page = page > 1 ? page - 1 : undefined;
+
+	return {
+		country: country,
+		count: totalFilms,
+		next: next_page,
+		previous: previous_page,
+		results: filmsWithGross,
 	};
 }
