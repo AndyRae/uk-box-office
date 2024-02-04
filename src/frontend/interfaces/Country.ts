@@ -16,8 +16,8 @@ export interface CountryListData {
 export interface CountryFilmsData {
 	country: Country;
 	count: number;
-	next: number;
-	previous: number;
+	next?: number;
+	previous?: number;
 	results: Film[];
 }
 
