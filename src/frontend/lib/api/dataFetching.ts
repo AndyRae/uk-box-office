@@ -49,7 +49,7 @@ import {
 import { SearchParams, SearchResults } from '@/interfaces/Search';
 import MarketShare from '@/interfaces/MarketShare';
 import { StatusEvent } from '@/interfaces/Event';
-import { getBoxOffice, get, list } from '@/db/country';
+import { getBoxOffice, get, list, getFilms } from '@/db/country';
 
 /**
  * Box Office
@@ -466,6 +466,18 @@ export const fetchCountryFilms = async (
 	limit: number,
 	sort: FilmSortOption
 ): Promise<CountryFilmsData | undefined> => {
+	if (process.env.USE_PRISMA) {
+		try {
+			const films = await getFilms(slug, page, limit, sort);
+			if (films === null) {
+				throw new Error(`Not found`);
+			}
+			return films;
+		} catch (error) {
+			console.warn(error);
+			return;
+		}
+	}
 	try {
 		const url = getCountryFilmsEndpoint(slug, page, limit, sort);
 		return await request<CountryFilmsData>(url, { next: { revalidate: 60 } });
