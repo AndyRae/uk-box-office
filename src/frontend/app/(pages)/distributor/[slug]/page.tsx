@@ -16,9 +16,9 @@ import { Pagination } from '@/components/custom/pagination';
 import {
 	fetchDistributor,
 	fetchDistributorBoxOffice,
-	fetchBoxOfficeInfinite,
 	fetchDistributorFilms,
-} from '@/lib/api/dataFetching';
+} from '@/lib/api/distributor';
+import { fetchBoxOfficeInfinite } from '@/lib/api/dataFetching';
 import { parseDate } from '@/lib/helpers/dates';
 import { toTitleCase } from '@/lib/helpers/toTitleCase';
 import { paginate } from '@/lib/helpers/pagination';

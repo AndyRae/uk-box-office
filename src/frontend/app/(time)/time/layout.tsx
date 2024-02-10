@@ -3,9 +3,7 @@ import { CountryFilter } from '@/components/country-filter';
 import { BreadcrumbsTime } from '@/components/custom/breadcrumbs-time';
 
 import { mapToValues } from '@/lib/helpers/filters';
-import { fetchCountryList } from '@/lib/api/dataFetching';
-import { Suspense } from 'react';
-import { TimePage } from './time';
+import { fetchCountryList } from '@/lib/api/country';
 
 export default async function Layout({
 	children,

@@ -19,8 +19,8 @@ import {
 	fetchCountry,
 	fetchCountryBoxOffice,
 	fetchCountryFilms,
-	fetchBoxOfficeInfinite,
-} from '@/lib/api/dataFetching';
+} from '@/lib/api/country';
+import { fetchBoxOfficeInfinite } from '@/lib/api/dataFetching';
 import { parseDate } from '@/lib/helpers/dates';
 import addDays from 'date-fns/addDays';
 import { toTitleCase } from '@/lib/helpers/toTitleCase';
