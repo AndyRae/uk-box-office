@@ -1,5 +1,6 @@
 import { db } from '@/db/db';
 import { FilmSortOption } from '@/interfaces/Film';
+import { Prisma } from '@prisma/client';
 
 export const get = async (slug: string) => {
 	return await db.country.findFirst({
@@ -111,6 +112,19 @@ export async function getFilms(
 		return null;
 	}
 
+	let orderBy: Prisma.filmOrderByWithRelationInput | undefined;
+
+	switch (sort) {
+		case 'asc_name':
+			orderBy = { name: 'asc' };
+			break;
+		case 'desc_name':
+			orderBy = { name: 'desc' };
+			break;
+		default:
+			orderBy = { name: 'asc' };
+	}
+
 	const films = await db.film.findMany({
 		include: {
 			distributors: {
@@ -138,6 +152,7 @@ export async function getFilms(
 				},
 			},
 		},
+		orderBy: orderBy,
 		skip: (page - 1) * limit,
 		take: limit,
 	});
