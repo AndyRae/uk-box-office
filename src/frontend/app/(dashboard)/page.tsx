@@ -1,7 +1,6 @@
 import {
 	fetchBoxOfficeInfinite,
 	fetchBoxOfficePreviousYear,
-	fetchCountryList,
 } from '@/lib/api/dataFetching';
 import { groupForTable } from '@/lib/helpers/groupData';
 
