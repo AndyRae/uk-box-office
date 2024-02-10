@@ -49,7 +49,7 @@
 	"scripts": {
 		"dev": "next dev",
 		"turbo": "next dev --turbo",
-		"build": "next build",
+		"build": "prisma generate && next build",
 		"start": "next start",
 		"vercel-build": "prisma generate && next build"
 	},
