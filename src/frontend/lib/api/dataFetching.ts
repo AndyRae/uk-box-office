@@ -9,14 +9,6 @@ import {
 	getBoxOfficePreviousYearEndpoint,
 	getBoxOfficeSummaryEndpoint,
 	getBoxOfficeTopFilmsEndpoint,
-	getCountryBoxOfficeEndpoint,
-	getCountryEndpoint,
-	getCountryFilmsEndpoint,
-	getCountryListEndpoint,
-	getDistributorBoxOfficeEndpoint as fetchDistributorBoxOfficeEndpoint,
-	getDistributorEndpoint,
-	getDistributorFilmsEndpoint,
-	getDistributorListEndpoint,
 	getDistributorMarketShareEndpoint,
 	getEventsEndpoint,
 	getFilmIdEndpoint,
@@ -34,22 +26,10 @@ import {
 	TopFilm,
 	FilmSortOption,
 } from '@/interfaces/Film';
-import {
-	Distributor,
-	DistributorBoxOffice,
-	DistributorFilmsData,
-	DistributorListData,
-} from '@/interfaces/Distributor';
-import {
-	Country,
-	CountryBoxOffice,
-	CountryFilmsData,
-	CountryListData,
-} from '@/interfaces/Country';
+
 import { SearchParams, SearchResults } from '@/interfaces/Search';
 import MarketShare from '@/interfaces/MarketShare';
 import { StatusEvent } from '@/interfaces/Event';
-import { getBoxOffice, get, list, getFilms } from '@/db/country';
 
 /**
  * Box Office
@@ -258,105 +238,6 @@ export async function fetchFilmId(
 	}
 }
 
-/**
- * Distributors
- */
-/**
- * Get paginated list of all distributors.
- * @param {number} page - Page number to start from.
- * @param {number} limit - Number of items per page.
- * @returns paginated list of distributors from the api.
- * @example
- * const data = await fetchDistributors(1, 10);
- */
-export const fetchDistributors = async (
-	page: number = 1,
-	limit: number = 10
-): Promise<DistributorListData> => {
-	try {
-		const url = getDistributorListEndpoint(page, limit);
-		return await request<DistributorListData>(url, {
-			next: { revalidate: 60 },
-		});
-	} catch (error) {
-		console.warn(error);
-		return {
-			count: 0,
-			next: 0,
-			previous: 0,
-			results: [],
-		};
-	}
-};
-
-/**
- * Get a single distributor.
- * @param {string} slug - Distributor slug.
- * @returns a single distributor from the api.
- * @example
- * const distributor = await fetchDistributor('warner-bros');
- */
-export async function fetchDistributor(
-	slug: string
-): Promise<Distributor | undefined> {
-	try {
-		const url = getDistributorEndpoint(slug);
-		return await request<Distributor>(url, { next: { revalidate: 60 } });
-	} catch (error) {
-		console.warn(error);
-		return;
-	}
-}
-
-/**
- * Gets a distributor box office grouped by year
- * @param {string} slug - Distributor slug.
- * @param {number} limit - Years to go back .
- * @returns a distributors box office grouped by year
- * @example
- * const distributor = await fetchDistributorBoxOffice('warner-bros');
- */
-export async function fetchDistributorBoxOffice(
-	slug: string,
-	limit: number = 25
-): Promise<DistributorBoxOffice | undefined> {
-	try {
-		const url = fetchDistributorBoxOfficeEndpoint(slug, limit);
-		return await request<DistributorBoxOffice>(url, {
-			next: { revalidate: 60 },
-		});
-	} catch (error) {
-		console.warn(error);
-		return;
-	}
-}
-
-/**
- * Get a single distributor films.
- * @param {string} slug - Distributor slug.
- * @param {number} page - Page number to start from.
- * @param {number} limit - Number of items per page.
- * @returns a single distributor and its films from the api.
- * @example
- * const data = fetchDistributorFilms('mubi', 1, 10);
- */
-export const fetchDistributorFilms = async (
-	slug: string,
-	page: number = 1,
-	limit: number = 10,
-	sort: FilmSortOption
-): Promise<DistributorFilmsData | undefined> => {
-	try {
-		const url = getDistributorFilmsEndpoint(slug, page, limit, sort);
-		return await request<DistributorFilmsData>(url, {
-			next: { revalidate: 60 },
-		});
-	} catch (error) {
-		console.warn(error);
-		return;
-	}
-};
-
 type MarketShareData = {
 	results: MarketShare[];
 };
@@ -374,151 +255,6 @@ export async function fetchMarketshare(): Promise<MarketShareData | undefined> {
 		return;
 	}
 }
-
-/**
- * Countries
- */
-
-/**
- * Get paginated list of countries.
- * @param {number} page - Page number to start from.
- * @param {number} limit - Number of items per page.
- * @returns paginated list of countrys from the api.
- * @example
- * const { data, error } = fetchCountryList(1, 10);
- */
-export const fetchCountryList = async (
-	page: number = 1,
-	limit: number = 10
-): Promise<CountryListData> => {
-	if (process.env.USE_PRISMA) {
-		try {
-			const countries = await list(page, limit);
-			if (list === null) {
-				throw new Error();
-			}
-			return countries;
-		} catch (error) {
-			console.warn(error);
-			return {
-				count: 0,
-				next: 0,
-				previous: 0,
-				results: [],
-			};
-		}
-	}
-	try {
-		const url = getCountryListEndpoint(page, limit);
-		return await request<CountryListData>(url, { next: { revalidate: 60 } });
-	} catch (error) {
-		console.warn(error);
-		return {
-			count: 0,
-			next: 0,
-			previous: 0,
-			results: [],
-		};
-	}
-};
-
-/**
- * Get a single country.
- * @param {string} slug - Country slug.
- * @returns a single country from the api.
- * @example
- * const country = await fetchCountry('united-kingdom');
- */
-export async function fetchCountry(slug: string): Promise<Country | undefined> {
-	if (process.env.USE_PRISMA) {
-		try {
-			const country = await get(slug);
-			if (country === null) {
-				throw new Error(`Country with slug '${slug}' not found.`);
-			}
-			return country;
-		} catch (error) {
-			console.warn(error);
-			return;
-		}
-	}
-	try {
-		const url = getCountryEndpoint(slug);
-		return await request<Country>(url, { next: { revalidate: 60 } });
-	} catch (error) {
-		console.warn(error);
-		return;
-	}
-}
-
-/**
- * Get a single countries and its films paginated.
- * @param {string} slug - Country slug.
- * @param {number} page - Page number to start from.
- * @param {number} limit - Number of items per page.
- * @returns a single country and its paginated films from the api.
- * @example
- * const { data, error } = fetchCountryFilms('uk', 1, 10);
- */
-export const fetchCountryFilms = async (
-	slug: string,
-	page: number,
-	limit: number,
-	sort: FilmSortOption
-): Promise<CountryFilmsData | undefined> => {
-	if (process.env.USE_PRISMA) {
-		try {
-			const films = await getFilms(slug, page, limit, sort);
-			if (films === null) {
-				throw new Error(`Not found`);
-			}
-			return films;
-		} catch (error) {
-			console.warn(error);
-			return;
-		}
-	}
-	try {
-		const url = getCountryFilmsEndpoint(slug, page, limit, sort);
-		return await request<CountryFilmsData>(url, { next: { revalidate: 60 } });
-	} catch (error) {
-		console.warn(error);
-		return;
-	}
-};
-
-/**
- * Get a single countries and its box office.
- * @param {string} slug - Country slug.
- * @param {number} limit - Years to go back.
- * @returns a single country and box office from the api.
- * @example
- * const data = fetchCountryBoxOffice('uk', 10);
- */
-export const fetchCountryBoxOffice = async (
-	slug: string,
-	limit: number
-): Promise<CountryBoxOffice | undefined> => {
-	if (process.env.USE_PRISMA) {
-		try {
-			const results = await getBoxOffice(slug, limit);
-			if (results === null) {
-				throw new Error();
-			}
-			return results;
-		} catch (error) {
-			console.warn(error);
-			return;
-		}
-	}
-	try {
-		const url = getCountryBoxOfficeEndpoint(slug, limit);
-		return await request<CountryBoxOffice>(url, { next: { revalidate: 60 } });
-	} catch (error) {
-		console.warn(error);
-		return;
-	}
-};
 
 /**
  * Search
