@@ -9,15 +9,15 @@ export interface Country {
 export interface CountryListData {
 	results: Country[];
 	count: number;
-	next: number;
-	previous: number;
+	next?: number;
+	previous?: number;
 }
 
 export interface CountryFilmsData {
 	country: Country;
 	count: number;
-	next: number;
-	previous: number;
+	next?: number;
+	previous?: number;
 	results: Film[];
 }
 

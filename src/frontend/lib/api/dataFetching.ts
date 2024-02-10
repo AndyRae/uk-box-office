@@ -5,7 +5,6 @@ import {
 	Topline,
 } from '@/interfaces/BoxOffice';
 import {
-	getApi,
 	getBoxOfficeLastWeekEndpoint,
 	getBoxOfficePreviousYearEndpoint,
 	getBoxOfficeSummaryEndpoint,
@@ -50,6 +49,7 @@ import {
 import { SearchParams, SearchResults } from '@/interfaces/Search';
 import MarketShare from '@/interfaces/MarketShare';
 import { StatusEvent } from '@/interfaces/Event';
+import { getBoxOffice, get, list, getFilms } from '@/db/country';
 
 /**
  * Box Office
@@ -391,6 +391,23 @@ export const fetchCountryList = async (
 	page: number = 1,
 	limit: number = 10
 ): Promise<CountryListData> => {
+	if (process.env.USE_PRISMA) {
+		try {
+			const countries = await list(page, limit);
+			if (list === null) {
+				throw new Error();
+			}
+			return countries;
+		} catch (error) {
+			console.warn(error);
+			return {
+				count: 0,
+				next: 0,
+				previous: 0,
+				results: [],
+			};
+		}
+	}
 	try {
 		const url = getCountryListEndpoint(page, limit);
 		return await request<CountryListData>(url, { next: { revalidate: 60 } });
@@ -413,6 +430,18 @@ export const fetchCountryList = async (
  * const country = await fetchCountry('united-kingdom');
  */
 export async function fetchCountry(slug: string): Promise<Country | undefined> {
+	if (process.env.USE_PRISMA) {
+		try {
+			const country = await get(slug);
+			if (country === null) {
+				throw new Error(`Country with slug '${slug}' not found.`);
+			}
+			return country;
+		} catch (error) {
+			console.warn(error);
+			return;
+		}
+	}
 	try {
 		const url = getCountryEndpoint(slug);
 		return await request<Country>(url, { next: { revalidate: 60 } });
@@ -437,6 +466,18 @@ export const fetchCountryFilms = async (
 	limit: number,
 	sort: FilmSortOption
 ): Promise<CountryFilmsData | undefined> => {
+	if (process.env.USE_PRISMA) {
+		try {
+			const films = await getFilms(slug, page, limit, sort);
+			if (films === null) {
+				throw new Error(`Not found`);
+			}
+			return films;
+		} catch (error) {
+			console.warn(error);
+			return;
+		}
+	}
 	try {
 		const url = getCountryFilmsEndpoint(slug, page, limit, sort);
 		return await request<CountryFilmsData>(url, { next: { revalidate: 60 } });
@@ -458,6 +499,18 @@ export const fetchCountryBoxOffice = async (
 	slug: string,
 	limit: number
 ): Promise<CountryBoxOffice | undefined> => {
+	if (process.env.USE_PRISMA) {
+		try {
+			const results = await getBoxOffice(slug, limit);
+			if (results === null) {
+				throw new Error();
+			}
+			return results;
+		} catch (error) {
+			console.warn(error);
+			return;
+		}
+	}
 	try {
 		const url = getCountryBoxOfficeEndpoint(slug, limit);
 		return await request<CountryBoxOffice>(url, { next: { revalidate: 60 } });
