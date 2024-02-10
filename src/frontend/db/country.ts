@@ -94,7 +94,6 @@ export async function getBoxOffice(slug: string, limit: number) {
 	};
 }
 
-// TODO: Add sorting.
 export async function getFilms(
 	slug: string,
 	page: number,
