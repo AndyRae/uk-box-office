@@ -5,7 +5,9 @@ The backend runs Flask built with Python, the frontend is built with Next.js in 
 
 [Use the application.](https://boxofficedata.co.uk)
 
-[Read about the project.](https://rae.li/posts/uk-box-office-data-studio-to-flask)
+> [!WARNING]
+> Due to my time, this application was archived on 5 April 2024, and is no longer deployed or in active development.
+
 
 ## Get Started
 
